@@ -22,7 +22,7 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
         <activity
-            android:name="com.robert.maps.applib.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -41,7 +41,7 @@
                 android:resource="@xml/searchable" />
 
             <intent-filter>
-                <action android:name="com.robert.maps.action.SHOW_POINTS" />
+                <action android:name=".SHOW_POINTS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -54,7 +54,7 @@
                 <data android:scheme="geo" />
             </intent-filter>
         </activity>
-        <activity android:name="com.robert.maps.MainPreferences" >
+        <activity android:name=".MainPreferences" >
         </activity>
 
         <provider
@@ -62,37 +62,37 @@
             android:authorities="com.robert.maps.SuggestionProvider" >
         </provider>
 
-        <activity android:name="com.robert.maps.kml.PoiActivity" />
-        <activity android:name="com.robert.maps.kml.PoiListActivity" />
-        <activity android:name="com.robert.maps.kml.TrackListActivity" />
-        <activity android:name="com.robert.maps.kml.PoiCategoryActivity" >
+        <activity android:name=".kml.PoiActivity" />
+        <activity android:name=".kml.PoiListActivity" />
+        <activity android:name=".kml.TrackListActivity" />
+        <activity android:name=".kml.PoiCategoryActivity" >
         </activity>
-        <activity android:name="com.robert.maps.kml.PoiCategoryListActivity" >
+        <activity android:name=".kml.PoiCategoryListActivity" >
         </activity>
-        <activity android:name="com.robert.maps.kml.PoiIconSetActivity" >
+        <activity android:name=".kml.PoiIconSetActivity" >
         </activity>
-        <activity android:name="com.robert.maps.kml.ImportPoiActivity" />
-        <activity android:name="com.robert.maps.kml.ImportTrackActivity" >
+        <activity android:name=".kml.ImportPoiActivity" />
+        <activity android:name=".kml.ImportTrackActivity" >
         </activity>
-        <activity android:name="com.robert.maps.kml.TrackActivity" >
+        <activity android:name=".kml.TrackActivity" >
         </activity>
-        <activity android:name="com.robert.maps.kml.TrackStatActivity" >
+        <activity android:name=".kml.TrackStatActivity" >
         </activity>
 
         <service
-            android:name="com.robert.maps.trackwriter.TrackWriterService"
+            android:name=".trackwriter.TrackWriterService"
             android:icon="@drawable/track_writer_service"
             android:process=":trackwriter" >
             <intent-filter>
-                <action android:name="com.robert.maps.trackwriter" />
-                <action android:name="com.robert.maps.trackwriter.IRemoteService" />
+                <action android:name=".trackwriter" />
+                <action android:name=".trackwriter.IRemoteService" />
             </intent-filter>
         </service>
 
         <activity android:name="org.openintents.filemanager.FileManagerActivity" >
         </activity>
         <activity
-            android:name="com.robert.maps.downloader.AreaSelectorActivity"
+            android:name=".downloader.AreaSelectorActivity"
             android:launchMode="singleInstance" >
         </activity>
 
@@ -101,8 +101,8 @@
             android:icon="@drawable/track_writer_service"
             android:process=":mapdownloader" >
             <intent-filter>
-                <action android:name="com.robert.maps.mapdownloader" />
-                <action android:name="com.robert.maps.downloader.IRemoteService" />
+                <action android:name=".downloader" />
+                <action android:name=".downloader.IRemoteService" />
             </intent-filter>
         </service>
 
@@ -122,7 +122,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="19" />
+        />
 
     <supports-screens
         android:anyDensity="true"
