@@ -19,11 +19,10 @@
     <application
         android:name=".MapApplication"
         android:allowClearUserData="false"
-        android:debuggable="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
         <activity
-            android:name="com.robert.maps.MainActivity"
+            android:name="com.robert.maps.applib.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -59,7 +58,7 @@
         </activity>
 
         <provider
-            android:name=".applib.utils.SearchSuggestionsProvider"
+            android:name=".utils.SearchSuggestionsProvider"
             android:authorities="com.robert.maps.SuggestionProvider" >
         </provider>
 
