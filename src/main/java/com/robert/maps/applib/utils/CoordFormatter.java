@@ -47,19 +47,19 @@ public class CoordFormatter {
 		String ret = "";
 		
 		if(mFormat == 1) {
-			ret = String.format(Locale.UK, "%s%d°%.4f'", coord<0?"-":"", Math.abs((int)coord), Math.abs((coord-(int)coord)*60.0));
+			ret = String.format(Locale.UK, "%s%dÂ°%.4f'", coord<0?"-":"", Math.abs((int)coord), Math.abs((coord-(int)coord)*60.0));
 		} else if(mFormat == 2) {
 			final double min = (coord-(int)coord)*60.0;
-			ret = String.format(Locale.UK, "%s%d°%d'%.2f\"", coord<0?"-":"", Math.abs((int)coord), Math.abs((int)min), Math.abs((min-(int)min)*60.0));
+			ret = String.format(Locale.UK, "%s%dÂ°%d'%.2f\"", coord<0?"-":"", Math.abs((int)coord), Math.abs((int)min), Math.abs((min-(int)min)*60.0));
 		} else if(mFormat == 3) {
-			ret = String.format(Locale.UK, "%s%.5f°", coord<0?minus:plus, Math.abs(coord));
+			ret = String.format(Locale.UK, "%s%.5fÂ°", coord<0?minus:plus, Math.abs(coord));
 		} else if(mFormat == 4) {
-			ret = String.format(Locale.UK, "%s%d°%.4f'", coord<0?minus:plus, Math.abs((int)coord), Math.abs((coord-(int)coord)*60.0));
+			ret = String.format(Locale.UK, "%s%dÂ°%.4f'", coord<0?minus:plus, Math.abs((int)coord), Math.abs((coord-(int)coord)*60.0));
 		} else if(mFormat == 5) {
 			final double min = (coord-(int)coord)*60.0;
-			ret = String.format(Locale.UK, "%s%d°%d'%.2f\"", coord<0?minus:plus, Math.abs((int)coord), Math.abs((int)min), Math.abs((min-(int)min)*60.0));
+			ret = String.format(Locale.UK, "%s%dÂ°%d'%.2f\"", coord<0?minus:plus, Math.abs((int)coord), Math.abs((int)min), Math.abs((min-(int)min)*60.0));
 		} else {
-			ret = String.format(Locale.UK, "%.5f°", coord);
+			ret = String.format(Locale.UK, "%.5fÂ°", coord);
 		} 
 		
 		return ret;
@@ -79,7 +79,7 @@ public class CoordFormatter {
 	        throw new NullPointerException("coordinate");
 	    }
 	    
-	    coordinate = coordinate.replace(',', '.').replace('°', ' ').replace('\'', ' ').replace('"', ' ').trim();
+	    coordinate = coordinate.replace(',', '.').replace('Â°', ' ').replace('\'', ' ').replace('"', ' ').trim();
 
 	    boolean negative = false;
 	    final char sign = coordinate.charAt(0);

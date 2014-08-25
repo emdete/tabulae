@@ -65,7 +65,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 			if(files != null) {
 				int j = 0;
 				mBaseFileIndex = 0;
-				// Подсчитаем количество подходящих файлов
+				// РѕРќР”РЇР’РҐР Р®Р•Р› Р™РќРљРҐР’Р•РЇР Р‘Рќ РћРќР”РЈРќР”РЄР«РҐРЈ РўР®РРљРќР‘
 				for (int i = 0; i < files.length; i++) {
 					if(files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
 						j = j + 1;
@@ -79,12 +79,12 @@ public class SQLiteMapDatabase implements ICacheProvider {
 					}
 				}
 				final int dbFilesCnt = j;
-				// Если нужно создать еще один, то резервируем для него место
+				// РµРЇРљРҐ РњРЎР¤РњРќ РЇРќР“Р”Р®Р Р­ Р•Р«Р• РќР”РҐРњ, Р Рќ РџР•Р“Р•РџР‘РҐРџРЎР•Р› Р”РљРЄ РњР•Р¦Рќ Р›Р•РЇР Рќ
 				if(aCreateNewDatabaseFile || j == 0)
 					j = j + 1;
-				// Создаем массив определенного размера
+				// СЏРќР“Р”Р®Р•Р› Р›Р®РЇРЇРҐР‘ РќРћРџР•Р”Р•РљР•РњРњРќР¦Рќ РџР®Р“Р›Р•РџР®
 				mDatabase = new SQLiteDatabase[j];
-				// Заполняем массив 
+				// РіР®РћРќРљРњРЄР•Р› Р›Р®РЇРЇРҐР‘ 
 				j = 0; long minsize = 0;
 				for (int i = 0; i < files.length; i++) {
 					if(files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {

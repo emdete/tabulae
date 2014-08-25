@@ -747,7 +747,7 @@ public class TileView extends View {
 	private IMoveListener mMoveListener;
 	private boolean mDisableControl;
 
-	// TODO След процедуры под вопросом о переделке
+	// TODO СЏРљР•Р” РћРџРќР–Р•Р”РЎРџРЁ РћРќР” Р‘РќРћРџРќРЇРќР› Рќ РћР•РџР•Р”Р•РљР™Р•
 
 	public BoundingBoxE6 getVisibleBoundingBoxE6() {
 //		final ViewParent parent = this.getParent();

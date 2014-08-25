@@ -137,7 +137,7 @@ public class MeasureOverlay extends TileViewOverlay {
 					
 					if(mShowLineInfo) {
 						c.drawTextOnPath(mDf.formatDistance(pt.Dist2Prev), path, 0, -5, mPaintText);
-						c.drawTextOnPath(String.format(Locale.UK, "%.1f°", pt.Bearing), path, 0, mPaintText.getTextSize(), mPaintText);
+						c.drawTextOnPath(String.format(Locale.UK, "%.1fâ•Ÿ", pt.Bearing), path, 0, mPaintText.getTextSize(), mPaintText);
 					}
 					
 					c.drawBitmap(pic, p0.x - (int)(pic.getWidth()/2), p0.y - (int)(pic.getHeight() / 2), mPaint);
@@ -242,7 +242,7 @@ public class MeasureOverlay extends TileViewOverlay {
 			.append("\n").append(DIST_PREV).append(DIV).append(mDf.formatDistance(mLocation.Dist2Prev))
 			.append("\n").append(DIST_START).append(DIV).append(mDf.formatDistance(mLocation.Dist2Start))
 			.append("\n").append(DIST_END).append(DIV).append(mDf.formatDistance(mDistance - mLocation.Dist2Start))
-			.append("\n").append(AZI).append(DIV).append(String.format(Locale.UK, "%.1f°", mLocation.Bearing))
+			.append("\n").append(AZI).append(DIV).append(String.format(Locale.UK, "%.1fÂ°", mLocation.Bearing))
 			.toString();				
 	}
 

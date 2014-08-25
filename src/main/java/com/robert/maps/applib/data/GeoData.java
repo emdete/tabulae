@@ -136,7 +136,7 @@ public class GeoData {
 	}
 
 	public SQLiteCursorLoader getPoiListCursorLoader(String sortColNames) {
-		// не менять порядок полей
+		// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 		return new SQLiteCursorLoader(mContext, mSQLiteOpenHelper, PoiConstants.STAT_GET_POI_LIST + sortColNames, null);
 	}
 

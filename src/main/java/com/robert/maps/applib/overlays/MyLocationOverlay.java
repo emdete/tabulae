@@ -222,7 +222,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 				c.drawLine(screenCoords.x, screenCoords.y, osmv.getWidth() / 2, osmv.getHeight() / 2, mPaintLineToGPS);
 				final GeoPoint geo = pj.fromPixels(osmv.getWidth() / 2, osmv.getHeight() / 2);
 				final float dist = this.mLocation.distanceTo(geo);
-				final String lbl = String.format(Locale.UK, "%s %.1f°", mDf.formatDistance(dist), mLocation.bearingTo360(geo));
+				final String lbl = String.format(Locale.UK, "%s %.1fâ•Ÿ", mDf.formatDistance(dist), mLocation.bearingTo360(geo));
 				
 				mLabelVw.setText(lbl);
 				mLabelVw.measure(0, 0);

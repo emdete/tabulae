@@ -277,7 +277,7 @@ public class IndicatorManager implements IndicatorConst {
 			if(location != null) {
 				mIndicators.put(GPSACCURACY, mDf.formatDistance2(location.getAccuracy()));
 				mIndicators.put(GPSELEV, mDf.formatDistance2(location.getAltitude()));
-				mIndicators.put(GPSBEARING, String.format(Locale.UK, "%.1f°", location.getBearing()));
+				mIndicators.put(GPSBEARING, String.format(Locale.UK, "%.1fÂ°", location.getBearing()));
 				mIndicators.put(GPSTIME, sdf.format(location.getTime()));
 				mIndicators.put(GPSLAT, mCf.convertLat(Double.valueOf(location.getLatitude())));
 				mIndicators.put(GPSLON, mCf.convertLon(Double.valueOf(location.getLongitude())));
@@ -470,7 +470,7 @@ public class IndicatorManager implements IndicatorConst {
 	private void updateTargetIndicators() {
 		if(mLocation != null && mTargetLocation != null) {
 			mIndicators.put(TARGETDISTANCE, mDf.formatDistance2(mTargetLocation.distanceTo(mLocation.getLatitude(), mLocation.getLongitude())));
-			mIndicators.put(TARGETBEARING, String.format(Locale.UK, "%.1f°", mTargetLocation.bearingFrom360(mLocation.getLatitude(), mLocation.getLongitude())));
+			mIndicators.put(TARGETBEARING, String.format(Locale.UK, "%.1fÂ°", mTargetLocation.bearingFrom360(mLocation.getLatitude(), mLocation.getLongitude())));
 		} else {
 			mIndicators.put(TARGETDISTANCE, mDf.formatDistance2(0));
 			mIndicators.put(TARGETBEARING, EMPTY);

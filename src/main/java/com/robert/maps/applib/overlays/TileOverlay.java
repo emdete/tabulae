@@ -145,7 +145,7 @@ public class TileOverlay extends TileViewOverlay implements OpenStreetMapConstan
 	protected void onDrawFinished(Canvas c, TileView tileView) {
 	}
 
-	// TODO След процедуры под вопросом о переделке
+	// TODO СЏРљР•Р” РћРџРќР–Р•Р”РЎРџРЁ РћРќР” Р‘РќРћРџРќРЇРќР› Рќ РћР•РџР•Р”Р•РљР™Р•
 	private static final int LATITUDE = 0;
 	private static final int LONGITUDE = 1;
 

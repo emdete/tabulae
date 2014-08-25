@@ -76,7 +76,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 import com.robert.maps.applib.dashboard.IndicatorManager;
 import com.robert.maps.applib.dashboard.IndicatorView;
 import com.robert.maps.applib.dashboard.IndicatorView.IndicatorViewMenuInfo;
@@ -154,7 +153,6 @@ public class MainActivity extends Activity {
 	private int mPrefOverlayButtonBehavior;
 	private int mPrefOverlayButtonVisibility;
 	
-	private GoogleAnalyticsTracker mTracker;
 	private ImageView mOverlayView;
 	private ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new SimpleThreadFactory("MainActivity.Search"));
 	
@@ -165,9 +163,6 @@ public class MainActivity extends Activity {
         if(!OpenStreetMapViewConstants.DEBUGMODE)
         	CrashReportHandler.attach(this);
 
-        mTracker = GoogleAnalyticsTracker.getInstance();
-        mTracker.startNewSession("UA-10715419-3", 20, this);
-
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		CreateContentView();
@@ -175,7 +170,7 @@ public class MainActivity extends Activity {
 		mPoiManager = new PoiManager(this);
 		mLocationListener = new SampleLocationListener();
 		mMap.setMoveListener(mMoveListener);
-		//if(!OpenStreetMapViewConstants.DEBUGMODE) // эмулятор стал виснуть на след строчке
+		//if(!OpenStreetMapViewConstants.DEBUGMODE) // Р©Р›РЎРљРЄР РќРџ РЇР Р®Рљ Р‘РҐРЇРњРЎР Р­ РњР® РЇРљР•Р” РЇР РџРќР’Р™Р•
 			mOrientationSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -227,13 +222,6 @@ public class MainActivity extends Activity {
 		if (!uiState.getString("app_version", "").equalsIgnoreCase(Ut.getAppVersion(this))) {
 			DisplayMetrics metrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(metrics);
-			
-			mTracker.setCustomVar(1, "Build", Ut.getAppVersion(this), 1);
-			mTracker.setCustomVar(2, "Ver", Ut.getPackVersion(this), 1);
-			mTracker.setCustomVar(3, "DisplaySize", ""+Math.min(metrics.widthPixels, metrics.heightPixels)+"x"+Math.max(metrics.widthPixels, metrics.heightPixels), 1);
-			mTracker.setCustomVar(4, "DisplayDensity", ""+(int)(160*metrics.density), 1);
-			mTracker.setCustomVar(5, "APILevel", Build.VERSION.SDK, 1);
-			mTracker.trackPageView("/InstallApp");
 			
 			showDialog(R.id.whatsnew);
 		}
@@ -818,7 +806,6 @@ public class MainActivity extends Activity {
 			mTileSource.Free();
 		mTileSource = null;
 		mMap.setMoveListener(null);
-		mTracker.stopSession();
 		mThreadPool.shutdown();
 		
 		super.onDestroy();
@@ -991,11 +978,6 @@ public class MainActivity extends Activity {
 			
 			final String mapid = (String)item.getTitleCondensed();
 			setTileSource(mapid, "", true);
-			
-			if(mTileSource.MAP_TYPE == TileSource.PREDEF_ONLINE) {
-				mTracker.setCustomVar(1, "MAP", mapid);
-				mTracker.trackPageView("/maps");
-			}
 			
 			FillOverlays();
 
@@ -1198,11 +1180,6 @@ public class MainActivity extends Activity {
 			final String overlayid = (String)item.getTitleCondensed();
 			setTileSource(mTileSource.ID, overlayid, true);
 			
-			if(mTileSource.MAP_TYPE == TileSource.PREDEF_ONLINE) {
-				mTracker.setCustomVar(1, "OVERLAY", overlayid);
-				mTracker.trackPageView("/overlays");
-			}
-			
 			FillOverlays();
 	        setTitle();
 	        
@@ -1363,7 +1340,7 @@ public class MainActivity extends Activity {
 				.setMessage(R.string.ya_dialog_message)
 				.setPositiveButton(R.string.ya_dialog_button_caption, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
-							Browser.saveBookmark(MainActivity.this, "Мобильный Яндекс", "m.yandex.ru");
+							Browser.saveBookmark(MainActivity.this, "Р»РќРђРҐРљР­РњРЁР СЉРњР”Р•Р™РЇ", "m.yandex.ru");
 						}
 				}).create();
 		} else if (id == R.id.whatsnew) {

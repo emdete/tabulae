@@ -91,14 +91,14 @@ public class SearchResultOverlay extends TileViewOverlay {
 	}
 
 	public void setLocation(final Location loc){
-		// Используется для сохранения текущего положения 
+		// С…РЇРћРќРљР­Р“РЎР•Р РЇРЄ Р”РљРЄ РЇРќРЈРџР®РњР•РњРҐРЄ Р Р•Р™РЎР«Р•Р¦Рќ РћРќРљРќР¤Р•РњРҐРЄ 
 		this.mCurrLocation = TypeConverter.locationToGeoPoint(loc);
 		if(!mSearchBubble)
 			setDescr();
 	}
 
 	public void setLocation(final GeoPoint geopoint, final String aDescr){
-		// Используется при поиске
+		// С…РЇРћРќРљР­Р“РЎР•Р РЇРЄ РћРџРҐ РћРќРҐРЇР™Р•
 		this.mLocation = geopoint;
 		this.mDescr = aDescr;
 		mSearchBubble = true;
@@ -224,7 +224,7 @@ public class SearchResultOverlay extends TileViewOverlay {
 			.append(mCf.convertLon(mLocation.getLongitude()))
 			.append("\n").append(ALT).append(": ")
 			.append(mElevation == 0.0 ? "n/a" : mDf.formatElevation(mElevation))
-			.append(mCurrLocation == null ? "" : String.format(Locale.UK, "\n%s: %.1f°", AZIMUT, mCurrLocation.bearingTo360(mLocation))+"\n"+DIST+": "+mDf.formatDistance(mCurrLocation.distanceTo(mLocation)))
+			.append(mCurrLocation == null ? "" : String.format(Locale.UK, "\n%s: %.1fв•џ", AZIMUT, mCurrLocation.bearingTo360(mLocation))+"\n"+DIST+": "+mDf.formatDistance(mCurrLocation.distanceTo(mLocation)))
 			.toString();				
 	}
 

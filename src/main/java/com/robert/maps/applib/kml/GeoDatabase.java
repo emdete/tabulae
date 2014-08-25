@@ -80,7 +80,7 @@ public class GeoDatabase implements PoiConstants{
 
 	public Cursor getPoiListCursor(String sortColNames) {
 		if (isDatabaseReady()) {
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(STAT_GET_POI_LIST+sortColNames, null);
 		}
 
@@ -90,7 +90,7 @@ public class GeoDatabase implements PoiConstants{
 	public Cursor getPoiListNotHiddenCursor(final int zoom, final double left, final double right, final double top, final double bottom) {
 		if (isDatabaseReady()) {
 			final String[] args = {Integer.toString(zoom + 1),Double.toString(left),Double.toString(right),Double.toString(bottom),Double.toString(top)};
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(STAT_PoiListNotHidden, args);
 		}
 
@@ -99,7 +99,7 @@ public class GeoDatabase implements PoiConstants{
 
 	public Cursor getPoiCategoryListCursor() {
 		if (isDatabaseReady()) {
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(STAT_PoiCategoryList, null);
 		}
 
@@ -108,7 +108,7 @@ public class GeoDatabase implements PoiConstants{
 
 	public Cursor getActivityListCursor() {
 		if (isDatabaseReady()) {
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(STAT_ActivityList, null);
 		}
 
@@ -118,7 +118,7 @@ public class GeoDatabase implements PoiConstants{
 	public Cursor getPoi(final int id) {
 		if (isDatabaseReady()) {
 			final String[] args = {Integer.toString(id)};
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(STAT_getPoi, args);
 		}
 
@@ -266,7 +266,7 @@ public class GeoDatabase implements PoiConstants{
 
 	public Cursor getPoiCategory(final int id) {
 		if (isDatabaseReady()) {
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			final String[] args = {Integer.toString(id)};
 			return mDatabase.rawQuery(STAT_getPoiCategory, args);
 		}
@@ -334,7 +334,7 @@ public class GeoDatabase implements PoiConstants{
 	
 	public Cursor getTrackListCursor(final String units, final String sortColNames) {
 		if (isDatabaseReady()) {
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(String.format(STAT_getTrackList+sortColNames, units), null);
 		}
 
@@ -398,7 +398,7 @@ public class GeoDatabase implements PoiConstants{
 
 	public Cursor getTrackChecked() {
 		if (isDatabaseReady()) {
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(STAT_getTrackChecked, null);
 		}
 
@@ -408,7 +408,7 @@ public class GeoDatabase implements PoiConstants{
 	public Cursor getTrack(final long id) {
 		if (isDatabaseReady()) {
 			final String[] args = {Long.toString(id)};
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(STAT_getTrack, args);
 		}
 
@@ -418,7 +418,7 @@ public class GeoDatabase implements PoiConstants{
 	public Cursor getTrackPoints(final long id) {
 		if (isDatabaseReady()) {
 			final String[] args = {Long.toString(id)};
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(STAT_getTrackPoints, args);
 		}
 
@@ -556,7 +556,7 @@ public class GeoDatabase implements PoiConstants{
 	public Cursor getMap(long id) {
 		if (isDatabaseReady()) {
 			final String[] args = {Long.toString(id)};
-			// не менять порядок полей
+			// РњР• Р›Р•РњРЄР Р­ РћРќРџРЄР”РќР™ РћРќРљР•Р
 			return mDatabase.rawQuery(STAT_get_map, args);
 		};
 		return null;
