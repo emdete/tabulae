@@ -1,0 +1,33 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:0.9.+'
+	}
+}
+
+apply plugin: 'android'
+
+apply from: "../pyneo.org.gradle"
+android {
+	signingConfigs {
+		release {
+			storeFile file("../pyneo.org.keystore")
+		}
+	}
+}
+
+dependencies {
+	compile 'com.android.support:support-v4:18.0.+'
+}
+
+android {
+	compileSdkVersion 19
+	buildToolsVersion "20.0.0"
+	android {
+		lintOptions {
+			abortOnError false
+		}
+	}
+}
