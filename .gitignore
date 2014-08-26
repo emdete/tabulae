@@ -1,0 +1,6 @@
+.gradle/
+.idea/
+Makefile
+RMaps.iml
+build/
+local.properties
