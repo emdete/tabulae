@@ -1,9 +1,9 @@
 package com.robert.maps.applib.kml;
 
-import org.andnav.osm.util.GeoPoint;
-
 import com.robert.maps.applib.R;
 import com.robert.maps.applib.kml.constants.PoiConstants;
+
+import org.andnav.osm.util.GeoPoint;
 
 public class PoiPoint implements PoiConstants {
 
@@ -18,7 +18,7 @@ public class PoiPoint implements PoiConstants {
 	public boolean Hidden;
 
 	public PoiPoint(int id, String mTitle, String mDescr, GeoPoint mGeoPoint,
-			int iconid, int categoryid, double alt, int sourseid, int hidden) {
+					int iconid, int categoryid, double alt, int sourseid, int hidden) {
 		this.Id = id;
 		this.Title = mTitle;
 		this.Descr = mDescr;
@@ -27,10 +27,10 @@ public class PoiPoint implements PoiConstants {
 		this.Alt = alt;
 		this.CategoryId = categoryid;
 		this.PointSourceId = sourseid;
-		this.Hidden = hidden == 1 ? true : false;
+		this.Hidden = hidden == 1? true: false;
 	}
 
-	public PoiPoint(){
+	public PoiPoint() {
 		this(EMPTY_ID, "", "", null, R.drawable.poi, 0, 0, 0, 0);
 	}
 
@@ -42,12 +42,12 @@ public class PoiPoint implements PoiConstants {
 		this(EMPTY_ID, mTitle, mDescr, mGeoPoint, iconid, 0, 0, 0, 0);
 	}
 
-	public int getId() {
-		return Id;
+	public static int EMPTY_ID() {
+		return EMPTY_ID;
 	}
 
-	public static int EMPTY_ID(){
-		return EMPTY_ID;
+	public int getId() {
+		return Id;
 	}
 
 }

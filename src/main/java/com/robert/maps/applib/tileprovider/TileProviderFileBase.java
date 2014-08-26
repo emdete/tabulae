@@ -1,9 +1,5 @@
 package com.robert.maps.applib.tileprovider;
 
-import java.io.File;
-
-import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,27 +9,31 @@ import android.database.sqlite.SQLiteDatabase;
 import com.robert.maps.applib.utils.RSQLiteOpenHelper;
 import com.robert.maps.applib.utils.Ut;
 
+import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
+
+import java.io.File;
+
 public class TileProviderFileBase extends TileProviderBase {
-	protected final SQLiteDatabase mIndexDatabase;
 	private static final String DELETE_FROM_ListCashTables = "DELETE FROM 'ListCashTables' WHERE name LIKE ('%sqlitedb')";
 	private static final String INDEX_DB = "/index.db";
-	
+	protected final SQLiteDatabase mIndexDatabase;
+
 	public TileProviderFileBase(Context ctx) {
 		super(ctx);
 		this.mIndexDatabase = getIndexDatabase(ctx);
 	}
-	
+
 	@Override
 	public void Free() {
-		if(mIndexDatabase != null)
+		if (mIndexDatabase != null)
 			mIndexDatabase.close();
 		super.Free();
 	}
 
 	public boolean needIndex(final String aCashTableName, final long aSizeFile, final long aLastModifiedFile, final boolean aBlockIndexing) {
-		if(this.mIndexDatabase == null)
+		if (this.mIndexDatabase == null)
 			return false;
-		
+
 		this.mIndexDatabase.execSQL("CREATE TABLE IF NOT EXISTS ListCashTables (name VARCHAR(100), lastmodified LONG NOT NULL, size LONG NOT NULL, minzoom INTEGER NOT NULL, maxzoom INTEGER NOT NULL, PRIMARY KEY(name) );");
 
 		Cursor cur = null;
@@ -42,19 +42,19 @@ public class TileProviderFileBase extends TileProviderBase {
 			if (cur.getCount() > 0) {
 				Ut.d("In table ListCashTables " + cur.getCount() + " records");
 				cur.close();
-				
-				if(OpenStreetMapViewConstants.DEBUGMODE) {
+
+				if (OpenStreetMapViewConstants.DEBUGMODE) {
 					Ut.d("ListCashTables:");
 					cur = this.mIndexDatabase.rawQuery("SELECT name, minzoom, maxzoom, size, lastmodified FROM ListCashTables", null);
-					if(cur != null) {
-						if(cur.moveToFirst()) {
+					if (cur != null) {
+						if (cur.moveToFirst()) {
 							do {
-								Ut.d(""+cur.getString(0)+" "
-										+cur.getInt(1)+" "
-										+cur.getInt(2)+" "
-										+cur.getLong(3)+" "
-										+cur.getLong(4)+" "
-										);
+								Ut.d("" + cur.getString(0) + " "
+										+ cur.getInt(1) + " "
+										+ cur.getInt(2) + " "
+										+ cur.getLong(3) + " "
+										+ cur.getLong(4) + " "
+								);
 							} while (cur.moveToNext());
 						}
 						cur.close();
@@ -63,14 +63,14 @@ public class TileProviderFileBase extends TileProviderBase {
 
 				Ut.d("Check for aCashTableName = " + aCashTableName);
 				cur = this.mIndexDatabase.rawQuery("SELECT size, lastmodified FROM ListCashTables WHERE lower(name) = lower('"
-						+ aCashTableName + "') OR lower(name) = lower('" + aCashTableName.replace("usermap_", "cahs_") + "')", null);
+					+ aCashTableName + "') OR lower(name) = lower('" + aCashTableName.replace("usermap_", "cahs_") + "')", null);
 				if (cur.getCount() > 0) {
 					cur.moveToFirst();
-					Ut.d("Record " + aCashTableName 
-							+ " size = " + cur.getLong(cur.getColumnIndexOrThrow("size")) 
-							+ " AND lastmodified = " + cur.getLong(cur.getColumnIndexOrThrow("lastmodified")));
+					Ut.d("Record " + aCashTableName
+						+ " size = " + cur.getLong(cur.getColumnIndexOrThrow("size"))
+						+ " AND lastmodified = " + cur.getLong(cur.getColumnIndexOrThrow("lastmodified")));
 					Ut.d("File " + aCashTableName + " size = " + aSizeFile + " AND lastmodified = "
-							+ aLastModifiedFile);
+						+ aLastModifiedFile);
 				} else
 					Ut.d("In table ListCashTables NO records for " + aCashTableName);
 				cur.close();
@@ -84,11 +84,11 @@ public class TileProviderFileBase extends TileProviderBase {
 		Cursor c = null;
 		c = this.mIndexDatabase.rawQuery("SELECT * FROM ListCashTables WHERE lower(name) = lower('" + aCashTableName + "') OR lower(name) = lower('" + aCashTableName.replace("usermap_", "cahs_") + "')", null);
 		boolean res = false;
-		if(c == null)
+		if (c == null)
 			return true;
-		else if(c.moveToFirst() == false)
+		else if (c.moveToFirst() == false)
 			res = true;
-		else if(aBlockIndexing)
+		else if (aBlockIndexing)
 			res = false;
 		else if (c.getLong(c.getColumnIndex("size")) != aSizeFile
 				/*|| c.getLong(c.getColumnIndex("lastmodified")) != aLastModifiedFile*/)
@@ -114,31 +114,33 @@ public class TileProviderFileBase extends TileProviderBase {
 		int ret = 24;
 		try {
 			final Cursor c = this.mIndexDatabase.rawQuery("SELECT maxzoom FROM ListCashTables WHERE lower(name) = lower('"
-					+ mapid + "') OR lower(name) = lower('" + mapid.replace("usermap_", "cahs_") + "')", null);
+				+ mapid + "') OR lower(name) = lower('" + mapid.replace("usermap_", "cahs_") + "')", null);
 			if (c != null) {
 				if (c.moveToFirst()) {
 					ret = c.getInt(c.getColumnIndexOrThrow("maxzoom"));
 				}
 				c.close();
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 		}
 
 		return ret;
 	}
 
 	public int ZoomMinInCashFile(final String mapid) {
-		int ret  = 0;
+		int ret = 0;
 		try {
 			final Cursor c = this.mIndexDatabase.rawQuery("SELECT minzoom FROM ListCashTables WHERE lower(name) = lower('"
-					+ mapid + "') OR lower(name) = lower('" + mapid.replace("usermap_", "cahs_") + "')", null);
+				+ mapid + "') OR lower(name) = lower('" + mapid.replace("usermap_", "cahs_") + "')", null);
 			if (c != null) {
 				if (c.moveToFirst()) {
 					ret = c.getInt(c.getColumnIndexOrThrow("minzoom"));
 				}
 				c.close();
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 		}
 
 		return ret;
@@ -146,13 +148,13 @@ public class TileProviderFileBase extends TileProviderBase {
 
 	private SQLiteDatabase getIndexDatabase(Context ctx) {
 		File folder = Ut.getRMapsMainDir(ctx, "data");
-		if(!folder.exists()) // no sdcard // TODO оПНБЕПХРЭ ЙЮЙ ЩРН ПЮАНРЮЕР АЕГ ЙЮПРШ? ЕЯКХ БШРЮЫХРЭ ЙЮПРС БН БПЕЛЪ ПЮАНРШ ОПНЦПЮЛЛШ?
+		if (!folder.exists()) // no sdcard // TODO оПНБЕПХРЭ ЙЮЙ ЩРН ПЮАНРЮЕР АЕГ ЙЮПРШ? ЕЯКХ БШРЮЫХРЭ ЙЮПРС БН БПЕЛЪ ПЮАНРШ ОПНЦПЮЛЛШ?
 			return null;
 
 		Ut.d("OpenStreetMapTileFilesystemProvider: Open INDEX database");
 		return new IndexDatabaseHelper(ctx, folder.getAbsolutePath() + INDEX_DB).getWritableDatabase();
 	}
-	
+
 	protected class IndexDatabaseHelper extends RSQLiteOpenHelper {
 		public IndexDatabaseHelper(final Context context, final String name) {
 			super(context, name, null, 3);
@@ -164,11 +166,12 @@ public class TileProviderFileBase extends TileProviderBase {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			if(oldVersion < 2){
+			if (oldVersion < 2) {
 				try {
-					Ut.dd("Upgrade IndexDatabase ver."+oldVersion+" to ver."+newVersion);
+					Ut.dd("Upgrade IndexDatabase ver." + oldVersion + " to ver." + newVersion);
 					db.execSQL(DELETE_FROM_ListCashTables);
-				} catch (SQLException e) {
+				}
+				catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}

@@ -13,7 +13,7 @@ import android.widget.Checkable;
 import android.widget.CompoundButton;
 
 public class CheckBoxPreferenceExt extends Preference implements CompoundButton.OnCheckedChangeListener,
-		OnClickListener {
+	OnClickListener {
 
 	private boolean mChecked;
 	private boolean mDefaultValueChecked;
@@ -24,36 +24,36 @@ public class CheckBoxPreferenceExt extends Preference implements CompoundButton.
 	public CheckBoxPreferenceExt(Context context, String keyChecked) {
 		this(context, keyChecked, true);
 	}
-	
+
 	public CheckBoxPreferenceExt(Context context, String keyChecked, boolean defValue) {
 		super(context, null, android.R.attr.checkBoxPreferenceStyle);
 		mDefaultValueChecked = defValue;
 		mPrefKeyChecked = keyChecked;
-		
+
 		mChecked = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(mPrefKeyChecked, mDefaultValueChecked);
 	}
 
 	@Override
 	public View getView(View convertView, ViewGroup parent) {
 		View view = super.getView(convertView, parent);
-		
-        View checkboxView = view.findViewById(android.R.id.checkbox);
-        if (checkboxView != null && checkboxView instanceof Checkable) {
-        	checkboxView.setClickable(true);
-            ((Checkable) checkboxView).setChecked(mChecked);
-            ((CheckBox) checkboxView).setOnCheckedChangeListener(this);
-        }
 
-        view.setOnClickListener(this);
-        view.setLongClickable(true);
-        
+		View checkboxView = view.findViewById(android.R.id.checkbox);
+		if (checkboxView != null && checkboxView instanceof Checkable) {
+			checkboxView.setClickable(true);
+			((Checkable)checkboxView).setChecked(mChecked);
+			((CheckBox)checkboxView).setOnCheckedChangeListener(this);
+		}
+
+		view.setOnClickListener(this);
+		view.setLongClickable(true);
+
 		return view;
 	}
 
 	@Override
 	public void onClick(View v) {
 		Context context = getContext();
-		if(context != null && mIntent != null) {
+		if (context != null && mIntent != null) {
 			context.startActivity(mIntent);
 		}
 	}
@@ -73,8 +73,8 @@ public class CheckBoxPreferenceExt extends Preference implements CompoundButton.
 
 	public void setChecked(boolean isChecked) {
 		mChecked = isChecked;
-		if(mCheckBox != null)
+		if (mCheckBox != null)
 			mCheckBox.setChecked(isChecked);
 	}
-	
+
 }

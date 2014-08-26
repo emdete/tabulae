@@ -10,39 +10,40 @@ public abstract class VerScaleGestureDetector {
 
 	OnGestureListener mListener;
 
-    public static VerScaleGestureDetector newInstance(Context context, OnGestureListener listener) {
-        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-        VerScaleGestureDetector detector = null;
-        if (sdkVersion < Build.VERSION_CODES.FROYO) {
-            detector = new CupcakeDetector();
-        } else {
-            detector = new FroyoDetector(context);
-        }
-        
-        detector.mListener = listener;
+	public static VerScaleGestureDetector newInstance(Context context, OnGestureListener listener) {
+		final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
+		VerScaleGestureDetector detector = null;
+		if (sdkVersion < Build.VERSION_CODES.FROYO) {
+			detector = new CupcakeDetector();
+		} else {
+			detector = new FroyoDetector(context);
+		}
 
-        return detector;
-    }
+		detector.mListener = listener;
 
-    public abstract boolean onTouchEvent(MotionEvent ev);
+		return detector;
+	}
 
-    public interface OnGestureListener {
-        public void onScale(double aScaleFactor);
-        public void onScaleEnd();
-    }
+	public abstract boolean onTouchEvent(MotionEvent ev);
 
-    private static class CupcakeDetector extends VerScaleGestureDetector {
+	public interface OnGestureListener {
+		public void onScale(double aScaleFactor);
+
+		public void onScaleEnd();
+	}
+
+	private static class CupcakeDetector extends VerScaleGestureDetector {
 
 		@Override
 		public boolean onTouchEvent(MotionEvent ev) {
 			return false;
 		}
-    	
-    }
 
-    private static class FroyoDetector extends VerScaleGestureDetector {
-    	
-    	private ScaleGestureDetector mScaleDetector;
+	}
+
+	private static class FroyoDetector extends VerScaleGestureDetector {
+
+		private ScaleGestureDetector mScaleDetector;
 
 		@SuppressLint("NewApi")
 		public FroyoDetector(Context context) {
@@ -55,7 +56,7 @@ public abstract class VerScaleGestureDetector {
 		public boolean onTouchEvent(MotionEvent ev) {
 			return mScaleDetector.onTouchEvent(ev);
 		}
-		
+
 		@SuppressLint("NewApi")
 		private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
@@ -75,8 +76,8 @@ public abstract class VerScaleGestureDetector {
 				mListener.onScaleEnd();
 				super.onScaleEnd(detector);
 			}
-			
+
 		}
-    	
-    }
+
+	}
 }

@@ -21,11 +21,12 @@ public class CompassView extends View {
 		mSideBottom = sideBottom;
 	}
 
-	private boolean getCompassImg(){
-		if(mCompass == null){
+	private boolean getCompassImg() {
+		if (mCompass == null) {
 			try {
 				this.mCompass = mCtx.getResources().getDrawable(R.drawable.arrow_n);
-			} catch (OutOfMemoryError e) {
+			}
+			catch (OutOfMemoryError e) {
 				Ut.w("OutOfMemoryError");
 				e.printStackTrace();
 				return false;
@@ -37,16 +38,16 @@ public class CompassView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		if(getCompassImg()){
+		if (getCompassImg()) {
 			canvas.save();
 			if (mSideBottom) {
 				canvas.rotate(360 - mAzimuth, PADDING + mCompass.getMinimumWidth() / 2, PADDING + mCompass.getMinimumHeight() / 2);
 				mCompass.setBounds(PADDING, PADDING, PADDING + mCompass.getMinimumWidth(), PADDING
-						+ mCompass.getMinimumHeight());
+					+ mCompass.getMinimumHeight());
 			} else {
-				canvas.rotate(360 - mAzimuth, PADDING + mCompass.getMinimumWidth() / 2, this.getHeight() - mCompass.getMinimumHeight() /2 - PADDING);
+				canvas.rotate(360 - mAzimuth, PADDING + mCompass.getMinimumWidth() / 2, this.getHeight() - mCompass.getMinimumHeight() / 2 - PADDING);
 				mCompass.setBounds(PADDING, this.getHeight() - mCompass.getMinimumHeight() - PADDING, PADDING
-						+ mCompass.getMinimumWidth(), this.getHeight() - PADDING);
+					+ mCompass.getMinimumWidth(), this.getHeight() - PADDING);
 			}
 			mCompass.draw(canvas);
 			canvas.restore();

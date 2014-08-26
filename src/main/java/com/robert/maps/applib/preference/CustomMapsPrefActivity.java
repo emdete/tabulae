@@ -1,7 +1,5 @@
 package com.robert.maps.applib.preference;
 
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -14,6 +12,8 @@ import android.preference.PreferenceCategory;
 import com.robert.maps.applib.R;
 import com.robert.maps.applib.utils.OnlineCachePreference;
 
+import org.json.JSONObject;
+
 public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSharedPreferenceChangeListener {
 	private String mKey;
 
@@ -22,19 +22,19 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 		super.onCreate(savedInstanceState);
 
 		setPreferenceScreen(getPreferenceManager().createPreferenceScreen(this));
-		
+
 		Intent intent = getIntent();
-		if(intent == null)
+		if (intent == null)
 			finish();
-		
+
 		Bundle bundle = intent.getExtras();
 		mKey = bundle.getString("Key");
-		
+
 		final PreferenceCategory prefscr = new PreferenceCategory(this);
 		prefscr.setKey(mKey);
 		prefscr.setTitle(bundle.getString(NAME));
 		getPreferenceScreen().addPreference(prefscr);
-		
+
 		prefscr.setTitle(getPreferenceScreen().getSharedPreferences().getString(mKey + "_name", bundle.getString(NAME)));
 		prefscr.setSummary(R.string.menu_add_ownsourcemap);
 		{
@@ -97,7 +97,7 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 			pref.setTitle(getString(R.string.pref_minzoom));
 			pref.setEntryValues(R.array.zoomlevel_pref_value);
 			pref.setEntries(R.array.zoomlevel_pref_title);
-			pref.setValue(""+bundle.getInt(MINZOOM));
+			pref.setValue("" + bundle.getInt(MINZOOM));
 			prefscr.addPreference(pref);
 			pref.setSummary(pref.getEntry());
 		}
@@ -107,7 +107,7 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 			pref.setTitle(getString(R.string.pref_maxzoom));
 			pref.setEntryValues(R.array.zoomlevel_pref_value);
 			pref.setEntries(R.array.zoomlevel_pref_title);
-			pref.setValue(""+bundle.getInt(MAXZOOM));
+			pref.setValue("" + bundle.getInt(MAXZOOM));
 			prefscr.addPreference(pref);
 			pref.setSummary(pref.getEntry());
 		}
@@ -131,103 +131,108 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 			pref.setSummary(R.string.pref_mapoffset_summary);
 			prefscr.addPreference(pref);
 		}
-		
+
 	}
 
 	@Override
 	protected void onResume() {
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 		super.onResume();
 	}
 
-	
 	@Override
 	protected void onPause() {
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 		super.onPause();
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if(key.startsWith(PREF_MIXMAPS_)) {
+		if (key.startsWith(PREF_MIXMAPS_)) {
 			final String params[] = key.split("_");
 			mMapHelper.getMap(Long.parseLong(params[2]));
-			
-			if(key.endsWith("_name")) {
+
+			if (key.endsWith("_name")) {
 				mMapHelper.NAME = sharedPreferences.getString(key, "");
-				if(findPreference(key) != null)
+				if (findPreference(key) != null)
 					findPreference(key).setSummary(mMapHelper.NAME);
-				if(findPreference(PREF_MIXMAPS_+mMapHelper.ID) != null)
-					findPreference(PREF_MIXMAPS_+mMapHelper.ID).setTitle(mMapHelper.NAME);
-			} else if(key.endsWith(BASEURL)) {
+				if (findPreference(PREF_MIXMAPS_ + mMapHelper.ID) != null)
+					findPreference(PREF_MIXMAPS_ + mMapHelper.ID).setTitle(mMapHelper.NAME);
+			} else if (key.endsWith(BASEURL)) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(BASEURL, sharedPreferences.getString(key, ""));
 					mMapHelper.PARAMS = json.toString();
-					if(findPreference(key) != null)
+					if (findPreference(key) != null)
 						findPreference(key).setSummary(sharedPreferences.getString(key, ""));
-				} catch (Exception e) {
 				}
-				
-			} else if(key.endsWith("_projection")) {
+				catch (Exception e) {
+				}
+
+			} else if (key.endsWith("_projection")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(MAPPROJECTION, Integer.parseInt(sharedPreferences.getString(key, "")));
 					mMapHelper.PARAMS = json.toString();
-					if(findPreference(key) != null)
+					if (findPreference(key) != null)
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
-				} catch (Exception e) {
 				}
-				
-			} else if(key.endsWith("_stretch")) {
+				catch (Exception e) {
+				}
+
+			} else if (key.endsWith("_stretch")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(STRETCH, Double.parseDouble(sharedPreferences.getString(key, "")));
 					mMapHelper.PARAMS = json.toString();
-				} catch (Exception e) {
 				}
-				
-			} else if(key.endsWith("_isoverlay")) {
+				catch (Exception e) {
+				}
+
+			} else if (key.endsWith("_isoverlay")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(ISOVERLAY, sharedPreferences.getBoolean(key, false));
 					mMapHelper.PARAMS = json.toString();
-					mMapHelper.TYPE = sharedPreferences.getBoolean(key, false) ? 3 : 2;
-				} catch (Exception e) {
+					mMapHelper.TYPE = sharedPreferences.getBoolean(key, false)? 3: 2;
 				}
-				
-			} else if(key.endsWith("_onlinecache")) {
+				catch (Exception e) {
+				}
+
+			} else if (key.endsWith("_onlinecache")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(ONLINECACHE, sharedPreferences.getBoolean(key, false));
 					mMapHelper.PARAMS = json.toString();
-				} catch (Exception e) {
 				}
-				
-			} else if(key.endsWith("_minzoom")) {
+				catch (Exception e) {
+				}
+
+			} else if (key.endsWith("_minzoom")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(MINZOOM, Integer.parseInt(sharedPreferences.getString(key, "1")));
 					mMapHelper.PARAMS = json.toString();
-					if(findPreference(key) != null)
+					if (findPreference(key) != null)
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
-				} catch (Exception e) {
 				}
-				
-			} else if(key.endsWith("_maxzoom")) {
+				catch (Exception e) {
+				}
+
+			} else if (key.endsWith("_maxzoom")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(MAXZOOM, Integer.parseInt(sharedPreferences.getString(key, "20")));
 					mMapHelper.PARAMS = json.toString();
-					if(findPreference(key) != null)
+					if (findPreference(key) != null)
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
-				} catch (Exception e) {
 				}
-				
+				catch (Exception e) {
+				}
+
 			}
 			mMapHelper.updateMap();
 		}
 	}
-	
 
 }

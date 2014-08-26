@@ -1,11 +1,5 @@
 package com.robert.maps.applib.kml.XMLparser;
 
-import java.util.ArrayList;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,10 +13,13 @@ import com.robert.maps.applib.preference.PredefMapsPrefActivity;
 import com.robert.maps.applib.tileprovider.TileSourceBase;
 import com.robert.maps.applib.utils.CheckBoxPreferenceExt;
 
-public class PredefMapsParser extends DefaultHandler {
-	private final TileSourceBase mRendererInfo;
-	private final String mMapId;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.ArrayList;
+
+public class PredefMapsParser extends DefaultHandler {
 	private static final String MAP = "map";
 	private static final String LAYER = "layer";
 	private static final String TIMEDEPENDENT = "timedependent";
@@ -41,7 +38,8 @@ public class PredefMapsParser extends DefaultHandler {
 	private static final String PROJECTION = "PROJECTION";
 	private static final String YANDEX_TRAFFIC_ON = "YANDEX_TRAFFIC_ON";
 	private static final String GOOGLESCALE = "GOOGLESCALE";
-
+	private final TileSourceBase mRendererInfo;
+	private final String mMapId;
 	private Menu mSubmenu;
 	private boolean mNeedMaps;
 	private boolean mNeedOverlays;
@@ -52,16 +50,16 @@ public class PredefMapsParser extends DefaultHandler {
 	private SharedPreferences mSharedPreferences;
 	private ArrayList<String> mID;
 	private ArrayList<String> mName;
-	
+
 	public PredefMapsParser(final ArrayList<String> arrayListID, final ArrayList<String> arrayListName, final boolean aGetMaps, final boolean aGetOverlays, final int aProjection) {
 		super();
-		
+
 		mID = arrayListID;
 		mName = arrayListName;
 		mNeedMaps = aGetMaps;
 		mNeedOverlays = aGetOverlays;
 		mNeedProjection = aProjection;
-		
+
 		mSubmenu = null;
 		mRendererInfo = null;
 		mMapId = null;
@@ -107,9 +105,9 @@ public class PredefMapsParser extends DefaultHandler {
 
 	@Override
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
-		if(localName.equalsIgnoreCase(MAP)){
+		if (localName.equalsIgnoreCase(MAP)) {
 			if (mRendererInfo != null) {
-				if(attributes.getValue(ID).equalsIgnoreCase(mMapId)){
+				if (attributes.getValue(ID).equalsIgnoreCase(mMapId)) {
 					mRendererInfo.ID = attributes.getValue(ID);
 					mRendererInfo.MAPID = attributes.getValue(ID);
 					mRendererInfo.NAME = attributes.getValue(NAME);
@@ -122,45 +120,43 @@ public class PredefMapsParser extends DefaultHandler {
 					mRendererInfo.TILE_SOURCE_TYPE = Integer.parseInt(attributes.getValue(TILE_SOURCE_TYPE));
 					mRendererInfo.PROJECTION = Integer.parseInt(attributes.getValue(PROJECTION));
 					mRendererInfo.YANDEX_TRAFFIC_ON = Integer.parseInt(attributes.getValue(YANDEX_TRAFFIC_ON));
-					
+
 					mRendererInfo.TIMEDEPENDENT = false;
-					if(attributes.getIndex(TIMEDEPENDENT)>-1)
+					if (attributes.getIndex(TIMEDEPENDENT) > -1)
 						mRendererInfo.TIMEDEPENDENT = Boolean.parseBoolean(attributes.getValue(TIMEDEPENDENT));
 
 					mRendererInfo.LAYER = false;
-					if(attributes.getIndex(LAYER)>-1)
+					if (attributes.getIndex(LAYER) > -1)
 						mRendererInfo.LAYER = Boolean.parseBoolean(attributes.getValue(LAYER));
 
 					mRendererInfo.CACHE = "";
-					if(attributes.getIndex(CACHE)>-1)
+					if (attributes.getIndex(CACHE) > -1)
 						mRendererInfo.CACHE = attributes.getValue(CACHE);
 
 					mRendererInfo.GOOGLESCALE = false;
-					if(attributes.getIndex(GOOGLESCALE)>-1)
+					if (attributes.getIndex(GOOGLESCALE) > -1)
 						mRendererInfo.GOOGLESCALE = Boolean.parseBoolean(attributes.getValue(GOOGLESCALE));
 
 				}
-			}
-			else if(mSubmenu != null) {
+			} else if (mSubmenu != null) {
 				final int i = attributes.getIndex(LAYER);
 				boolean timeDependent = false;
 				final int j = attributes.getIndex(TIMEDEPENDENT);
-				if(j != -1)
+				if (j != -1)
 					timeDependent = Boolean.parseBoolean(attributes.getValue(TIMEDEPENDENT));
-				
-				if(mSharedPreferences.getBoolean(MainPreferences.PREF_PREDEFMAPS_+attributes.getValue(ID), true)) {
+
+				if (mSharedPreferences.getBoolean(MainPreferences.PREF_PREDEFMAPS_ + attributes.getValue(ID), true)) {
 					final boolean isLayer = !(i == -1 || !attributes.getValue(LAYER).equalsIgnoreCase(TRUE));
-					if(mNeedOverlays && isLayer && !timeDependent 
-							//&& (mNeedProjection == 0 || mNeedProjection == Integer.parseInt(attributes.getValue(PROJECTION))) 
-							|| !mNeedOverlays && !isLayer) {
+					if (mNeedOverlays && isLayer && !timeDependent
+						//&& (mNeedProjection == 0 || mNeedProjection == Integer.parseInt(attributes.getValue(PROJECTION)))
+						|| !mNeedOverlays && !isLayer) {
 						final MenuItem item = mSubmenu.add(R.id.isoverlay, Menu.NONE, Menu.NONE, attributes.getValue(NAME));
 						item.setTitleCondensed(attributes.getValue(ID));
 					}
 				}
-			}
-			else if(mPrefMapsgroup != null && mPrefOverlaysgroup != null) {
+			} else if (mPrefMapsgroup != null && mPrefOverlaysgroup != null) {
 				final int i = attributes.getIndex(LAYER);
-				final PreferenceGroup prefGroup = (i == -1 || !attributes.getValue(LAYER).equalsIgnoreCase(TRUE)) ? mPrefMapsgroup : mPrefOverlaysgroup;
+				final PreferenceGroup prefGroup = (i == -1 || !attributes.getValue(LAYER).equalsIgnoreCase(TRUE))? mPrefMapsgroup: mPrefOverlaysgroup;
 
 				final CheckBoxPreferenceExt pref = new CheckBoxPreferenceExt(mPrefActivity, MainPreferences.PREF_PREDEFMAPS_ + attributes.getValue(ID));
 				pref.setKey(MainPreferences.PREF_PREDEFMAPS_ + attributes.getValue(ID) + "_screen");
@@ -171,25 +167,24 @@ public class PredefMapsParser extends DefaultHandler {
 					.putExtra(PROJECTION, Integer.parseInt(attributes.getValue(PROJECTION)))
 					.putExtra(MAPTILE_SIZEPX, Integer.parseInt(attributes.getValue(MAPTILE_SIZEPX)));
 				final int j = attributes.getIndex(GOOGLESCALE);
-				if(j > -1 && attributes.getValue(GOOGLESCALE).equalsIgnoreCase(TRUE))
+				if (j > -1 && attributes.getValue(GOOGLESCALE).equalsIgnoreCase(TRUE))
 					intent.putExtra(GOOGLESCALE, true);
-					
+
 				pref.setIntent(intent);
 				pref.setTitle(attributes.getValue(NAME));
 				pref.setSummary(attributes.getValue(DESCR));
 				prefGroup.addPreference(pref);
-			}
-			else if(mID != null) {
+			} else if (mID != null) {
 				final int i = attributes.getIndex(LAYER);
 				boolean timeDependent = false;
 				final int j = attributes.getIndex(TIMEDEPENDENT);
-				if(j != -1)
+				if (j != -1)
 					timeDependent = Boolean.parseBoolean(attributes.getValue(TIMEDEPENDENT));
-				
+
 				final boolean isLayer = !(i == -1 || !attributes.getValue(LAYER).equalsIgnoreCase(TRUE));
 				final int proj = Integer.parseInt(attributes.getValue(PROJECTION));
-				
-				if(mNeedMaps && !isLayer || mNeedOverlays && isLayer && !timeDependent && (mNeedProjection == 0 || mNeedProjection == proj)) {
+
+				if (mNeedMaps && !isLayer || mNeedOverlays && isLayer && !timeDependent && (mNeedProjection == 0 || mNeedProjection == proj)) {
 					mID.add(attributes.getValue(ID));
 					mName.add(attributes.getValue(NAME));
 				}

@@ -1,7 +1,5 @@
 package com.robert.maps.applib.preference;
 
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -16,6 +14,8 @@ import com.robert.maps.applib.R;
 import com.robert.maps.applib.tileprovider.TileSourceBase;
 import com.robert.maps.applib.utils.RException;
 
+import org.json.JSONObject;
+
 public class PairMapsPrefActivity extends MMPreferenceActivity implements OnSharedPreferenceChangeListener {
 	private String mKey;
 
@@ -24,21 +24,21 @@ public class PairMapsPrefActivity extends MMPreferenceActivity implements OnShar
 		super.onCreate(savedInstanceState);
 
 		setPreferenceScreen(getPreferenceManager().createPreferenceScreen(this));
-		
+
 		Intent intent = getIntent();
-		if(intent == null)
+		if (intent == null)
 			finish();
-		
+
 		final String[][] listMap = getMaps(true, false, 0);
 		final String[][] listOverlays = getMaps(false, true, 0);
 		Bundle bundle = intent.getExtras();
 		mKey = bundle.getString("Key");
-		
+
 		final PreferenceCategory prefscr = new PreferenceCategory(this);
 		prefscr.setKey(mKey);
 		prefscr.setTitle(bundle.getString(NAME));
 		getPreferenceScreen().addPreference(prefscr);
-		
+
 		prefscr.setTitle(getPreferenceScreen().getSharedPreferences().getString(mKey + "_name", bundle.getString(NAME)));
 		prefscr.setSummary(R.string.menu_add_dualmap);
 		{
@@ -59,9 +59,9 @@ public class PairMapsPrefActivity extends MMPreferenceActivity implements OnShar
 		}
 		{
 			final ListPreference pref = new ListPreference(this);
-			pref.setKey(mKey + "_"+MAPID);
+			pref.setKey(mKey + "_" + MAPID);
 			pref.setTitle(getString(R.string.pref_mixmap_map));
-			if(listMap != null) {
+			if (listMap != null) {
 				pref.setEntryValues(listMap[0]);
 				pref.setEntries(listMap[1]);
 			}
@@ -71,9 +71,9 @@ public class PairMapsPrefActivity extends MMPreferenceActivity implements OnShar
 		}
 		{
 			final ListPreference pref = new ListPreference(this);
-			pref.setKey(mKey + "_"+OVERLAYID);
+			pref.setKey(mKey + "_" + OVERLAYID);
 			pref.setTitle(getString(R.string.pref_mixmap_overlay));
-			if(listOverlays != null) {
+			if (listOverlays != null) {
 				pref.setEntryValues(listOverlays[0]);
 				pref.setEntries(listOverlays[1]);
 			}
@@ -85,75 +85,78 @@ public class PairMapsPrefActivity extends MMPreferenceActivity implements OnShar
 
 	@Override
 	protected void onResume() {
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 		super.onResume();
 	}
 
-	
 	@Override
 	protected void onPause() {
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 		super.onPause();
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if(key.startsWith(PREF_MIXMAPS_)) {
+		if (key.startsWith(PREF_MIXMAPS_)) {
 			final String params[] = key.split("_");
 			mMapHelper.getMap(Long.parseLong(params[2]));
-			
-			if(key.endsWith("_name")) {
+
+			if (key.endsWith("_name")) {
 				mMapHelper.NAME = sharedPreferences.getString(key, "");
-				if(findPreference(key) != null)
+				if (findPreference(key) != null)
 					findPreference(key).setSummary(mMapHelper.NAME);
-				if(findPreference(PREF_MIXMAPS_+mMapHelper.ID) != null)
-					findPreference(PREF_MIXMAPS_+mMapHelper.ID).setTitle(mMapHelper.NAME);
-			} else if(key.endsWith(OVERLAYID)) {
+				if (findPreference(PREF_MIXMAPS_ + mMapHelper.ID) != null)
+					findPreference(PREF_MIXMAPS_ + mMapHelper.ID).setTitle(mMapHelper.NAME);
+			} else if (key.endsWith(OVERLAYID)) {
 				final JSONObject json = MixedMapsPreference.getMapPairParams(mMapHelper.PARAMS);
 				try {
 					json.put(OVERLAYID, sharedPreferences.getString(key, ""));
 					mMapHelper.PARAMS = json.toString();
-					if(findPreference(key) != null)
+					if (findPreference(key) != null)
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
-				} catch (Exception e) {
 				}
-				
-			} else if(key.endsWith(MAPID)) {
+				catch (Exception e) {
+				}
+
+			} else if (key.endsWith(MAPID)) {
 				final JSONObject json = MixedMapsPreference.getMapPairParams(mMapHelper.PARAMS);
 				try {
 					json.put(MAPID, sharedPreferences.getString(key, ""));
-					
+
 					try {
 						final TileSourceBase tileSouce = new TileSourceBase(this, sharedPreferences.getString(key, ""));
 						json.put(MAPPROJECTION, tileSouce.PROJECTION);
-						if(tileSouce.PROJECTION != json.optInt(OVERLAYPROJECTION)) {
+						if (tileSouce.PROJECTION != json.optInt(OVERLAYPROJECTION)) {
 							json.put(OVERLAYID, "");
 							json.put(OVERLAYPROJECTION, tileSouce.PROJECTION);
 							final String overlaykey = key.replace(MAPID, OVERLAYID);
-							final ListPreference pref = (ListPreference) findPreference(overlaykey);
+							final ListPreference pref = (ListPreference)findPreference(overlaykey);
 							pref.setSummary("");
-							
+
 							final String[][] listOverlays = getMaps(false, true, tileSouce.PROJECTION);
-							if(listOverlays != null) {
+							if (listOverlays != null) {
 								pref.setEntryValues(listOverlays[0]);
 								pref.setEntries(listOverlays[1]);
 							}
-	
+
 						}
-					} catch (SQLiteException e) {
-					} catch (RException e) {
 					}
-					
+					catch (SQLiteException e) {
+					}
+					catch (RException e) {
+					}
+
 					mMapHelper.PARAMS = json.toString();
-					if(findPreference(key) != null)
+					if (findPreference(key) != null)
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
-				} catch (Exception e) {
 				}
-				
+				catch (Exception e) {
+				}
+
 			}
 			mMapHelper.updateMap();
 		}
-		
+
 	}
-	
+
 }

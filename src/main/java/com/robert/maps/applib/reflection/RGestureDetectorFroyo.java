@@ -14,17 +14,17 @@ public class RGestureDetectorFroyo extends GestureDetector implements RGestureHe
 		super(context, listener, handler, ignoreMultitouch);
 		mListener = listener;
 	}
-	
+
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		final int action = ev.getAction();
-		
-        switch (action & MotionEvent.ACTION_MASK) {
-        case MotionEvent.ACTION_UP:
-        	mListener.onUp(ev);
-        }
 
-        return super.onTouchEvent(ev);
+		switch (action & MotionEvent.ACTION_MASK) {
+			case MotionEvent.ACTION_UP:
+				mListener.onUp(ev);
+		}
+
+		return super.onTouchEvent(ev);
 	}
 
 	@SuppressLint("NewApi")
@@ -32,5 +32,5 @@ public class RGestureDetectorFroyo extends GestureDetector implements RGestureHe
 	public int getPointerCount(MotionEvent e) {
 		return e.getPointerCount();
 	}
-	
+
 }

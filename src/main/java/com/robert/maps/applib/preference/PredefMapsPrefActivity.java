@@ -25,21 +25,21 @@ public class PredefMapsPrefActivity extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setPreferenceScreen(getPreferenceManager().createPreferenceScreen(this));
-		
+
 		Intent intent = getIntent();
-		if(intent == null)
+		if (intent == null)
 			finish();
-		
+
 		Bundle bundle = intent.getExtras();
 		mKey = bundle.getString("Key");
-		
+
 		final PreferenceCategory prefscr = new PreferenceCategory(this);
 		prefscr.setKey(mKey);
 		prefscr.setTitle(bundle.getString(NAME));
 		getPreferenceScreen().addPreference(prefscr);
-		
+
 		{
 			final CheckBoxPreference pref = new CheckBoxPreference(this);
 			pref.setKey(mKey);
@@ -53,7 +53,7 @@ public class PredefMapsPrefActivity extends PreferenceActivity {
 			pref.setKey(mKey + "_clearcache");
 			prefscr.addPreference(pref);
 		}
-		if(bundle.containsKey(GOOGLESCALE) && bundle.getBoolean(GOOGLESCALE)) {
+		if (bundle.containsKey(GOOGLESCALE) && bundle.getBoolean(GOOGLESCALE)) {
 			final ListPreference pref = new ListPreference(this);
 			pref.setKey(mKey + "_googlescale");
 			pref.setDefaultValue("1");
@@ -77,16 +77,16 @@ public class PredefMapsPrefActivity extends PreferenceActivity {
 		{
 			final Preference pref = new Preference(this);
 			pref.setTitle(R.string.pref_usermap_projection);
-			switch(bundle.getInt(PROJECTION)) {
-			case 1:
-				pref.setSummary(R.string.mercator_spheroid);
-				break;
-			case 2:
-				pref.setSummary(R.string.mercator_ellipsoid);
-				break;
-			case 3:
-				pref.setSummary(R.string.osgb36);
-				break;
+			switch (bundle.getInt(PROJECTION)) {
+				case 1:
+					pref.setSummary(R.string.mercator_spheroid);
+					break;
+				case 2:
+					pref.setSummary(R.string.mercator_ellipsoid);
+					break;
+				case 3:
+					pref.setSummary(R.string.osgb36);
+					break;
 			}
 			prefscr.addPreference(pref);
 		}
@@ -94,11 +94,11 @@ public class PredefMapsPrefActivity extends PreferenceActivity {
 			final Preference pref = new Preference(this);
 			pref.setTitle(R.string.pref_tile_size);
 			int size = bundle.getInt(MAPTILE_SIZEPX);
-			
+
 			final SharedPreferences sharpref = PreferenceManager.getDefaultSharedPreferences(this);
 			final double GOOGLESCALE_SIZE_FACTOR = Double.parseDouble(sharpref.getString(mKey + "_googlescale", "1"));
-			size = (int) (size * GOOGLESCALE_SIZE_FACTOR);
-			
+			size = (int)(size * GOOGLESCALE_SIZE_FACTOR);
+
 			pref.setSummary(String.format("%d x %d px", size, size));
 			prefscr.addPreference(pref);
 		}
@@ -110,5 +110,5 @@ public class PredefMapsPrefActivity extends PreferenceActivity {
 			prefscr.addPreference(pref);
 		}
 	}
-	
+
 }

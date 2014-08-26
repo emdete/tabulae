@@ -1,11 +1,5 @@
 package com.robert.maps.applib.preference;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -14,6 +8,12 @@ import com.robert.maps.applib.R;
 import com.robert.maps.applib.kml.PoiManager;
 import com.robert.maps.applib.kml.XMLparser.PredefMapsParser;
 import com.robert.maps.applib.kml.constants.PoiConstants;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class MMPreferenceActivity extends PreferenceActivity implements PoiConstants {
 	public static final String MAPID = "mapid";
@@ -37,11 +37,36 @@ public class MMPreferenceActivity extends PreferenceActivity implements PoiConst
 		mPoiManager = new PoiManager(this);
 		mMapHelper = new MapHelper();
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		mPoiManager.FreeDatabases();
 		super.onDestroy();
+	}
+
+	protected String[][] getMaps(final boolean aGetMaps, final boolean aGetOverlays, final int aProjection) {
+		ArrayList<String> arr1 = new ArrayList<String>();
+		ArrayList<String> arr2 = new ArrayList<String>();
+
+		final SAXParserFactory fac = SAXParserFactory.newInstance();
+		SAXParser parser = null;
+		try {
+			parser = fac.newSAXParser();
+			if (parser != null) {
+				final InputStream in = getResources().openRawResource(R.raw.predefmaps);
+				parser.parse(in, new PredefMapsParser(arr1, arr2, aGetMaps, aGetOverlays, aProjection));
+				String[][] arrayList = new String[2][arr2.size()];
+				arr1.toArray(arrayList[0]);
+				arr2.toArray(arrayList[1]);
+
+				return arrayList;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	protected class MapHelper {
@@ -49,16 +74,16 @@ public class MMPreferenceActivity extends PreferenceActivity implements PoiConst
 		public String NAME;
 		public int TYPE;
 		public String PARAMS;
-		
+
 		public void getMap(long id) {
 			ID = 0;
 			NAME = "";
 			TYPE = 0;
 			PARAMS = "";
-			
+
 			Cursor c = MMPreferenceActivity.this.mPoiManager.getGeoDatabase().getMap(id);
-			if(c != null) {
-				if(c.moveToFirst()) {
+			if (c != null) {
+				if (c.moveToFirst()) {
 					ID = id;
 					NAME = c.getString(1);
 					TYPE = c.getInt(2);
@@ -67,34 +92,10 @@ public class MMPreferenceActivity extends PreferenceActivity implements PoiConst
 				c.close();
 			}
 		}
-		
+
 		public void updateMap() {
 			MMPreferenceActivity.this.mPoiManager.getGeoDatabase().updateMap(ID, NAME, TYPE, PARAMS);
 		}
-	}
-
-	protected String[][] getMaps(final boolean aGetMaps, final boolean aGetOverlays, final int aProjection) {
-		ArrayList<String> arr1 = new ArrayList<String>();
-		ArrayList<String> arr2 = new ArrayList<String>();
-		
-		final SAXParserFactory fac = SAXParserFactory.newInstance();
-		SAXParser parser = null;
-		try {
-			parser = fac.newSAXParser();
-			if(parser != null){
-				final InputStream in = getResources().openRawResource(R.raw.predefmaps);
-				parser.parse(in, new PredefMapsParser(arr1, arr2, aGetMaps, aGetOverlays, aProjection));
-				String[][] arrayList = new String[2][arr2.size()];
-				arr1.toArray(arrayList[0]);
-				arr2.toArray(arrayList[1]);
-				
-				return arrayList;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return null;
 	}
 
 }

@@ -1,9 +1,6 @@
 package com.robert.maps.applib.data;
 
-import java.io.File;
-
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.commonsware.cwac.loaderex.acl.SQLiteCursorLoader;
@@ -11,20 +8,13 @@ import com.robert.maps.applib.R;
 import com.robert.maps.applib.kml.constants.PoiConstants;
 import com.robert.maps.applib.utils.Ut;
 
+import java.io.File;
+
 public class GeoData {
 	private static GeoData mInstance = null;
-	
+
 	private Context mContext;
 	private GeoDataDatabaseOpenHelper mSQLiteOpenHelper;
-	
-	
-	public static GeoData getInstance(Context context) {
-		if(mInstance == null) {
-			mInstance = new GeoData(context);
-		}
-		
-		return mInstance;
-	}
 
 	public GeoData(Context context) {
 		mContext = context;
@@ -32,17 +22,27 @@ public class GeoData {
 		File folder = Ut.getRMapsMainDir(context, PoiConstants.DATA);
 		mSQLiteOpenHelper = new GeoDataDatabaseOpenHelper(context, folder.getAbsolutePath() + PoiConstants.GEODATA_FILENAME);
 	}
-	
-	
-	
-	
 
+	public static GeoData getInstance(Context context) {
+		if (mInstance == null) {
+			mInstance = new GeoData(context);
+		}
 
+		return mInstance;
+	}
 
+	public SQLiteCursorLoader getPoiListCursorLoader() {
+		return getPoiListCursorLoader(PoiConstants.LATLON);
+	}
+
+	public SQLiteCursorLoader getPoiListCursorLoader(String sortColNames) {
+		// МЕ ЛЕМЪРЭ ОНПЪДНЙ ОНКЕИ
+		return new SQLiteCursorLoader(mContext, mSQLiteOpenHelper, PoiConstants.STAT_GET_POI_LIST + sortColNames, null);
+	}
 
 	protected class GeoDataDatabaseOpenHelper extends SQLiteSDOpenHelper {
 		private final static int mCurrentVersion = 22;
-		
+
 		public GeoDataDatabaseOpenHelper(final Context context, final String name) {
 			super(context, name, null, mCurrentVersion);
 		}
@@ -118,27 +118,12 @@ public class GeoData {
 		public void LoadActivityListFromResource(final SQLiteDatabase db) {
 			db.execSQL(PoiConstants.SQL_CREATE_drop_activity);
 			db.execSQL(PoiConstants.SQL_CREATE_activity);
-	    	String[] act = mContext.getResources().getStringArray(R.array.track_activity);
-	    	for(int i = 0; i < act.length; i++){
-	    		db.execSQL(String.format(PoiConstants.SQL_CREATE_insert_activity, i, act[i]));
-	    	}
+			String[] act = mContext.getResources().getStringArray(R.array.track_activity);
+			for (int i = 0; i < act.length; i++) {
+				db.execSQL(String.format(PoiConstants.SQL_CREATE_insert_activity, i, act[i]));
+			}
 		}
 
 	}
-
-
-
-
-
-
-	public SQLiteCursorLoader getPoiListCursorLoader() {
-		return getPoiListCursorLoader(PoiConstants.LATLON);
-	}
-
-	public SQLiteCursorLoader getPoiListCursorLoader(String sortColNames) {
-		// МЕ ЛЕМЪРЭ ОНПЪДНЙ ОНКЕИ
-		return new SQLiteCursorLoader(mContext, mSQLiteOpenHelper, PoiConstants.STAT_GET_POI_LIST + sortColNames, null);
-	}
-
 
 }

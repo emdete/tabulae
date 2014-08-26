@@ -1,5 +1,13 @@
 package com.robert.maps.applib.tileprovider;
 
+import android.os.Handler;
+import android.os.Message;
+
+import com.robert.maps.applib.utils.ICacheProvider;
+import com.robert.maps.applib.utils.Ut;
+
+import org.andnav.osm.views.util.StreamUtils;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -16,14 +24,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.andnav.osm.views.util.StreamUtils;
-
-import android.os.Handler;
-import android.os.Message;
-
-import com.robert.maps.applib.utils.ICacheProvider;
-import com.robert.maps.applib.utils.Ut;
-
 public class FSCacheProvider implements ICacheProvider {
 	public static final String TILE_PATH_EXTENSION = ".tile";
 	public static final long TILE_MAX_CACHE_SIZE_BYTES = 4L * 1024 * 1024;
@@ -36,7 +36,7 @@ public class FSCacheProvider implements ICacheProvider {
 	public FSCacheProvider(final File aCachePath) {
 		this(aCachePath, null);
 	}
-	
+
 	public FSCacheProvider(final File aCachePath, final Handler aHandler) {
 		super();
 		this.mCachePath = aCachePath;
@@ -52,26 +52,26 @@ public class FSCacheProvider implements ICacheProvider {
 					cutCurrentCache();
 				}
 				Ut.d("Finished init thread");
-				if(mHandler != null)
+				if (mHandler != null)
 					Message.obtain(mHandler).sendToTarget();
 			}
 		};
 		t.setPriority(Thread.MIN_PRIORITY);
 		t.start();
 	}
-	
+
 	public long getUsedCacheSpace() {
 		return mUsedCacheSpace;
 	}
 
 	public byte[] getTile(String aURLstring, int aX, int aY, int aZ) {
-		if(mCachePath == null)
+		if (mCachePath == null)
 			return null;
-		
+
 		final File file = new File(mCachePath, Ut.formatToFileName(aURLstring) + TILE_PATH_EXTENSION);
-		if(!file.exists())
+		if (!file.exists())
 			return null;
-		
+
 		OutputStream out = null;
 		InputStream in = null;
 		final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
@@ -80,23 +80,25 @@ public class FSCacheProvider implements ICacheProvider {
 			out = new BufferedOutputStream(dataStream, StreamUtils.IO_BUFFER_SIZE);
 			Ut.copy(in, out);
 			out.flush();
-		} catch (IOException e) {
-		} finally {
+		}
+		catch (IOException e) {
+		}
+		finally {
 			StreamUtils.closeStream(in);
 			StreamUtils.closeStream(out);
 		}
 
 		final byte[] data = dataStream.toByteArray();
-		
+
 		return data;
 	}
 
 	public void putTile(String aURLstring, int aX, int aY, int aZ, byte[] aData) {
-		if(mCachePath == null)
+		if (mCachePath == null)
 			return;
-		
+
 		final File file = new File(mCachePath, Ut.formatToFileName(aURLstring)
-				+ TILE_PATH_EXTENSION);
+			+ TILE_PATH_EXTENSION);
 
 		final File parent = file.getParentFile();
 		if (!parent.exists()) {
@@ -108,29 +110,31 @@ public class FSCacheProvider implements ICacheProvider {
 		try {
 			byteStream = new ByteArrayInputStream(aData);
 			outputStream = new BufferedOutputStream(new FileOutputStream(file.getPath()),
-					Ut.IO_BUFFER_SIZE);
+				Ut.IO_BUFFER_SIZE);
 			final long length = Ut.copy(byteStream, outputStream);
 
 			mUsedCacheSpace += length;
 			if (mUsedCacheSpace > TILE_MAX_CACHE_SIZE_BYTES) {
 				cutCurrentCache();
 			}
-		} catch (final IOException e) {
+		}
+		catch (final IOException e) {
 			e.printStackTrace();
-			
+
 			return;
-		} finally {
+		}
+		finally {
 			StreamUtils.closeStream(outputStream);
 			StreamUtils.closeStream(byteStream);
 		}
-		
+
 	}
 
 	public void Free() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public void clearCache() {
 		cutCurrentCacheToSize(0L);
 	}
@@ -146,7 +150,7 @@ public class FSCacheProvider implements ICacheProvider {
 			if (mUsedCacheSpace > aTrimSizeBytes) {
 
 				Ut.d("Trimming tile cache from " + mUsedCacheSpace + " to "
-						+ aTrimSizeBytes);
+					+ aTrimSizeBytes);
 
 				final List<File> z = getDirectoryFileList(mCachePath);
 
@@ -192,9 +196,9 @@ public class FSCacheProvider implements ICacheProvider {
 	}
 
 	private void calculateDirectorySize(final File pDirectory) {
-		if(pDirectory == null)
+		if (pDirectory == null)
 			return;
-		
+
 		final File[] z = pDirectory.listFiles();
 		if (z != null) {
 			for (final File file : z) {
@@ -213,9 +217,11 @@ public class FSCacheProvider implements ICacheProvider {
 			final String canonicalParentPath1 = pParentDirectory.getCanonicalPath();
 			final String canonicalParentPath2 = pDirectory.getCanonicalFile().getParent();
 			return !canonicalParentPath1.equals(canonicalParentPath2);
-		} catch (final IOException e) {
+		}
+		catch (final IOException e) {
 			return true;
-		} catch (final NoSuchElementException e) {
+		}
+		catch (final NoSuchElementException e) {
 			// See: http://code.google.com/p/android/issues/detail?id=4961
 			// See: http://code.google.com/p/android/issues/detail?id=5807
 			return true;
@@ -230,8 +236,7 @@ public class FSCacheProvider implements ICacheProvider {
 	@Override
 	public void deleteTile(String aURLstring, int aX, int aY, int aZ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
 }

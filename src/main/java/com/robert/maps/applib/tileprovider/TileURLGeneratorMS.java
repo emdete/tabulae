@@ -1,7 +1,7 @@
 package com.robert.maps.applib.tileprovider;
 
-
 public class TileURLGeneratorMS extends TileURLGeneratorBase {
+	protected static final char[] NUM_CHAR = {'0', '1', '2', '3'};
 	private final String mImageFileNaming;
 
 	public TileURLGeneratorMS(String mName, final String aImageFileNaming) {
@@ -12,12 +12,10 @@ public class TileURLGeneratorMS extends TileURLGeneratorBase {
 	@Override
 	public String Get(int x, int y, int z) {
 		return new StringBuilder().append(mName)
-		.append(encodeQuadTree(z, x, y))
-		.append(mImageFileNaming)
-		.toString();
+			.append(encodeQuadTree(z, x, y))
+			.append(mImageFileNaming)
+			.toString();
 	}
-	
-	protected static final char[] NUM_CHAR = { '0', '1', '2', '3' };
 
 	private String encodeQuadTree(int zoom, int tilex, int tiley) {
 		char[] tileNum = new char[zoom];

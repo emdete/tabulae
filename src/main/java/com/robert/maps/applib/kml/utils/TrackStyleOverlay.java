@@ -10,15 +10,15 @@ import com.robert.maps.applib.view.TileViewOverlay;
 public class TrackStyleOverlay extends TileViewOverlay {
 	private Paint mPaint = null;
 	private Path mPath = null;
-	
+
 	public void setPaint(final Paint paint) {
 		mPaint = paint;
 	}
-	
+
 	@Override
 	protected void onDraw(Canvas c, TileView tileView) {
-		if(mPaint == null) return;
-		if(mPath == null) {
+		if (mPaint == null) return;
+		if (mPath == null) {
 			final int left = tileView.getWidth() / 10;
 			final int step = (tileView.getWidth() - 2 * left) / 3;
 			final int top = tileView.getHeight() / 4;
@@ -30,12 +30,12 @@ public class TrackStyleOverlay extends TileViewOverlay {
 			mPath.lineTo(left + 2 * step, tileView.getHeight() - top);
 			mPath.lineTo(left + 3 * step, cent_v);
 		}
-		
+
 		c.drawPath(mPath, mPaint);
 	}
-	
+
 	@Override
 	protected void onDrawFinished(Canvas c, TileView tileView) {
 	}
-	
+
 }

@@ -15,18 +15,18 @@ public class RGestureDetectorCupcake extends GestureDetector implements RGesture
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		final int action = ev.getAction();
-		
-        switch (action & MotionEvent.ACTION_MASK) {
-        case MotionEvent.ACTION_UP:
-        	mListener.onUp(ev);
-        }
 
-        return super.onTouchEvent(ev);
+		switch (action & MotionEvent.ACTION_MASK) {
+			case MotionEvent.ACTION_UP:
+				mListener.onUp(ev);
+		}
+
+		return super.onTouchEvent(ev);
 	}
 
 	@Override
 	public int getPointerCount(MotionEvent e) {
 		return 1;
 	}
-	
+
 }

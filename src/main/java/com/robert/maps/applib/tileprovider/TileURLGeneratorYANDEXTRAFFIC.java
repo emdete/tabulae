@@ -1,5 +1,12 @@
 package com.robert.maps.applib.tileprovider;
 
+import android.os.Handler;
+import android.os.Message;
+
+import com.robert.maps.applib.utils.SimpleThreadFactory;
+
+import org.andnav.osm.views.util.StreamUtils;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,13 +16,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.andnav.osm.views.util.StreamUtils;
-
-import android.os.Handler;
-import android.os.Message;
-
-import com.robert.maps.applib.utils.SimpleThreadFactory;
 
 public class TileURLGeneratorYANDEXTRAFFIC extends TileURLGeneratorBase {
 	private static final String YANDEX_STAT_URL = "http://jgo.maps.yandex.net/trf/stat.js";
@@ -33,41 +33,41 @@ public class TileURLGeneratorYANDEXTRAFFIC extends TileURLGeneratorBase {
 	@Override
 	public String Get(int x, int y, int z) {
 		return new StringBuilder().append(mName)
-		.append("&x=")
-		.append(x)
-		.append("&y=")
-		.append(y)
-		.append("&z=")
-		.append(z)
-		.append("&tm=")
-		.append(get_ts(60))
-		.toString();
+			.append("&x=")
+			.append(x)
+			.append("&y=")
+			.append(y)
+			.append("&z=")
+			.append(z)
+			.append("&tm=")
+			.append(get_ts(60))
+			.toString();
 	}
-	
+
 	public void setCallbackHandler(final Handler aCallbackHandler) {
 		mCallbackHandler = aCallbackHandler;
 	}
-	
+
 	public void Free() {
 		mCallbackHandler = null;
 		mThreadPool.shutdown();
 	}
-	
-	private boolean ts_update_needed(int delta){
+
+	private boolean ts_update_needed(int delta) {
 		Date d = new Date();
 		Long now = d.getTime();
-		if(now - mLastUpdateTime > delta*1000){
+		if (now - mLastUpdateTime > delta * 1000) {
 			mLastUpdateTime = now;
 			return true;
 		}
 		return false;
 	}
 
-	private String get_ts(int delta){
+	private String get_ts(int delta) {
 
 		if (ts_update_needed(delta)) {
 			mThreadPool.execute(new Runnable() {
-				
+
 				public void run() {
 					InputStream in = null;
 					OutputStream out = null;
@@ -87,14 +87,16 @@ public class TileURLGeneratorYANDEXTRAFFIC extends TileURLGeneratorBase {
 						int end = str.indexOf("\"", start);
 						mTimeStamp = str.substring(start, end);
 
-					} catch (Exception e) {
+					}
+					catch (Exception e) {
 						e.printStackTrace();
-					} finally {
+					}
+					finally {
 						StreamUtils.closeStream(in);
 						StreamUtils.closeStream(out);
 					}
-					
-					if(mCallbackHandler != null)
+
+					if (mCallbackHandler != null)
 						Message.obtain(mCallbackHandler, MessageHandlerConstants.MAPTILEFSLOADER_SUCCESS_ID).sendToTarget();
 				}
 			});

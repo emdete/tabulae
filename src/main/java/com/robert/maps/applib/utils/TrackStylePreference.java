@@ -1,8 +1,5 @@
 package com.robert.maps.applib.utils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -18,13 +15,16 @@ import com.robert.maps.applib.kml.utils.TrackStyleDrawable;
 import com.robert.maps.applib.kml.utils.TrackStylePickerDialog;
 import com.robert.maps.applib.kml.utils.TrackStylePickerDialog.OnTrackStyleChangedListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class TrackStylePreference extends Preference implements Preference.OnPreferenceClickListener, OnTrackStyleChangedListener {
 
+	private static final String androidns = "http://schemas.android.com/apk/res/android";
 	private String mValue;
 	private String mDefaultValue = "{\"color\":-5937666,\"shadowradius\":0,\"width\":10,\"color_shadow\":-5937666}";
 	private TrackStylePickerDialog mDialog;
 	private View mView;
-	private static final String androidns = "http://schemas.android.com/apk/res/android";
 
 	public TrackStylePreference(Context context) {
 		super(context);
@@ -45,7 +45,7 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 		setOnPreferenceClickListener(this);
 		if (attrs != null) {
 			final String val = attrs.getAttributeValue(androidns, "defaultValue");
-			if(!val.equalsIgnoreCase(""))
+			if (!val.equalsIgnoreCase(""))
 				mDefaultValue = val;
 		}
 		mValue = mDefaultValue;
@@ -55,7 +55,7 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 	protected void onBindView(View view) {
 		super.onBindView(view);
 		mView = view;
-		
+
 		int Color, ColorShadow, Width;
 		double ShadowRadius;
 		try {
@@ -64,21 +64,22 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 			Width = json.optInt(Track.WIDTH, 4);
 			ShadowRadius = json.optDouble(Track.SHADOWRADIUS, 0);
 			ColorShadow = json.optInt(Track.COLORSHADOW, 0xffA565FE);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			Color = 0xffA565FE;
 			Width = 4;
 			ShadowRadius = 0;
 			ColorShadow = 0xffA565FE;
 		}
-		
+
 		setPreviewColor(Color, Width, ColorShadow, ShadowRadius);
 	}
 
 	private void setPreviewColor(int Color, int Width, int ColorShadow, double ShadowRadius) {
 		if (mView == null) return;
-		
+
 		ImageView iView = new ImageView(getContext());
-		LinearLayout widgetFrameView = ((LinearLayout) mView.findViewById(android.R.id.widget_frame));
+		LinearLayout widgetFrameView = ((LinearLayout)mView.findViewById(android.R.id.widget_frame));
 		if (widgetFrameView == null) return;
 		widgetFrameView.setVisibility(View.VISIBLE);
 		int count = widgetFrameView.getChildCount();
@@ -92,7 +93,7 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 		final Drawable[] d = {getContext().getResources().getDrawable(R.drawable.r_home_other1), dr};
 		LayerDrawable ld = new LayerDrawable(d);
 		iView.setBackgroundDrawable(ld);
-}
+	}
 
 	public boolean onPreferenceClick(Preference preference) {
 		int Color, ColorShadow, Width;
@@ -103,26 +104,28 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 			Width = json.optInt(Track.WIDTH, 4);
 			ShadowRadius = json.optDouble(Track.SHADOWRADIUS, 0);
 			ColorShadow = json.optInt(Track.COLORSHADOW, 0xffA565FE);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			Color = 0xffA565FE;
 			Width = 4;
 			ShadowRadius = 0;
 			ColorShadow = 0xffA565FE;
 		}
-		
+
 		mDialog = new TrackStylePickerDialog(getContext(), Color, Width, ColorShadow, ShadowRadius);
 		mDialog.setOnTrackStyleChangedListener(this);
 		mDialog.show();
-		
+
 		return false;
 	}
-	
+
 	public String getValue() {
 		try {
 			if (isPersistent()) {
 				mValue = getPersistedString(mDefaultValue);
 			}
-		} catch (ClassCastException e) {
+		}
+		catch (ClassCastException e) {
 			mValue = mDefaultValue;
 		}
 
@@ -136,9 +139,10 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 			json.put(Track.COLORSHADOW, colorshadow);
 			json.put(Track.WIDTH, width);
 			json.put(Track.SHADOWRADIUS, shadowradius);
-		} catch (JSONException e) {
 		}
-		
+		catch (JSONException e) {
+		}
+
 		if (isPersistent()) {
 			persistString(json.toString());
 		}
@@ -146,7 +150,8 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 		setPreviewColor(color, width, colorshadow, shadowradius);
 		try {
 			getOnPreferenceChangeListener().onPreferenceChange(this, color);
-		} catch (NullPointerException e) {
+		}
+		catch (NullPointerException e) {
 
 		}
 	}

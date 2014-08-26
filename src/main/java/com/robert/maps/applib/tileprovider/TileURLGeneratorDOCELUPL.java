@@ -1,6 +1,5 @@
 package com.robert.maps.applib.tileprovider;
 
-
 public class TileURLGeneratorDOCELUPL extends TileURLGeneratorBase {
 
 	public TileURLGeneratorDOCELUPL(String mName) {
@@ -16,9 +15,9 @@ public class TileURLGeneratorDOCELUPL extends TileURLGeneratorBase {
 		final String szoom = Integer.toHexString(z);
 
 		String s = mName + szoom + SLASH + cx[4] + cy[4] + SLASH + cx[3]
-				+ cy[3] + SLASH + cx[2] + cy[2] + SLASH + cx[1] + cy[1] + SLASH + cx[0] + cy[0]
-				+ "/z" + szoom + "x" + sx + "y" + sy + ".png";
+			+ cy[3] + SLASH + cx[2] + cy[2] + SLASH + cx[1] + cy[1] + SLASH + cx[0] + cy[0]
+			+ "/z" + szoom + "x" + sx + "y" + sy + ".png";
 		return s;
 	}
-	
+
 }

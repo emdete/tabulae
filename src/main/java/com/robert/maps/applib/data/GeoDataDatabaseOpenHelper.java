@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 public class GeoDataDatabaseOpenHelper extends SQLiteSDOpenHelper {
 
 	public GeoDataDatabaseOpenHelper(Context context, String name,
-			CursorFactory factory, int version) {
+									 CursorFactory factory, int version) {
 		super(context, name, factory, version);
 		// TODO Auto-generated constructor stub
 	}

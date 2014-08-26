@@ -1,7 +1,5 @@
 package com.robert.maps.applib.geoui;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +13,8 @@ import android.support.v7.app.ActionBarActivity;
 import com.robert.maps.applib.R;
 import com.robert.maps.applib.geoui.fragments.PoiListFragment;
 
+import java.util.ArrayList;
+
 public class GeoDataActivity extends ActionBarActivity {
 
 	ViewPager mViewPager;
@@ -26,14 +26,14 @@ public class GeoDataActivity extends ActionBarActivity {
 
 		setContentView(R.layout.geodata_activity);
 
-		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager = (ViewPager)findViewById(R.id.pager);
 		final ActionBar bar = getSupportActionBar();
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
 		mTabsAdapter.addTab(bar.newTab().setText(R.string.poi),
-				PoiListFragment.class, null);
+			PoiListFragment.class, null);
 //		mTabsAdapter.addTab(bar.newTab().setText("Cursor"),
 //				CursorFragment.class, null);
 
@@ -47,25 +47,15 @@ public class GeoDataActivity extends ActionBarActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt("tab", getSupportActionBar()
-				.getSelectedNavigationIndex());
+			.getSelectedNavigationIndex());
 	}
-	
+
 	public static class TabsAdapter extends FragmentPagerAdapter implements
-			ActionBar.TabListener, ViewPager.OnPageChangeListener {
+		ActionBar.TabListener, ViewPager.OnPageChangeListener {
 		private final Context mContext;
 		private final ActionBar mActionBar;
 		private final ViewPager mViewPager;
 		private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
-
-		static final class TabInfo {
-			private final Class<?> clss;
-			private final Bundle args;
-
-			TabInfo(Class<?> _class, Bundle _args) {
-				clss = _class;
-				args = _args;
-			}
-		}
 
 		public TabsAdapter(ActionBarActivity activity, ViewPager pager) {
 			super(activity.getSupportFragmentManager());
@@ -94,12 +84,12 @@ public class GeoDataActivity extends ActionBarActivity {
 		public Fragment getItem(int position) {
 			TabInfo info = mTabs.get(position);
 			return Fragment.instantiate(mContext, info.clss.getName(),
-					info.args);
+				info.args);
 		}
 
 		@Override
 		public void onPageScrolled(int position, float positionOffset,
-				int positionOffsetPixels) {
+								   int positionOffsetPixels) {
 		}
 
 		@Override
@@ -127,6 +117,16 @@ public class GeoDataActivity extends ActionBarActivity {
 
 		@Override
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		}
+
+		static final class TabInfo {
+			private final Class<?> clss;
+			private final Bundle args;
+
+			TabInfo(Class<?> _class, Bundle _args) {
+				clss = _class;
+				args = _args;
+			}
 		}
 	}
 

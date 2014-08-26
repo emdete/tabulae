@@ -1,9 +1,5 @@
 package com.robert.maps.applib.kml;
 
-import java.util.Date;
-
-import org.andnav.osm.util.GeoPoint;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,6 +10,9 @@ import com.robert.maps.applib.R;
 import com.robert.maps.applib.kml.Track.TrackPoint;
 import com.robert.maps.applib.kml.constants.PoiConstants;
 
+import org.andnav.osm.util.GeoPoint;
+
+import java.util.Date;
 
 public class PoiManager implements PoiConstants {
 	protected final Context mCtx;
@@ -26,44 +25,44 @@ public class PoiManager implements PoiConstants {
 		mGeoDatabase = new GeoDatabase(ctx);
 	}
 
-	public GeoDatabase getGeoDatabase(){
+	public GeoDatabase getGeoDatabase() {
 		return mGeoDatabase;
 	}
 
-	public void FreeDatabases(){
+	public void FreeDatabases() {
 		mGeoDatabase.FreeDatabases();
 	}
-	
+
 	public void StopProcessing() {
 		mStopProcessing = true;
 	}
-	
+
 	private boolean Stop() {
-		if(mStopProcessing) {
+		if (mStopProcessing) {
 			mStopProcessing = false;
 			return true;
 		}
 		return false;
 	}
 
-	public void addPoi(final String title, final String descr, GeoPoint point){
+	public void addPoi(final String title, final String descr, GeoPoint point) {
 		mGeoDatabase.addPoi(title, descr, point.getLatitude(), point.getLongitude(), ZERO, ZERO, ZERO, ZERO, R.drawable.poi);
 	}
 
-	public void updatePoi(final PoiPoint point){
-		if(point.getId() < 0)
-			mGeoDatabase.addPoi(point.Title, point.Descr, point.GeoPoint.getLatitude(), point.GeoPoint.getLongitude(), point.Alt, point.CategoryId, point.PointSourceId, point.Hidden == true ? ONE : ZERO, point.IconId);
+	public void updatePoi(final PoiPoint point) {
+		if (point.getId() < 0)
+			mGeoDatabase.addPoi(point.Title, point.Descr, point.GeoPoint.getLatitude(), point.GeoPoint.getLongitude(), point.Alt, point.CategoryId, point.PointSourceId, point.Hidden == true? ONE: ZERO, point.IconId);
 		else
-			mGeoDatabase.updatePoi(point.getId(), point.Title, point.Descr, point.GeoPoint.getLatitude(), point.GeoPoint.getLongitude(), point.Alt, point.CategoryId, point.PointSourceId, point.Hidden == true ? ONE : ZERO, point.IconId);
+			mGeoDatabase.updatePoi(point.getId(), point.Title, point.Descr, point.GeoPoint.getLatitude(), point.GeoPoint.getLongitude(), point.Alt, point.CategoryId, point.PointSourceId, point.Hidden == true? ONE: ZERO, point.IconId);
 	}
 
-	private SparseArray<PoiPoint> doCreatePoiListFromCursor(Cursor c){
+	private SparseArray<PoiPoint> doCreatePoiListFromCursor(Cursor c) {
 		final SparseArray<PoiPoint> items = new SparseArray<PoiPoint>();
 		if (c != null) {
 			if (c.moveToFirst()) {
 				do {
 					items.put(c.getInt(4), new PoiPoint(c.getInt(4), c.getString(2), c.getString(3), new GeoPoint(
-							(int) (1E6 * c.getDouble(0)), (int) (1E6 * c.getDouble(1))), c.getInt(7), c.getInt(8)));
+						(int)(1E6 * c.getDouble(0)), (int)(1E6 * c.getDouble(1))), c.getInt(7), c.getInt(8)));
 				} while (c.moveToNext());
 			}
 			c.close();
@@ -76,17 +75,16 @@ public class PoiManager implements PoiConstants {
 		return doCreatePoiListFromCursor(mGeoDatabase.getPoiListCursor());
 	}
 
-	public SparseArray<PoiPoint> getPoiListNotHidden(int zoom, GeoPoint center, double deltaX, double deltaY){
+	public SparseArray<PoiPoint> getPoiListNotHidden(int zoom, GeoPoint center, double deltaX, double deltaY) {
 		return doCreatePoiListFromCursor(mGeoDatabase.getPoiListNotHiddenCursor(zoom, center.getLongitude() - deltaX, center.getLongitude() + deltaX
-				, center.getLatitude() + deltaY, center.getLatitude() - deltaY));
+			, center.getLatitude() + deltaY, center.getLatitude() - deltaY));
 	}
 
 	public void addPoiStartActivity(Context ctx, GeoPoint touchDownPoint) {
 		ctx.startActivity((new Intent(ctx, PoiActivity.class)).putExtra(LAT,
-				touchDownPoint.getLatitude()).putExtra(LON,
-				touchDownPoint.getLongitude()));
+			touchDownPoint.getLatitude()).putExtra(LON,
+			touchDownPoint.getLongitude()));
 	}
-
 
 	public PoiPoint getPoiPoint(int id) {
 		PoiPoint point = null;
@@ -94,21 +92,21 @@ public class PoiManager implements PoiConstants {
 		if (c != null) {
 			if (c.moveToFirst())
 				point = new PoiPoint(c.getInt(4), c.getString(2), c
-						.getString(3), new GeoPoint(
-						(int) (1E6 * c.getDouble(0)), (int) (1E6 * c
-								.getDouble(1))), c.getInt(9), c.getInt(7), c
-						.getDouble(5), c.getInt(8), c.getInt(6));
+					.getString(3), new GeoPoint(
+					(int)(1E6 * c.getDouble(0)), (int)(1E6 * c
+					.getDouble(1))), c.getInt(9), c.getInt(7), c
+					.getDouble(5), c.getInt(8), c.getInt(6));
 			c.close();
 		}
 
 		return point;
 	}
 
-	public void deletePoi(final int id){
+	public void deletePoi(final int id) {
 		mGeoDatabase.deletePoi(id);
 	}
 
-	public void deletePoiCategory(final int id){
+	public void deletePoiCategory(final int id) {
 		mGeoDatabase.deletePoiCategory(id);
 	}
 
@@ -117,7 +115,7 @@ public class PoiManager implements PoiConstants {
 		final Cursor c = mGeoDatabase.getPoiCategory(id);
 		if (c != null) {
 			if (c.moveToFirst())
-				category = new PoiCategory(id, c.getString(0), c.getInt(2) == ONE ? true : false, c.getInt(3), c.getInt(4));
+				category = new PoiCategory(id, c.getString(0), c.getInt(2) == ONE? true: false, c.getInt(3), c.getInt(4));
 			c.close();
 		}
 
@@ -125,42 +123,40 @@ public class PoiManager implements PoiConstants {
 	}
 
 	public void updatePoiCategory(PoiCategory poiCategory) {
-		if(poiCategory.getId() < ZERO)
-			mGeoDatabase.addPoiCategory(poiCategory.Title, poiCategory.Hidden == true ? ONE : ZERO, poiCategory.IconId);
+		if (poiCategory.getId() < ZERO)
+			mGeoDatabase.addPoiCategory(poiCategory.Title, poiCategory.Hidden == true? ONE: ZERO, poiCategory.IconId);
 		else
-			mGeoDatabase.updatePoiCategory(poiCategory.getId(), poiCategory.Title, poiCategory.Hidden == true ? ONE : ZERO, poiCategory.IconId, poiCategory.MinZoom);
+			mGeoDatabase.updatePoiCategory(poiCategory.getId(), poiCategory.Title, poiCategory.Hidden == true? ONE: ZERO, poiCategory.IconId, poiCategory.MinZoom);
 	}
 
 	public void DeleteAllPoi() {
 		mGeoDatabase.DeleteAllPoi();
 	}
 
-	public void beginTransaction(){
+	public void beginTransaction() {
 		mGeoDatabase.beginTransaction();
 	}
 
-	public void rollbackTransaction(){
+	public void rollbackTransaction() {
 		mGeoDatabase.rollbackTransaction();
 	}
 
-	public void commitTransaction(){
+	public void commitTransaction() {
 		mGeoDatabase.commitTransaction();
 	}
 
 	public void updateTrack(Track track) {
-		if(track.getId() < 0){
-			long newId = mGeoDatabase.addTrack(track.Name, track.Descr, track.Show ? ONE : ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
+		if (track.getId() < 0) {
+			long newId = mGeoDatabase.addTrack(track.Name, track.Descr, track.Show? ONE: ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
 
-			for(TrackPoint trackpoint: track.getPoints()){
+			for (TrackPoint trackpoint : track.getPoints()) {
 				mGeoDatabase.addTrackPoint(newId, trackpoint.lat, trackpoint.lon, trackpoint.alt, trackpoint.speed, trackpoint.date);
 			}
 		} else
-			mGeoDatabase.updateTrack(track.getId(), track.Name, track.Descr, track.Show ? ONE : ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
+			mGeoDatabase.updateTrack(track.getId(), track.Name, track.Descr, track.Show? ONE: ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
 	}
-	
-	
 
-	public boolean haveTrackChecked(){
+	public boolean haveTrackChecked() {
 		boolean ret = false;
 		Cursor c = mGeoDatabase.getTrackChecked();
 		if (c != null) {
@@ -172,27 +168,31 @@ public class PoiManager implements PoiConstants {
 		return ret;
 	}
 
-	public Track[] getTrackChecked(){
+	public Track[] getTrackChecked() {
 		return getTrackChecked(true);
 	}
 
-	public Track[] getTrackChecked(final boolean aNeedPoints){
+	public void setTrackChecked(int id) {
+		mGeoDatabase.setTrackChecked(id);
+	}
+
+	public Track[] getTrackChecked(final boolean aNeedPoints) {
 		mStopProcessing = false;
 		Track tracks[] = null;
 		Cursor c = mGeoDatabase.getTrackChecked();
 		if (c != null) {
 			tracks = new Track[c.getCount()];
 			final String defStyle = PreferenceManager.getDefaultSharedPreferences(mCtx).getString("pref_track_style", "");
-			
+
 			if (c.moveToFirst())
 				do {
 					final int pos = c.getPosition();
 					String style = c.getString(10);
-					if(style == null || style.equalsIgnoreCase(""))
+					if (style == null || style.equalsIgnoreCase(""))
 						style = "";
 
-					tracks[pos] = new Track(c.getInt(3), c.getString(0), c.getString(1), c.getInt(2) == ONE ? true : false, c.getInt(4), c.getDouble(5), c.getDouble(6), c.getInt(7), c.getInt(8), new Date(c.getLong(9)*1000), style, defStyle);
-					
+					tracks[pos] = new Track(c.getInt(3), c.getString(0), c.getString(1), c.getInt(2) == ONE? true: false, c.getInt(4), c.getDouble(5), c.getDouble(6), c.getInt(7), c.getInt(8), new Date(c.getLong(9) * 1000), style, defStyle);
+
 					if (aNeedPoints) {
 						Cursor cpoints = mGeoDatabase.getTrackPoints(tracks[pos].getId());
 						if (cpoints != null) {
@@ -220,23 +220,23 @@ public class PoiManager implements PoiConstants {
 			}
 			c.close();
 
-
 		}
 		return tracks;
 	}
 
-	public Track getTrack(int id){
+	public Track getTrack(int id) {
 		Track track = null;
 		Cursor c = mGeoDatabase.getTrack(id);
 		if (c != null) {
 			if (c.moveToFirst()) {
 				final String defStyle = PreferenceManager.getDefaultSharedPreferences(mCtx).getString("pref_track_style", "");
 				String style = c.getString(9);
-				if(style == null || style.equalsIgnoreCase(""))
+				if (style == null || style.equalsIgnoreCase(""))
 					style = "";
 
-				track = new Track(id, c.getString(0), c.getString(1), c.getInt(2) == ONE ? true : false, c.getInt(3), c.getDouble(4), c.getDouble(5), c.getInt(6), c.getInt(7), new Date(c.getLong(8)*1000), style, defStyle);
-			};
+				track = new Track(id, c.getString(0), c.getString(1), c.getInt(2) == ONE? true: false, c.getInt(3), c.getDouble(4), c.getDouble(5), c.getInt(6), c.getInt(7), new Date(c.getLong(8) * 1000), style, defStyle);
+			}
+			;
 			c.close();
 			c = null;
 
@@ -260,18 +260,13 @@ public class PoiManager implements PoiConstants {
 		return track;
 	}
 
-	public void setTrackChecked(int id) {
-		mGeoDatabase.setTrackChecked(id);
-	}
-
 	public void deleteTrack(int id) {
 		mGeoDatabase.deleteTrack(id);
 
 	}
-	
+
 	public long addMap(int type, String params) {
 		return mGeoDatabase.addMap(type, params);
 	}
-
 
 }

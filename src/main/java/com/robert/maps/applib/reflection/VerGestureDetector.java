@@ -7,30 +7,30 @@ import android.view.GestureDetector;
 
 public abstract class VerGestureDetector {
 
-    public static VerGestureDetector newInstance() {
-        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
-        VerGestureDetector detector = null;
-        if (sdkVersion < Build.VERSION_CODES.FROYO) {
-            detector = new CupcakeDetector();
-        } else {
-            detector = new FroyoDetector();
-        }
+	public static VerGestureDetector newInstance() {
+		final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
+		VerGestureDetector detector = null;
+		if (sdkVersion < Build.VERSION_CODES.FROYO) {
+			detector = new CupcakeDetector();
+		} else {
+			detector = new FroyoDetector();
+		}
 
-        return detector;
-    }
-    
-    public abstract GestureDetector getGestureDetector(Context context, OnExGestureListener listener);
+		return detector;
+	}
 
-    private static class CupcakeDetector extends VerGestureDetector {
+	public abstract GestureDetector getGestureDetector(Context context, OnExGestureListener listener);
+
+	private static class CupcakeDetector extends VerGestureDetector {
 
 		@Override
 		public RGestureDetectorCupcake getGestureDetector(Context context, OnExGestureListener listener) {
 			return new RGestureDetectorCupcake(context, listener);
 		}
 
-    }
+	}
 
-    private static class FroyoDetector extends VerGestureDetector {
+	private static class FroyoDetector extends VerGestureDetector {
 
 		@SuppressLint("NewApi")
 		@Override
@@ -38,5 +38,5 @@ public abstract class VerGestureDetector {
 			return new RGestureDetectorFroyo(context, listener, null, false);
 		}
 
-    }
+	}
 }

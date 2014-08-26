@@ -18,21 +18,21 @@ public class IndicatorView extends RelativeLayout implements OnCreateContextMenu
 
 	public IndicatorView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		
+
 		setOnCreateContextMenuListener(this);
 		setOnClickListener(this);
 	}
 
 	public IndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
+
 		setOnCreateContextMenuListener(this);
 		setOnClickListener(this);
 	}
 
 	public IndicatorView(Context context) {
 		super(context);
-		
+
 		setOnCreateContextMenuListener(this);
 		setOnClickListener(this);
 	}
@@ -41,31 +41,31 @@ public class IndicatorView extends RelativeLayout implements OnCreateContextMenu
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		super.onLayout(changed, l, t, r, b);
 	}
-	
-	public void setIndicatorTag(String tag) {
-		mIndicatorTag = tag;
-	}
-	
+
 	public String getIndicatorTag() {
 		return mIndicatorTag;
 	}
-	
+
+	public void setIndicatorTag(String tag) {
+		mIndicatorTag = tag;
+	}
+
 	public void setIndicatorManager(IndicatorManager indicatorManager) {
 		mIndicatorManager = indicatorManager;
 	}
 
 	public void updateIndicator(IndicatorManager indicatorManager) {
-		if(indicatorManager.getIndicators().containsKey(mIndicatorTag)) {
-			if(mIndicatorTag.equalsIgnoreCase(IndicatorConst.GPSELEV) 
-					|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.GPSACCURACY)
-					|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.GPSSPEED)
-					|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRDIST)
-					|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRMAXSPEED)
-					|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRAVGSPEED)
-					|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRAVGMOVESPEED)
-					|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TARGETDISTANCE)
-					) {
-				final String[] val = (String[]) indicatorManager.getIndicators().get(mIndicatorTag);
+		if (indicatorManager.getIndicators().containsKey(mIndicatorTag)) {
+			if (mIndicatorTag.equalsIgnoreCase(IndicatorConst.GPSELEV)
+				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.GPSACCURACY)
+				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.GPSSPEED)
+				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRDIST)
+				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRMAXSPEED)
+				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRAVGSPEED)
+				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRAVGMOVESPEED)
+				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TARGETDISTANCE)
+				) {
+				final String[] val = (String[])indicatorManager.getIndicators().get(mIndicatorTag);
 				((TextView)findViewById(R.id.data_value)).setText(val[0]);
 				((TextView)findViewById(R.id.data_unit)).setText(val[1]);
 			} else {
@@ -80,10 +80,6 @@ public class IndicatorView extends RelativeLayout implements OnCreateContextMenu
 		mIndicatorManager.onCreateContextMenu(menu, v, menuInfo);
 	}
 
-	public class IndicatorViewMenuInfo implements ContextMenuInfo {
-		public IndicatorView IndicatorView;
-	}
-
 	@Override
 	protected ContextMenuInfo getContextMenuInfo() {
 		final IndicatorViewMenuInfo info = new IndicatorViewMenuInfo();
@@ -93,5 +89,9 @@ public class IndicatorView extends RelativeLayout implements OnCreateContextMenu
 
 	@Override
 	public void onClick(View v) {
+	}
+
+	public class IndicatorViewMenuInfo implements ContextMenuInfo {
+		public IndicatorView IndicatorView;
 	}
 }

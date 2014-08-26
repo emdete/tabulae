@@ -1,9 +1,5 @@
 package com.robert.maps.applib.utils;
 
-import java.io.File;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
@@ -16,6 +12,10 @@ import android.widget.Button;
 
 import com.robert.maps.applib.R;
 import com.robert.maps.applib.tileprovider.FSCacheProvider;
+
+import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class InternalCachePreference extends Preference {
 	private Button btnClear;
@@ -38,7 +38,7 @@ public class InternalCachePreference extends Preference {
 	protected void onBindView(View view) {
 		super.onBindView(view);
 
-		btnClear = (Button) view.findViewById(R.id.btnClear);
+		btnClear = (Button)view.findViewById(R.id.btnClear);
 		btnClear.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				mProgressDialog = Ut.ShowWaitDialog(getContext());
@@ -63,7 +63,7 @@ public class InternalCachePreference extends Preference {
 		public void handleMessage(final Message msg) {
 
 			InternalCachePreference.this.setSummary(String.format(InternalCachePreference.this.getContext().getString(R.string.pref_internalcache_summary),
-					(int) mFSCacheProvider.getUsedCacheSpace() / 1024));
+				(int)mFSCacheProvider.getUsedCacheSpace() / 1024));
 
 		}
 	}

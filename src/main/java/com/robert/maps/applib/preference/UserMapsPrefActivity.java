@@ -18,20 +18,20 @@ public class UserMapsPrefActivity extends PreferenceActivity implements OnShared
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setPreferenceScreen(getPreferenceManager().createPreferenceScreen(this));
-		
+
 		Intent intent = getIntent();
-		if(intent == null)
+		if (intent == null)
 			finish();
-		
+
 		Bundle bundle = intent.getExtras();
 		mKey = bundle.getString("Key");
-		
+
 		final PreferenceCategory prefscr = new PreferenceCategory(this);
 		prefscr.setKey(mKey);
 		getPreferenceScreen().addPreference(prefscr);
-		
+
 		{
 			final CheckBoxPreference pref = new CheckBoxPreference(this);
 			pref.setKey(mKey + "_enabled");
@@ -46,7 +46,7 @@ public class UserMapsPrefActivity extends PreferenceActivity implements OnShared
 			pref.setTitle(getString(R.string.pref_usermap_name));
 			pref.setDefaultValue(bundle.getString("Name"));
 			prefscr.addPreference(pref);
-			
+
 			pref.setSummary(pref.getText());
 			prefscr.setTitle(pref.getText());
 		}
@@ -109,9 +109,9 @@ public class UserMapsPrefActivity extends PreferenceActivity implements OnShared
 		if (aKey.endsWith("name") && findPreference(aKey) != null) {
 			findPreference(aKey).setSummary(aPref.getString(aKey, ""));
 			findPreference(aKey.replace("_name", "")).setTitle(aPref.getString(aKey, ""));
-			
+
 		} else if (aKey.endsWith("projection") && findPreference(aKey) != null) {
-			ListPreference pref = (ListPreference) findPreference(aKey);
+			ListPreference pref = (ListPreference)findPreference(aKey);
 			findPreference(aKey).setSummary(pref.getEntry());
 		}
 	}
@@ -119,16 +119,15 @@ public class UserMapsPrefActivity extends PreferenceActivity implements OnShared
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
+
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	}
 
-	
 }

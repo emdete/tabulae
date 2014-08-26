@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable;
  * This drawable that draws a simple white and gray chessboard pattern.
  * It's pattern you will often see as a background behind a
  * partly transparent image in many applications.
+ *
  * @author Daniel Nilsson
  */
 public class TrackStyleDrawable extends Drawable {
@@ -38,7 +39,7 @@ public class TrackStyleDrawable extends Drawable {
 	/**
 	 * Bitmap in which the pattern will be cahched.
 	 */
-	private Bitmap		mBitmap;
+	private Bitmap mBitmap;
 
 	public TrackStyleDrawable(int color, int width, int colorshadow, double shadowradius) {
 		mPaint.setAntiAlias(true);
@@ -46,7 +47,7 @@ public class TrackStyleDrawable extends Drawable {
 		mPaint.setStyle(Paint.Style.STROKE);
 		mPaint.setColor(color);
 		mPaint.setStrokeCap(Paint.Cap.ROUND);
-		mPaint.setShadowLayer((float) shadowradius, 0, 0, colorshadow);
+		mPaint.setShadowLayer((float)shadowradius, 0, 0, colorshadow);
 	}
 
 	@Override
@@ -84,12 +85,12 @@ public class TrackStyleDrawable extends Drawable {
 	 * recreate it each time draw() is called since it
 	 * takes a few milliseconds.
 	 */
-	private void generatePatternBitmap(){
+	private void generatePatternBitmap() {
 
-		if(getBounds().width() <= 0 || getBounds().height() <= 0){
+		if (getBounds().width() <= 0 || getBounds().height() <= 0) {
 			return;
 		}
-		
+
 		mBitmap = Bitmap.createBitmap(getBounds().width(), getBounds().height(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(mBitmap);
 
@@ -103,7 +104,7 @@ public class TrackStyleDrawable extends Drawable {
 		mPath.lineTo(left + step, top);
 		mPath.lineTo(left + 2 * step, getBounds().height() - top);
 		mPath.lineTo(left + 3 * step, cent_v);
-		
+
 		canvas.drawPath(mPath, mPaint);
 
 	}

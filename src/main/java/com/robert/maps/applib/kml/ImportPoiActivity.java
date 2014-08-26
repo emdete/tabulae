@@ -1,19 +1,5 @@
 package com.robert.maps.applib.kml;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.openintents.filemanager.FileManagerActivity;
-import org.openintents.filemanager.intents.FileManagerIntents;
-import org.openintents.filemanager.util.FileUtils;
-import org.xml.sax.SAXException;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -36,13 +22,26 @@ import com.robert.maps.applib.kml.XMLparser.KmlPoiParser;
 import com.robert.maps.applib.utils.SimpleThreadFactory;
 import com.robert.maps.applib.utils.Ut;
 
+import org.openintents.filemanager.FileManagerActivity;
+import org.openintents.filemanager.intents.FileManagerIntents;
+import org.openintents.filemanager.util.FileUtils;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 public class ImportPoiActivity extends Activity {
+	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new SimpleThreadFactory("ImportPoi"));
 	EditText mFileName;
 	Spinner mSpinner;
 	private PoiManager mPoiManager;
-
 	private ProgressDialog dlgWait;
-	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new SimpleThreadFactory("ImportPoi"));
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,40 +53,40 @@ public class ImportPoiActivity extends Activity {
 		if (mPoiManager == null)
 			mPoiManager = new PoiManager(this);
 
-		mFileName = (EditText) findViewById(R.id.FileName);
+		mFileName = (EditText)findViewById(R.id.FileName);
 		mFileName.setText(settings.getString("IMPORT_POI_FILENAME", Ut.getRMapsImportDir(this).getAbsolutePath()));
 
-		mSpinner = (Spinner) findViewById(R.id.spinnerCategory);
+		mSpinner = (Spinner)findViewById(R.id.spinnerCategory);
 		Cursor c = mPoiManager.getGeoDatabase().getPoiCategoryListCursor();
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c,
-				new String[] { "name" }, new int[] { android.R.id.text1 });
+			new String[]{"name"}, new int[]{android.R.id.text1});
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mSpinner.setAdapter(adapter);
 
-		((Button) findViewById(R.id.SelectFileBtn))
-		.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				doSelectFile();
-			}
-		});
-		((Button) findViewById(R.id.ImportBtn))
-		.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				doImportPOI();
-			}
-		});
-		((Button) findViewById(R.id.discardButton))
-		.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				ImportPoiActivity.this.finish();
-			}
-		});
+		((Button)findViewById(R.id.SelectFileBtn))
+			.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					doSelectFile();
+				}
+			});
+		((Button)findViewById(R.id.ImportBtn))
+			.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					doImportPOI();
+				}
+			});
+		((Button)findViewById(R.id.discardButton))
+			.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					ImportPoiActivity.this.finish();
+				}
+			});
 	}
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		if(id == R.id.dialog_wait) {
+		if (id == R.id.dialog_wait) {
 			dlgWait = new ProgressDialog(this);
 			dlgWait.setMessage("Please wait while loading...");
 			dlgWait.setIndeterminate(true);
@@ -131,7 +130,7 @@ public class ImportPoiActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if(requestCode == R.id.ImportBtn) {
+		if (requestCode == R.id.ImportBtn) {
 			if (resultCode == RESULT_OK && data != null) {
 				// obtain the filename
 				String filename = Uri.decode(data.getDataString());
@@ -151,7 +150,7 @@ public class ImportPoiActivity extends Activity {
 	private void doImportPOI() {
 		File file = new File(mFileName.getText().toString());
 
-		if(!file.exists()){
+		if (!file.exists()) {
 			Toast.makeText(this, "No such file", Toast.LENGTH_LONG).show();
 			return;
 		}
@@ -167,49 +166,54 @@ public class ImportPoiActivity extends Activity {
 				SAXParser parser = null;
 				try {
 					parser = fac.newSAXParser();
-				} catch (ParserConfigurationException e) {
+				}
+				catch (ParserConfigurationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (SAXException e) {
+				}
+				catch (SAXException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
-				if(parser != null){
+				if (parser != null) {
 					mPoiManager.beginTransaction();
 					Ut.dd("Start parsing file " + file.getName());
 					try {
-						if(FileUtils.getExtension(file.getName()).equalsIgnoreCase(".kml"))
+						if (FileUtils.getExtension(file.getName()).equalsIgnoreCase(".kml"))
 							parser.parse(file, new KmlPoiParser(mPoiManager, CategoryId));
-						else if(FileUtils.getExtension(file.getName()).equalsIgnoreCase(".gpx"))
+						else if (FileUtils.getExtension(file.getName()).equalsIgnoreCase(".gpx"))
 							parser.parse(file, new GpxPoiParser(mPoiManager, CategoryId));
 
 						mPoiManager.commitTransaction();
-					} catch (SAXException e) {
+					}
+					catch (SAXException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						mPoiManager.rollbackTransaction();
-					} catch (IOException e) {
+					}
+					catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						mPoiManager.rollbackTransaction();
-					} catch (IllegalStateException e) {
-					} catch (OutOfMemoryError e) {
+					}
+					catch (IllegalStateException e) {
+					}
+					catch (OutOfMemoryError e) {
 						Ut.w("OutOfMemoryError");
 						mPoiManager.rollbackTransaction();
 					}
 					Ut.dd("Pois commited");
 				}
 
-
-
 				dlgWait.dismiss();
 				ImportPoiActivity.this.finish();
-			};
+			}
+
+			;
 		});
 
 	}
-
 
 	@Override
 	protected void onDestroy() {
