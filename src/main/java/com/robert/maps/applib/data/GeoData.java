@@ -36,7 +36,7 @@ public class GeoData {
 	}
 
 	public SQLiteCursorLoader getPoiListCursorLoader(String sortColNames) {
-		// МЕ ЛЕМЪРЭ ОНПЪДНЙ ОНКЕИ
+		// Not change the order of the fields
 		return new SQLiteCursorLoader(mContext, mSQLiteOpenHelper, PoiConstants.STAT_GET_POI_LIST + sortColNames, null);
 	}
 

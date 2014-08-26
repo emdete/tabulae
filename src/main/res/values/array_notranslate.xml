@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="pref_coordformat_titles">
+    <string-array translatable="false" name="pref_coordformat_titles">
         <item>-00.00000°</item>
         <item>-00°00.0000\'</item>
         <item>-00°00\'00.00"</item>
@@ -9,7 +9,7 @@
         <item>N00°00.0000\'</item>
         <item>N00°00\'00.00"</item>
     </string-array>
-    <string-array name="pref_coordformat_values">
+    <string-array translatable="false" name="pref_coordformat_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -17,27 +17,27 @@
         <item>4</item>
         <item>5</item>
     </string-array>
-    <string-array name="overlay_button_visibility_values">
+    <string-array translatable="false" name="overlay_button_visibility_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
     </string-array>
-    <string-array name="overlay_button_behavior_values">
+    <string-array translatable="false" name="overlay_button_behavior_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
     </string-array>
-    <string-array name="projection_title">
+    <string-array translatable="false" name="projection_title">
         <item>Mercator (spheroid - like Google.Map)</item>
         <item>Mercator (ellipsoid - like Yandex.Map)</item>
         <item>OSGB 36 British national grid reference system</item>
     </string-array>
-    <string-array name="projection_value">
+    <string-array translatable="false" name="projection_value">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
-    <string-array name="accuracy_pref_value">
+    <string-array translatable="false" name="accuracy_pref_value">
         <item>1</item>
         <item>0</item>
         <item>5</item>
@@ -46,7 +46,7 @@
         <item>50</item>
         <item>100</item>
     </string-array>
-    <string-array name="zoomlevel_pref_title">
+    <string-array translatable="false" name="zoomlevel_pref_title">
         <item>Not set</item>
         <item>1</item>
         <item>2</item>
@@ -69,7 +69,7 @@
         <item>19</item>
         <item>20</item>
     </string-array>
-    <string-array name="zoomlevel_pref_value">
+    <string-array translatable="false" name="zoomlevel_pref_value">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -92,7 +92,7 @@
         <item>19</item>
         <item>20</item>
     </string-array>
-    <string-array name="languages_codes">
+    <string-array translatable="false" name="languages_codes">
         <item>ar</item>
         <item>eu</item>
         <item>bg</item>
@@ -151,7 +151,7 @@
         <item>zh-CN</item>
         <item>zh-TW</item>
     </string-array>
-    <string-array name="languages_names">
+    <string-array translatable="false" name="languages_names">
         <item>ARABIC</item>
         <item>BASQUE</item>
         <item>BULGARIAN</item>
@@ -210,12 +210,12 @@
         <item>CHINESE (SIMPLIFIED)</item>
         <item>CHINESE (TRADITIONAL)</item>
     </string-array>
-    <string-array name="screen_orientation_pref_value">
+    <string-array translatable="false" name="screen_orientation_pref_value">
         <item>-1</item>
         <item>0</item>
         <item>1</item>
     </string-array>
-    <string-array name="mintime_pref_values">
+    <string-array translatable="false" name="mintime_pref_values">
         <item>1000</item>
         <item>2000</item>
         <item>3000</item>
@@ -232,7 +232,7 @@
         <item>900000</item>
         <item>1800000</item>
     </string-array>
-    <string-array name="mindistance_pref_values">
+    <string-array translatable="false" name="mindistance_pref_values">
         <item>5</item>
         <item>10</item>
         <item>50</item>
@@ -240,31 +240,31 @@
         <item>200</item>
         <item>500</item>
     </string-array>
-    <string-array name="zoomctrl_pref_values">
+    <string-array translatable="false" name="zoomctrl_pref_values">
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>0</item>
     </string-array>
-    <string-array name="units_pref_values">
+    <string-array translatable="false" name="units_pref_values">
         <item>0</item>
         <item>1</item>
     </string-array>
-    <string-array name="googlescale_pref_title">
+    <string-array translatable="false" name="googlescale_pref_title">
         <item>Default</item>
         <item>1.5</item>
         <item>2</item>
         <item>2.5</item>
         <item>3</item>
     </string-array>
-    <string-array name="googlescale_pref_values">
+    <string-array translatable="false" name="googlescale_pref_values">
         <item>1</item>
         <item>1.5</item>
         <item>2</item>
         <item>2.5</item>
         <item>3</item>
     </string-array>
-    <string-array name="pref_locale_title">
+    <string-array translatable="false" name="pref_locale_title">
         <item>Default system</item>
         <item>English</item>
         <item>Русский</item>
@@ -278,7 +278,7 @@
         <item>Danish</item>
         <item>Mongolian</item>
     </string-array>
-    <string-array name="pref_locale_values">
+    <string-array translatable="false" name="pref_locale_values">
         <item></item>
         <item>en</item>
         <item>ru</item>

@@ -89,14 +89,14 @@ public class SearchResultOverlay extends TileViewOverlay {
 	}
 
 	public void setLocation(final Location loc) {
-		// хЯОНКЭГСЕРЯЪ ДКЪ ЯНУПЮМЕМХЪ РЕЙСЫЕЦН ОНКНФЕМХЪ 
+		// Used to save the current position
 		this.mCurrLocation = TypeConverter.locationToGeoPoint(loc);
 		if (!mSearchBubble)
 			setDescr();
 	}
 
 	public void setLocation(final GeoPoint geopoint, final String aDescr) {
-		// хЯОНКЭГСЕРЯЪ ОПХ ОНХЯЙЕ
+		// Used when searching
 		this.mLocation = geopoint;
 		this.mDescr = aDescr;
 		mSearchBubble = true;

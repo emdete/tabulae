@@ -195,7 +195,7 @@ public class MainActivity extends Activity {
 		mPoiManager = new PoiManager(this);
 		mLocationListener = new SampleLocationListener();
 		mMap.setMoveListener(mMoveListener);
-		//if(!OpenStreetMapViewConstants.DEBUGMODE) // ЩЛСКЪРНП ЯРЮК БХЯМСРЭ МЮ ЯКЕД ЯРПНВЙЕ
+		//if(!OpenStreetMapViewConstants.DEBUGMODE) // Emulator was hang on the next line
 		mOrientationSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -1398,7 +1398,7 @@ public class MainActivity extends Activity {
 				.setMessage(R.string.ya_dialog_message)
 				.setPositiveButton(R.string.ya_dialog_button_caption, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						Browser.saveBookmark(MainActivity.this, "лНАХКЭМШИ ъМДЕЙЯ", "m.yandex.ru");
+						Browser.saveBookmark(MainActivity.this, "Mobile Yandex", "m.yandex.ru");
 					}
 				}).create();
 		} else if (id == R.id.whatsnew) {

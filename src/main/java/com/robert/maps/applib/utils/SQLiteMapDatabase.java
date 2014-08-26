@@ -68,7 +68,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 			if (files != null) {
 				int j = 0;
 				mBaseFileIndex = 0;
-				// оНДЯВХРЮЕЛ ЙНКХВЕЯРБН ОНДУНДЪЫХУ ТЮИКНБ
+				// Count the number of matching files
 				for (int i = 0; i < files.length; i++) {
 					if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
 						j = j + 1;
@@ -83,12 +83,12 @@ public class SQLiteMapDatabase implements ICacheProvider {
 					}
 				}
 				final int dbFilesCnt = j;
-				// еЯКХ МСФМН ЯНГДЮРЭ ЕЫЕ НДХМ, РН ПЕГЕПБХПСЕЛ ДКЪ МЕЦН ЛЕЯРН
+				// If you want to create another one, then reserve a place for him
 				if (aCreateNewDatabaseFile || j == 0)
 					j = j + 1;
-				// яНГДЮЕЛ ЛЮЯЯХБ НОПЕДЕКЕММНЦН ПЮГЛЕПЮ
+				// Create an array of a certain size
 				mDatabase = new SQLiteDatabase[j];
-				// гЮОНКМЪЕЛ ЛЮЯЯХБ
+				// Fill the array
 				j = 0;
 				long minsize = 0;
 				for (int i = 0; i < files.length; i++) {

@@ -264,7 +264,7 @@ public class TileView extends View {
 		mTileOverlay.setMoveListener(moveListener);
 	}
 
-	// TODO яКЕД ОПНЖЕДСПШ ОНД БНОПНЯНЛ Н ОЕПЕДЕКЙЕ
+	// TODO following procedures under the question of alteration
 
 	public void setDisableControl(boolean b) {
 		mDisableControl = true;

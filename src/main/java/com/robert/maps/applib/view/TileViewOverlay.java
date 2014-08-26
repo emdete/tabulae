@@ -87,9 +87,9 @@ public abstract class TileViewOverlay {
 	 * If you returned <code>true</code> none of the following Overlays or the underlying {@link OpenStreetMapView} has the chance to handle this event.
 	 */
 	public int onLongPress(MotionEvent e, TileView openStreetMapView) {
-		// 0 - МЕ АКНЙХПНБЮРЭ МХВЕЦН, ЯНАШРХЕ МЕ НАПЮАНРЮМН
-		// 1 - ЯНАШРХЕ НАПЮАНРЮМН, АКНЙХПНБЮРЭ НАПЮАНРЙС Б ДПСЦХУ НБЕПКЕЪУ, ме АКНЙХПНБЮРЭ БШГНБ ЙНМРЕЙЯРМНЦН ЛЕМЧ
-		// 2 - ЯНАШРХЕ НАПЮАНРЮМН, АКНЙХПНБЮРЭ НАПЮАНРЙС Б ДПСЦХУ НБЕПКЕЪУ Х АКНЙХПНБЮРЭ БШГНБ ЙНМРЕЙЯРМНЦН ЛЕМЧ
+		// 0 - do not block anything, the event is not handled
+		// 1 - event processed, block processing in other overlays, DO NOT block the call context menu
+		// 2 - the event is processed, block the processing of other overlays and block a context menu
 		return 0;
 	}
 

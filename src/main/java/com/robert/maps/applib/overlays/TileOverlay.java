@@ -23,7 +23,7 @@ import org.andnav.osm.views.util.Util;
 import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
 
 public class TileOverlay extends TileViewOverlay implements OpenStreetMapConstants, OpenStreetMapViewConstants {
-	// TODO яКЕД ОПНЖЕДСПШ ОНД БНОПНЯНЛ Н ОЕПЕДЕКЙЕ
+	// TODO following procedures under the question of alteration
 	private static final int LATITUDE = 0;
 	private static final int LONGITUDE = 1;
 	final Matrix mMatrixBearing = new Matrix();

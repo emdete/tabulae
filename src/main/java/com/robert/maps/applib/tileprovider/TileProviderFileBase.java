@@ -148,7 +148,7 @@ public class TileProviderFileBase extends TileProviderBase {
 
 	private SQLiteDatabase getIndexDatabase(Context ctx) {
 		File folder = Ut.getRMapsMainDir(ctx, "data");
-		if (!folder.exists()) // no sdcard // TODO оПНБЕПХРЭ ЙЮЙ ЩРН ПЮАНРЮЕР АЕГ ЙЮПРШ? ЕЯКХ БШРЮЫХРЭ ЙЮПРС БН БПЕЛЪ ПЮАНРШ ОПНЦПЮЛЛШ?
+		if (!folder.exists()) // no sdcard // TODO Check how it works without a map? if you draw a card during the program?
 			return null;
 
 		Ut.d("OpenStreetMapTileFilesystemProvider: Open INDEX database");

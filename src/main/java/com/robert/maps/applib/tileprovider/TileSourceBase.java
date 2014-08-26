@@ -55,7 +55,7 @@ public class TileSourceBase {
 		TILE_SOURCE_TYPE, // 0 - internet, 3 - MapNav file, 4 - TAR, 5 - sqlitedb
 		YANDEX_TRAFFIC_ON,
 		MAP_TYPE,
-		PROJECTION; // 1-ЛЕПЙЮРНП МЮ ЯТЕПНХД, 2- МЮ ЩККХОЯНХД, 3- OSGB 36 British national grid reference system
+		PROJECTION; // 1 - Mercator on the spheroid, 2 - on the ellipsoid, 3- OSGB 36 British national grid reference system
 	public boolean LAYER, mOnlineMapCacheEnabled, GOOGLESCALE = false, TIMEDEPENDENT = false;
 	public double MAPTILE_SIZE_FACTOR = 1.0, GOOGLESCALE_SIZE_FACTOR = 1.0;
 	public double OFFSET_LAT = 0, OFFSET_LON = 0;
