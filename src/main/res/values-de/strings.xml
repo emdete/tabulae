@@ -114,7 +114,7 @@ Problemlösungen und FAQ kannst Du bei http://robertdeveloper.blogspot.com/ find
   <string name="message_corruptindex">Du hast beschädigte Indexdaten. Ich empfehle die Indexdaten in den Einstellungen zu löschen.</string>
   <string name="message_updateminmax">Aktualisiere min max Zoom-Daten der Kartendatei ...</string>
   <string name="message_saved">Element gespeichert</string>
-  <string name="menu_done">Getan</string>
+  <string name="menu_done">Fertig</string>
   <string name="menu_doNotSave">zurückkehren</string>
   <string name="menu_edit">Bearbeiten</string>
   <string name="menu_delete">Löschen</string>
