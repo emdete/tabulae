@@ -16,7 +16,7 @@
 
 package net.margaritov.preference.colorpicker;
 
-import com.robert.maps.applib.R;
+import org.pyneo.maps.applib.R;
 
 import android.app.Dialog;
 import android.content.Context;

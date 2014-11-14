@@ -26,7 +26,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.robert.maps.applib.R;
+import org.pyneo.maps.applib.R;
 
 public class IconifiedTextView extends LinearLayout {
 

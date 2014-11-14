@@ -23,5 +23,5 @@
     android:imeOptions="actionSearch"
     android:label="@string/search_label"
     android:searchMode="showSearchLabelAsBadge"
-    android:searchSuggestAuthority="com.robert.maps.SuggestionProvider"
+    android:searchSuggestAuthority="org.pyneo.maps.SuggestionProvider"
     android:searchSuggestSelection=" ? " />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.robert.maps.applib"
+	package="org.pyneo.maps.applib"
 	android:installLocation="auto"
 	android:sharedUserId="@string/app_user_id"
 	android:sharedUserLabel="@string/app_user_label"
@@ -59,7 +59,7 @@
 		<activity android:name=".MainPreferences" ></activity>
 		<provider
 			android:name=".utils.SearchSuggestionsProvider"
-			android:authorities="com.robert.maps.SuggestionProvider" >
+			android:authorities="org.pyneo.maps.SuggestionProvider" >
 		</provider>
 		<activity android:name=".kml.PoiActivity" ></activity>
 		<activity android:name=".kml.PoiListActivity" ></activity>
