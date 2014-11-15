@@ -46,7 +46,7 @@
   <string name="pref_main_maps">既存の地図</string>
   <string name="pref_main_maps_summary">インターネット接続が必要</string>
   <string name="pref_main_usermaps">ユーザー定義の地図</string>
-  <string name="pref_main_usermaps_summary">/sdcard/rmaps/maps に保存された地図</string>
+  <string name="pref_main_usermaps_summary">/sdcard/tabulae/maps に保存された地図</string>
   <string name="prefcat_main_predefinedmaps">地図</string>
   <string name="prefcat_main_predefinedoverlays">オーバーレイ</string>
   <string name="btn_clear_cache_title">キャッシュをクリア</string>
@@ -69,7 +69,7 @@
   <string name="menu_mylocation">現在地</string>
   <string name="menu_mapselector">地図</string>
   <string name="menu_compass">コンパス</string>
-  <string name="menu_about">RMapsについて</string>
+  <string name="menu_about">Tabulaeについて</string>
   <string name="menu_search">検索</string>
   <string name="menu_add">追加</string>
   <string name="menu_addpoi">POIの追加</string>
@@ -134,7 +134,7 @@ How to and FAQ you can find on http://robertdeveloper.blogspot.com/\n
   <string name="MinZoom">ズーム (0..23) から表示するPOI</string>
   <string name="warning_delete_all_poi">すべてのPOIを削除しますか？</string>
   <string name="menu_tracks">トラック</string>
-  <string name="remote_service_started">RMaps Track Writer</string>
+  <string name="remote_service_started">Tabulae Track Writer</string>
   <string name="menu_goto_track">トラックへ移動</string>
   <string name="btn_start">開始</string>
   <string name="btn_pause">一時停止</string>
@@ -155,7 +155,7 @@ How to and FAQ you can find on http://robertdeveloper.blogspot.com/\n
   <string name="message_cantstarttrackwriter">トラックを書き込むことができないため、Track Writerを開始できませんでした。</string>
   <string name="message_error">エラー: %s</string>
   <string name="error_title">エラーレポート</string>
-  <string name="error_text">前回の起動後、ソフトウェアの問題でRMapsが予期せず終了しました。
+  <string name="error_text">前回の起動後、ソフトウェアの問題でTabulaeが予期せず終了しました。
 レポートの作成をタップして、エラーレポートをプログラムの作者に送ってください。
 レポートを送信する前にメッセージを読むことができます。</string>
   <string name="error_send">レポートを作成</string>
@@ -163,11 +163,11 @@ How to and FAQ you can find on http://robertdeveloper.blogspot.com/\n
   <string name="pref_onlinecache_summary">オンラインマップのタイルをSDカードに保存</string>
   <string name="message_wait">しばらくお待ちください。</string>
   <string name="pref_dir">ディレクトリ</string>
-  <string name="pref_dir_main">RMapsのメインディレクトリ</string>
+  <string name="pref_dir_main">Tabulaeのメインディレクトリ</string>
   <string name="pref_dir_maps">ユーザーマップのディレクトリ</string>
   <string name="pref_dir_import">インポートファイルのディレクトリ</string>
   <string name="pref_dir_export">エクスポートファイルのディレクトリ</string>
-  <string name="pref_dir_summary">RMapsのファイルの保存先</string>
+  <string name="pref_dir_summary">Tabulaeのファイルの保存先</string>
   <string name="pref_crosshair">画面中央の十字</string>
   <string name="pref_crosshair_summary">地図の中心に十字を表示</string>
   <string name="points_cnt">ポイント</string>
@@ -214,7 +214,7 @@ How to and FAQ you can find on http://robertdeveloper.blogspot.com/\n
   <string name="pref_overlay_button_behavior_summary">タップと長押しの動作設定</string>
   <string name="pref_custommap_dialogmessage">例: \n http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n 明白な {z}, {x}, {y} に加え、Googleマップでは {galileo} を使用できます。\n パラメーターのリストを拡張する必要がある場合は私にメールを送ってください。\n</string>
   <string name="downloader_notif_ticket">ダウンロード開始...</string>
-  <string name="downloader_notif_title">RMapsタイルダウンローダー</string>
+  <string name="downloader_notif_title">Tabulaeタイルダウンローダー</string>
   <string name="downloader_notif_text">ダウンロード中</string>
   <string name="pref_minzoom">最小ズーム</string>
   <string name="pref_maxzoom">最大ズーム</string>
@@ -299,5 +299,5 @@ How to and FAQ you can find on http://robertdeveloper.blogspot.com/\n
   <string name="pref_use_volume_controls_summary">Use volume controls to zooming the map</string>
   <string name="pref_person_icon">ロケーションカーソル</string>
   <string name="pref_arrow_icon">ディレクションカーソル</string>
-  <string name="pref_icon_summary">File from ..rmaps/icons/cursors/*.png</string>
+  <string name="pref_icon_summary">File from ..tabulae/icons/cursors/*.png</string>
 </resources>

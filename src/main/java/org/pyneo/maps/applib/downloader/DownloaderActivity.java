@@ -145,7 +145,7 @@ public class DownloaderActivity extends Activity {
 			editor.putBoolean(TileSourceBase.PREF_USERMAP_ + name + "_enabled", true);
 			editor.putString(TileSourceBase.PREF_USERMAP_ + name + "_name", pref.getString(TileSourceBase.PREF_USERMAP_ + name + "_name", mFileName));
 			editor.putString(TileSourceBase.PREF_USERMAP_ + name + "_projection", Integer.toString(mTileSource.PROJECTION));
-			final File folder = Ut.getRMapsMapsDir(DownloaderActivity.this);
+			final File folder = Ut.getAppMapsDir(DownloaderActivity.this);
 			editor.putString(TileSourceBase.PREF_USERMAP_ + name + "_baseurl", folder.getAbsolutePath() + "/" + mFileName + ".sqlitedb");
 			editor.putBoolean(TileSourceBase.PREF_USERMAP_ + name + "_isoverlay", mTileSource.LAYER);
 			editor.commit();
@@ -204,7 +204,7 @@ public class DownloaderActivity extends Activity {
 		mTextVwError.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				final File file = new File(Ut.getRMapsMainDir(DownloaderActivity.this, "").getAbsolutePath() + "/cache/mapdownloaderlog.txt");
+				final File file = new File(Ut.getAppMainDir(DownloaderActivity.this, "").getAbsolutePath() + "/cache/mapdownloaderlog.txt");
 				final Intent intent = new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.fromFile(file), "text/plain");
 				startActivity(intent);
 			}

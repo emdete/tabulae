@@ -42,11 +42,11 @@ public class TileProviderInet extends TileProviderBase {
 			mTileCache = aTileCache;
 		if (cacheDatabaseName != null) {
 			final SQLiteMapDatabase cacheDatabase = new SQLiteMapDatabase();
-			final File folder = Ut.getRMapsMainDir(ctx, "cache");
+			final File folder = Ut.getAppMainDir(ctx, "cache");
 			cacheDatabase.setFile(folder.getAbsolutePath() + "/" + cacheDatabaseName + ".sqlitedb");
 			mCacheProvider = cacheDatabase;
 		} else {
-			final File folder = Ut.getRMapsCacheTilesDir(ctx);
+			final File folder = Ut.getAppCacheTilesDir(ctx);
 			mCacheProvider = new FSCacheProvider(folder);
 		}
 	}

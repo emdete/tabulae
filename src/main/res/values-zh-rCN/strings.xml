@@ -46,7 +46,7 @@
   <string name="pref_main_maps">预定义地图</string>
   <string name="pref_main_maps_summary">需要网络连接</string>
   <string name="pref_main_usermaps">用户定义地图</string>
-  <string name="pref_main_usermaps_summary">地图来自 /sdcard/rmaps/maps</string>
+  <string name="pref_main_usermaps_summary">地图来自 /sdcard/tabulae/maps</string>
   <string name="prefcat_main_predefinedmaps">地图</string>
   <string name="prefcat_main_predefinedoverlays">叠加</string>
   <string name="btn_clear_cache_title">清除缓存</string>
@@ -137,7 +137,7 @@ Robin He[中文简体]\n
   <string name="MinZoom">从何级别开始显示POI(0..23)</string>
   <string name="warning_delete_all_poi">确定要删除所有POI么？</string>
   <string name="menu_tracks">轨迹</string>
-  <string name="remote_service_started">RMaps轨迹写入器</string>
+  <string name="remote_service_started">Tabulae轨迹写入器</string>
   <string name="menu_goto_track">转至轨迹</string>
   <string name="btn_start">启动</string>
   <string name="btn_pause">暂停</string>
@@ -158,17 +158,17 @@ Robin He[中文简体]\n
   <string name="message_cantstarttrackwriter">不能启动TrackWriter，因为不能写入轨迹到</string>
   <string name="message_error">错误:%s</string>
   <string name="error_title">错误报告</string>
-  <string name="error_text">最后一次启动后发生问题迫使RMaps意外关闭。请发送错误报告到该程序的作者，点击\'生成报告\'，你可以在发出前阅读该报告的正文。</string>
+  <string name="error_text">最后一次启动后发生问题迫使Tabulae意外关闭。请发送错误报告到该程序的作者，点击\'生成报告\'，你可以在发出前阅读该报告的正文。</string>
   <string name="error_send">生成报告</string>
   <string name="pref_onlinecache">在线地图缓存</string>
   <string name="pref_onlinecache_summary">保存在线地图图块到SD卡</string>
   <string name="message_wait">请稍候片刻...</string>
   <string name="pref_dir">目录</string>
-  <string name="pref_dir_main">RMaps主目录</string>
+  <string name="pref_dir_main">Tabulae主目录</string>
   <string name="pref_dir_maps">用户地图目录</string>
   <string name="pref_dir_import">导入文件目录</string>
   <string name="pref_dir_export">导出文件目录</string>
-  <string name="pref_dir_summary">RMaps存储文件的位置</string>
+  <string name="pref_dir_summary">Tabulae存储文件的位置</string>
   <string name="pref_crosshair">中心的十字线</string>
   <string name="pref_crosshair_summary">在地图的中心显示十字线</string>
   <string name="points_cnt">点</string>
@@ -218,7 +218,7 @@ http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n
 除了显式的{Z}，{X}，{Y}，你可以使用谷歌地图的{galileo}\n
 如果你需要扩展的参数列表，给我来个依妹儿。\n</string>
   <string name="downloader_notif_ticket">下载开始...</string>
-  <string name="downloader_notif_title">RMaps图块下载器</string>
+  <string name="downloader_notif_title">Tabulae图块下载器</string>
   <string name="downloader_notif_text">下载进行中</string>
   <string name="pref_minzoom">最小缩放</string>
   <string name="pref_maxzoom">最大缩放</string>
@@ -303,5 +303,5 @@ http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n
   <string name="pref_use_volume_controls_summary">使用音量控制键缩放地图</string>
   <string name="pref_person_icon">位置光标</string>
   <string name="pref_arrow_icon">方向光标</string>
-  <string name="pref_icon_summary">来自 ...rmaps/icons/cursors/*.png 的文件</string>
+  <string name="pref_icon_summary">来自 ...tabulae/icons/cursors/*.png 的文件</string>
 </resources>

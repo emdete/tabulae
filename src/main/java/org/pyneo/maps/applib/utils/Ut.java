@@ -53,7 +53,7 @@ public class Ut implements OpenStreetMapConstants, OpenStreetMapViewConstants {
 		"yyyy-MM-dd",
 	};
 	private static String EXTERNAL_SD = "/storage/extSdCard";
-	private static String SIGNAL_FILE_NAME = "/RMapsOnSDCard";
+	private static String SIGNAL_FILE_NAME = "/TabulaeOnSDCard";
 
 	public static long copy(final InputStream in, final OutputStream out) throws IOException {
 		long length = 0;
@@ -135,9 +135,9 @@ public class Ut implements OpenStreetMapConstants, OpenStreetMapViewConstants {
 	}
 
 	public static void toLogFile(String str) {
-//	    PrintWriter pw;
+//		PrintWriter pw;
 //		try {
-//			pw = new PrintWriter(new File(Environment.getExternalStorageDirectory().getPath()+"/rmaps.log"));
+//			pw = new PrintWriter(new File(Environment.getExternalStorageDirectory().getPath()+"/tabulae.log"));
 //			pw.println(str);
 //			pw.flush();
 //			pw.close();
@@ -200,24 +200,24 @@ public class Ut implements OpenStreetMapConstants, OpenStreetMapViewConstants {
 			return Environment.getExternalStorageDirectory().getPath();
 	}
 
-	public static File getRMapsMainDir(final Context mCtx, final String aFolderName) {
-		return getDir(mCtx, "pref_dir_main", Ut.getExternalStorageDirectory() + "/rmaps/", aFolderName);
+	public static File getAppMainDir(final Context mCtx, final String aFolderName) {
+		return getDir(mCtx, "pref_dir_main", Ut.getExternalStorageDirectory() + "/tabulae/", aFolderName);
 	}
 
-	public static File getRMapsMapsDir(final Context mCtx) {
-		return getDir(mCtx, "pref_dir_maps", getRMapsMainDir(mCtx, "maps").getAbsolutePath(), "");
+	public static File getAppMapsDir(final Context mCtx) {
+		return getDir(mCtx, "pref_dir_maps", getAppMainDir(mCtx, "maps").getAbsolutePath(), "");
 	}
 
-	public static File getRMapsImportDir(final Context mCtx) {
-		return getDir(mCtx, "pref_dir_import", getRMapsMainDir(mCtx, "import").getAbsolutePath(), "");
+	public static File getAppImportDir(final Context mCtx) {
+		return getDir(mCtx, "pref_dir_import", getAppMainDir(mCtx, "import").getAbsolutePath(), "");
 	}
 
-	public static File getRMapsExportDir(final Context mCtx) {
-		return getDir(mCtx, "pref_dir_export", getRMapsMainDir(mCtx, "export").getAbsolutePath(), "");
+	public static File getAppExportDir(final Context mCtx) {
+		return getDir(mCtx, "pref_dir_export", getAppMainDir(mCtx, "export").getAbsolutePath(), "");
 	}
 
-	public static File getRMapsCacheTilesDir(final Context mCtx) {
-		return getRMapsMainDir(mCtx, "cache/tiles");
+	public static File getAppCacheTilesDir(final Context mCtx) {
+		return getAppMainDir(mCtx, "cache/tiles");
 	}
 
 	public static String readString(final InputStream in, final int size) throws IOException {

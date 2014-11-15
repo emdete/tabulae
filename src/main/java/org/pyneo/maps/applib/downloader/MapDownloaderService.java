@@ -97,7 +97,7 @@ public class MapDownloaderService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-		mLogFileName = Ut.getRMapsMainDir(this, "").getAbsolutePath() + "/cache/mapdownloaderlog.txt";
+		mLogFileName = Ut.getAppMainDir(this, "").getAbsolutePath() + "/cache/mapdownloaderlog.txt";
 		final File file = new File(mLogFileName);
 		if (file.exists())
 			file.delete();
@@ -182,7 +182,7 @@ public class MapDownloaderService extends Service {
 				mOfflineMapName = mTileSource.CACHE;
 		}
 
-		final File folder = mLoadToOnlineCache? Ut.getRMapsMainDir(this, "cache"): Ut.getRMapsMapsDir(this);
+		final File folder = mLoadToOnlineCache? Ut.getAppMainDir(this, "cache"): Ut.getAppMapsDir(this);
 		final File file = new File(folder.getAbsolutePath() + "/" + mOfflineMapName + ".sqlitedb");
 		if (mOverwriteFile && !mLoadToOnlineCache) {
 			File[] files = folder.listFiles();

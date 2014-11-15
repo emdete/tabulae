@@ -197,7 +197,7 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 			else
 				mTrack.getPoints().clear();
 
-			final File folder = Ut.getRMapsMainDir(mContext, "data");
+			final File folder = Ut.getAppMainDir(mContext, "data");
 			if (folder.canRead()) {
 				SQLiteDatabase db = null;
 				try {

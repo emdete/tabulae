@@ -46,7 +46,7 @@
   <string name="pref_main_maps">Předdefinované mapy</string>
   <string name="pref_main_maps_summary">Je vyžadováno připojení k Internetu</string>
   <string name="pref_main_usermaps">Uživatelem definované mapy</string>
-  <string name="pref_main_usermaps_summary">Mapy z /sdcard/rmaps/maps</string>
+  <string name="pref_main_usermaps_summary">Mapy z /sdcard/tabulae/maps</string>
   <string name="prefcat_main_predefinedmaps">Mapy</string>
   <string name="prefcat_main_predefinedoverlays">Vrstvy</string>
   <string name="btn_clear_cache_title">Vymazat cache</string>
@@ -130,7 +130,7 @@ Návod a nejčastější dotazy (FAQ) naleznete na http://robertdeveloper.blogsp
   <string name="MinZoom">Zobrazit POI od zoomu (0..23)</string>
   <string name="warning_delete_all_poi">Opravdu chcete odstranit všechny POI?</string>
   <string name="menu_tracks">Prošlé trasy</string>
-  <string name="remote_service_started">RMaps záznam tras</string>
+  <string name="remote_service_started">Tabulae záznam tras</string>
   <string name="menu_goto_track">Jdi na trasu</string>
   <string name="btn_start">Start</string>
   <string name="btn_pause">Pauza</string>
@@ -151,17 +151,17 @@ Návod a nejčastější dotazy (FAQ) naleznete na http://robertdeveloper.blogsp
   <string name="message_cantstarttrackwriter">Záznamník tras nelze spustit, protože nemůže zapisovat do </string>
   <string name="message_error">Chyba: %s</string>
   <string name="error_title">Chybová zpráva</string>
-  <string name="error_text">Aplikace RMaps byla neočekávaně ukončena. Zašlete prosím zprávu o chybě autorovi programu. Klepněte na tlačítko Generovat report, ten si můžete před odesláním přečíst.</string>
+  <string name="error_text">Aplikace Tabulae byla neočekávaně ukončena. Zašlete prosím zprávu o chybě autorovi programu. Klepněte na tlačítko Generovat report, ten si můžete před odesláním přečíst.</string>
   <string name="error_send">Generovat report</string>
   <string name="pref_onlinecache">Cache pro online mapy</string>
   <string name="pref_onlinecache_summary">Ukládat online mapy na SD kartu</string>
   <string name="message_wait">Počkejte chvíli, prosím…</string>
   <string name="pref_dir">Adresáře</string>
-  <string name="pref_dir_main">RMaps adresář</string>
+  <string name="pref_dir_main">Tabulae adresář</string>
   <string name="pref_dir_maps">Adresář uživatelských map</string>
   <string name="pref_dir_import">Adresář pro import</string>
   <string name="pref_dir_export">Adresář pro export</string>
-  <string name="pref_dir_summary">Kde RMaps ukládá vaše soubory</string>
+  <string name="pref_dir_summary">Kde Tabulae ukládá vaše soubory</string>
   <string name="pref_crosshair">Křížek ve středu</string>
   <string name="pref_crosshair_summary">Ukázat malý křížek uprostřed mapy</string>
   <string name="points_cnt">BODY</string>
@@ -211,7 +211,7 @@ http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n
 Dodatek ke zřejmému: {z}, {x}, {y} můžete použít {galileo} pro Google mapy\n
 Napište mi email, pokud potřebujete rozšířit tento seznam parametrů.\n</string>
   <string name="downloader_notif_ticket">Stahování začalo…</string>
-  <string name="downloader_notif_title">RMaps stahovač dlaždic</string>
+  <string name="downloader_notif_title">Tabulae stahovač dlaždic</string>
   <string name="downloader_notif_text">Stahování běží</string>
   <string name="pref_minzoom">Min zoom</string>
   <string name="pref_maxzoom">Max zoom</string>
@@ -296,5 +296,5 @@ Napište mi email, pokud potřebujete rozšířit tento seznam parametrů.\n</st
   <string name="pref_use_volume_controls_summary">Use volume controls to zooming the map</string>
   <string name="pref_person_icon">Location cursor</string>
   <string name="pref_arrow_icon">Direction cursor</string>
-  <string name="pref_icon_summary">File from ..rmaps/icons/cursors/*.png</string>
+  <string name="pref_icon_summary">File from ..tabulae/icons/cursors/*.png</string>
 </resources>

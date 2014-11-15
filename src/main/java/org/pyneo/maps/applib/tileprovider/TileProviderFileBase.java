@@ -147,7 +147,7 @@ public class TileProviderFileBase extends TileProviderBase {
 	}
 
 	private SQLiteDatabase getIndexDatabase(Context ctx) {
-		File folder = Ut.getRMapsMainDir(ctx, "data");
+		File folder = Ut.getAppMainDir(ctx, "data");
 		if (!folder.exists()) // no sdcard // TODO Check how it works without a map? if you draw a card during the program?
 			return null;
 

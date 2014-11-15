@@ -243,7 +243,7 @@ public class IndicatorManager implements IndicatorConst {
 			}
 			json.put(JINDICATORS, jarrv);
 
-			final File folder = Ut.getRMapsMainDir(ctx, DASHBOARD_DIR);
+			final File folder = Ut.getAppMainDir(ctx, DASHBOARD_DIR);
 			if (folder.exists()) {
 				FileWriter writer = new FileWriter(String.format(DASHBOARD_FILE, folder.getAbsolutePath(), mTemplateFileName));
 				writer.write(json.toString());
@@ -298,7 +298,7 @@ public class IndicatorManager implements IndicatorConst {
 	private void initView(MainActivity context, ViewGroup viewGroup) {
 		mTemplateFileName = getOrientation(context) == Configuration.ORIENTATION_LANDSCAPE? JMAINLANDSCAPE: JMAIN;
 
-		final File folder = Ut.getRMapsMainDir(context, DASHBOARD_DIR);
+		final File folder = Ut.getAppMainDir(context, DASHBOARD_DIR);
 		if (folder.exists()) {
 			final File file = new File(String.format(DASHBOARD_FILE, folder.getAbsolutePath(), mTemplateFileName));
 

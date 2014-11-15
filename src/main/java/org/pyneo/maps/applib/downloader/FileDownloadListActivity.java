@@ -103,7 +103,7 @@ public class FileDownloadListActivity extends ListActivity {
 				InputStream input = new BufferedInputStream(url.openStream());
 				//int fileLength = connection.getContentLength();
 				//Ut.d("Content-Length="+connection.getHeaderField("Content-Length"));
-				OutputStream output = new FileOutputStream(Ut.getRMapsMapsDir(FileDownloadListActivity.this).getAbsolutePath() + "/" + fileName);
+				OutputStream output = new FileOutputStream(Ut.getAppMapsDir(FileDownloadListActivity.this).getAbsolutePath() + "/" + fileName);
 
 				byte data[] = new byte[1024];
 				long total = 0;
@@ -127,7 +127,7 @@ public class FileDownloadListActivity extends ListActivity {
 
 				if (isCancelled()) {
 					ret = null;
-					final File file = new File(Ut.getRMapsMapsDir(FileDownloadListActivity.this).getAbsolutePath() + "/" + fileName);
+					final File file = new File(Ut.getAppMapsDir(FileDownloadListActivity.this).getAbsolutePath() + "/" + fileName);
 					if (file.exists())
 						file.delete();
 				}
@@ -164,7 +164,7 @@ public class FileDownloadListActivity extends ListActivity {
 				editor.putBoolean(TileSourceBase.PREF_USERMAP_ + name + "_enabled", true);
 				editor.putString(TileSourceBase.PREF_USERMAP_ + name + "_name", mapName);
 				editor.putString(TileSourceBase.PREF_USERMAP_ + name + "_projection", "1");
-				final File folder = Ut.getRMapsMapsDir(FileDownloadListActivity.this);
+				final File folder = Ut.getAppMapsDir(FileDownloadListActivity.this);
 				editor.putString(TileSourceBase.PREF_USERMAP_ + name + "_baseurl", folder.getAbsolutePath() + "/" + fileName);
 				editor.commit();
 

@@ -46,7 +46,7 @@
   <string name="pref_main_maps">Mappe Predefinite</string>
   <string name="pref_main_maps_summary">La connessione internet è richiesta</string>
   <string name="pref_main_usermaps">Mappe definite dall\'utente</string>
-  <string name="pref_main_usermaps_summary">Mappe in /sdcard/rmaps/maps</string>
+  <string name="pref_main_usermaps_summary">Mappe in /sdcard/tabulae/maps</string>
   <string name="prefcat_main_predefinedmaps">Mappe</string>
   <string name="prefcat_main_predefinedoverlays">Sovrapposizioni</string>
   <string name="btn_clear_cache_title">Pulisci la cache</string>
@@ -160,11 +160,11 @@ How to e FAQ all\'indirizzo http://robertdeveloper.blogspot.com/\n </string>
   <string name="pref_onlinecache_summary">Immagazina le tiles delle mappe online nella sdcard</string>
   <string name="message_wait">Aspetta un momento, per favore...</string>
   <string name="pref_dir">Cartelle</string>
-  <string name="pref_dir_main">Cartella principale di RMaps</string>
+  <string name="pref_dir_main">Cartella principale di Tabulae</string>
   <string name="pref_dir_maps">Cartelle mappe dell\'utente</string>
   <string name="pref_dir_import">Cartella dove importare i files</string>
   <string name="pref_dir_export">Cartella dove vengono esportartati i files</string>
-  <string name="pref_dir_summary">Dove RMaps memorizza i tuoi files</string>
+  <string name="pref_dir_summary">Dove Tabulae memorizza i tuoi files</string>
   <string name="pref_crosshair">Mirino al centro</string>
   <string name="pref_crosshair_summary">Mostra il mirino al centro della mappa</string>
   <string name="points_cnt">PUNTI</string>
@@ -216,7 +216,7 @@ Scrivetemi una email se avete bisogno di estendere la lista dei parametri.\n
 
 </string>
   <string name="downloader_notif_ticket">Download iniziato…</string>
-  <string name="downloader_notif_title">RMaps scaricatore di tile</string>
+  <string name="downloader_notif_title">Tabulae scaricatore di tile</string>
   <string name="downloader_notif_text">Download in corso</string>
   <string name="pref_minzoom">Zoom minimo</string>
   <string name="pref_maxzoom">Zoom massimo</string>
@@ -301,5 +301,5 @@ Scrivetemi una email se avete bisogno di estendere la lista dei parametri.\n
   <string name="pref_use_volume_controls_summary">Utilizzare i controlli di volume per ingrandire la mappa</string>
   <string name="pref_person_icon">Cursore di posizione</string>
   <string name="pref_arrow_icon">Cursore di direzione</string>
-  <string name="pref_icon_summary">File da...rmaps/icons/Cursors/*.png</string>
+  <string name="pref_icon_summary">File da...tabulae/icons/Cursors/*.png</string>
 </resources>

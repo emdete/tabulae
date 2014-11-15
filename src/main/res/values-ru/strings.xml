@@ -46,7 +46,7 @@
   <string name="pref_main_maps">Он-лайн карты</string>
   <string name="pref_main_maps_summary">Требуется подключение к интернету</string>
   <string name="pref_main_usermaps">Офф-лайн карты</string>
-  <string name="pref_main_usermaps_summary">Карты из папки /sdcard/rmaps/maps</string>
+  <string name="pref_main_usermaps_summary">Карты из папки /sdcard/tabulae/maps</string>
   <string name="prefcat_main_predefinedmaps">Карты</string>
   <string name="prefcat_main_predefinedoverlays">Слои</string>
   <string name="btn_clear_cache_title">Очистить</string>
@@ -131,7 +131,7 @@ All rights reserved\n
   <string name="MinZoom">Показывать POI на карте начиная с масштаба (0..23)</string>
   <string name="warning_delete_all_poi">Вы точно хотите удалить все POI?</string>
   <string name="menu_tracks">Треки</string>
-  <string name="remote_service_started">RMaps: Запись трека</string>
+  <string name="remote_service_started">Tabulae: Запись трека</string>
   <string name="menu_goto_track">Перейти к треку</string>
   <string name="btn_start">Старт</string>
   <string name="btn_pause">Пауза</string>
@@ -152,17 +152,17 @@ All rights reserved\n
   <string name="message_cantstarttrackwriter">Не могу запустить TrackWriter потому что невозможно писать трек в папку</string>
   <string name="message_error">Ошибка: %s</string>
   <string name="error_title">Ошибка</string>
-  <string name="error_text">Во время последнего запуска RMaps была аварийно завершена. Пожалуйста, пошлите отчет об ошибке автору программы. Нажмите Создать отчет, вы сможете прочитать сообщение до того, как оно будет отправлено.</string>
+  <string name="error_text">Во время последнего запуска Tabulae была аварийно завершена. Пожалуйста, пошлите отчет об ошибке автору программы. Нажмите Создать отчет, вы сможете прочитать сообщение до того, как оно будет отправлено.</string>
   <string name="error_send">Создать отчет</string>
   <string name="pref_onlinecache">Кэш онлайн карт</string>
   <string name="pref_onlinecache_summary">Сохранять тайлы онлайн карт на sd карте</string>
   <string name="message_wait">Подождите минутку, пожалуйста...</string>
   <string name="pref_dir">Папки</string>
-  <string name="pref_dir_main">Основная папка RMaps</string>
+  <string name="pref_dir_main">Основная папка Tabulae</string>
   <string name="pref_dir_maps">Папка oффлайн карт</string>
   <string name="pref_dir_import">Папка импортируемых файлов</string>
   <string name="pref_dir_export">Папка экспортируемых файлов</string>
-  <string name="pref_dir_summary">Папки где RMaps сохраняет свои файлы</string>
+  <string name="pref_dir_summary">Папки где Tabulae сохраняет свои файлы</string>
   <string name="pref_crosshair">Перекрестие в центре</string>
   <string name="pref_crosshair_summary">Показать перекрестие в центре карты</string>
   <string name="points_cnt">ТОЧЕК</string>
@@ -212,7 +212,7 @@ http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n
 В дополнение к очевидным {z}, {x}, {y} вы можете использовать параметр {galileo} для Google карт.\n
 Пишите мне на почту, если вы хотели бы дополнить список параметров.\n</string>
   <string name="downloader_notif_ticket">Загрузка...</string>
-  <string name="downloader_notif_title">RMaps загрузчик тайлов</string>
+  <string name="downloader_notif_title">Tabulae загрузчик тайлов</string>
   <string name="downloader_notif_text">Выполняется загрузка</string>
   <string name="pref_minzoom">Минимальный масштаб</string>
   <string name="pref_maxzoom">Максимальный масштаб</string>
@@ -297,5 +297,5 @@ http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n
   <string name="pref_use_volume_controls_summary">Использовать кнопки громкости для изменения масштаба</string>
   <string name="pref_person_icon">Курсор текущего местоположения</string>
   <string name="pref_arrow_icon">Курсор направления движения</string>
-  <string name="pref_icon_summary">Файлы из папки ..rmaps/icons/cursors/*.png</string>
+  <string name="pref_icon_summary">Файлы из папки ..tabulae/icons/cursors/*.png</string>
 </resources>

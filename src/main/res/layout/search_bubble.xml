@@ -6,7 +6,7 @@
     android:maxWidth="160dp"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
-    android:text="RMaps"
+    android:text="Tabulae"
     android:textColor="@color/poi_descr_text"
     android:textSize="12dp" >
 

@@ -14,7 +14,7 @@ public class CrashReportHandler implements UncaughtExceptionHandler {
 
 	private CrashReportHandler(Activity context) {
 		m_context = context;
-		mLogFileName = Ut.getRMapsMainDir(context, "") + "/log.txt";
+		mLogFileName = Ut.getAppMainDir(context, "") + "/log.txt";
 	}
 
 	///////////////////////////////////////////// implementation

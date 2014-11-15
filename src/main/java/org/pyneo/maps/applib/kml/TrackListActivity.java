@@ -115,7 +115,7 @@ public class TrackListActivity extends ListActivity {
 		this.mThreadExecutor.execute(new Runnable() {
 			public void run() {
 				SQLiteDatabase db = null;
-				File folder = Ut.getRMapsMainDir(TrackListActivity.this, "data");
+				File folder = Ut.getAppMainDir(TrackListActivity.this, "data");
 				if (folder.canRead()) {
 					try {
 						db = new DatabaseHelper(TrackListActivity.this, folder.getAbsolutePath() + "/writedtrack.db").getWritableDatabase();
@@ -383,7 +383,7 @@ public class TrackListActivity extends ListActivity {
 				}
 				coordinates.setText(builder.toString().trim());
 
-				File folder = Ut.getRMapsExportDir(TrackListActivity.this);
+				File folder = Ut.getAppExportDir(TrackListActivity.this);
 				String filename = folder.getAbsolutePath() + "/track" + trackid + ".kml";
 				File file = new File(filename);
 				FileOutputStream out;
@@ -425,7 +425,7 @@ public class TrackListActivity extends ListActivity {
 				xml.setAttr("xsi:schemaLocation", "http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd");
 				xml.setAttr("xmlns", "http://www.topografix.com/GPX/1/0");
 				xml.setAttr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-				xml.setAttr("creator", "RMaps - http://code.google.com/p/robertprojects/");
+				xml.setAttr("creator", "Tabulae - https://github.com/emdete/Tabulae");
 				xml.setAttr("version", "1.0");
 
 				xml.createChild("name").setText(track.Name);
@@ -442,7 +442,7 @@ public class TrackListActivity extends ListActivity {
 					trkpt.createChild("time").setText(formatter.format(tp.date));
 				}
 
-				File folder = Ut.getRMapsExportDir(TrackListActivity.this);
+				File folder = Ut.getAppExportDir(TrackListActivity.this);
 				String filename = folder.getAbsolutePath() + "/track" + trackid + ".gpx";
 				File file = new File(filename);
 				FileOutputStream out;

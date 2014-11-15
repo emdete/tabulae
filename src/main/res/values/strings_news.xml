@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="whats_new_dialog_text">
-<b>Do you like RMaps?\n
-Buy RMaps.Donation on Google Play Store</b>\n
+	<string name="whats_new_dialog_text">
 \n
-Do you want to help me translate the app interface? Write me to email robertk506@gmail.com\n
+v.1.0.0.0\n
++ new name for a fork
 \n
 v.0.9.4\n
 + Dashboard. Use Menu - Dashboard. Long press on dashboard to add or change value\n
-+ I am here: Long press on the screen to point your location without GPS\n  
++ I am here: Long press on the screen to point your location without GPS\n
 + Target point (use the map context menu)\n
 + Dashboard indicators: distance to target, initial bearing to target\n
 + Ability to use volume controls to zoom map\n
@@ -31,7 +30,7 @@ v.0.9.3\n
 - Fixed some POI bug\n
 \n
 v.0.9.2\n
-+ Opened Google Community RMaps on Google+\n
++ Opened Google Community Tabulae on Google+\n
 + Measuring distances (Menu - Tools - Measure)\n
 + Distance circles around current location\n
 + Joining multiple tracks into one\n
@@ -72,7 +71,7 @@ v.0.8.11\n
 + Multiple tracks on the map\n
 \n
 v.0.8.10.2\n
-+ Support geo intents. You can tap address in calendar app and show it in RMaps\n
++ Support geo intents. You can tap address in calendar app and show it in Tabulae\n
 - Bugfix support MNM files and c:geo app\n
 \n
 v.0.8.10\n
@@ -89,7 +88,7 @@ v.0.8.8\n
 \n
 v.0.8.7\n
 + New preference Directory\n
-+ Now RMaps stores tiles of online maps on sdcard in sqlite format\n
++ Now Tabulae stores tiles of online maps on sdcard in sqlite format\n
 \n
 v.0.8.6\n
 + New maps: VFR (avcharts.com), MyTopo, OSM MTB Mapa Česká republika\n
@@ -100,7 +99,7 @@ v.0.8.5\n
 + Scale bar, Units property\n
 \n
 v.0.8.4\n
--  Mutlitouch zooming\n
+- Mutlitouch zooming\n
 + Zoom buttons settings: top, bottom, hide\n
 \n
 v.0.8.3.2\n

@@ -34,7 +34,7 @@ public class OnlineCachePreference extends Preference {
 	void setSummaryStr() {
 		final String name = mID + ".sqlitedb";
 		long size = 0;
-		final File folder = Ut.getRMapsMainDir(getContext(), "cache");
+		final File folder = Ut.getAppMainDir(getContext(), "cache");
 		if (folder != null) {
 			File[] files = folder.listFiles();
 			if (files != null) {
@@ -62,7 +62,7 @@ public class OnlineCachePreference extends Preference {
 
 					public void run() {
 						final String name = mID + ".sqlitedb";
-						final File folder = Ut.getRMapsMainDir(getContext(), "cache");
+						final File folder = Ut.getAppMainDir(getContext(), "cache");
 						if (folder != null) {
 							File[] files = folder.listFiles();
 							if (files != null) {

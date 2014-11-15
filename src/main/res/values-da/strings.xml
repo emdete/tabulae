@@ -46,7 +46,7 @@
   <string name="pref_main_maps">Foruddefinerede kort</string>
   <string name="pref_main_maps_summary">Der kræves internetforbindelse</string>
   <string name="pref_main_usermaps">Brugerdefinerede kort</string>
-  <string name="pref_main_usermaps_summary">Kort fra /sdcard/rmaps/maps</string>
+  <string name="pref_main_usermaps_summary">Kort fra /sdcard/tabulae/maps</string>
   <string name="prefcat_main_predefinedmaps">Kort</string>
   <string name="prefcat_main_predefinedoverlays">Overlejring</string>
   <string name="btn_clear_cache_title">Ryd cache</string>
@@ -118,7 +118,7 @@
   <string name="MinZoom">Vis poi siden zoom (0..23)</string>
   <string name="warning_delete_all_poi">Er du sikker på, du vil slette alle poi?</string>
   <string name="menu_tracks">Spor</string>
-  <string name="remote_service_started">RMaps sporregistrering</string>
+  <string name="remote_service_started">Tabulae sporregistrering</string>
   <string name="menu_goto_track">Gå til sporet</string>
   <string name="btn_start">Start</string>
   <string name="btn_pause">Pause</string>
@@ -139,17 +139,17 @@
   <string name="message_cantstarttrackwriter">TrackWriter kan ikke starte, fordi der kan ikke skrives spor til </string>
   <string name="message_error">Fejl: %s</string>
   <string name="error_title">Fejlrapport</string>
-  <string name="error_text">Efter sidste start har software problemet tvunget RMaps skal lukkes uventet. Send en fejlrapport til forfatteren af programmet. Klik på Opret rapport, du kan læse meddelelsen, før den sendes.</string>
+  <string name="error_text">Efter sidste start har software problemet tvunget Tabulae skal lukkes uventet. Send en fejlrapport til forfatteren af programmet. Klik på Opret rapport, du kan læse meddelelsen, før den sendes.</string>
   <string name="error_send">Generer rapport</string>
   <string name="pref_onlinecache">Online kortcache</string>
   <string name="pref_onlinecache_summary">Gem onlinekortfliser til sdcard</string>
   <string name="message_wait">Vent venligst et øjeblik...</string>
   <string name="pref_dir">Folder</string>
-  <string name="pref_dir_main">Main RMaps-folder</string>
+  <string name="pref_dir_main">Main Tabulae-folder</string>
   <string name="pref_dir_maps">Brugerkort-folder</string>
   <string name="pref_dir_import">Importer filfolder</string>
   <string name="pref_dir_export">Eksporter filfolder</string>
-  <string name="pref_dir_summary">Hvor RMaps gemmer dine filer</string>
+  <string name="pref_dir_summary">Hvor Tabulae gemmer dine filer</string>
   <string name="pref_crosshair">Trådkors på center</string>
   <string name="pref_crosshair_summary">Vis lille trådkors på midten af kortet</string>
   <string name="points_cnt">PUNKTER</string>
@@ -196,7 +196,7 @@
   <string name="pref_overlay_button_behavior_summary">Hvad skal gøres på tryk og lange tryk</string>
   <string name="pref_custommap_dialogmessage">For eksempel: \n http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n tilføjelse til den indlysende {z}, {x}, {y} kan du bruge {galileo} for Google maps\n skriv en e-mail til mig, hvis du har brug for at udvide listen over parametre. \n  </string>
   <string name="downloader_notif_ticket">Download startet...</string>
-  <string name="downloader_notif_title">RMaps-fliser downloader</string>
+  <string name="downloader_notif_title">Tabulae-fliser downloader</string>
   <string name="downloader_notif_text">Download i gang</string>
   <string name="pref_minzoom">Min. zoom</string>
   <string name="pref_maxzoom">Max zoom</string>
@@ -281,5 +281,5 @@
   <string name="pref_use_volume_controls_summary">Use volume controls to zooming the map</string>
   <string name="pref_person_icon">Location cursor</string>
   <string name="pref_arrow_icon">Direction cursor</string>
-  <string name="pref_icon_summary">File from ..rmaps/icons/cursors/*.png</string>
+  <string name="pref_icon_summary">File from ..tabulae/icons/cursors/*.png</string>
 </resources>

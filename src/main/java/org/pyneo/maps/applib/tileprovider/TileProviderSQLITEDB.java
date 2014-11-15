@@ -40,7 +40,7 @@ public class TileProviderSQLITEDB extends TileProviderFileBase {
 		Ut.d("TileProviderSQLITEDB: mapid = " + mapid);
 		Ut.d("TileProviderSQLITEDB: filename = " + filename);
 		Ut.d("TileProviderSQLITEDB: file.exists = " + file.exists());
-		Ut.d("TileProviderSQLITEDB: getRMapsMapsDir = " + Ut.getRMapsMapsDir(ctx));
+		Ut.d("TileProviderSQLITEDB: getAppMapsDir = " + Ut.getAppMapsDir(ctx));
 		if (needIndex(mapid, file.length(), file.lastModified(), false)) {
 			mProgressDialog = Ut.ShowWaitDialog(ctx, R.string.message_updateminmax);
 			new IndexTask().execute(file.length(), file.lastModified());

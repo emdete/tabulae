@@ -61,7 +61,7 @@ public class IconManager {
 		final String prefPersonFileName = pref.getString(propName, "");
 
 		if (!prefPersonFileName.equalsIgnoreCase("")) {
-			final File folder = Ut.getRMapsMainDir(mAppContext, folderName);
+			final File folder = Ut.getAppMainDir(mAppContext, folderName);
 			if (folder.exists()) {
 				final File file = new File(folder.getAbsolutePath() + "/" + prefPersonFileName);
 				if (file.exists()) {

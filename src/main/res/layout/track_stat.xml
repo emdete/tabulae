@@ -39,7 +39,7 @@
             </TextView>
 
             <RelativeLayout
-                android:id="@+id/rl2"
+                android:id="@+id/rl0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -79,7 +79,7 @@
             </TextView>
 
             <RelativeLayout
-                android:id="@+id/rl2"
+                android:id="@+id/rl1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -119,7 +119,7 @@
             </TextView>
 
             <RelativeLayout
-                android:id="@+id/rl3"
+                android:id="@+id/rl2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -159,7 +159,7 @@
             </TextView>
 
             <RelativeLayout
-                android:id="@+id/rl4"
+                android:id="@+id/rl3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -199,7 +199,7 @@
             </TextView>
 
             <RelativeLayout
-                android:id="@+id/rl6"
+                android:id="@+id/rl4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -279,7 +279,7 @@
             </TextView>
 
             <RelativeLayout
-                android:id="@+id/rl4"
+                android:id="@+id/rl6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -319,7 +319,7 @@
             </TextView>
 
             <RelativeLayout
-                android:id="@+id/rl3"
+                android:id="@+id/rl7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -359,7 +359,7 @@
             </TextView>
 
             <RelativeLayout
-                android:id="@+id/rl2"
+                android:id="@+id/rl8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
@@ -399,7 +399,7 @@
             </TextView>
 
             <RelativeLayout
-                android:id="@+id/rl1"
+                android:id="@+id/rl9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 

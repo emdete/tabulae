@@ -46,7 +46,7 @@
   <string name="pref_main_maps">預定義地圖</string>
   <string name="pref_main_maps_summary">需要網路連線</string>
   <string name="pref_main_usermaps">使用者定義地圖</string>
-  <string name="pref_main_usermaps_summary">地圖來自 /sdcard/rmaps/maps</string>
+  <string name="pref_main_usermaps_summary">地圖來自 /sdcard/tabulae/maps</string>
   <string name="prefcat_main_predefinedmaps">地圖</string>
   <string name="prefcat_main_predefinedoverlays">堆疊</string>
   <string name="btn_clear_cache_title">清除緩衝貯存區</string>
@@ -133,7 +133,7 @@ Mike DE\n
   <string name="MinZoom">從(0..23)縮放程度開始顯示興趣點</string>
   <string name="warning_delete_all_poi">確定要刪除所有興趣點嗎？</string>
   <string name="menu_tracks">軌跡</string>
-  <string name="remote_service_started">RMaps 軌跡寫入器</string>
+  <string name="remote_service_started">Tabulae 軌跡寫入器</string>
   <string name="menu_goto_track">轉去軌跡</string>
   <string name="btn_start">開始</string>
   <string name="btn_pause">暫停</string>
@@ -154,17 +154,17 @@ Mike DE\n
   <string name="message_cantstarttrackwriter">不能啟動軌跡寫入器，原因是不能寫入軌跡到</string>
   <string name="message_error">錯誤: %s</string>
   <string name="error_title">錯誤報告</string>
-  <string name="error_text">上次啟動後，軟體問題迫使 RMaps 意外關閉。請將錯誤報告發送給程式的作者。請按產生報告的按鈕，您可以先閱讀該訊息再送出去。</string>
+  <string name="error_text">上次啟動後，軟體問題迫使 Tabulae 意外關閉。請將錯誤報告發送給程式的作者。請按產生報告的按鈕，您可以先閱讀該訊息再送出去。</string>
   <string name="error_send">產生報告</string>
   <string name="pref_onlinecache">線上地圖緩衝貯存區</string>
   <string name="pref_onlinecache_summary">儲存線上圖磚到 SD 卡</string>
   <string name="message_wait">請稍候片刻...</string>
   <string name="pref_dir">目錄</string>
-  <string name="pref_dir_main">RMaps 的主要目錄</string>
+  <string name="pref_dir_main">Tabulae 的主要目錄</string>
   <string name="pref_dir_maps">使用者地圖目錄</string>
   <string name="pref_dir_import">檔案匯入目錄</string>
   <string name="pref_dir_export">檔案匯出目錄</string>
-  <string name="pref_dir_summary">RMaps 儲存您的檔案的地方</string>
+  <string name="pref_dir_summary">Tabulae 儲存您的檔案的地方</string>
   <string name="pref_crosshair">中心的十字線</string>
   <string name="pref_crosshair_summary">在地圖的中心顯示小十字線</string>
   <string name="points_cnt">點</string>
@@ -214,7 +214,7 @@ http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n
 除了顯而易見的 {z}, {x}, {y} 你還可以使用 Google 地圖用的 {galileo}\n
 如果你需要擴充參數，寫電子郵件給我\n</string>
   <string name="downloader_notif_ticket">下載開始...</string>
-  <string name="downloader_notif_title">RMaps 圖磚下載器</string>
+  <string name="downloader_notif_title">Tabulae 圖磚下載器</string>
   <string name="downloader_notif_text">下載進行中</string>
   <string name="pref_minzoom">最小縮放程度</string>
   <string name="pref_maxzoom">最大縮放程度</string>

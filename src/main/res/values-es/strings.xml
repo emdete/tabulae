@@ -46,7 +46,7 @@
   <string name="pref_main_maps">Predefined Maps</string>
   <string name="pref_main_maps_summary">Internet connection is required</string>
   <string name="pref_main_usermaps">User defined maps</string>
-  <string name="pref_main_usermaps_summary">Maps from /sdcard/rmaps/maps</string>
+  <string name="pref_main_usermaps_summary">Maps from /sdcard/tabulae/maps</string>
   <string name="prefcat_main_predefinedmaps">Maps</string>
   <string name="prefcat_main_predefinedoverlays">Overlays</string>
   <string name="btn_clear_cache_title">Borrar caché</string>
@@ -134,7 +134,7 @@ How to and FAQ you can find on http://robertdeveloper.blogspot.com/\n
   <string name="MinZoom">Show poi since the zoom (0..23)</string>
   <string name="warning_delete_all_poi">¿Desea borrar todos los PDI?</string>
   <string name="menu_tracks">Tracks</string>
-  <string name="remote_service_started">RMaps track writer</string>
+  <string name="remote_service_started">Tabulae track writer</string>
   <string name="menu_goto_track">Ir a Track</string>
   <string name="btn_start">Start</string>
   <string name="btn_pause">Pause</string>
@@ -155,17 +155,17 @@ How to and FAQ you can find on http://robertdeveloper.blogspot.com/\n
   <string name="message_cantstarttrackwriter">TrackWriter no puede iniciarse porque no puede escribir en </string>
   <string name="message_error">Error: %s</string>
   <string name="error_title">Informe de error</string>
-  <string name="error_text">After the last start the software problem has forced RMaps to be closed unexpectedly. Please, send the error report to the author of the program. Click Generate report, you can read the message before it is sent.</string>
+  <string name="error_text">After the last start the software problem has forced Tabulae to be closed unexpectedly. Please, send the error report to the author of the program. Click Generate report, you can read the message before it is sent.</string>
   <string name="error_send">Generar informe</string>
   <string name="pref_onlinecache">Online maps cache</string>
   <string name="pref_onlinecache_summary">Store online maps tiles to sdcard</string>
   <string name="message_wait">Wait a moment, please…</string>
   <string name="pref_dir">Directorios</string>
-  <string name="pref_dir_main">Directorio principal RMaps</string>
+  <string name="pref_dir_main">Directorio principal Tabulae</string>
   <string name="pref_dir_maps">Directorio mapas de usuario</string>
   <string name="pref_dir_import">Directorio de importaciones </string>
   <string name="pref_dir_export">Directorio de exportaciones</string>
-  <string name="pref_dir_summary">Where RMaps stores your files</string>
+  <string name="pref_dir_summary">Where Tabulae stores your files</string>
   <string name="pref_crosshair">Crosshair on centre</string>
   <string name="pref_crosshair_summary">Show litle crosshair on centre of the map</string>
   <string name="points_cnt">POINTS</string>
@@ -216,7 +216,7 @@ How to and FAQ you can find on http://robertdeveloper.blogspot.com/\n
 	    Write me to email if you need to extends this list of parameters.\n
 	</string>
   <string name="downloader_notif_ticket">Downloading started…</string>
-  <string name="downloader_notif_title">RMaps tile downloader</string>
+  <string name="downloader_notif_title">Tabulae tile downloader</string>
   <string name="downloader_notif_text">Downloading in progress</string>
   <string name="pref_minzoom">Min zoom</string>
   <string name="pref_maxzoom">Max zoom</string>
@@ -301,5 +301,5 @@ How to and FAQ you can find on http://robertdeveloper.blogspot.com/\n
   <string name="pref_use_volume_controls_summary">Use volume controls to zooming the map</string>
   <string name="pref_person_icon">Location cursor</string>
   <string name="pref_arrow_icon">Direction cursor</string>
-  <string name="pref_icon_summary">File from ..rmaps/icons/cursors/*.png</string>
+  <string name="pref_icon_summary">File from ..tabulae/icons/cursors/*.png</string>
 </resources>

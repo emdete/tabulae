@@ -230,7 +230,7 @@ public class AreaSelectorActivity extends Activity {
 				return;
 			}
 
-			final File folder = Ut.getRMapsMapsDir(this);
+			final File folder = Ut.getAppMapsDir(this);
 			if (folder != null) {
 				File[] files = folder.listFiles();
 				if (files != null) {

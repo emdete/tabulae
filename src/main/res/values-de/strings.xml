@@ -46,7 +46,7 @@
   <string name="pref_main_maps">Vordefinierte Karten</string>
   <string name="pref_main_maps_summary">Internetverbindung ist erforderlich</string>
   <string name="pref_main_usermaps">Nutzerdefinierte Karten</string>
-  <string name="pref_main_usermaps_summary">Karten von /sdcard/rmaps/maps</string>
+  <string name="pref_main_usermaps_summary">Karten von /sdcard/tabulae/maps</string>
   <string name="prefcat_main_predefinedmaps">Karten</string>
   <string name="prefcat_main_predefinedoverlays">Überlagerung</string>
   <string name="btn_clear_cache_title">Zwischenspeicher löschen</string>
@@ -137,7 +137,7 @@ Problemlösungen und FAQ kannst Du bei http://robertdeveloper.blogspot.com/ find
   <string name="MinZoom">Zeige POI ab Zoom (0..23)</string>
   <string name="warning_delete_all_poi">Bist Du sicher, daß Du alle POI löschen willst ?</string>
   <string name="menu_tracks">Pfade</string>
-  <string name="remote_service_started">RMaps Pfad-Aufzeichner</string>
+  <string name="remote_service_started">Tabulae Pfad-Aufzeichner</string>
   <string name="menu_goto_track">Gehe zu Pfad</string>
   <string name="btn_start">Start</string>
   <string name="btn_pause">Pause</string>
@@ -158,17 +158,17 @@ Problemlösungen und FAQ kannst Du bei http://robertdeveloper.blogspot.com/ find
   <string name="message_cantstarttrackwriter">Kann Pfad-Aufzeichnung nicht starten, weil ich Pfad nicht schreiben kann nach</string>
   <string name="message_error">Fehler: %s</string>
   <string name="error_title">Fehlerbericht</string>
-  <string name="error_text">Nach dem letzten Start hat ein Softwareproblem RMaps unerwartet zum Beenden gezwungen. Bitte senden Sie den Fehlerbericht zum Programmierer. Klicke Bericht erzeugen, Du kannst den Bericht lesen, bevor er gesendet wird.</string>
+  <string name="error_text">Nach dem letzten Start hat ein Softwareproblem Tabulae unerwartet zum Beenden gezwungen. Bitte senden Sie den Fehlerbericht zum Programmierer. Klicke Bericht erzeugen, Du kannst den Bericht lesen, bevor er gesendet wird.</string>
   <string name="error_send">Bericht erzeugen</string>
   <string name="pref_onlinecache">Online Karten-Zwischenspeicher</string>
   <string name="pref_onlinecache_summary">Speichere Online Karten-Kacheln auf SD-Karte</string>
   <string name="message_wait">Warte bitte einen Moment ...</string>
   <string name="pref_dir">Verzeichnisse</string>
-  <string name="pref_dir_main">Haupt RMaps-Verzeichnis</string>
+  <string name="pref_dir_main">Haupt Tabulae-Verzeichnis</string>
   <string name="pref_dir_maps">Benutzerkarten-Verzeichnis</string>
   <string name="pref_dir_import">Import-Dateien Verzeichnis</string>
   <string name="pref_dir_export">Export-Dateien Verzeichnis</string>
-  <string name="pref_dir_summary">Wo speichert RMaps Ihre Dateien</string>
+  <string name="pref_dir_summary">Wo speichert Tabulae Ihre Dateien</string>
   <string name="pref_crosshair">Fadenkreuz im Zentrum</string>
   <string name="pref_crosshair_summary">Zeige kleines Fadenkreuz im Zentrum der Karte</string>
   <string name="points_cnt">PUNKTE</string>
@@ -218,7 +218,7 @@ http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n
 Zusätzlich zum selbstverständlichen {z}, {x}, {y} kannst Du {galileo} für Google maps benutzen\n
 Schreib mir eine E-Mail, wenn Du diese Parameterliste erweitern möchtest.\n</string>
   <string name="downloader_notif_ticket">Download gestartet ...</string>
-  <string name="downloader_notif_title">RMaps Kachel-Downloader</string>
+  <string name="downloader_notif_title">Tabulae Kachel-Downloader</string>
   <string name="downloader_notif_text">Download läuft</string>
   <string name="pref_minzoom">Min Zoom</string>
   <string name="pref_maxzoom">Max Zoom</string>
@@ -303,5 +303,5 @@ Schreib mir eine E-Mail, wenn Du diese Parameterliste erweitern möchtest.\n</st
   <string name="pref_use_volume_controls_summary">Use volume controls to zooming the map</string>
   <string name="pref_person_icon">Location cursor</string>
   <string name="pref_arrow_icon">Direction cursor</string>
-  <string name="pref_icon_summary">File from ..rmaps/icons/cursors/*.png</string>
+  <string name="pref_icon_summary">File from ..tabulae/icons/cursors/*.png</string>
 </resources>

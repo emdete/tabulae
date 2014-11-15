@@ -523,7 +523,7 @@ public class MainActivity extends Activity {
 
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
-				File folder = Ut.getRMapsMapsDir(MainActivity.this);
+				File folder = Ut.getAppMapsDir(MainActivity.this);
 				if (folder.exists()) {
 					File[] files = folder.listFiles();
 					if (files != null)
@@ -748,7 +748,7 @@ public class MainActivity extends Activity {
 
 		if (pref.getBoolean("pref_keepscreenon", true)) {
 			myWakeLock = ((PowerManager)getSystemService(POWER_SERVICE)).newWakeLock(
-				PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "RMaps");
+				PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "Tabulae");
 			myWakeLock.acquire();
 		} else {
 			myWakeLock = null;
@@ -883,7 +883,7 @@ public class MainActivity extends Activity {
 			menu.findItem(R.id.reload).setVisible(false);
 		}
 
-		File folder = Ut.getRMapsMapsDir(this);
+		File folder = Ut.getAppMapsDir(this);
 		if (folder.exists()) {
 			File[] files = folder.listFiles();
 			if (files != null)
@@ -1455,7 +1455,7 @@ public class MainActivity extends Activity {
 
 						SharedPreferences settings = getPreferences(Activity.MODE_PRIVATE);
 						String text = settings.getString("error", "");
-						String subj = "RMaps error: ";
+						String subj = "Tabulae error: ";
 						try {
 							final String[] lines = text.split("\n", 2);
 							final Pattern p = Pattern.compile("[.][\\w]+[:| |\\t|\\n]");
@@ -1473,7 +1473,7 @@ public class MainActivity extends Activity {
 						final Build b = new Build();
 						final Build.VERSION v = new Build.VERSION();
 						text = "Your message:"
-							+ "\n\nRMaps: " + Ut.getAppVersion(MainActivity.this)
+							+ "\n\nTabulae: " + Ut.getAppVersion(MainActivity.this)
 							+ "\nAndroid: " + v.RELEASE
 							+ "\nDevice: " + b.BOARD + " " + b.BRAND + " " + b.DEVICE +/*" "+b.MANUFACTURER+*/" " + b.MODEL + " " + b.PRODUCT
 							+ "\n\n" + text;

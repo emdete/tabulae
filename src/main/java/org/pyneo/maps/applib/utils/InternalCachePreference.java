@@ -30,7 +30,7 @@ public class InternalCachePreference extends Preference {
 		setWidgetLayoutResource(R.layout.preference_widget_btn_clear);
 
 		mHandler = new SimpleInvalidationHandler();
-		final File folder = Ut.getRMapsCacheTilesDir(context);
+		final File folder = Ut.getAppCacheTilesDir(context);
 		mFSCacheProvider = new FSCacheProvider(folder, mHandler);
 	}
 

@@ -125,7 +125,7 @@ public class TrackWriterService extends Service implements OpenStreetMapConstant
 	public void onCreate() {
 		super.onCreate();
 
-//		mLogFileName = Ut.getRMapsMainDir(this, "").getAbsolutePath()+"/trackwriter.log";
+//		mLogFileName = Ut.getAppMainDir(this, "").getAbsolutePath()+"/trackwriter.log";
 //
 //		Thread.setDefaultUncaughtExceptionHandler(new CrashReportHandler());
 
@@ -175,7 +175,7 @@ public class TrackWriterService extends Service implements OpenStreetMapConstant
 
 	private void handleCommand(Intent intent) {
 //		appendLog("handleCommand");
-		final File folder = Ut.getRMapsMainDir(this, "data");
+		final File folder = Ut.getAppMainDir(this, "data");
 		if (folder.canRead()) {
 			try {
 				db = new DatabaseHelper(this, folder.getAbsolutePath() + "/writedtrack.db").getWritableDatabase();

@@ -19,7 +19,7 @@ public class GeoData {
 	public GeoData(Context context) {
 		mContext = context;
 
-		File folder = Ut.getRMapsMainDir(context, PoiConstants.DATA);
+		File folder = Ut.getAppMainDir(context, PoiConstants.DATA);
 		mSQLiteOpenHelper = new GeoDataDatabaseOpenHelper(context, folder.getAbsolutePath() + PoiConstants.GEODATA_FILENAME);
 	}
 

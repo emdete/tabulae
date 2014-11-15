@@ -339,7 +339,7 @@ public class PoiListActivity extends ListActivity {
 				c.close();
 			}
 
-			File folder = Ut.getRMapsExportDir(PoiListActivity.this);
+			File folder = Ut.getAppExportDir(PoiListActivity.this);
 			String filename = folder.getAbsolutePath() + "/poilist.kml";
 			File file = new File(filename);
 			FileOutputStream out;
@@ -380,7 +380,7 @@ public class PoiListActivity extends ListActivity {
 			xml.setAttr("xsi:schemaLocation", "http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd");
 			xml.setAttr("xmlns", "http://www.topografix.com/GPX/1/0");
 			xml.setAttr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-			xml.setAttr("creator", "RMaps - http://code.google.com/p/robertprojects/");
+			xml.setAttr("creator", "Tabulae - https://github.com/emdete/Tabulae");
 			xml.setAttr("version", "1.0");
 
 			Cursor c = mPoiManager.getGeoDatabase().getPoiListCursor();
@@ -411,7 +411,7 @@ public class PoiListActivity extends ListActivity {
 				c.close();
 			}
 
-			File folder = Ut.getRMapsExportDir(PoiListActivity.this);
+			File folder = Ut.getAppExportDir(PoiListActivity.this);
 			String filename = folder.getAbsolutePath() + "/poilist.gpx";
 			File file = new File(filename);
 			FileOutputStream out;
