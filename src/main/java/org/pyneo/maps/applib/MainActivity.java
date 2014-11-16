@@ -937,110 +937,133 @@ public class MainActivity extends Activity {
 
 		final GeoPoint point = mMap.getMapCenter();
 
-		if (item.getItemId() == R.id.area_selector) {
-			startActivity(new Intent(this, AreaSelectorActivity.class).putExtra("new", true).putExtra(MAPNAME, mTileSource.ID).putExtra("Latitude", point.getLatitudeE6()).putExtra("Longitude", point.getLongitudeE6()).putExtra("ZoomLevel", mMap.getZoomLevel()));
-			return true;
-		} else if (item.getItemId() == R.id.menu_show_dashboard) {
-			if (mIndicatorManager == null) {
-				mIndicatorManager = new IndicatorManager(this);
-				mIndicatorManager.setCenter(mMap.getMapCenter());
-				mIndicatorManager.setMapName(
-					mTileSource.CATEGORY + ": " +
-					mTileSource.NAME);
-				mIndicatorManager.setZoom(mMap.getZoomLevel());
-				mIndicatorManager.setLocation(mMyLocationOverlay.getLastLocation());
-				mIndicatorManager.setTargetLocation(mMyLocationOverlay.getTargetLocation());
-				mIndicatorManager.Resume(this);
-			} else {
-				mIndicatorManager.Dismiss(this);
-				mIndicatorManager = null;
+		switch (item.getItemId()) {
+			case R.id.area_selector: {
+				startActivity(new Intent(this, AreaSelectorActivity.class)
+					.putExtra("new", true).putExtra(MAPNAME, mTileSource.ID)
+					.putExtra("Latitude", point.getLatitudeE6())
+					.putExtra("Longitude", point.getLongitudeE6())
+					.putExtra("ZoomLevel", mMap.getZoomLevel()));
+				return true;
 			}
-			return true;
-		} else if (item.getItemId() == R.id.downloadprepared) {
-			startActivity(new Intent(this, FileDownloadListActivity.class));
-			return true;
-		} else if (item.getItemId() == R.id.tools) {
-			return true;
-		} else if (item.getItemId() == R.id.findthemap) {
-			doFindTheMap();
-			return true;
-		} else if (item.getItemId() == R.id.reload) {
-			mTileSource.setReloadTileMode(true);
-			mMap.invalidate(); //postInvalidate();
-			return true;
-		} else if (item.getItemId() == R.id.measure) {
-			doMeasureStart();
-			return true;
-		} else if (item.getItemId() == R.id.gpsstatus) {
-			try {
-				startActivity(new Intent("com.eclipsim.gpsstatus.VIEW"));
+			case R.id.menu_show_dashboard: {
+				if (mIndicatorManager == null) {
+					mIndicatorManager = new IndicatorManager(this);
+					mIndicatorManager.setCenter(mMap.getMapCenter());
+					mIndicatorManager.setMapName(
+						mTileSource.CATEGORY + ": " +
+						mTileSource.NAME);
+					mIndicatorManager.setZoom(mMap.getZoomLevel());
+					mIndicatorManager.setLocation(mMyLocationOverlay.getLastLocation());
+					mIndicatorManager.setTargetLocation(mMyLocationOverlay.getTargetLocation());
+					mIndicatorManager.Resume(this);
+				} else {
+					mIndicatorManager.Dismiss(this);
+					mIndicatorManager = null;
+				}
+				return true;
 			}
-			catch (ActivityNotFoundException e) {
-				Toast.makeText(this,
-					R.string.message_nogpsstatus,
-					Toast.LENGTH_LONG).show();
+			case R.id.downloadprepared: {
+				startActivity(new Intent(this, FileDownloadListActivity.class));
+				return true;
+			}
+	//		case R.id.tools: {
+	//			return true;
+	//		}
+			case R.id.findthemap: {
+				doFindTheMap();
+				return true;
+			}
+			case R.id.reload: {
+				mTileSource.setReloadTileMode(true);
+				mMap.invalidate(); //postInvalidate();
+				return true;
+			}
+			case R.id.measure: {
+				doMeasureStart();
+				return true;
+			}
+			case R.id.gpsstatus: {
 				try {
-					startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri
-						.parse("market://search?q=pname:com.eclipsim.gpsstatus2")));
+					startActivity(new Intent("com.eclipsim.gpsstatus.VIEW"));
 				}
-				catch (Exception e1) {
-					e1.printStackTrace();
+				catch (ActivityNotFoundException e) {
+					Toast.makeText(this,
+						R.string.message_nogpsstatus,
+						Toast.LENGTH_LONG).show();
+					try {
+						startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri
+							.parse("market://search?q=pname:com.eclipsim.gpsstatus2")));
+					}
+					catch (Exception e1) {
+						e1.printStackTrace();
+					}
 				}
+				return true;
 			}
-			return true;
-		} else if (item.getItemId() == R.id.poilist) {
-			startActivityForResult((new Intent(this, PoiListActivity.class)).putExtra("lat", point.getLatitude()).putExtra("lon", point.getLongitude()).putExtra("title", "POI"), R.id.poilist);
-			return true;
-		} else if (item.getItemId() == R.id.tracks) {
-			startActivityForResult(new Intent(this, TrackListActivity.class), R.id.tracks);
-			return true;
-		} else if (item.getItemId() == R.id.routes) {
-			//startActivityForResult(new Intent(this, RouteListActivity.class), R.id.routes);
-			startActivityForResult((new Intent(this, GeoDataActivity.class)), R.id.poilist);
-			return true;
-		} else if (item.getItemId() == R.id.search) {
-			onSearchRequested();
-			return true;
-		} else if (item.getItemId() == R.id.settings) {
-			startActivityForResult(new Intent(this, MainPreferences.class), R.id.settings_activity_closed);
-			return true;
-		} else if (item.getItemId() == R.id.about) {
-			showDialog(R.id.about);
-			return true;
-		} else if (item.getItemId() == R.id.mapselector) {
-			return true;
-		} else if (item.getItemId() == R.id.compass) {
-			mCompassEnabled = !mCompassEnabled;
-			mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
-			if (mCompassEnabled)
-				mOrientationSensorManager.registerListener(mListener, mOrientationSensorManager
-					.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_UI);
-			else {
-				mOrientationSensorManager.unregisterListener(mListener);
-				mMap.setBearing(0);
+			case R.id.poilist: {
+				startActivityForResult((new Intent(this, PoiListActivity.class)).putExtra("lat", point.getLatitude()).putExtra("lon", point.getLongitude()).putExtra("title", "POI"), R.id.poilist);
+				return true;
 			}
-			;
-			return true;
-		} else if (item.getItemId() == R.id.mylocation) {
-			setAutoFollow(true);
-			setLastKnownLocation();
-			return true;
-		} else if (item.getItemId() == R.id.exit) {
-			onPause();
-			System.exit(10);
-			return true;
-		} else {
+			case R.id.tracks: {
+				startActivityForResult(new Intent(this, TrackListActivity.class), R.id.tracks);
+				return true;
+			}
+			case R.id.routes: {
+				//startActivityForResult(new Intent(this, RouteListActivity.class), R.id.routes);
+				startActivityForResult((new Intent(this, GeoDataActivity.class)), R.id.poilist);
+				return true;
+			}
+			case R.id.search: {
+				onSearchRequested();
+				return true;
+			}
+			case R.id.settings: {
+				startActivityForResult(new Intent(this, MainPreferences.class), R.id.settings_activity_closed);
+				return true;
+			}
+			case R.id.about: {
+				showDialog(R.id.about);
+				return true;
+			}
+			case R.id.mapselector: {
+				return true;
+			}
+			case R.id.compass: {
+				mCompassEnabled = !mCompassEnabled;
+				mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
+				if (mCompassEnabled)
+					mOrientationSensorManager.registerListener(mListener, mOrientationSensorManager
+						.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_UI);
+				else {
+					mOrientationSensorManager.unregisterListener(mListener);
+					mMap.setBearing(0);
+				}
+				;
+				return true;
+			}
+			case R.id.mylocation: {
+				setAutoFollow(true);
+				setLastKnownLocation();
+				return true;
+			}
+			case R.id.exit: {
+				onPause();
+				System.exit(10);
+				return true;
+			}
+			default: {
 
-			final String mapid = (String)item.getTitleCondensed();
-			setTileSource(mapid, "", true);
+				final String mapid = (String)item.getTitleCondensed();
+				setTileSource(mapid, "", true);
 
-			FillOverlays();
+				FillOverlays();
 
-			setTitle();
+				setTitle();
 
-			return true;
+				return true;
+			}
 		}
-
 	}
 
 	private void doFindTheMap() {
@@ -1415,17 +1438,6 @@ public class MainActivity extends Activity {
 					public void onClick(DialogInterface dialog, int whichButton) {
 
 								/* User clicked Cancel so do some stuff */
-					}
-				})
-				.setPositiveButton(R.string.donation, new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						try {
-							startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://search?q=pname:org.pyneo.maps.ext")));
-						}
-						catch (Exception e1) {
-						}
 					}
 				})
 				.create();

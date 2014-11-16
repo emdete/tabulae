@@ -84,22 +84,6 @@
   <string name="message_geodata_notavailable">無法取得 SD 卡上的資料。不能執行操作。</string>
   <string name="no_inet_conn">沒有網路連線...</string>
   <string name="no_items">沒有比對內容</string>
-  <string name="about_dialog_text">©2009 Robert.Developer\n
-Osmdroid 製作 Nicolas Gramlich\n
-App 軟體圖示製作 Everaldo Coelho\n
-協同製作群\n
-Dmytro Sandu\n
-Snake Joe\n
-Christoffer Blindheim\n
-翻譯人員\n
-Vitek Fedra CZ\n
-Blast IT\n
-Mike DE\n
-版權所有\n
-\n
-如有疑問或意見請發電子郵件到 robertk506@gmail.com\n
-\n
-您可以到此網頁閱讀產品說明和常見問題 http://robertdeveloper.blogspot.com/\n</string>
   <string name="about_dialog_whats_new">有何更新</string>
   <string name="about_dialog_close">關閉</string>
   <string name="search_label">位址:</string>

@@ -227,7 +227,7 @@ public class MapDownloaderService extends Service {
 //		OutputStream out = null;
 //
 //		try {
-//			in = new BufferedInputStream(new URL("https://sites.google.com/site/robertk506/limits.txt").openStream(), StreamUtils.IO_BUFFER_SIZE);
+//			in = new BufferedInputStream(new URL("https://pyneo.org/tabulae/limits.txt").openStream(), StreamUtils.IO_BUFFER_SIZE);
 //
 //			final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
 //			out = new BufferedOutputStream(dataStream, StreamUtils.IO_BUFFER_SIZE);

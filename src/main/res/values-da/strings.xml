@@ -84,7 +84,6 @@
   <string name="message_geodata_notavailable">Data på SD-kortet er ikke tilgængelige. Handlingen kan ikke udføres.</string>
   <string name="no_inet_conn">Ingen internetforbindelse...</string>
   <string name="no_items">Din søgning gav ikke noget resultat</string>
-  <string name="about_dialog_text">© 2009 Robert.Developer\n Osmdroid af Nicolas Gramlich\n Appikon af Everaldo Coelho\n Med hjælp af\n Dmytro Sandu\n Snake Joe\n Christoffer Blindheim\n Translators\n Vitek Fedra CZ\n Blast den Mike DE\n alle rettigheder forbeholdes\n \n spørgsmål og forslag mail til robertk506@gmail.com\n \n FAQ finder du på http://robertdeveloper.blogspot.com/\n </string>
   <string name="about_dialog_whats_new">Nyheder...</string>
   <string name="about_dialog_close">Luk</string>
   <string name="search_label">Adresse:</string>

@@ -259,7 +259,7 @@ public class Ut implements OpenStreetMapConstants, OpenStreetMapViewConstants {
 	}
 
 	public static Intent SendMail(String subject, String text) {
-		final String[] email = {"robertk506@gmail.com"};
+		final String[] email = {"tabulae@pyneo.org"};
 		Intent sendIntent = new Intent(Intent.ACTION_SEND);
 		sendIntent.putExtra(Intent.EXTRA_TEXT, text);
 		sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
