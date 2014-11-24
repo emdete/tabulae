@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	URL_BUILDER_TYPE, // 0 - OSM,
+	URL_BUILDER_TYPE:
+		0 - OSM,
 		1 - Google,
 		2 - Yandex,
 		3 - Yandex.Traffic,
 		4 - Google.Sattelite,
-		5 - openspace,
-		6 - microsoft,
+		5 - Openspace,
+		6 - Microsoft,
 		7 - Docelu.pl
 		8 - VFR Chart
-		9 - http://www.avcharts.com/
+		9 - AvCharts
 		10 - Soviet Military Maps
 		11 - VFRCB
-		12 - user own map source
-		13 - blank
-	TILE_SOURCE_TYPE, //
-		0 - internet,
+		12 - User own map source
+		13 - Blank
+	TILE_SOURCE_TYPE:
+		0 - Internet,
 		3 - MapNav file,
 		4 - TAR,
-		5 - sqlitedb
-		6 - blank
-	PROJECTION; //
+		5 - SqliteDB
+		6 - Blank
+	PROJECTION:
 		1 - Mercator spheroids,
 		2 - On the ellipsoid,
 		3 - OSGB 36 British national grid reference system
 	-->
-
 <root>
 	<map cat="BING" name="Aerial" id="bingaero" descr="http://www.bing.com" baseurl="http://ecn.t1.tiles.virtualearth.net/tiles/a" IMAGE_FILENAMEENDING=".jpeg?g=1134&amp;n=z" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="6" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="BING" name="Hybrid" id="bingbi" descr="http://www.bing.com" baseurl="http://ecn.dynamic.t1.tiles.virtualearth.net/comp/ch/" IMAGE_FILENAMEENDING="?mkt=en-us&amp;it=A,G,L&amp;shading=hill&amp;n=z&amp;cb=1" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="6" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="BING" name="Road" id="bingmap" descr="http://www.bing.com" baseurl="http://ecn.dynamic.t3.tiles.virtualearth.net/comp/ch/" IMAGE_FILENAMEENDING="?mkt=en-us&amp;it=G,VE,BX,L,LA&amp;shading=hill&amp;n=z&amp;cb=1" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="6" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
-	<map cat="China" name="微软地图" id="msmapchina" isfake="true" descr="" baseurl="http://r0.tiles.ditu.live.com/tiles/r" IMAGE_FILENAMEENDING=".png?g=1" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="6" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0" /> 
+	<map cat="China" name="微软地图" id="msmapchina" isfake="true" descr="" baseurl="http://r0.tiles.ditu.live.com/tiles/r" IMAGE_FILENAMEENDING=".png?g=1" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="6" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0" />
 	<map cat="FreeMap" name="Slovakia Autoatlas" id="freemapsk" descr="http://www.freemap.sk/" baseurl="http://a.freemap.sk/data/layers/presets/A/" IMAGE_FILENAMEENDING=".jpeg" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="FreeMap" name="Slovakia Cyclomapa" id="freemapskhillshade" descr="http://www.freemap.sk/" baseurl="http://a.freemap.sk/data/layers/presets/C/" IMAGE_FILENAMEENDING=".jpeg" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="FreeMap" name="Slovakia Turisticka" id="freemapskhiking" descr="http://www.freemap.sk/" baseurl="http://a.freemap.sk/data/layers/presets/T/" IMAGE_FILENAMEENDING=".jpeg" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
@@ -50,10 +50,10 @@
 	<map cat="Microsoft" name="Virtual Earth" id="msmapearth" descr="" baseurl="http://a0.ortho.tiles.virtualearth.net/tiles/a" IMAGE_FILENAMEENDING=".jpg?g=45" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="6" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<!-- <map cat="" name="Cykloatlas CZ" id="cykloatlas" descr="http://www.cykloserver.cz/cykloatlas/" baseurl="http://services.tmapserver.cz/stiles/gm/shc/" IMAGE_FILENAMEENDING=".png?m=s&amp;t=1342300315&amp;k=5we6HahGpebRedkR5NxReQ" ZOOM_MINLEVEL="7" ZOOM_MAXLEVEL="15" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map> -->
 	<!-- <map cat="" name="Docelu.pl Poland" id="docelupl" descr="http://docelu.pl" baseurl="http://i.wp.pl/m/tiles013/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="2" ZOOM_MAXLEVEL="17" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="7" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map> -->
-	<map cat="" name="MapABC地图" id="mapabc" isfake="true" descr="" baseurl="http://emap0.is.autonavi.com/appmaptile?&amp;" IMAGE_FILENAMEENDING=".gif" ZOOM_MINLEVEL="3" ZOOM_MAXLEVEL="17" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="1" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0" /> 
+	<map cat="" name="MapABC地图" id="mapabc" isfake="true" descr="" baseurl="http://emap0.is.autonavi.com/appmaptile?&amp;" IMAGE_FILENAMEENDING=".gif" ZOOM_MINLEVEL="3" ZOOM_MAXLEVEL="17" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="1" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0" />
 	<!-- <map cat="" name="MyTopo" id="mytopo" descr="http://www.mytopo.com" baseurl="http://maps.mytopo.com/mytopoz63g9R/tilecache.py/1.0.0/topoG/" IMAGE_FILENAMEENDING=".jpg" ZOOM_MINLEVEL="9" ZOOM_MAXLEVEL="15" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map> -->
 	<map cat="" name="Outdooractive" id="outdooractive" descr="" baseurl="http://s3.outdooractive.com/portal/map/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
-	<map cat="" name="QQ地图" id="qqmap" isfake="true" descr="" baseurl="http://p1.map.qq.com/maptiles/" IMAGE_FILENAMEENDING="png" ZOOM_MINLEVEL="4" ZOOM_MAXLEVEL="17" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="7" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0" /> 
+	<map cat="" name="QQ地图" id="qqmap" isfake="true" descr="" baseurl="http://p1.map.qq.com/maptiles/" IMAGE_FILENAMEENDING="png" ZOOM_MINLEVEL="4" ZOOM_MAXLEVEL="17" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="7" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0" />
 	<map cat="" name="Relief map" id="map4freerel" descr="http://maps.peterrobins.co.uk/" baseurl="http://maps-for-free.com/layer/relief/z{z}/row{y}/{z}_{x}-{y}.jpg" IMAGE_FILENAMEENDING="" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="11" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="12" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="" name="UMP-pcPL Poland" id="ump_pcpl" descr="http://ump.waw.pl" baseurl="http://1.tiles.ump.waw.pl/ump_tiles/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="NLS" name="Ordnance Survey Map" id="osm" descr="National Library of Scotland http://geo.nls.uk" baseurl="http://geo.nls.uk/maps/opendata/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="16" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
@@ -80,11 +80,11 @@
 	<map cat="OSM" name="Standart" id="mapnik" descr="http://www.openstreetmap.org/" baseurl="http://tile.openstreetmap.org/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="OSM" name="Transport" id="osmtran" descr="http://www.openstreetmap.org/" baseurl="http://c.tile2.opencyclemap.org/transport/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="Refuges" name="maps" id="refuges" descr="" baseurl="http://maps.refuges.info/tiles/renderer.py/hiking/" IMAGE_FILENAMEENDING=".jpeg" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
-	<map cat="Topo3" name="Wanderreitkarten" id="wanderreitkarten" descr="http://www.wanderreitkarte.de/" baseurl="http://topo3.wanderreitkarte.de/topo/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="Soviet Military" name="Maps 2" id="smm2" descr="http://www.marshruty.ru/" baseurl="http://maps.marshruty.ru/ml.ashx?al=1&amp;i=1&amp;x=" IMAGE_FILENAMEENDING="" ZOOM_MINLEVEL="8" ZOOM_MAXLEVEL="13" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="2" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="Soviet Military" name="Maps" id="smm" descr="http://www.topomapper.com/" baseurl="http://maps2.atlogis.com/cgi-bin/tilecache-2.11/tilecache.py/1.0.0/topomapper_gmerc/" IMAGE_FILENAMEENDING=".jpg" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="13" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="Statkart Norway" name="Sj&#248;kart (Norway)" id="statkartsjo" descr="Sea map of Norway" baseurl="http://opencache.statkart.no/gatekeeper/gk/gk.open_ve?layers=sjo_hovedkart2&amp;format=image/png&amp;quadkey=" IMAGE_FILENAMEENDING="" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="6" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="Statkart Norway" name="Topo2 (Norway)" id="statkarttopo2" descr="Topographic map of Norway" baseurl="http://opencache.statkart.no/gatekeeper/gk/gk.open_ve?layers=topo2&amp;format=image/png&amp;quadkey=" IMAGE_FILENAMEENDING="" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="6" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
+	<map cat="Topo3" name="Wanderreitkarten" id="wanderreitkarten" descr="http://www.wanderreitkarte.de/" baseurl="http://topo3.wanderreitkarte.de/topo/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="USA ArcGIS" name="Imagery" id="arcing" descr="http://www.arcgis.com/home/webmap/viewer.html" baseurl="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" IMAGE_FILENAMEENDING="" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="15" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="12" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="USA ArcGIS" name="Light Gray Canvas" id="arcgray" descr="http://www.arcgis.com/home/webmap/viewer.html" baseurl="http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}" IMAGE_FILENAMEENDING="" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="15" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="12" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="USA ArcGIS" name="National Geographic" id="arcnat" descr="http://www.arcgis.com/home/webmap/viewer.html" baseurl="http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}" IMAGE_FILENAMEENDING="" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="15" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="12" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
