@@ -21,9 +21,9 @@
 		5 - sqlitedb
 		6 - blank
 	PROJECTION; //
-		1-меркатор на сфероид,
-		2- на эллипсоид,
-		3- OSGB 36 British national grid reference system
+		1 - Mercator spheroids,
+		2 - On the ellipsoid,
+		3 - OSGB 36 British national grid reference system
 	-->
 
 <root>
@@ -80,6 +80,7 @@
 	<map cat="OSM" name="Standart" id="mapnik" descr="http://www.openstreetmap.org/" baseurl="http://tile.openstreetmap.org/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="OSM" name="Transport" id="osmtran" descr="http://www.openstreetmap.org/" baseurl="http://c.tile2.opencyclemap.org/transport/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="Refuges" name="maps" id="refuges" descr="" baseurl="http://maps.refuges.info/tiles/renderer.py/hiking/" IMAGE_FILENAMEENDING=".jpeg" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="18" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
+	<map cat="Topo3" name="Wanderreitkarten" id="wanderreitkarten" descr="http://www.wanderreitkarte.de/" baseurl="http://topo3.wanderreitkarte.de/topo/" IMAGE_FILENAMEENDING=".png" ZOOM_MINLEVEL="1" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="Soviet Military" name="Maps 2" id="smm2" descr="http://www.marshruty.ru/" baseurl="http://maps.marshruty.ru/ml.ashx?al=1&amp;i=1&amp;x=" IMAGE_FILENAMEENDING="" ZOOM_MINLEVEL="8" ZOOM_MAXLEVEL="13" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="2" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="Soviet Military" name="Maps" id="smm" descr="http://www.topomapper.com/" baseurl="http://maps2.atlogis.com/cgi-bin/tilecache-2.11/tilecache.py/1.0.0/topomapper_gmerc/" IMAGE_FILENAMEENDING=".jpg" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="13" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="0" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
 	<map cat="Statkart Norway" name="Sj&#248;kart (Norway)" id="statkartsjo" descr="Sea map of Norway" baseurl="http://opencache.statkart.no/gatekeeper/gk/gk.open_ve?layers=sjo_hovedkart2&amp;format=image/png&amp;quadkey=" IMAGE_FILENAMEENDING="" ZOOM_MINLEVEL="0" ZOOM_MAXLEVEL="19" MAPTILE_SIZEPX="256" URL_BUILDER_TYPE="6" TILE_SOURCE_TYPE="0" PROJECTION="1" YANDEX_TRAFFIC_ON="0"></map>
