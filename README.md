@@ -6,31 +6,32 @@ Origin
 
 This app is a fork from RMaps found at
 
-	https://code.google.com/p/robertprojects/source
+[robertprojects](https://code.google.com/p/robertprojects/source)
 
 the app is described at
 
-	http://robertdeveloper.blogspot.com/2009/08/rmaps.html
+[robertdeveloper](http://robertdeveloper.blogspot.com/2009/08/rmaps.html)
 
 
 email of the developer is
 
-	robertk506@gmail.com\n
+[robertk506@gmail.com](mailto:robertk506@gmail.com)
 
 Uses
 ----
 
-	https://github.com/osmdroid/osmdroid
+[osmdroid](https://github.com/osmdroid/osmdroid)
 
-	https://github.com/ManuelPeinado/MultiChoiceAdapter
+[ManuelPeinado](https://github.com/ManuelPeinado/MultiChoiceAdapter)
 
-	https://github.com/commonsguy/cwac-loaderex
+[cwac-loaderex](https://github.com/commonsguy/cwac-loaderex)
 
-	https://github.com/attenzione/android-ColorPickerPreference
+[android-ColorPickerPreference](https://github.com/attenzione/android-ColorPickerPreference)
 
-	https://github.com/openintents/filemanager
+[filemanager](https://github.com/openintents/filemanager)
 
-	all libraries are copied as source into the project tree
+All libraries are copied as source into the project tree instead of
+using subprojects or the like.
 
 Changes
 -------
@@ -66,7 +67,7 @@ ToDos
 
 - refactor code
 
-- remove as much external libraies as possible
+- remove as much external libraries as possible
 
 - allow multiple moving positions (to see friends) via api
 
