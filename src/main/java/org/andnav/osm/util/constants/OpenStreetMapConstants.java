@@ -2,7 +2,7 @@
 package org.andnav.osm.util.constants;
 
 /**
- * 
+ *
  * @author Nicolas Gramlich
  *
  */
@@ -10,13 +10,13 @@ public interface OpenStreetMapConstants {
 	// ===========================================================
 	// Final Fields
 	// ===========================================================
-	
-	public static final String DEBUGTAG = "RMAPS";
+
+	public static final String DEBUGTAG = "tabulae";
 
 	public static final int NOT_SET = Integer.MIN_VALUE;
 	public static final String GPS = "gps";
 	public static final String NETWORK = "network";
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
