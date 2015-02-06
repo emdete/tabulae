@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.net.HttpURLConnection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -114,7 +115,13 @@ public class TileProviderInet extends TileProviderBase {
 
 						if (data == null) {
 							Ut.w("FROM INTERNET " + tileurl);
-							in = new BufferedInputStream(new URL(tileurl).openStream(), StreamUtils.IO_BUFFER_SIZE);
+							HttpURLConnection httpConnection = (HttpURLConnection) new URL(tileurl).openConnection();
+							httpConnection.setInstanceFollowRedirects(false);
+							httpConnection.setRequestProperty("User-Agent", "Tabulae");
+							if (httpConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+								throw new Exception("responseCode: " + httpConnection.getResponseCode());
+							}
+							in = new BufferedInputStream(httpConnection.getInputStream());
 
 							final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
 							out = new BufferedOutputStream(dataStream, StreamUtils.IO_BUFFER_SIZE);
