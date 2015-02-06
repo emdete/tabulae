@@ -37,25 +37,36 @@ Changes
 
 I started to do some cosmetic changes:
 
-	-	use utf-8 encoding of the sources (cp1251 destroyed the display of the
-		degree sign)
+-	use utf-8 encoding of the sources (cp1251 destroyed the display of the
+	degree sign)
 
-	-	fix naming of activies (the head version seemed to be a development stuck
-		in the middle)
+-	fix naming of activies (the head version seemed to be a development stuck
+	in the middle)
 
-	-	remove google analytics
+-	remove google analytics
 
-	-	adapt some requirements for modern api (ActionBar)
+-	adapt some requirements for modern api (ActionBar)
 
-	-	reorder menu
+-	reorder menu
 
-	-	translate russian comments
+-	translate russian comments
 
-	-	reformat sources
+-	reformat sources
 
-	-	move build to gradle
+-	move build to gradle
 
-	-	dos2unix line endings
+-	dos2unix line endings
 
-	-	rename to Tabulae
+-	rename to Tabulae
+
+ToDos
+=====
+
+- improve map selection
+
+- refactor code
+
+- remove as much external libraies as possible
+
+- allow multiple moving positions (to see friends) via api
 
