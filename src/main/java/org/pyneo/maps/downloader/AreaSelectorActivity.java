@@ -303,7 +303,7 @@ public class AreaSelectorActivity extends Activity {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 		mMap.setTileSource(mTileSource);
 		mMap.getController().setZoom(uiState.getInt("ZoomLevelAS", 0));
@@ -426,7 +426,7 @@ public class AreaSelectorActivity extends Activity {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 			}
 		}
 

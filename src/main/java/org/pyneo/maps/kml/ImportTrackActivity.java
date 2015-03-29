@@ -131,11 +131,11 @@ public class ImportTrackActivity extends Activity {
 				}
 				catch (ParserConfigurationException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 				catch (SAXException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 
 				if (parser != null) {
@@ -151,12 +151,12 @@ public class ImportTrackActivity extends Activity {
 					}
 					catch (SAXException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Ut.e(e.toString(), e);
 						mPoiManager.rollbackTransaction();
 					}
 					catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Ut.e(e.toString(), e);
 						mPoiManager.rollbackTransaction();
 					}
 					catch (IllegalStateException e) {

@@ -172,7 +172,7 @@ public class TileProviderFileBase extends TileProviderBase {
 					db.execSQL(DELETE_FROM_ListCashTables);
 				}
 				catch (SQLException e) {
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 			}
 		}

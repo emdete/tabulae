@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.pyneo.maps.utils.Ut;
 
 public class TileURLGeneratorYANDEXTRAFFIC extends TileURLGeneratorBase {
 	private static final String YANDEX_STAT_URL = "http://jgo.maps.yandex.net/trf/stat.js";
@@ -89,7 +90,7 @@ public class TileURLGeneratorYANDEXTRAFFIC extends TileURLGeneratorBase {
 
 					}
 					catch (Exception e) {
-						e.printStackTrace();
+						Ut.e(e.toString(), e);
 					}
 					finally {
 						StreamUtils.closeStream(in);

@@ -292,6 +292,7 @@ public class MainActivity extends Activity {
 					mMap.getController().setCenter(geo);
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 			}
 			if (bundle.containsKey("zoom")) {
@@ -303,6 +304,7 @@ public class MainActivity extends Activity {
 					editor.commit();
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 			}
 			queryIntent.setAction("");
@@ -327,6 +329,7 @@ public class MainActivity extends Activity {
 					mMap.getController().setCenter(geo);
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 			}
 			if (bundle.containsKey("zoom")) {
@@ -339,6 +342,7 @@ public class MainActivity extends Activity {
 					editor.commit();
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 			}
 		}
@@ -408,6 +412,7 @@ public class MainActivity extends Activity {
 							handler.obtainMessage(Ut.ERROR_MESSAGE, resources.getString(R.string.no_inet_conn));
 						}
 						catch (NotFoundException e1) {
+							Ut.e(e.toString(), e);
 						}
 					}
 					finally {
@@ -418,7 +423,7 @@ public class MainActivity extends Activity {
 			});
 		}
 		catch (Exception e) {
-
+			Ut.e(e.toString(), e);
 		}
 	}
 
@@ -568,7 +573,7 @@ public class MainActivity extends Activity {
 					}
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 
 			}
@@ -702,6 +707,7 @@ public class MainActivity extends Activity {
 			}
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 	}
 
@@ -784,6 +790,7 @@ public class MainActivity extends Activity {
 				editor.putString("OverlayID", mTileOverlay == null? mTileSource.getOverlayName(): mTileOverlay.getTileSource().ID);
 			}
 			catch (Exception e) {
+				Ut.e(e.toString(), e);
 			}
 		}
 		editor.putBoolean("ShowOverlay", mShowOverlay);
@@ -925,7 +932,7 @@ public class MainActivity extends Activity {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 
 		return super.onPrepareOptionsMenu(menu);
@@ -996,7 +1003,7 @@ public class MainActivity extends Activity {
 							.parse("market://search?q=pname:com.eclipsim.gpsstatus2")));
 					}
 					catch (Exception e1) {
-						e1.printStackTrace();
+						Ut.e(e.toString(), e);
 					}
 				}
 				return true;
@@ -1187,8 +1194,10 @@ public class MainActivity extends Activity {
 				mTileSource = new TileSource(this, TileSource.MAPNIK);
 			}
 			catch (SQLiteException e) {
+				Ut.e(e.toString(), e);
 			}
 			catch (RException e) {
+				Ut.e(e.toString(), e);
 			}
 		}
 
@@ -1394,6 +1403,7 @@ public class MainActivity extends Activity {
 					startActivity(Intent.createChooser(intent1, getText(R.string.menu_share)));
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 			} else if (item.getItemId() == R.id.menu_toradar) {
 				final PoiPoint poi1 = mPoiOverlay.getPoiPoint(mMarkerIndex);
@@ -1407,6 +1417,7 @@ public class MainActivity extends Activity {
 				}
 				catch (Exception e) {
 					Toast.makeText(this, R.string.message_noradar, Toast.LENGTH_LONG).show();
+					Ut.e(e.toString(), e);
 				}
 			}
 		}
@@ -1480,6 +1491,7 @@ public class MainActivity extends Activity {
 								subj += m2.group().substring(2);
 						}
 						catch (Exception ignored) {
+							Ut.e(ignored.toString(), ignored);
 						}
 
 						final Build b = new Build();
@@ -1714,7 +1726,7 @@ public class MainActivity extends Activity {
 					}
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 
 			} else if (listProviders.contains(LocationManager.NETWORK_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {

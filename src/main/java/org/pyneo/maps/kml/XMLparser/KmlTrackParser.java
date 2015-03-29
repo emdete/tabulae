@@ -2,6 +2,7 @@ package org.pyneo.maps.kml.XMLparser;
 
 import org.pyneo.maps.kml.PoiManager;
 import org.pyneo.maps.kml.Track;
+import org.pyneo.maps.utils.Ut;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -80,7 +81,7 @@ public class KmlTrackParser extends DefaultHandler {
 									mTrack.LastTrackPoint.alt = (double)Integer.parseInt(mStrArray2[2]);
 								}
 								catch (NumberFormatException e1) {
-									e1.printStackTrace();
+									Ut.e(e.toString(), e1);
 								}
 							}
 					}

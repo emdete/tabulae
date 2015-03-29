@@ -12,6 +12,7 @@ import org.pyneo.maps.kml.PoiManager;
 import org.pyneo.maps.kml.XMLparser.PredefMapsParser;
 import org.pyneo.maps.preference.MixedMapsPreference;
 import org.pyneo.maps.utils.RException;
+import org.pyneo.maps.utils.Ut;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -167,7 +168,7 @@ public class TileSourceBase {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 			}
 
 		}

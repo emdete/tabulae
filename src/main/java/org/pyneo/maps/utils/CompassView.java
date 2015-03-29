@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import org.pyneo.maps.R;
+import org.pyneo.maps.utils.Ut;
 
 public class CompassView extends View {
 	private Drawable mCompass;
@@ -28,12 +29,14 @@ public class CompassView extends View {
 			}
 			catch (OutOfMemoryError e) {
 				Ut.w("OutOfMemoryError");
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 				return false;
 			}
 			return true;
-		} else
+		}
+		else {
 			return true;
+		}
 	}
 
 	@Override

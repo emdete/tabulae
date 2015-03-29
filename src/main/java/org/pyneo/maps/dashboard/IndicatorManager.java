@@ -252,10 +252,10 @@ public class IndicatorManager implements IndicatorConst {
 
 		}
 		catch (JSONException e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 
 		mIndicatorViewList.clear();
@@ -337,13 +337,13 @@ public class IndicatorManager implements IndicatorConst {
 
 				}
 				catch (FileNotFoundException e) {
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 				catch (IOException e) {
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 				catch (JSONException e) {
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 			}
 		}

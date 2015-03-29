@@ -119,7 +119,7 @@ public class FSCacheProvider implements ICacheProvider {
 			}
 		}
 		catch (final IOException e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 
 			return;
 		}

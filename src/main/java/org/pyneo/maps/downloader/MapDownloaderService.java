@@ -169,7 +169,7 @@ public class MapDownloaderService extends Service {
 			mTileSource = new TileSource(this, mMapID, true, false);
 		}
 		catch (Exception e1) {
-			e1.printStackTrace();
+			Ut.e(e1.toString(), e1);
 			return;
 		}
 
@@ -198,7 +198,7 @@ public class MapDownloaderService extends Service {
 			cacheDatabase.setFile(file.getAbsolutePath());
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 		mMapDatabase = cacheDatabase;
 
@@ -239,7 +239,7 @@ public class MapDownloaderService extends Service {
 //			//JSONObject json = new JSONObject(str.replace("YMaps.TrafficLoader.onLoad(\"stat\",", "").replace("});", "}"));
 //
 //		} catch (Exception e) {
-//			e.printStackTrace();
+//			Ut.e(e.toString(), e);
 //		} finally {
 //			StreamUtils.closeStream(in);
 //			StreamUtils.closeStream(out);

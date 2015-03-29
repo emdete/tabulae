@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import android.app.Activity;
 import android.view.ActionMode;
 import android.widget.BaseAdapter;
+import org.pyneo.maps.utils.Ut;
 
 public class MultiChoiceAdapterHelper extends MultiChoiceAdapterHelperBase {
     private ActionMode actionMode;
@@ -35,7 +36,7 @@ public class MultiChoiceAdapterHelper extends MultiChoiceAdapterHelperBase {
             Method method = activity.getClass().getMethod("startActionMode", ActionMode.Callback.class);
             actionMode = (ActionMode) method.invoke(activity, owner);
         } catch (Exception e) {
-            e.printStackTrace();
+            Ut.e(e.toString(), e);
             throw new RuntimeException(e);
         }
     }

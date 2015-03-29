@@ -8,6 +8,7 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.kml.PoiManager;
 import org.pyneo.maps.kml.XMLparser.PredefMapsParser;
 import org.pyneo.maps.kml.constants.PoiConstants;
+import org.pyneo.maps.utils.Ut;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class MMPreferenceActivity extends PreferenceActivity implements PoiConst
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 
 		return null;

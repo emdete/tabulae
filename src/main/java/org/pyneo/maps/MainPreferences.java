@@ -125,7 +125,7 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 
 		final File folder = Ut.getAppMapsDir(this);

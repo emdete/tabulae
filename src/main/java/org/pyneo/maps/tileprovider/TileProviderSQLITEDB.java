@@ -82,7 +82,7 @@ public class TileProviderSQLITEDB extends TileProviderFileBase {
 								mTileCache.putTile(xyz.TILEURL, bmp);
 							}
 							catch (Throwable e) {
-								e.printStackTrace();
+								Ut.e(e.toString(), e);
 							}
 						}
 
@@ -154,7 +154,7 @@ public class TileProviderSQLITEDB extends TileProviderFileBase {
 				CommitIndex(mMapID, fileLength, fileModified, minzoom, maxzoom);
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 			}
 
 			return true;
@@ -169,7 +169,7 @@ public class TileProviderSQLITEDB extends TileProviderFileBase {
 					mProgressDialog.dismiss();
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 			}
 		}
 	}

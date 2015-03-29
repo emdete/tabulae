@@ -155,7 +155,7 @@ public class GeoDatabase implements PoiConstants {
 				Toast.makeText(mCtx, mCtx.getText(R.string.message_geodata_notavailable), Toast.LENGTH_LONG).show();
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 			}
 
 		return ret;
@@ -180,7 +180,7 @@ public class GeoDatabase implements PoiConstants {
 			db = new GeoDatabaseHelper(mCtx, folder.getAbsolutePath() + GEODATA_FILENAME).getWritableDatabase();
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 			return null;
 		}
 

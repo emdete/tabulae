@@ -71,7 +71,7 @@ public class FileDownloadListActivity extends ListActivity {
 			mDownloadFile.execute(json.getString("source"), json.getString("filename"), json.getString("mapname"), json.optString("center", ""), json.optString("zoom", ""));
 		}
 		catch (JSONException e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 
 		super.onListItemClick(l, v, position, id);
@@ -134,7 +134,7 @@ public class FileDownloadListActivity extends ListActivity {
 			}
 			catch (Exception e) {
 				ret = null;
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 			}
 			return ret;
 		}

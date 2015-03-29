@@ -352,11 +352,11 @@ public class PoiListActivity extends ListActivity {
 				return PoiListActivity.this.getResources().getString(R.string.message_poiexported, filename);
 			}
 			catch (FileNotFoundException e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 				return PoiListActivity.this.getResources().getString(R.string.message_error, e.getMessage());
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 				return PoiListActivity.this.getResources().getString(R.string.message_error, e.getMessage());
 			}
 
@@ -424,11 +424,11 @@ public class PoiListActivity extends ListActivity {
 				return PoiListActivity.this.getResources().getString(R.string.message_poiexported, filename);
 			}
 			catch (FileNotFoundException e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 				return PoiListActivity.this.getResources().getString(R.string.message_error, e.getMessage());
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 				return PoiListActivity.this.getResources().getString(R.string.message_error, e.getMessage());
 			}
 		}

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import org.pyneo.maps.tileprovider.TileSource;
+import org.pyneo.maps.utils.Ut;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -228,7 +229,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 					}
 				}
 				catch (Throwable e) {
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 			}
 

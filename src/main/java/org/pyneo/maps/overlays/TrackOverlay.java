@@ -150,7 +150,7 @@ public class TrackOverlay extends TileViewOverlay {
 				}
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 			}
 
 			mThreadRunned = false;

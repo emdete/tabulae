@@ -150,14 +150,18 @@ public class Ut implements OpenStreetMapConstants, OpenStreetMapViewConstants {
 		Log.d(DEBUGTAG, str);
 	}
 
+	public static void e(String str, Throwable e) {
+		Log.e(DEBUGTAG, str, e);
+		toLogFile(str);
+	}
+
 	public static void e(String str) {
-		if (DEBUGMODE)
-			Log.e(DEBUGTAG, str);
+		Log.e(DEBUGTAG, str);
 		toLogFile(str);
 	}
 
 	public static void i(String str) {
-		if (DEBUGMODE)
+		//if (DEBUGMODE)
 			Log.i(DEBUGTAG, str);
 		toLogFile(str);
 	}
@@ -339,7 +343,7 @@ public class Ut implements OpenStreetMapConstants, OpenStreetMapViewConstants {
 				logFile.createNewFile();
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				Ut.e(e.toString(), e);
 			}
 		}
 		try {
@@ -350,7 +354,7 @@ public class Ut implements OpenStreetMapConstants, OpenStreetMapViewConstants {
 			buf.close();
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 	}
 

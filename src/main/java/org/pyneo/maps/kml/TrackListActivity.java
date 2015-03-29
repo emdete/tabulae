@@ -397,11 +397,11 @@ public class TrackListActivity extends ListActivity {
 				}
 				catch (FileNotFoundException e) {
 					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 				catch (IOException e) {
 					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 
 				dlgWait.dismiss();
@@ -456,11 +456,11 @@ public class TrackListActivity extends ListActivity {
 				}
 				catch (FileNotFoundException e) {
 					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 				catch (IOException e) {
 					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
-					e.printStackTrace();
+					Ut.e(e.toString(), e);
 				}
 
 				dlgWait.dismiss();

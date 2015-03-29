@@ -107,7 +107,7 @@ public class TrackStylePickerDialog extends Dialog implements ColorPickerView.On
 			mTileSource = new TileSource(getContext(), pref.getString(MapView.MAPNAME, TileSource.MAPNIK));
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Ut.e(e.toString(), e);
 		}
 		mMap.setTileSource(mTileSource);
 		mMap.getController().setZoom(pref.getInt("ZoomLevel", 0));
