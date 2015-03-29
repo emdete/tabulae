@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Checkable;
 import android.widget.RelativeLayout;
 
-import org.pyneo.maps.applib.R;
+import org.pyneo.maps.R;
 
 public class CheckableRelativeLayout extends RelativeLayout implements Checkable {
 

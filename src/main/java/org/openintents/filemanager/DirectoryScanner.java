@@ -12,7 +12,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
-import org.pyneo.maps.applib.utils.Ut;
+import org.pyneo.maps.utils.Ut;
 
 public class DirectoryScanner extends Thread {
 

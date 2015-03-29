@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.pyneo.maps.applib"
+	package="org.pyneo.maps"
 	android:installLocation="auto"
 	android:sharedUserId="@string/app_user_id"
 	android:sharedUserLabel="@string/app_user_label"
@@ -13,9 +13,6 @@
 		android:xlargeScreens="true"
 		android:resizeable="true"
 		android:smallScreens="true" />
-	<uses-sdk
-		android:minSdkVersion="8"
-		/>
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -28,7 +25,7 @@
 	<application
 		android:name=".MapApplication"
 		android:allowClearUserData="false"
-		android:icon="@drawable/ic_launcher_tabulae"
+		android:icon="@drawable/ic_launcher"
 		android:label="@string/app_name" >
 		<activity
 			android:name=".MainActivity"
@@ -86,7 +83,7 @@
 			android:launchMode="singleInstance" >
 		</activity>
 		<service
-			android:name=".applib.downloader.MapDownloaderService"
+			android:name=".downloader.MapDownloaderService"
 			android:icon="@drawable/track_writer_service"
 			android:process=":mapdownloader" >
 			<intent-filter>

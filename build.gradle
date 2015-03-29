@@ -3,7 +3,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:0.14.2'
+		classpath 'com.android.tools.build:gradle:1.0.1'
 	}
 }
 
@@ -24,8 +24,14 @@ dependencies {
 }
 
 android {
-	compileSdkVersion 19
-	buildToolsVersion "20.0.0"
+	compileSdkVersion 21
+	buildToolsVersion "21.1.2"
+	defaultConfig {
+		minSdkVersion 8
+		targetSdkVersion 21
+		versionCode 10000
+		versionName "1.0.0"
+	}
 	android {
 		lintOptions {
 			abortOnError false

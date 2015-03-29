@@ -4,7 +4,7 @@ package org.andnav.osm.views.util;
 import org.andnav.osm.util.BoundingBoxE6;
 import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
 
-import org.pyneo.maps.applib.utils.OSGB36;
+import org.pyneo.maps.utils.OSGB36;
 
 /**
  *

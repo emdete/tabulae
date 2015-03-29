@@ -42,7 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.pyneo.maps.applib.R;
+import org.pyneo.maps.R;
 
 public class FileManagerActivity extends ListActivity {
 	private int mState;

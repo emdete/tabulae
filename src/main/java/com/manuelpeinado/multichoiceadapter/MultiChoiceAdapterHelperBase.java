@@ -35,7 +35,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 
-import org.pyneo.maps.applib.R;
+import org.pyneo.maps.R;
 
 public abstract class MultiChoiceAdapterHelperBase implements OnItemLongClickListener, OnItemClickListener, OnCheckedChangeListener {
     protected static final String TAG = MultiChoiceAdapterHelperBase.class.getSimpleName();
