@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.pyneo.maps.applib.dashboard.IndicatorView xmlns:android="http://schemas.android.com/apk/res/android"
+<org.pyneo.maps.dashboard.IndicatorView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout1"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -46,4 +46,4 @@
 
     </TextView>
 
-</org.pyneo.maps.applib.dashboard.IndicatorView>
+</org.pyneo.maps.dashboard.IndicatorView>
