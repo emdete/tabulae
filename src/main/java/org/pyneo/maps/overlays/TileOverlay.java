@@ -12,17 +12,16 @@ import android.os.Message;
 import org.pyneo.maps.tileprovider.MessageHandlerConstants;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.utils.Ut;
+import org.pyneo.maps.utils.Constants;
 import org.pyneo.maps.view.IMoveListener;
 import org.pyneo.maps.view.TileView;
 import org.pyneo.maps.view.TileViewOverlay;
 
 import org.andnav.osm.util.BoundingBoxE6;
 import org.andnav.osm.util.MyMath;
-import org.andnav.osm.util.constants.OpenStreetMapConstants;
 import org.andnav.osm.views.util.Util;
-import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
 
-public class TileOverlay extends TileViewOverlay implements OpenStreetMapConstants, OpenStreetMapViewConstants {
+public class TileOverlay extends TileViewOverlay implements Constants {
 	// TODO following procedures under the question of alteration
 	private static final int LATITUDE = 0;
 	private static final int LONGITUDE = 1;
@@ -124,7 +123,7 @@ public class TileOverlay extends TileViewOverlay implements OpenStreetMapConstan
 								if (!currentMapTile.isRecycled())
 									c.drawBitmap(currentMapTile, null, mRectDraw, mPaint);
 
-								if (tileView.mDrawTileGrid || OpenStreetMapViewConstants.DEBUGMODE) {
+								if (tileView.mDrawTileGrid || DEBUGMODE) {
 									c.drawLine(tileLeft, tileTop, tileLeft + tileSizePx, tileTop, mPaint);
 									c.drawLine(tileLeft, tileTop, tileLeft, tileTop + tileSizePx, mPaint);
 									c.drawText("y x = " + mapTileCoords[LATITUDE] + " " + mapTileCoords[LONGITUDE] + " zoom " + tileView.getZoomLevel() + " ", tileLeft + 5,

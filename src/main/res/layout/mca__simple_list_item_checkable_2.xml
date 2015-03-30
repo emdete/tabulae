@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:paddingBottom="2dip"
+	android:background="@color/primary"
     android:paddingTop="2dip" >
 
     <TextView

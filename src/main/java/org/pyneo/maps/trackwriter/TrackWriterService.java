@@ -26,8 +26,7 @@ import org.pyneo.maps.kml.TrackListActivity;
 import org.pyneo.maps.kml.TrackStatHelper;
 import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.utils.Ut;
-
-import org.andnav.osm.util.constants.OpenStreetMapConstants;
+import org.pyneo.maps.utils.Constants;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -36,7 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class TrackWriterService extends Service implements OpenStreetMapConstants {
+public class TrackWriterService extends Service implements Constants {
 	private static final Class<?>[] mSetForegroundSignature = new Class[]{
 		boolean.class};
 	private static final Class<?>[] mStartForegroundSignature = new Class[]{

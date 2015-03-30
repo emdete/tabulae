@@ -12,18 +12,16 @@ import android.os.Message;
 import org.pyneo.maps.tileprovider.MessageHandlerConstants;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.utils.Ut;
+import org.pyneo.maps.utils.Constants;
 import org.pyneo.maps.view.TileView;
 import org.pyneo.maps.view.TileViewOverlay;
 
 import org.andnav.osm.util.BoundingBoxE6;
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.MyMath;
-import org.andnav.osm.util.constants.OpenStreetMapConstants;
 import org.andnav.osm.views.util.Util;
-import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
 
-public class YandexTrafficOverlay extends TileViewOverlay implements OpenStreetMapConstants,
-	OpenStreetMapViewConstants {
+public class YandexTrafficOverlay extends TileViewOverlay implements Constants {
 	private static final int LATITUDE = 0;
 	private static final int LONGITUDE = 1;
 	private final Paint mPaint = new Paint();

@@ -16,6 +16,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/style_piker_main"
     android:layout_width="wrap_content"
+	android:background="@color/primary"
     android:layout_height="wrap_content" >
 
     <LinearLayout

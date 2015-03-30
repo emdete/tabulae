@@ -17,8 +17,6 @@ import android.util.Log;
 import org.pyneo.maps.R;
 
 import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.util.constants.OpenStreetMapConstants;
-import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,13 +31,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class Ut implements OpenStreetMapConstants, OpenStreetMapViewConstants {
+public class Ut implements Constants {
 	public static final int MAPTILEFSLOADER_SUCCESS_ID = 1000;
 	public static final int MAPTILEFSLOADER_FAIL_ID = MAPTILEFSLOADER_SUCCESS_ID + 1;
 	public static final int INDEXIND_SUCCESS_ID = MAPTILEFSLOADER_SUCCESS_ID + 2;
 	public static final int INDEXIND_FAIL_ID = MAPTILEFSLOADER_SUCCESS_ID + 3;
 	public static final int ERROR_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 4;
 	public static final int SEARCH_OK_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 5;
+	static public boolean LOGDEBUG = false;
+	static { LOGDEBUG = Log.isLoggable("org.pyneo.maps", Log.DEBUG); }
 
 	public static final int IO_BUFFER_SIZE = 8 * 1024;
 	final static String[] formats = new String[]{
@@ -147,34 +147,34 @@ public class Ut implements OpenStreetMapConstants, OpenStreetMapViewConstants {
 	}
 
 	public static void dd(String str) {
-		Log.d(DEBUGTAG, str);
+		Log.d(LOGTAG, str);
 	}
 
 	public static void e(String str, Throwable e) {
-		Log.e(DEBUGTAG, str, e);
+		Log.e(LOGTAG, str, e);
 		toLogFile(str);
 	}
 
 	public static void e(String str) {
-		Log.e(DEBUGTAG, str);
+		Log.e(LOGTAG, str);
 		toLogFile(str);
 	}
 
 	public static void i(String str) {
-		//if (DEBUGMODE)
-			Log.i(DEBUGTAG, str);
+		//if (LOGDEBUG)
+			Log.i(LOGTAG, str);
 		toLogFile(str);
 	}
 
 	public static void w(String str) {
-		if (DEBUGMODE)
-			Log.w(DEBUGTAG, str);
+		if (LOGDEBUG)
+			Log.w(LOGTAG, str);
 		toLogFile(str);
 	}
 
 	public static void d(String str) {
-		if (DEBUGMODE)
-			Log.d(DEBUGTAG, str);
+		if (LOGDEBUG)
+			Log.d(LOGTAG, str);
 		toLogFile(str);
 	}
 

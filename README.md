@@ -60,6 +60,13 @@ I started to do some cosmetic changes:
 
 -	rename to Tabulae
 
+Debugging
+---------
+
+The app does alot of debug logging but that level must be enabled. you can do
+so by issuing `setprop log.tag.org.pyneo.maps DEBUG` in a shell on the
+device.
+
 ToDos
 =====
 
