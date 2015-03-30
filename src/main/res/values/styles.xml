@@ -50,9 +50,9 @@
 		<item name="android:textColor">#ffffffff</item>
 	</style>
 	<style name="descr_gray">
-		<item name="android:textSize">12dp</item>
+		<item name="android:textSize">14dp</item>
 		<item name="android:typeface">sans</item>
-		<item name="android:textColor">#ff676767</item>
+		<item name="android:textColor">#ffaaaaaa</item>
 		<item name="android:includeFontPadding">false</item>
 	</style>
 	<style name="label_white">
