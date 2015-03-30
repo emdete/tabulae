@@ -254,7 +254,7 @@ public class DownloaderActivity extends Activity {
 			setTitle();
 		}
 
-		bindService(new Intent(IRemoteService.class.getName()), mConnection, 0);
+		bindService(new Intent(this, IRemoteService.class), mConnection, 0);
 		super.onResume();
 	}
 

@@ -190,7 +190,7 @@ public class MainActivity extends Activity {
 			CrashReportHandler.attach(this);
 		}
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		createContentView();
 
@@ -525,31 +525,33 @@ public class MainActivity extends Activity {
 
 			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 				mMap.getTileView().mPoiMenuInfo.EventGeoPoint = null;
-
 				menu.setHeaderTitle(R.string.menu_title_overlays);
 				menu.add(Menu.NONE, R.id.hide_overlay, Menu.NONE, R.string.menu_hide_overlay);
-
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-
 				File folder = Ut.getAppMapsDir(MainActivity.this);
 				if (folder.exists()) {
 					File[] files = folder.listFiles();
-					if (files != null)
+					if (files != null) {
 						for (File file: files) {
-							if (file.getName().toLowerCase().endsWith(".mnm")
-							|| file.getName().toLowerCase().endsWith(".tar")
-							|| file.getName().toLowerCase().endsWith(".sqlitedb")) {
+							if (
+								file.getName().toLowerCase().endsWith(".mnm") ||
+								file.getName().toLowerCase().endsWith(".tar") ||
+								file.getName().toLowerCase().endsWith(".sqlitedb")
+							) {
 								String name = Ut.FileName2ID(file.getName());
-								if (pref.getBoolean("pref_usermaps_" + name + "_enabled", false)
-									//&& (mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == Integer.parseInt(pref.getString("pref_usermaps_" + name + "_projection", "1")))
-									&& pref.getBoolean("pref_usermaps_" + name + "_isoverlay", false)) {
-									MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE, pref.getString("pref_usermaps_" + name + "_name", file.getName()));
+								if (
+									pref.getBoolean("pref_usermaps_" + name + "_enabled", false) &&
+									// (mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == Integer.parseInt(pref.getString("pref_usermaps_" + name + "_projection", "1"))) &&
+									pref.getBoolean("pref_usermaps_" + name + "_isoverlay", false)
+								) {
+									MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE,
+										pref.getString("pref_usermaps_" + name + "_name", file.getName()));
 									item.setTitleCondensed("usermap_" + name);
 								}
 							}
 						}
+					}
 				}
-
 				Cursor c = mPoiManager.getGeoDatabase().getMixedMaps();
 				if (c != null) {
 					if (c.moveToFirst()) {

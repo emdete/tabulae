@@ -33,6 +33,7 @@ import org.pyneo.maps.kml.XMLparser.SimpleXML;
 import org.pyneo.maps.trackwriter.DatabaseHelper;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
+import org.pyneo.maps.trackwriter.TrackWriterService;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -68,19 +69,19 @@ public class TrackListActivity extends ListActivity {
 		((Button)findViewById(R.id.startButton))
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					startService(new Intent("org.pyneo.maps.trackwriter"));
+					startService(new Intent(TrackListActivity.this, TrackWriterService.class));
 				}
 			});
 		((Button)findViewById(R.id.pauseButton))
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					stopService(new Intent("org.pyneo.maps.trackwriter"));
+					stopService(new Intent(TrackListActivity.this, TrackWriterService.class));
 				}
 			});
 		((Button)findViewById(R.id.stopButton))
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					stopService(new Intent("org.pyneo.maps.trackwriter"));
+					stopService(new Intent(TrackListActivity.this, TrackWriterService.class));
 					doSaveTrack();
 				}
 			});
