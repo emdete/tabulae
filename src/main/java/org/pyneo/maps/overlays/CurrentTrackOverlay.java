@@ -86,6 +86,7 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 					mService.registerCallback(mCallback);
 				}
 				catch (RemoteException e) {
+					Ut.e(e.toString(), e);
 				}
 			}
 
@@ -120,8 +121,9 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 
 	@Override
 	public void Free() {
-		if (mBasePj != null)
+		if (mBasePj != null) {
 			mBasePj.StopProcessing();
+		}
 		mThreadExecutor.shutdown();
 		super.Free();
 	}
@@ -136,23 +138,20 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 			mThreadExecutor.execute(mThread);
 			return;
 		}
-
-		if (mPath == null)
+		if (mPath == null) {
 			return;
-
+		}
 		final org.pyneo.maps.view.TileView.OpenStreetMapViewProjection pj = osmv.getProjection();
 		final Point screenCoords = new Point();
-
 		pj.toPixels(mBaseLocation, screenCoords);
-
 		c.save();
 		if (screenCoords.x != mBaseCoords.x && screenCoords.y != mBaseCoords.y) {
 			c.translate(screenCoords.x - mBaseCoords.x, screenCoords.y - mBaseCoords.y);
 			c.scale((float)osmv.mTouchScale, (float)osmv.mTouchScale, mBaseCoords.x, mBaseCoords.y);
 		}
-		;
-		if (mPath != null)
+		if (mPath != null) {
 			c.drawPath(mPath, mPaint);
+		}
 		c.restore();
 	}
 
@@ -163,7 +162,7 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 
 	public void onResume() {
 		mTrack = null;
-		mContext.bindService(new Intent(IRemoteService.class.getName()), mConnection, 0 /*Context.BIND_AUTO_CREATE*/);
+		mContext.bindService(new Intent(mContext, IRemoteService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/);
 		mIsBound = true;
 	}
 
@@ -178,9 +177,9 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 				catch (RemoteException e) {
 					// There is nothing special we need to do if the service
 					// has crashed.
+					Ut.e(e.toString(), e);
 				}
 			}
-
 			// Detach our existing connection.
 			mContext.unbindService(mConnection);
 			mIsBound = false;
@@ -192,11 +191,12 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 		@Override
 		public void run() {
 			mPath = null;
-			if (mTrack == null)
+			if (mTrack == null) {
 				mTrack = new Track();
-			else
+			}
+			else {
 				mTrack.getPoints().clear();
-
+			}
 			final File folder = Ut.getAppMainDir(mContext, "data");
 			if (folder.canRead()) {
 				SQLiteDatabase db = null;
@@ -205,8 +205,8 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 				}
 				catch (Exception e) {
 					db = null;
+					Ut.e(e.toString(), e);
 				}
-
 				if (db != null) {
 					final Cursor c = db.rawQuery("SELECT lat, lon FROM trackpoints ORDER BY id", null);
 
@@ -216,18 +216,14 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 
 					db.close();
 				}
-				;
 			}
-			;
-
 			try {
 				Message.obtain(mOsmv.getHandler(), Ut.MAPTILEFSLOADER_SUCCESS_ID).sendToTarget();
 			}
 			catch (Exception e) {
+				Ut.e(e.toString(), e);
 			}
-
 			mThreadRunned = false;
 		}
 	}
-
 }

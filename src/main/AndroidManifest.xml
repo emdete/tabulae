@@ -4,8 +4,7 @@
 	android:installLocation="auto"
 	android:sharedUserId="@string/app_user_id"
 	android:sharedUserLabel="@string/app_user_label"
-	android:versionCode="10000"
-	android:versionName="1.0.0" >
+	>
 	<supports-screens
 		android:anyDensity="true"
 		android:largeScreens="true"
@@ -72,10 +71,10 @@
 			android:name=".trackwriter.TrackWriterService"
 			android:icon="@drawable/track_writer_service"
 			android:process=":trackwriter" >
-			<intent-filter>
+			<!-- intent-filter>
 				<action android:name=".trackwriter" />
 				<action android:name=".trackwriter.IRemoteService" />
-			</intent-filter>
+			</intent-filter -->
 		</service>
 		<activity android:name="org.openintents.filemanager.FileManagerActivity" ></activity>
 		<activity
@@ -86,10 +85,10 @@
 			android:name=".downloader.MapDownloaderService"
 			android:icon="@drawable/track_writer_service"
 			android:process=":mapdownloader" >
-			<intent-filter>
+			<!--intent-filter>
 				<action android:name=".downloader" />
 				<action android:name=".downloader.IRemoteService" />
-			</intent-filter>
+			</intent-filter -->
 		</service>
 		<activity android:name=".downloader.DownloaderActivity" ></activity>
 		<activity android:name=".preference.MixedMapsPreference"></activity>

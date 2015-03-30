@@ -183,10 +183,12 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Ut.i("onCreate savedInstanceState=" + savedInstanceState);
 		super.onCreate(savedInstanceState);
 
-		if (!OpenStreetMapViewConstants.DEBUGMODE)
+		if (!OpenStreetMapViewConstants.DEBUGMODE) {
 			CrashReportHandler.attach(this);
+		}
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -309,6 +311,7 @@ public class MainActivity extends Activity {
 			}
 			queryIntent.setAction("");
 		}
+		Ut.i("onCreate done");
 	}
 
 	@Override

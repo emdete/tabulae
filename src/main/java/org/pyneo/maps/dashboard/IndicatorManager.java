@@ -79,7 +79,7 @@ public class IndicatorManager implements IndicatorConst {
 
 		@Override
 		public void onTrackStatUpdate(int Cnt, double Distance, long Duration, double MaxSpeed, double AvgSpeed,
-									  long MoveTime, double AvgMoveSpeed) throws RemoteException {
+				long MoveTime, double AvgMoveSpeed) throws RemoteException {
 			mIndicators.put(TRCNT, Cnt);
 			mIndicators.put(TRDIST, mDf.formatDistance2(Distance));
 			mIndicators.put(TRDURATION, sdfDelta.format(Duration));
@@ -109,6 +109,7 @@ public class IndicatorManager implements IndicatorConst {
 					mService.registerCallback(mCallback);
 				}
 				catch (RemoteException e) {
+					Ut.e(e.toString(), e);
 				}
 			}
 
@@ -125,14 +126,21 @@ public class IndicatorManager implements IndicatorConst {
 			mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 		try {
 			mLocationManager.addGpsStatusListener(mLocationListener);
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 
-		ctx.bindService(new Intent(IRemoteService.class.getName()), mConnection, 0 /*Context.BIND_AUTO_CREATE*/);
+		try {
+			ctx.bindService(new Intent(ctx, IRemoteService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/);
+		}
+		catch (Exception e) {
+			Ut.e(e.toString(), e);
+		}
 	}
 
 	private void setUpIndicators(Context ctx) {
@@ -212,9 +220,10 @@ public class IndicatorManager implements IndicatorConst {
 			((LocationManager)ctx.getSystemService(Context.LOCATION_SERVICE)).requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 		mLocationListener.onGpsStatusChanged(0);
-		ctx.bindService(new Intent(IRemoteService.class.getName()), mConnection, 0 /*Context.BIND_AUTO_CREATE*/);
+		ctx.bindService(new Intent(ctx, IRemoteService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/);
 	}
 
 	public void Dismiss(MainActivity ctx) {
