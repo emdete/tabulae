@@ -3,21 +3,25 @@
 	<item
 		android:id="@+id/tracks"
 		android:icon="@android:drawable/ic_menu_directions"
+		android:showAsAction="always"
 		android:title="@string/menu_tracks"
 		/>
 	<item
 		android:id="@+id/menu_show_dashboard"
 		android:icon="@android:drawable/ic_menu_view"
+		android:showAsAction="ifRoom"
 		android:title="@string/menu_show_dashboard"
 		/>
 	<item
 		android:id="@+id/poilist"
 		android:icon="@android:drawable/ic_menu_myplaces"
+		android:showAsAction="ifRoom"
 		android:title="@string/menu_poilist"
 		/>
 	<item
 		android:id="@+id/mapselector"
 		android:icon="@android:drawable/ic_menu_mapmode"
+		android:showAsAction="always"
 		android:title="@string/menu_mapselector"
 		>
 		<menu>
@@ -50,38 +54,30 @@
 		android:title="@string/menu_gpsstatus"
 		android:visible="false"
 		/>
-	<!-- item
-		android:id="@+id/tools"
-		android:icon="@android:drawable/ic_menu_preferences"
-		android:title="@string/menu_tools"
-		>
-		<menu -->
-			<item
-				android:id="@+id/search"
-				android:icon="@android:drawable/ic_menu_search"
-				android:title="@string/menu_search"
-				android:visible="false"
-				/>
-			<item
-				android:id="@+id/compass"
-				android:icon="@android:drawable/ic_menu_compass"
-				android:title="@string/menu_compass"
-				/>
-			<item
-				android:id="@+id/measure"
-				android:title="@string/menu_measure"
-				/>
-			<item
-				android:id="@+id/reload"
-				android:title="@string/menu_reload"
-				/>
-			<item
-				android:id="@+id/findthemap"
-				android:title="@string/menu_findthemap"
-				android:visible="false"
-				/>
-		<!-- /menu>
-	</item -->
+	<item
+		android:id="@+id/search"
+		android:icon="@android:drawable/ic_menu_search"
+		android:title="@string/menu_search"
+		android:visible="false"
+		/>
+	<item
+		android:id="@+id/compass"
+		android:icon="@android:drawable/ic_menu_compass"
+		android:title="@string/menu_compass"
+		/>
+	<item
+		android:id="@+id/measure"
+		android:title="@string/menu_measure"
+		/>
+	<item
+		android:id="@+id/reload"
+		android:title="@string/menu_reload"
+		/>
+	<item
+		android:id="@+id/findthemap"
+		android:title="@string/menu_findthemap"
+		android:visible="false"
+		/>
 	<item
 		android:id="@+id/mylocation"
 		android:icon="@android:drawable/ic_menu_mylocation"
@@ -96,4 +92,12 @@
 		android:id="@+id/exit"
 		android:title="@string/menu_exit"
 		/>
+	<!-- item
+		android:id="@+id/tools"
+		android:icon="@android:drawable/ic_menu_preferences"
+		android:title="@string/menu_tools"
+		>
+		<menu -->
+		<!-- /menu>
+	</item -->
 </menu>
