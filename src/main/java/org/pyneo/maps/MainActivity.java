@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -997,7 +998,10 @@ public class MainActivity extends Activity {
 			}
 			case R.id.gpsstatus: {
 				try {
-					startActivity(new Intent("com.eclipsim.gpsstatus.VIEW"));
+					startActivity(new Intent(Intent.ACTION_MAIN) // act
+					.addCategory(Intent.CATEGORY_LAUNCHER) // cat
+					.setComponent(new ComponentName("com.vonglasow.michael.satstat", "com.vonglasow.michael.satstat.MainActivity")) // cmp
+					);
 				}
 				catch (ActivityNotFoundException e) {
 					Toast.makeText(this,
@@ -1005,7 +1009,7 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 					try {
 						startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri
-							.parse("market://search?q=pname:com.eclipsim.gpsstatus2")));
+							.parse("market://search?q=pname:com.vonglasow.michael.satstat")));
 					}
 					catch (Exception e1) {
 						Ut.e(e.toString(), e);
