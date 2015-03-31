@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
 	<string name="about_dialog_close">Close</string>
-	<string name="about_dialog_text">\n ©2014 M. Dietrich\n ©2009 Robert.Developer\n Osmdroid by Nicolas Gramlich\n App icon by Everaldo Coelho\n With the assistance of\n Dmytro Sandu\n Snake Joe\n Christoffer Blindheim\n Translators\n Vitek Fedra CZ\n Blast IT\n Mike DE\n All rights reserved\n \n Questions, sentences mail to tabulae@pyneo.org\n \n How to and FAQ you can find on http://pyneo.org/tabulae/\n</string>
+	<string name="about_dialog_text" translatable="false">\n ©2014 M. Dietrich\n ©2009 Robert.Developer\n Osmdroid by Nicolas Gramlich\n App icon by Everaldo Coelho\n With the assistance of\n Dmytro Sandu\n Snake Joe\n Christoffer Blindheim\n Translators\n Vitek Fedra CZ\n Blast IT\n Mike DE\n All rights reserved\n \n Questions, sentences mail to tabulae@pyneo.org\n \n How to and FAQ you can find on http://pyneo.org/tabulae/\n</string>
 	<string name="about_dialog_whats_new">What\'s new&#8230;</string>
 	<string name="activity">Activity</string>
 	<string name="add_shadow_box">Add shadow</string>
@@ -181,7 +181,8 @@
 	<string name="pref_coordformat_summary">Latitude, longitude format for display</string>
 	<string name="pref_crosshair">Crosshair on centre</string>
 	<string name="pref_crosshair_summary">Show litle crosshair on centre of the map</string>
-	<string name="pref_custommap_dialogmessage">For example:\n http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n Addition to the obvious {z}, {x}, {y} you can use {galileo} for Google maps\n Write me to email if you need to extends this list of parameters.\n	</string>
+	<string name="pref_custommap_dialogmessage">For example:\n http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n Addition to the obvious {z}, {x}, {y} you can use {galileo} for Google maps\n Write me to email if you need to extends this list of parameters.\n
+	</string>
 	<string name="pref_dir">Directories</string>
 	<string name="pref_dir_export">Export files directory</string>
 	<string name="pref_dir_import">Import files directory</string>

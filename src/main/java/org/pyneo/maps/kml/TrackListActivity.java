@@ -214,7 +214,7 @@ public class TrackListActivity extends ListActivity {
 			startManagingCursor(c);
 
 			SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-				R.layout.tracklist_item
+				R.layout.track_list_item
 				, c,
 				new String[]{"name", "title2", "show", "cnt", "distance" + mUnits, "duration", "units"/*, "descr"*/},
 				new int[]{R.id.title1, R.id.title2, R.id.checkbox, R.id.data_value1, R.id.data_value2, R.id.data_value3, R.id.data_unit2 /*, R.id.descr*/});
@@ -263,7 +263,7 @@ public class TrackListActivity extends ListActivity {
 		super.onCreateOptionsMenu(menu);
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.tracklist, menu);
+		inflater.inflate(R.menu.track_list, menu);
 
 		return true;
 	}

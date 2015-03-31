@@ -27,7 +27,7 @@ public class PoiCategoryActivity extends Activity implements PoiConstants {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.setContentView(R.layout.poicategory);
+		this.setContentView(R.layout.poi_category);
 
 		if (mPoiManager == null)
 			mPoiManager = new PoiManager(this);

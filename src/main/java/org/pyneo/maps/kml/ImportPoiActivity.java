@@ -48,7 +48,7 @@ public class ImportPoiActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		SharedPreferences settings = getPreferences(Activity.MODE_PRIVATE);
-		this.setContentView(R.layout.importpoi);
+		this.setContentView(R.layout.poi_import);
 
 		if (mPoiManager == null)
 			mPoiManager = new PoiManager(this);

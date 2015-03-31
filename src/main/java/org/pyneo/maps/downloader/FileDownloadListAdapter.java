@@ -59,7 +59,7 @@ public class FileDownloadListAdapter extends BaseAdapter {
 		View view;
 
 		if (convertView == null) {
-			view = mInflater.inflate(R.layout.filedownloadlist_item, parent, false);
+			view = mInflater.inflate(R.layout.file_downloadlist_item, parent, false);
 		} else {
 			view = convertView;
 		}

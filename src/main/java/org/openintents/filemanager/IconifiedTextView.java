@@ -39,7 +39,7 @@ public class IconifiedTextView extends LinearLayout {
 		// inflate rating
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		inflater.inflate(R.layout.filelist_item, this, true);
+		inflater.inflate(R.layout.file_list_item, this, true);
 
 		mText = (TextView) findViewById(R.id.text);
 		mInfo = (TextView) findViewById(R.id.info);

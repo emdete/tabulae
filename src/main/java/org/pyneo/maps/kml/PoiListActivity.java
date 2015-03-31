@@ -81,7 +81,7 @@ public class PoiListActivity extends ListActivity {
 		startManagingCursor(c);
 
 		ListAdapter adapter = new SimpleCursorAdapter(this,
-			R.layout.poilist_item, c,
+			R.layout.poi_list_item, c,
 			new String[]{"name", "iconid", "catname", "descr"},
 			new int[]{R.id.title1, R.id.pic, R.id.title2, R.id.descr});
 		((SimpleCursorAdapter)adapter).setViewBinder(mViewBinder);

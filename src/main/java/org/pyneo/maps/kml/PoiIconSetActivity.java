@@ -21,7 +21,7 @@ public class PoiIconSetActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.setContentView(R.layout.poiiconset);
+		this.setContentView(R.layout.poi_iconset);
 
 		mGridInt = (GridView)findViewById(R.id.GridInt);
 		mGridInt.setAdapter(new AppsAdapter());

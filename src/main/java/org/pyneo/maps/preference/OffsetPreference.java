@@ -28,7 +28,7 @@ public class OffsetPreference extends DialogPreference {
 
 	public OffsetPreference(Context context, String mapID) {
 		super(context, null);
-		setDialogLayoutResource(R.layout.pref_offset);
+		setDialogLayoutResource(R.layout.preference_offset);
 		mMapID = mapID;
 	}
 

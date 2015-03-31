@@ -113,7 +113,7 @@ public class FileManagerActivity extends ListActivity {
 		};
 
 		  requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-          setContentView(R.layout.filelist);
+          setContentView(R.layout.file_list);
 
           mEmptyText = (TextView) findViewById(R.id.empty_text);
           mPathText = (TextView) findViewById(R.id.path);

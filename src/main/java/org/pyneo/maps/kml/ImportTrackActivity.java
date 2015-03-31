@@ -43,7 +43,7 @@ public class ImportTrackActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		SharedPreferences settings = getPreferences(Activity.MODE_PRIVATE);
-		this.setContentView(R.layout.importtrack);
+		this.setContentView(R.layout.track_import);
 
 		if (mPoiManager == null)
 			mPoiManager = new PoiManager(this);

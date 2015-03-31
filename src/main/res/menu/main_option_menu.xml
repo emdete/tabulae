@@ -32,11 +32,6 @@
 		</menu>
 	</item>
 	<item
-		android:id="@+id/settings"
-		android:icon="@android:drawable/ic_menu_preferences"
-		android:title="@string/menu_settings"
-		/>
-	<item
 		android:id="@+id/area_selector"
 		android:icon="@android:drawable/ic_menu_info_details"
 		android:title="@string/menu_area_selector"
@@ -52,7 +47,6 @@
 	<item
 		android:id="@+id/gpsstatus"
 		android:title="@string/menu_gpsstatus"
-		android:visible="false"
 		/>
 	<item
 		android:id="@+id/search"
@@ -82,6 +76,11 @@
 		android:id="@+id/mylocation"
 		android:icon="@android:drawable/ic_menu_mylocation"
 		android:title="@string/menu_mylocation"
+		/>
+	<item
+		android:id="@+id/settings"
+		android:icon="@android:drawable/ic_menu_preferences"
+		android:title="@string/menu_settings"
 		/>
 	<item
 		android:id="@+id/about"

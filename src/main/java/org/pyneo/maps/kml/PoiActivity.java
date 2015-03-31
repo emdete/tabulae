@@ -79,11 +79,11 @@ public class PoiActivity extends Activity {
 		Cursor c = mPoiManager.getGeoDatabase().getPoiCategoryListCursor();
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-			R.layout.poicategory_spinner, //android.R.layout.simple_spinner_item,
+			R.layout.poi_category_spinner, //android.R.layout.simple_spinner_item,
 			c,
 			new String[]{"name", "iconid"},
 			new int[]{android.R.id.text1, R.id.pic});
-		adapter.setDropDownViewResource(R.layout.poicategory_spinner_dropdown);
+		adapter.setDropDownViewResource(R.layout.poi_category_spinner_dropdown);
 		mSpinner.setAdapter(adapter);
 
 		Bundle extras = getIntent().getExtras();

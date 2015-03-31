@@ -43,7 +43,7 @@ public class PoiListFragment extends ListFragment implements
 		setHasOptionsMenu(true);
 
 		mAdapter = new PoiListSimpleCursorAdapter(savedInstanceState, getActivity(),
-			R.layout.poilist_item, null,
+			R.layout.poi_list_item, null,
 			new String[]{"name", "iconid", "catname", "descr"},
 			new int[]{R.id.title1, R.id.pic, R.id.title2, R.id.descr});
 		final PoiViewBinder binder = new PoiViewBinder(getActivity().getApplicationContext());
