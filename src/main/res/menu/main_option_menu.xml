@@ -41,8 +41,14 @@
 		android:title="@string/menu_downloadprepared"
 		/>
 	<item
+		android:id="@+id/layers"
+		android:title="@string/menu_layers"
+		android:visible="false"
+		/>
+	<item
 		android:id="@+id/routes"
 		android:title="@string/menu_routes"
+		android:visible="false"
 		/>
 	<item
 		android:id="@+id/gpsstatus"
