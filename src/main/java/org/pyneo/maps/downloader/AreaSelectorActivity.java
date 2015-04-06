@@ -32,6 +32,7 @@ import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.view.IMoveListener;
 import org.pyneo.maps.view.MapView;
 import org.pyneo.maps.view.TileViewOverlay;
+import org.pyneo.maps.downloader.MapDownloaderService;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.views.util.Util;
@@ -214,7 +215,7 @@ public class AreaSelectorActivity extends Activity {
 
 		findViewById(R.id.start_download).setVisibility(View.GONE);
 
-		final Intent intent = new Intent("org.pyneo.maps.mapdownloader");
+		final Intent intent = new Intent(this, MapDownloaderService.class);
 		intent.putExtra("ZOOM", mZoomArr);
 		intent.putExtra("COORD", mAreaSelectorOverlay.getCoordArr());
 		intent.putExtra("MAPID", mTileSource.ID);
