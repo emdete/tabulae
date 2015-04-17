@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 -1 5669 5738" >
+<!-- copyright M. Dietrich <mdt@pyneo.org> -->
+<g>
+  <circle
+     cx="2834"
+     cy="2834"
+     r="944"
+     style="fill:#ff0000;fill-opacity:0.5;stroke:#000000;stroke-width:80;stroke-miterlimit:4;stroke-dasharray:none" />
+  <circle
+     cx="2834"
+     cy="2834"
+     r="2834"
+     style="fill:none;stroke:#000000;stroke-width:0" />
+</g>
+</svg>
