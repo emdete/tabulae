@@ -208,7 +208,7 @@ public class TrackWriterService extends Service implements Constants {
 	private void showNotification() {
 		CharSequence text = getText(R.string.remote_service_started);
 
-		mNotification = new Notification(R.drawable.track_writer_service, text, System.currentTimeMillis());
+		mNotification = new Notification(R.drawable.ic_service, text, System.currentTimeMillis());
 		mNotification.flags = mNotification.flags | Notification.FLAG_NO_CLEAR;
 
 		mContentIntent = PendingIntent.getActivity(this, 0,

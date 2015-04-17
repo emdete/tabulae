@@ -37,7 +37,7 @@ public class IconManager {
 		if (bmp != null)
 			return bmp;
 		else
-			return getBitmap(R.drawable.person);
+			return getBitmap(R.drawable.needle_pinned);
 	}
 
 	public Bitmap getArrowIcon() {
@@ -45,7 +45,7 @@ public class IconManager {
 		if (bmp != null)
 			return bmp;
 		else
-			return getBitmap(R.drawable.arrow);
+			return getBitmap(R.drawable.needle);
 	}
 
 	public Bitmap getTargetIcon() {

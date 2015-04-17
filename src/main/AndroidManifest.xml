@@ -69,7 +69,7 @@
 		<activity android:name=".kml.TrackStatActivity" ></activity>
 		<service
 			android:name=".trackwriter.TrackWriterService"
-			android:icon="@drawable/track_writer_service"
+			android:icon="@drawable/ic_service"
 			android:process=":trackwriter" >
 			<!-- intent-filter>
 				<action android:name=".trackwriter" />
@@ -83,7 +83,7 @@
 		</activity>
 		<service
 			android:name=".downloader.MapDownloaderService"
-			android:icon="@drawable/track_writer_service"
+			android:icon="@drawable/ic_service"
 			android:process=":mapdownloader" >
 			<!--intent-filter>
 				<action android:name=".downloader" />
