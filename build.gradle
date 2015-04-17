@@ -9,15 +9,6 @@ buildscript {
 
 apply plugin: 'android'
 
-apply from: "../pyneo.org.gradle"
-android {
-	signingConfigs {
-		release {
-			storeFile file("../pyneo.org.keystore")
-		}
-	}
-}
-
 dependencies {
 	compile 'com.android.support:support-v4:18.0.+'
 	compile 'com.android.support:appcompat-v7:19.+'
