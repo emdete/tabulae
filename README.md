@@ -80,13 +80,9 @@ ToDos
 
 - fix bug on location provider usage
 
-- create a changelog generator
-
 - improve map selection
 
-- refactor code
-
-- remove as much external libraries as possible
+- refactor code, remove as much code as possible
 
 - allow multiple moving positions (to see friends) via intent (Conversations)
 
@@ -94,7 +90,7 @@ ToDos
 
 - re check all map provider
 
-- display tiles with error correctly
+- display tiles with error from download better
 
 - go on when download stucks (dislpay cached ones with higher prio)
 
