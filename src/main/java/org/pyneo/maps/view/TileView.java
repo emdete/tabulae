@@ -39,10 +39,12 @@ public class TileView extends View {
 	final Paint mPaint = new Paint();
 	final Matrix mMatrixBearing = new Matrix();
 	final Rect mRectDraw = new Rect();
-	public int mLatitudeE6 = 0, mLongitudeE6 = 0;
+	public int mLatitudeE6 = 0;
+	public int mLongitudeE6 = 0;
 	public double mTouchScale = 1;
 	public PoiMenuInfo mPoiMenuInfo = new PoiMenuInfo(-1);
-	private double mOffsetLat, mOffsetLon;
+	private double mOffsetLat;
+	private double mOffsetLon;
 	private int mZoom = 0;
 	private float mBearing = 0;
 	private boolean mStopProcessing;
@@ -54,7 +56,6 @@ public class TileView extends View {
 	private IMoveListener mMoveListener;
 
 //	private class TileMapHandler extends Handler {
-//		
 //		@Override
 //		public void handleMessage(final Message msg) {
 //			switch (msg.what) {
