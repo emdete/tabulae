@@ -44,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.TimeZone;
 
 public class TrackListActivity extends ListActivity {
 	private PoiManager mPoiManager;
@@ -422,6 +423,7 @@ public class TrackListActivity extends ListActivity {
 				final Track track = mPoiManager.getTrack(trackid);
 
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+				formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 				SimpleXML xml = new SimpleXML("gpx");
 				xml.setAttr("xsi:schemaLocation", "http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd");
 				xml.setAttr("xmlns", "http://www.topografix.com/GPX/1/0");
