@@ -70,11 +70,17 @@ device.
 ToDos
 =====
 
+- fix bug on display of old tracks on different zooms
+
+- fix bug on display track while moving
+
+- fix bug with display of needle (three states, move/center)
+
 - improve map selection
 
 - refactor code
 
 - remove as much external libraries as possible
 
-- allow multiple moving positions (to see friends) via api
+- allow multiple moving positions (to see friends) via intent (Conversations)
 
