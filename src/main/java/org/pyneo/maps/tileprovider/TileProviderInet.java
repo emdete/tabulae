@@ -100,21 +100,16 @@ public class TileProviderInet extends TileProviderBase {
 				public void run() {
 					InputStream in = null;
 					OutputStream out = null;
-
 					try {
-						Ut.i("Downloading Maptile from url: " + tileurl);
-
 						byte[] data = null;
-
 						if (mCacheProvider != null) {
 							if (mReloadTileMode)
 								mCacheProvider.deleteTile(tileurl, x, y, z);
 							else
 								data = mCacheProvider.getTile(tileurl, x, y, z);
 						}
-
 						if (data == null) {
-							Ut.w("FROM INTERNET " + tileurl);
+							Ut.i("Downloading maptile url=" + tileurl);
 							HttpURLConnection httpConnection = (HttpURLConnection) new URL(tileurl).openConnection();
 							httpConnection.setInstanceFollowRedirects(false);
 							httpConnection.setRequestProperty("User-Agent", "Tabulae");
@@ -122,23 +117,21 @@ public class TileProviderInet extends TileProviderBase {
 								throw new Exception("responseCode: " + httpConnection.getResponseCode());
 							}
 							in = new BufferedInputStream(httpConnection.getInputStream());
-
 							final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
 							out = new BufferedOutputStream(dataStream, StreamUtils.IO_BUFFER_SIZE);
 							StreamUtils.copy(in, out);
 							out.flush();
-
 							data = dataStream.toByteArray();
-
 							if (mCacheProvider != null)
 								mCacheProvider.putTile(tileurl, x, y, z, data);
 						}
-
+						else {
+							Ut.i("Using maptile from cache url=" + tileurl);
+						}
 						if (data != null) {
 							final Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
 							mTileCache.putTile(tileurl, bmp);
 						}
-
 						SendMessageSuccess();
 					}
 					catch (Exception e) {
