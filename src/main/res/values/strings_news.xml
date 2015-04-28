@@ -1,9 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-	<string name="whats_new_dialog_text" translatable="false">
+<string name='whats_new_dialog_text' translatable='false'>
 \n
-v.1.0.0.0\n
-+ new name for a fork
+v.1.0.2\n
+- export of gpx now uses UTC for timestamps (thank you junkyardsparkle for noting)\n
++ source code reformatting for beauty\n
+\n
+v.1.0.1\n
++ fixes for fdroid\n
++ new icons\n
+\n
+v.1.0.0\n
++ new name for a fork\n
 \n
 v.0.9.4\n
 + Dashboard. Use Menu - Dashboard. Long press on dashboard to add or change value\n
@@ -158,5 +166,6 @@ v.0.7.0\n
 + Update Yandex.Map URL, Google.Map URL\n
 - Bug fix: Wrong compass orientation on landscape mode\n
 \n
-	</string>
+\n
+</string>
 </resources>
