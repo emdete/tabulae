@@ -198,11 +198,11 @@ public class GeoDatabase implements PoiConstants {
 	}
 
 	public void LoadActivityListFromResource(final SQLiteDatabase db) {
-		db.execSQL(PoiConstants.SQL_CREATE_drop_activity);
-		db.execSQL(PoiConstants.SQL_CREATE_activity);
+		db.execSQL(SQL_CREATE_drop_activity);
+		db.execSQL(SQL_CREATE_activity);
 		String[] act = mCtx.getResources().getStringArray(R.array.track_activity);
 		for (int i = 0; i < act.length; i++) {
-			db.execSQL(String.format(PoiConstants.SQL_CREATE_insert_activity, i, act[i]));
+			db.execSQL(String.format(SQL_CREATE_insert_activity, i, act[i]));
 		}
 	}
 
@@ -383,12 +383,12 @@ public class GeoDatabase implements PoiConstants {
 		ctc.close();
 
 		final ContentValues cv = new ContentValues();
-		cv.put(NAME, TRACK);
+		cv.put(NAME, mCtx.getString(R.string.track));
 		cv.put(SHOW, 0);
 		cv.put(ACTIVITY, 0);
 		cv.put(CATEGORYID, 0);
 		final long newId = mDatabase.insert(TRACKS, null, cv);
-		cv.put(NAME, TRACK + ONE_SPACE + newId);
+		cv.put(NAME, mCtx.getString(R.string.track) + ONE_SPACE + newId);
 
 		mDatabase.execSQL(String.format("INSERT INTO 'trackpoints' (trackid, lat, lon, alt, speed, date) SELECT %d, lat, lon, alt, speed, date FROM 'trackpoints' WHERE trackid IN (SELECT trackid FROM 'tracks' WHERE show = 1) ORDER BY date", newId));
 		final String[] args = {Long.toString(newId)};
@@ -417,14 +417,14 @@ public class GeoDatabase implements PoiConstants {
 					long newId = -1;
 
 					final ContentValues cv = new ContentValues();
-					cv.put(NAME, TRACK);
+					cv.put(NAME, mCtx.getString(R.string.track));
 					cv.put(SHOW, 0);
 					cv.put(ACTIVITY, 0);
 					cv.put(CATEGORYID, 0);
 					newId = mDatabase.insert(TRACKS, null, cv);
 					res = (int)newId;
 
-					cv.put(NAME, TRACK + ONE_SPACE + newId);
+					cv.put(NAME, mCtx.getString(R.string.track) + ONE_SPACE + newId);
 					if (c.moveToFirst()) {
 						cv.put(DATE, c.getInt(4));
 					}
@@ -513,14 +513,14 @@ public class GeoDatabase implements PoiConstants {
 
 		@Override
 		public void onCreate(final SQLiteDatabase db) {
-			db.execSQL(PoiConstants.SQL_CREATE_points);
-			db.execSQL(PoiConstants.SQL_CREATE_pointsource);
-			db.execSQL(PoiConstants.SQL_CREATE_category);
-			db.execSQL(PoiConstants.SQL_ADD_category);
-			db.execSQL(PoiConstants.SQL_CREATE_tracks);
-			db.execSQL(PoiConstants.SQL_CREATE_trackpoints);
-			db.execSQL(PoiConstants.SQL_CREATE_maps);
-			db.execSQL(PoiConstants.SQL_CREATE_routes);
+			db.execSQL(SQL_CREATE_points);
+			db.execSQL(SQL_CREATE_pointsource);
+			db.execSQL(SQL_CREATE_category);
+			db.execSQL(SQL_ADD_category);
+			db.execSQL(SQL_CREATE_tracks);
+			db.execSQL(SQL_CREATE_trackpoints);
+			db.execSQL(SQL_CREATE_maps);
+			db.execSQL(SQL_CREATE_routes);
 			LoadActivityListFromResource(db);
 		}
 
@@ -530,54 +530,54 @@ public class GeoDatabase implements PoiConstants {
 //					+ newVersion);
 
 			if (oldVersion < 2) {
-				db.execSQL(PoiConstants.SQL_UPDATE_1_1);
-				db.execSQL(PoiConstants.SQL_UPDATE_1_2);
-				db.execSQL(PoiConstants.SQL_UPDATE_1_3);
-				db.execSQL(PoiConstants.SQL_CREATE_points);
-				db.execSQL(PoiConstants.SQL_UPDATE_1_5);
-				db.execSQL(PoiConstants.SQL_UPDATE_1_6);
-				db.execSQL(PoiConstants.SQL_UPDATE_1_7);
-				db.execSQL(PoiConstants.SQL_UPDATE_1_8);
-				db.execSQL(PoiConstants.SQL_UPDATE_1_9);
-				db.execSQL(PoiConstants.SQL_CREATE_category);
-				db.execSQL(PoiConstants.SQL_ADD_category);
-				//db.execSQL(PoiConstants.SQL_UPDATE_1_11);
-				//db.execSQL(PoiConstants.SQL_UPDATE_1_12);
+				db.execSQL(SQL_UPDATE_1_1);
+				db.execSQL(SQL_UPDATE_1_2);
+				db.execSQL(SQL_UPDATE_1_3);
+				db.execSQL(SQL_CREATE_points);
+				db.execSQL(SQL_UPDATE_1_5);
+				db.execSQL(SQL_UPDATE_1_6);
+				db.execSQL(SQL_UPDATE_1_7);
+				db.execSQL(SQL_UPDATE_1_8);
+				db.execSQL(SQL_UPDATE_1_9);
+				db.execSQL(SQL_CREATE_category);
+				db.execSQL(SQL_ADD_category);
+				//db.execSQL(SQL_UPDATE_1_11);
+				//db.execSQL(SQL_UPDATE_1_12);
 			}
 			if (oldVersion < 3) {
-				db.execSQL(PoiConstants.SQL_UPDATE_2_7);
-				db.execSQL(PoiConstants.SQL_UPDATE_2_8);
-				db.execSQL(PoiConstants.SQL_UPDATE_2_9);
-				db.execSQL(PoiConstants.SQL_CREATE_category);
-				db.execSQL(PoiConstants.SQL_UPDATE_2_11);
-				db.execSQL(PoiConstants.SQL_UPDATE_2_12);
+				db.execSQL(SQL_UPDATE_2_7);
+				db.execSQL(SQL_UPDATE_2_8);
+				db.execSQL(SQL_UPDATE_2_9);
+				db.execSQL(SQL_CREATE_category);
+				db.execSQL(SQL_UPDATE_2_11);
+				db.execSQL(SQL_UPDATE_2_12);
 			}
 			if (oldVersion < 5) {
-				db.execSQL(PoiConstants.SQL_CREATE_tracks);
-				db.execSQL(PoiConstants.SQL_CREATE_trackpoints);
+				db.execSQL(SQL_CREATE_tracks);
+				db.execSQL(SQL_CREATE_trackpoints);
 			}
 			if (oldVersion < 18) {
-				db.execSQL(PoiConstants.SQL_UPDATE_6_1);
-				db.execSQL(PoiConstants.SQL_UPDATE_6_2);
-				db.execSQL(PoiConstants.SQL_UPDATE_6_3);
-				db.execSQL(PoiConstants.SQL_CREATE_tracks);
-				db.execSQL(PoiConstants.SQL_UPDATE_6_4);
-				db.execSQL(PoiConstants.SQL_UPDATE_6_5);
+				db.execSQL(SQL_UPDATE_6_1);
+				db.execSQL(SQL_UPDATE_6_2);
+				db.execSQL(SQL_UPDATE_6_3);
+				db.execSQL(SQL_CREATE_tracks);
+				db.execSQL(SQL_UPDATE_6_4);
+				db.execSQL(SQL_UPDATE_6_5);
 				LoadActivityListFromResource(db);
 			}
 			if (oldVersion < 20) {
-				db.execSQL(PoiConstants.SQL_UPDATE_6_1);
-				db.execSQL(PoiConstants.SQL_UPDATE_6_2);
-				db.execSQL(PoiConstants.SQL_UPDATE_6_3);
-				db.execSQL(PoiConstants.SQL_CREATE_tracks);
-				db.execSQL(PoiConstants.SQL_UPDATE_20_1);
-				db.execSQL(PoiConstants.SQL_UPDATE_6_5);
+				db.execSQL(SQL_UPDATE_6_1);
+				db.execSQL(SQL_UPDATE_6_2);
+				db.execSQL(SQL_UPDATE_6_3);
+				db.execSQL(SQL_CREATE_tracks);
+				db.execSQL(SQL_UPDATE_20_1);
+				db.execSQL(SQL_UPDATE_6_5);
 			}
 			if (oldVersion < 21) {
-				db.execSQL(PoiConstants.SQL_CREATE_maps);
+				db.execSQL(SQL_CREATE_maps);
 			}
 			if (oldVersion < 22) {
-				db.execSQL(PoiConstants.SQL_CREATE_routes);
+				db.execSQL(SQL_CREATE_routes);
 			}
 		}
 

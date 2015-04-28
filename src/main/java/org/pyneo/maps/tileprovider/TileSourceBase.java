@@ -50,16 +50,31 @@ public class TileSourceBase {
 	protected static final String STRETCH_ = "_stretch";
 	protected static final String STRING_1 = "1";
 	protected static final String UNDERLINE = "_";
-	public String ID, BASEURL, CATEGORY, NAME, IMAGE_FILENAMEENDING, GOOGLE_LANG_CODE, CACHE, MAPID, OVERLAYID;
-	public int MAPTILE_SIZEPX, ZOOM_MINLEVEL, ZOOM_MAXLEVEL,
-		URL_BUILDER_TYPE, // 0 - OSM, 1 - Google, 2 - Yandex, 3 - Yandex.Traffic, 4 - Google.Sattelite, 5 - openspace, 6 - microsoft, 8 - VFR Chart
-		TILE_SOURCE_TYPE, // 0 - internet, 3 - MapNav file, 4 - TAR, 5 - sqlitedb
-		YANDEX_TRAFFIC_ON,
-		MAP_TYPE,
-		PROJECTION; // 1 - Mercator on the spheroid, 2 - on the ellipsoid, 3- OSGB 36 British national grid reference system
-	public boolean LAYER, mOnlineMapCacheEnabled, GOOGLESCALE = false, TIMEDEPENDENT = false;
-	public double MAPTILE_SIZE_FACTOR = 1.0, GOOGLESCALE_SIZE_FACTOR = 1.0;
-	public double OFFSET_LAT = 0, OFFSET_LON = 0;
+	public String ID;
+	public String BASEURL;
+	public String CATEGORY;
+	public String NAME;
+	public String IMAGE_FILENAMEENDING;
+	public String GOOGLE_LANG_CODE;
+	public String CACHE;
+	public String MAPID;
+	public String OVERLAYID;
+	public int MAPTILE_SIZEPX;
+	public int ZOOM_MINLEVEL;
+	public int ZOOM_MAXLEVEL;
+	public int URL_BUILDER_TYPE; // 0 - OSM, 1 - Google, 2 - Yandex, 3 - Yandex.Traffic, 4 - Google.Sattelite, 5 - openspace, 6 - microsoft, 8 - VFR Chart
+	public int TILE_SOURCE_TYPE; // 0 - internet, 3 - MapNav file, 4 - TAR, 5 - sqlitedb
+	public int YANDEX_TRAFFIC_ON;
+	public int MAP_TYPE;
+	public int PROJECTION; // 1 - Mercator on the spheroid, 2 - on the ellipsoid, 3- OSGB 36 British national grid reference system
+	public boolean LAYER;
+	public boolean mOnlineMapCacheEnabled;
+	public boolean GOOGLESCALE = false;
+	public boolean TIMEDEPENDENT = false;
+	public double MAPTILE_SIZE_FACTOR = 1.0;
+	public double GOOGLESCALE_SIZE_FACTOR = 1.0;
+	public double OFFSET_LAT = 0;
+	public double OFFSET_LON = 0;
 
 	public TileSourceBase(Context ctx, String aId) throws SQLiteException, RException {
 		if (aId.equalsIgnoreCase(EMPTY))

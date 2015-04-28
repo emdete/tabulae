@@ -13,7 +13,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 
-import org.pyneo.maps.constants.PrefConstants;
 import org.pyneo.maps.kml.XMLparser.PredefMapsParser;
 import org.pyneo.maps.preference.MixedMapsPreference;
 import org.pyneo.maps.preference.UserMapsPrefActivity;
@@ -32,8 +31,10 @@ import java.util.Locale;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class MainPreferences extends PreferenceActivity implements OnSharedPreferenceChangeListener, PrefConstants {
+public class MainPreferences extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 	private static String PNG = ".png";
+	public static final String PREF_USERMAPS_ = "pref_usermaps_";
+	public static final String PREF_PREDEFMAPS_ = "pref_predefmaps_";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
