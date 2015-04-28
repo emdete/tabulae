@@ -115,7 +115,7 @@ public class TrackOverlay extends TileViewOverlay {
 			if (mTracks == null) {
 				mTracks = mPoiManager.getTrackChecked(false);
 				if (mTracks == null) {
-					Ut.d("Track is null. Stoped??");
+					Ut.d("Track is null. Stopped??");
 					mThreadRunned = false;
 					mStopDraw = true;
 					return;

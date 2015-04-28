@@ -39,7 +39,7 @@ public class Ut implements Constants {
 	public static final int ERROR_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 4;
 	public static final int SEARCH_OK_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 5;
 	static public boolean LOGDEBUG = false;
-	static { LOGDEBUG = Log.isLoggable("org.pyneo.maps", Log.DEBUG); }
+	static { LOGDEBUG = Log.isLoggable(LOGTAG, Log.DEBUG); }
 
 	public static final int IO_BUFFER_SIZE = 8 * 1024;
 	final static String[] formats = new String[]{

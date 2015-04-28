@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import org.pyneo.maps.R;
 import org.pyneo.maps.view.MapView;
 import org.pyneo.maps.view.TileView.OpenStreetMapViewProjection;
+import org.pyneo.maps.utils.Ut;
 
 import org.andnav.osm.util.GeoPoint;
 
@@ -58,7 +59,9 @@ public class ScaleBarDrawable extends Drawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		final int h = 13, h2 = 6, margin = 7;
+		final int h = 13;
+		final int h2 = 6;
+		final int margin = 7;
 
 		mZoomLevel = mOsmv.getZoomLevel();
 		mTouchScale = mOsmv.getTouchScale();
@@ -66,6 +69,7 @@ public class ScaleBarDrawable extends Drawable {
 		final GeoPoint center = mOsmv.getMapCenter();
 
 		int dist = SCALE[mUnits][Math.max(0, Math.min(19, mZoomLevel + 1 + (int)(mTouchScale > 1? Math.round(mTouchScale) - 1: -Math.round(1 / mTouchScale) + 1)) + mScaleCorretion)];
+		Ut.d("ScaleBarDrawable.draw dist=" + dist);
 
 		if (mUnits == 0) {
 			if (dist > 999) {
@@ -129,11 +133,9 @@ public class ScaleBarDrawable extends Drawable {
 
 	@Override
 	public void setAlpha(int alpha) {
-
 	}
 
 	@Override
 	public void setColorFilter(ColorFilter cf) {
-
 	}
 }

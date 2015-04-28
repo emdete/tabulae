@@ -19,6 +19,7 @@ import org.pyneo.maps.utils.IconManager;
 import org.pyneo.maps.view.TileView;
 import org.pyneo.maps.view.TileView.OpenStreetMapViewProjection;
 import org.pyneo.maps.view.TileViewOverlay;
+import org.pyneo.maps.utils.Ut;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.TypeConverter;
@@ -159,10 +160,12 @@ public class MyLocationOverlay extends TileViewOverlay {
 		this.mTargetLocation = geopoint;
 	}
 
-	public void correctScale(double sizeFactor, double sizeFactorGoogle) {
+	public void setScale(double sizeFactor, double sizeFactorGoogle) {
 		mScaleCorretion = Math.max(0, ((int)sizeFactor) - 1) + Math.max(0, ((int)sizeFactorGoogle) - 1);
 		if (mScaleCorretion < 0)
 			mScaleCorretion = 0;
+		Ut.d("setScale mScaleCorretion=" + mScaleCorretion);
+		// TODO invalidate / redraw?!?
 	}
 
 	// ===========================================================

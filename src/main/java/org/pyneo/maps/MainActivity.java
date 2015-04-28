@@ -1214,7 +1214,7 @@ public class MainActivity extends Activity {
 		FillOverlays();
 
 		if (mMyLocationOverlay != null && mTileSource != null)
-			mMyLocationOverlay.correctScale(mTileSource.MAPTILE_SIZE_FACTOR, mTileSource.GOOGLESCALE_SIZE_FACTOR);
+			mMyLocationOverlay.setScale(mTileSource.MAPTILE_SIZE_FACTOR, mTileSource.GOOGLESCALE_SIZE_FACTOR);
 
 		if (mPrefOverlayButtonVisibility == 2)
 			mOverlayView.setVisibility(mTileSource.MAP_TYPE == TileSourceBase.MIXMAP_PAIR || mTileSource.YANDEX_TRAFFIC_ON == 1? View.VISIBLE: View.GONE);

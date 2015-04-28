@@ -76,6 +76,12 @@ ToDos
 
 - fix bug with display of needle (three states, move/center)
 
+- fix big on scale limits of maps
+
+- fix bug on location provider usage
+
+- create a changelog generator
+
 - improve map selection
 
 - refactor code
@@ -83,4 +89,12 @@ ToDos
 - remove as much external libraries as possible
 
 - allow multiple moving positions (to see friends) via intent (Conversations)
+
+- discard tiles from cache after time
+
+- re check all map provider
+
+- display tiles with error correctly
+
+- go on when download stucks (dislpay cached ones with higher prio)
 

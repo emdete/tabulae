@@ -32,6 +32,7 @@ public class MapView extends RelativeLayout {
 	private IMoveListener mMoveListener;
 	private boolean mStopBearing = false;
 	private boolean mUseVolumeControl;
+	private ImageView ivScaleBar;
 	private ScaleBarDrawable mScaleBarDrawable;
 
 	public MapView(Context context, int sideInOutButtons, int scaleBarVisible) {
@@ -64,7 +65,7 @@ public class MapView extends RelativeLayout {
 		displayZoomControls(sideInOutButtons);
 
 		if (scaleBarVisible == 1) {
-			final ImageView ivScaleBar = new ImageView(getContext());
+			ivScaleBar = new ImageView(getContext());
 			mScaleBarDrawable = new ScaleBarDrawable(context, this, Integer.parseInt(pref.getString("pref_units", "0")));
 			ivScaleBar.setImageDrawable(mScaleBarDrawable);
 			ivScaleBar.setId(R.id.scale_bar);
@@ -118,7 +119,7 @@ public class MapView extends RelativeLayout {
 		displayZoomControls(sideBottom);
 
 		if (a.getInt(R.styleable.MapView_SideInOutButtons, 0) == 1) {
-			final ImageView ivScaleBar = new ImageView(getContext());
+			ivScaleBar = new ImageView(getContext());
 			mScaleBarDrawable = new ScaleBarDrawable(context, this, Integer.parseInt(pref.getString("pref_units", "0")));
 			ivScaleBar.setImageDrawable(mScaleBarDrawable);
 			final RelativeLayout.LayoutParams scaleParams = new RelativeLayout.LayoutParams(
@@ -192,6 +193,7 @@ public class MapView extends RelativeLayout {
 				mTileView.setZoomLevel(mTileView.getZoomLevel() + 1);
 				if (mMoveListener != null)
 					mMoveListener.onZoomDetected();
+				if (ivScaleBar != null) ivScaleBar.invalidate();
 			}
 		});
 		ivZoomIn.setOnLongClickListener(new OnLongClickListener() {
@@ -204,6 +206,7 @@ public class MapView extends RelativeLayout {
 					if (mMoveListener != null)
 						mMoveListener.onZoomDetected();
 				}
+				if (ivScaleBar != null) ivScaleBar.invalidate();
 				return true;
 			}
 		});
@@ -232,6 +235,7 @@ public class MapView extends RelativeLayout {
 				mTileView.setZoomLevel(mTileView.getZoomLevel() - 1);
 				if (mMoveListener != null)
 					mMoveListener.onZoomDetected();
+				if (ivScaleBar != null) ivScaleBar.invalidate();
 			}
 		});
 		ivZoomOut.setOnLongClickListener(new OnLongClickListener() {
@@ -244,6 +248,7 @@ public class MapView extends RelativeLayout {
 					if (mMoveListener != null)
 						mMoveListener.onZoomDetected();
 				}
+				if (ivScaleBar != null) ivScaleBar.invalidate();
 				return true;
 			}
 		});
