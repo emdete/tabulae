@@ -24,31 +24,31 @@ import org.andnav.osm.util.TypeConverter;
 
 import java.util.Locale;
 
+/**
+* Class to show everything around my own location. Will be a needle showing the
+* direction of movement, centered circles to show distances (if enabled).
+*/
 public class MyLocationOverlay extends TileViewOverlay {
-	// ===========================================================
-	// Constants
-	// ===========================================================
-
-	// ===========================================================
-	// Fields
-	// ===========================================================
-
-	private final static int mCrossSize = 7;
-	private static final int SCALE[][] = {{25000000, 15000000, 8000000, 4000000, 2000000, 1000000, 500000, 250000, 100000, 50000, 25000, 15000, 8000, 4000, 2000, 1000, 500, 250, 100, 50, 25, 10, 5}
-		, {15000, 8000, 4000, 2000, 1000, 500, 250, 100, 50, 25, 15, 8, 21120, 10560, 5280, 3000, 1500, 500, 250, 100, 50, 25, 10}};
-	protected final Paint mPaint = new Paint();
+	private final static int CROSS_SIZE = 7;
+	private final static int METER_IN_PIXEL = 156412;
+	private final static int SCALE[][] = {{
+		25000000, 15000000, 8000000, 4000000, 2000000, 1000000, 500000, 250000, 100000, 50000, 25000, 15000, 8000, 4000, 2000, 1000, 500, 250, 100, 50, 25, 10, 5, }, {
+		15000, 8000, 4000, 2000, 1000, 500, 250, 100, 50, 25, 15, 8, 21120, 10560, 5280, 3000, 1500, 500, 250, 100, 50, 25, 10,
+		}};
+	private final Paint mPaint = new Paint();
 	private final Paint mPaintCross = new Paint();
-	protected Bitmap PERSON_ICON2 = null;
-	protected Bitmap TARGET_ICON = null;
-	protected GeoPoint mLocation;
-	protected GeoPoint mTargetLocation;
+	private Bitmap mNolocationIcon = null;
+	private Bitmap mLocationIcon = null;
+	private Bitmap mTargetIcon = null;
+	private GeoPoint mLastGeoPoint;
+	private GeoPoint mTargetLocation;
 	private Bitmap mArrow = null;
 	private Context mCtx;
 	private float mAccuracy;
 	private int mPrefAccuracy;
 	private float mBearing;
 	private float mSpeed;
-	private int METER_IN_PIXEL = 156412;
+	private long mLocAge;
 	private Paint mPaintAccurasyFill;
 	private Paint mPaintAccurasyBorder;
 	private Paint mPaintLineToGPS;
@@ -64,29 +64,20 @@ public class MyLocationOverlay extends TileViewOverlay {
 	private double mTouchScale;
 	private int mWidth;
 
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
 	public MyLocationOverlay(final Context ctx) {
 		mCtx = ctx.getApplicationContext();
-
 		mPaintAccurasyFill = new Paint();
 		mPaintAccurasyFill.setAntiAlias(true);
 		mPaintAccurasyFill.setStrokeWidth(2);
 		mPaintAccurasyFill.setStyle(Paint.Style.FILL);
 		mPaintAccurasyFill.setColor(0x4490B8D8);
-
 		mPaintAccurasyBorder = new Paint(mPaintAccurasyFill);
 		mPaintAccurasyBorder.setStyle(Paint.Style.STROKE);
 		mPaintAccurasyBorder.setColor(0xFF90B8D8);
-
 		mPaintLineToGPS = new Paint(mPaintAccurasyFill);
 		mPaintLineToGPS.setColor(ctx.getResources().getColor(R.color.line_to_gps));
-
 		mPaintCross.setAntiAlias(true);
 		mPaintCross.setStyle(Paint.Style.STROKE);
-
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ctx);
 		mPrefAccuracy = Integer.parseInt(pref.getString("pref_accuracy", "1").replace("\"", ""));
 		mNeedCrosshair = pref.getBoolean("pref_crosshair", true);
@@ -95,40 +86,14 @@ public class MyLocationOverlay extends TileViewOverlay {
 		mUnits = Integer.parseInt(pref.getString("pref_units", "0"));
 		mDf = new DistanceFormatter(ctx);
 		mScaleCorretion = 0;
-
 		if (mLineToGPS) {
 			mLabelVw = (TextView)LayoutInflater.from(ctx).inflate(R.layout.label_map, null);
 			mLabelVw.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		}
 	}
 
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
-
-	private boolean getPersonIcon() {
-		if (PERSON_ICON2 == null)
-			this.PERSON_ICON2 = IconManager.getInstance(mCtx).getLocationIcon();
-
-		return PERSON_ICON2 == null? false: true;
-	}
-
-	private boolean getArrowIcon() {
-		if (mArrow == null)
-			this.mArrow = IconManager.getInstance(mCtx).getArrowIcon();
-
-		return mArrow == null? false: true;
-	}
-
-	private boolean getTargetIcon() {
-		if (TARGET_ICON == null)
-			this.TARGET_ICON = IconManager.getInstance(mCtx).getTargetIcon();
-
-		return TARGET_ICON == null? false: true;
-	}
-
 	public GeoPoint getLastGeoPoint() {
-		return mLocation;
+		return mLastGeoPoint;
 	}
 
 	public Location getLastLocation() {
@@ -136,18 +101,19 @@ public class MyLocationOverlay extends TileViewOverlay {
 	}
 
 	public void setLocation(final Location loc) {
-		this.mLocation = TypeConverter.locationToGeoPoint(loc);
-		this.mAccuracy = loc.getAccuracy();
-		this.mBearing = loc.getBearing();
-		this.mSpeed = loc.getSpeed();
+		mLastGeoPoint = TypeConverter.locationToGeoPoint(loc);
+		mAccuracy = loc.getAccuracy();
+		mBearing = loc.getBearing();
+		mSpeed = loc.getSpeed();
+		mLocAge = (android.os.SystemClock.elapsedRealtimeNanos() - loc.getElapsedRealtimeNanos()) / 1000000000L;
 		mLoc = loc;
 	}
 
 	public void setLocation(final GeoPoint geopoint) {
-		this.mLocation = geopoint;
-		this.mAccuracy = 0;
-		this.mBearing = 0;
-		this.mSpeed = 0;
+		mLastGeoPoint = geopoint;
+		mAccuracy = 0;
+		mBearing = 0;
+		mSpeed = 0;
 	}
 
 	public GeoPoint getTargetLocation() {
@@ -155,7 +121,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 	}
 
 	public void setTargetLocation(final GeoPoint geopoint) {
-		this.mTargetLocation = geopoint;
+		mTargetLocation = geopoint;
 	}
 
 	public void setScale(double sizeFactor, double sizeFactorGoogle) {
@@ -163,12 +129,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 		if (mScaleCorretion < 0)
 			mScaleCorretion = 0;
 		Ut.d("setScale mScaleCorretion=" + mScaleCorretion);
-		// TODO invalidate / redraw?!?
 	}
-
-	// ===========================================================
-	// Methods from SuperClass/Interfaces
-	// ===========================================================
 
 	@Override
 	protected void onDrawFinished(Canvas c, TileView osmv) {
@@ -177,11 +138,10 @@ public class MyLocationOverlay extends TileViewOverlay {
 
 	@Override
 	public void onDraw(final Canvas c, final TileView osmv) {
-		if (this.mLocation != null) {
+		if (mLastGeoPoint != null) {
 			final OpenStreetMapViewProjection pj = osmv.getProjection();
 			final Point screenCoords = new Point();
-			pj.toPixels(this.mLocation, screenCoords);
-
+			pj.toPixels(mLastGeoPoint, screenCoords);
 			if (mNeedCircleDistance) {
 				mZoomLevel = osmv.getZoomLevel();
 				mTouchScale = osmv.mTouchScale;
@@ -190,7 +150,8 @@ public class MyLocationOverlay extends TileViewOverlay {
 				if (mUnits == 1) {
 					if (mZoomLevel < 11) {
 						dist = (int)(dist * 1609.344);
-					} else {
+					}
+					else {
 						dist = (int)(dist * 0.305);
 					}
 				}
@@ -198,27 +159,24 @@ public class MyLocationOverlay extends TileViewOverlay {
 				final Point p = new Point();
 				pj.toPixels(c2, p);
 				mWidth = p.x - osmv.getWidth() / 2;
-
-				c.drawCircle(screenCoords.x, screenCoords.y, mWidth, this.mPaintCross);
-				c.drawCircle(screenCoords.x, screenCoords.y, mWidth * 2, this.mPaintCross);
-				c.drawCircle(screenCoords.x, screenCoords.y, mWidth * 3, this.mPaintCross);
-				c.drawCircle(screenCoords.x, screenCoords.y, mWidth * 4, this.mPaintCross);
+				c.drawCircle(screenCoords.x, screenCoords.y, mWidth, mPaintCross);
+				c.drawCircle(screenCoords.x, screenCoords.y, mWidth * 2, mPaintCross);
+				c.drawCircle(screenCoords.x, screenCoords.y, mWidth * 3, mPaintCross);
+				c.drawCircle(screenCoords.x, screenCoords.y, mWidth * 4, mPaintCross);
 			}
-
 			if (mPrefAccuracy != 0
 				&& mSpeed <= 0.278
-				&& ((mAccuracy > 0 && mPrefAccuracy == 1) || (mPrefAccuracy > 1 && mAccuracy >= mPrefAccuracy))) {
+				&& ((mAccuracy > 0 && mPrefAccuracy == 1) || (mPrefAccuracy > 1 && mAccuracy >= mPrefAccuracy))
+			) {
 				int PixelRadius = (int)(osmv.mTouchScale * mAccuracy / ((float)METER_IN_PIXEL / (1 << osmv.getZoomLevel())));
 				c.drawCircle(screenCoords.x, screenCoords.y, PixelRadius, mPaintAccurasyFill);
 				c.drawCircle(screenCoords.x, screenCoords.y, PixelRadius, mPaintAccurasyBorder);
 			}
-
 			if (mLineToGPS) {
 				c.drawLine(screenCoords.x, screenCoords.y, osmv.getWidth() / 2, osmv.getHeight() / 2, mPaintLineToGPS);
 				final GeoPoint geo = pj.fromPixels(osmv.getWidth() / 2, osmv.getHeight() / 2);
-				final float dist = this.mLocation.distanceTo(geo);
-				final String lbl = String.format(Locale.UK, "%s %.1f╟", mDf.formatDistance(dist), mLocation.bearingTo360(geo));
-
+				final float dist = mLastGeoPoint.distanceTo(geo);
+				final String lbl = String.format(Locale.UK, "%s %.1f°", mDf.formatDistance(dist), mLastGeoPoint.bearingTo360(geo));
 				mLabelVw.setText(lbl);
 				mLabelVw.measure(0, 0);
 				mLabelVw.layout(0, 0, mLabelVw.getMeasuredWidth(), mLabelVw.getMeasuredHeight());
@@ -227,48 +185,45 @@ public class MyLocationOverlay extends TileViewOverlay {
 				mLabelVw.draw(c);
 				c.restore();
 			}
-
 			if (mTargetLocation != null) {
 				final Point screenCoordsTarg = new Point();
-				pj.toPixels(this.mTargetLocation, screenCoordsTarg);
-
+				pj.toPixels(mTargetLocation, screenCoordsTarg);
 				c.drawLine(screenCoords.x, screenCoords.y, screenCoordsTarg.x, screenCoordsTarg.y, mPaintLineToGPS);
 			}
-
 			c.save();
-			if (mSpeed <= 0.278) {
+			if (mLocAge > 12) { // old location?
 				c.rotate(osmv.getBearing(), screenCoords.x, screenCoords.y);
-				if (getPersonIcon()) {
-					c.drawBitmap(PERSON_ICON2, screenCoords.x - (int)(PERSON_ICON2.getWidth() / 2), screenCoords.y - (int)(PERSON_ICON2.getHeight() / 2), mPaint);
-				}
-				;
-			} else {
-				if (getArrowIcon()) {
-					c.rotate(mBearing, screenCoords.x, screenCoords.y);
-					c.drawBitmap(mArrow, screenCoords.x - (int)(mArrow.getWidth() / 2), screenCoords.y - (int)(mArrow.getHeight() / 2), mPaint);
-				}
+				if (mNolocationIcon == null)
+					mNolocationIcon = IconManager.getInstance(mCtx).getNolocationIcon();
+				c.drawBitmap(mNolocationIcon, screenCoords.x - (int)(mNolocationIcon.getWidth() / 2), screenCoords.y - (int)(mNolocationIcon.getHeight() / 2), mPaint);
+			}
+			else if (mSpeed <= 0.278) { // not moving
+				c.rotate(osmv.getBearing(), screenCoords.x, screenCoords.y);
+				if (mLocationIcon == null)
+					mLocationIcon = IconManager.getInstance(mCtx).getLocationIcon();
+				c.drawBitmap(mLocationIcon, screenCoords.x - (int)(mLocationIcon.getWidth() / 2), screenCoords.y - (int)(mLocationIcon.getHeight() / 2), mPaint);
+			}
+			else {
+				if (mArrow == null)
+					mArrow = IconManager.getInstance(mCtx).getArrowIcon();
+				c.rotate(mBearing, screenCoords.x, screenCoords.y);
+				c.drawBitmap(mArrow, screenCoords.x - (int)(mArrow.getWidth() / 2), screenCoords.y - (int)(mArrow.getHeight() / 2), mPaint);
 			}
 			c.restore();
-
 		}
-
 		if (mTargetLocation != null) {
 			final OpenStreetMapViewProjection pj = osmv.getProjection();
 			final Point screenCoordsTarg = new Point();
-			pj.toPixels(this.mTargetLocation, screenCoordsTarg);
-
-			if (getTargetIcon())
-				c.drawBitmap(TARGET_ICON, screenCoordsTarg.x - (int)(TARGET_ICON.getWidth() / 2), screenCoordsTarg.y - (int)(TARGET_ICON.getHeight() / 2), mPaint);
+			pj.toPixels(mTargetLocation, screenCoordsTarg);
+			if (mTargetIcon == null)
+				mTargetIcon = IconManager.getInstance(mCtx).getTargetIcon();
+			c.drawBitmap(mTargetIcon, screenCoordsTarg.x - (int)(mTargetIcon.getWidth() / 2), screenCoordsTarg.y - (int)(mTargetIcon.getHeight() / 2), mPaint);
 		}
-
 		final int x = osmv.getWidth() / 2;
 		final int y = osmv.getHeight() / 2;
-
 		if (mNeedCrosshair) {
-			c.drawLine(x - mCrossSize, y, x + mCrossSize, y, this.mPaintCross);
-			c.drawLine(x, y - mCrossSize, x, y + mCrossSize, this.mPaintCross);
+			c.drawLine(x - CROSS_SIZE, y, x + CROSS_SIZE, y, mPaintCross);
+			c.drawLine(x, y - CROSS_SIZE, x, y + CROSS_SIZE, mPaintCross);
 		}
-
 	}
-
 }
