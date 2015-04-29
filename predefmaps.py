@@ -635,6 +635,7 @@ maps = (
 		YANDEX_TRAFFIC_ON=0,
 		),
 	dict(
+		enabled=False,
 		cat="OSM",
 		name="Cycle Map",
 		id="cyclemap",
@@ -1381,36 +1382,49 @@ maps = (
 		),
 	)
 
-def check(enabled=True, **argv):
+def check(baseurl, URL_BUILDER_TYPE, IMAGE_FILENAMEENDING, enabled=True, **argv):
 	if enabled:
-		print('	<map', end=' ')
-		for k in (
-			'cat',
-			'name',
-			'timedependent',
-			'layer',
-			'id',
-			'cache',
-			'isfake',
-			'descr',
-			'baseurl',
-			'IMAGE_FILENAMEENDING',
-			'ZOOM_MINLEVEL',
-			'ZOOM_MAXLEVEL',
-			'MAPTILE_SIZEPX',
-			'URL_BUILDER_TYPE',
-			'TILE_SOURCE_TYPE',
-			'PROJECTION',
-			'YANDEX_TRAFFIC_ON',
-			'GOOGLESCALE',
-		):
-			if k in argv:
-				print('{}="{}"'.format(k, argv[k]), end=' ')
-		print('/>')
+		if URL_BUILDER_TYPE == 12:
+			if IMAGE_FILENAMEENDING:
+				raise Exception(IMAGE_FILENAMEENDING)
+			url = baseurl.format(x=10, y=10, z=10, )
+		return True
 
-print('<?xml version="1.0" encoding="UTF-8"?>')
-print('<root>')
-for map_ in maps:
-	check(**map_)
-print('</root>')
+def xml_out(enabled=True, **argv):
+	print('	<map', end=' ')
+	for k in (
+		'cat',
+		'name',
+		'timedependent',
+		'layer',
+		'id',
+		'cache',
+		'isfake',
+		'descr',
+		'baseurl',
+		'IMAGE_FILENAMEENDING',
+		'ZOOM_MINLEVEL',
+		'ZOOM_MAXLEVEL',
+		'MAPTILE_SIZEPX',
+		'URL_BUILDER_TYPE',
+		'TILE_SOURCE_TYPE',
+		'PROJECTION',
+		'YANDEX_TRAFFIC_ON',
+		'GOOGLESCALE',
+	):
+		if k in argv:
+			print('{}="{}"'.format(k, argv[k]), end=' ')
+	print('/>')
 
+def main():
+	print('<?xml version="1.0" encoding="UTF-8"?>')
+	print('<root>')
+	for map_ in maps:
+		if check(**map_):
+			xml_out(**map_)
+	print('</root>')
+
+if __name__ == '__main__':
+	from sys import argv
+	main(*argv[1:])
+# vim:tw=0:nowrap
