@@ -8,8 +8,8 @@ import android.graphics.Path;
 import android.graphics.Point;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.view.TileView;
-import org.pyneo.maps.view.TileViewOverlay;
+import org.pyneo.maps.map.TileView;
+import org.pyneo.maps.map.TileViewOverlay;
 
 import org.andnav.osm.util.BoundingBoxE6;
 import org.andnav.osm.util.GeoPoint;
@@ -21,7 +21,7 @@ public class DownloadedAreaOverlay extends TileViewOverlay {
 	private int X, Y, Z;
 	private Paint mPaint = new Paint();
 	private Paint mPaintFill = new Paint();
-	private org.pyneo.maps.view.TileView.OpenStreetMapViewProjection mProj;
+	private org.pyneo.maps.map.TileView.OpenStreetMapViewProjection mProj;
 
 	public void Init(Context ctx, int lat0, int lon0, int lat1, int lon1) {
 		mBasePoint = new GeoPoint[2];

@@ -4,8 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 
-import org.pyneo.maps.view.TileView;
-import org.pyneo.maps.view.TileViewOverlay;
+import org.pyneo.maps.map.TileView;
+import org.pyneo.maps.map.TileViewOverlay;
 
 public class TrackStyleOverlay extends TileViewOverlay {
 	private Paint mPaint = null;

@@ -22,11 +22,11 @@
             android:layout_height="wrap_content"
             android:src="@drawable/person" />
 
-        <org.pyneo.maps.view.ScreenCellView
+        <org.pyneo.maps.map.ScreenCellView
             android:id="@+id/screenCellView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-        </org.pyneo.maps.view.ScreenCellView>
+        </org.pyneo.maps.map.ScreenCellView>
 
     </TableRow>
 

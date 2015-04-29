@@ -20,11 +20,11 @@
             android:layout_height="0dip"
             android:layout_weight="1" >
 
-            <org.pyneo.maps.view.MapView
+            <org.pyneo.maps.map.MapView
                 android:id="@+id/map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-            </org.pyneo.maps.view.MapView>
+            </org.pyneo.maps.map.MapView>
         </RelativeLayout>
 
         <LinearLayout

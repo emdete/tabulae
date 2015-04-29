@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.commonsware.cwac.loaderex.acl.SQLiteCursorLoader;
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.SQLiteSDOpenHelper;
-import org.pyneo.maps.trackimport.PoiConstants;
 import org.pyneo.maps.utils.Ut;
 
 import java.io.File;

@@ -17,11 +17,9 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.trackimport.PoiManager;
-import org.pyneo.maps.trackimport.PoiPoint;
 import org.pyneo.maps.utils.Ut;
-import org.pyneo.maps.view.TileView;
-import org.pyneo.maps.view.TileViewOverlay;
+import org.pyneo.maps.map.TileView;
+import org.pyneo.maps.map.TileViewOverlay;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
@@ -106,7 +104,7 @@ public class PoiOverlay extends TileViewOverlay {
 
 	@Override
 	public void onDraw(Canvas c, TileView mapView) {
-		final org.pyneo.maps.view.TileView.OpenStreetMapViewProjection pj = mapView.getProjection();
+		final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = mapView.getProjection();
 		final Point curScreenCoords = new Point();
 
 		if (mCanUpdateList) {
@@ -237,7 +235,7 @@ public class PoiOverlay extends TileViewOverlay {
 
 	public int getMarkerAtPoint(final int eventX, final int eventY, TileView mapView) {
 		if (this.mItemList != null) {
-			final org.pyneo.maps.view.TileView.OpenStreetMapViewProjection pj = mapView.getProjection();
+			final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = mapView.getProjection();
 
 			final Rect curMarkerBounds = new Rect();
 			final Point mCurScreenCoords = new Point();

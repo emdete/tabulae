@@ -14,7 +14,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.tileprovider.TileSource;
-import org.pyneo.maps.view.MapView;
+import org.pyneo.maps.map.MapView;
 
 import net.margaritov.preference.colorpicker.ColorPickerDialog;
 import net.margaritov.preference.colorpicker.ColorPickerPanelView;

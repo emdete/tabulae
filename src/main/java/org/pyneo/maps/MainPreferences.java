@@ -13,7 +13,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 
-import org.pyneo.maps.trackimport.XMLparser.PredefMapsParser;
+import org.pyneo.maps.track.PredefMapsParser;
 import org.pyneo.maps.preference.MixedMapsPreference;
 import org.pyneo.maps.preference.UserMapsPrefActivity;
 import org.pyneo.maps.tileprovider.TileSourceBase;

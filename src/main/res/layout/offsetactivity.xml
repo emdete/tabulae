@@ -7,14 +7,14 @@
 
     <include layout="@layout/main_title" />
     
-    <org.pyneo.maps.view.MapView
+    <org.pyneo.maps.map.MapView
         android:id="@+id/map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:SideInOutButtons="1" >
 
-    </org.pyneo.maps.view.MapView>
+    </org.pyneo.maps.map.MapView>
 
     <LinearLayout
         android:layout_width="match_parent"

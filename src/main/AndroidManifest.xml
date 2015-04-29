@@ -57,18 +57,18 @@
 			android:name=".utils.SearchSuggestionsProvider"
 			android:authorities="org.pyneo.maps.SuggestionProvider" >
 		</provider>
-		<activity android:name=".trackimport.PoiActivity" ></activity>
-		<activity android:name=".trackimport.PoiListActivity" ></activity>
-		<activity android:name=".trackimport.TrackListActivity" ></activity>
-		<activity android:name=".trackimport.PoiCategoryActivity" ></activity>
-		<activity android:name=".trackimport.PoiCategoryListActivity" ></activity>
-		<activity android:name=".trackimport.PoiIconSetActivity" ></activity>
-		<activity android:name=".trackimport.ImportPoiActivity" ></activity>
-		<activity android:name=".trackimport.ImportTrackActivity" ></activity>
-		<activity android:name=".trackimport.TrackActivity" ></activity>
-		<activity android:name=".trackimport.TrackStatActivity" ></activity>
+		<activity android:name=".poi.PoiActivity" ></activity>
+		<activity android:name=".poi.PoiListActivity" ></activity>
+		<activity android:name=".track.TrackListActivity" ></activity>
+		<activity android:name=".poi.PoiCategoryActivity" ></activity>
+		<activity android:name=".poi.PoiCategoryListActivity" ></activity>
+		<activity android:name=".poi.PoiIconSetActivity" ></activity>
+		<activity android:name=".poi.ImportPoiActivity" ></activity>
+		<activity android:name=".track.ImportTrackActivity" ></activity>
+		<activity android:name=".track.TrackActivity" ></activity>
+		<activity android:name=".track.TrackStatActivity" ></activity>
 		<service
-			android:name=".trackwriter.TrackWriterService"
+			android:name=".track.TrackWriterService"
 			android:icon="@drawable/ic_service"
 			android:process=":trackwriter" >
 			<!-- intent-filter>

@@ -13,8 +13,8 @@ import android.view.MotionEvent;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.Ut;
-import org.pyneo.maps.view.TileView;
-import org.pyneo.maps.view.TileViewOverlay;
+import org.pyneo.maps.map.TileView;
+import org.pyneo.maps.map.TileViewOverlay;
 
 import org.andnav.osm.util.GeoPoint;
 
@@ -58,7 +58,7 @@ public class AreaSelectorOverlay extends TileViewOverlay {
 	protected void onDraw(Canvas c, TileView tileView) {
 		if (mAreaCleared) return;
 
-		final org.pyneo.maps.view.TileView.OpenStreetMapViewProjection pj = tileView.getProjection();
+		final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = tileView.getProjection();
 
 		if (point[0].getLatitudeE6() + point[0].getLongitudeE6() == 0) {
 			point[0] = pj.fromPixels((float)(tileView.getWidth() * (1 - 0.7) / 2), (float)(tileView.getHeight() * (1 - 0.7) / 2));
@@ -87,7 +87,7 @@ public class AreaSelectorOverlay extends TileViewOverlay {
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY, TileView tileView) {
 		if (mPointHolded >= 0) {
-			final org.pyneo.maps.view.TileView.OpenStreetMapViewProjection pj = tileView.getProjection();
+			final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = tileView.getProjection();
 
 			final GeoPoint g = pj.fromPixels(e2.getX(), e2.getY());
 
@@ -124,7 +124,7 @@ public class AreaSelectorOverlay extends TileViewOverlay {
 
 	@Override
 	public boolean onDown(MotionEvent e, TileView tileView) {
-		final org.pyneo.maps.view.TileView.OpenStreetMapViewProjection pj = tileView.getProjection();
+		final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = tileView.getProjection();
 
 		if (mAreaCleared) {
 			final GeoPoint g = pj.fromPixels(e.getX(), e.getY());

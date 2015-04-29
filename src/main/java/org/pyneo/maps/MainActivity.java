@@ -56,21 +56,21 @@ import org.pyneo.maps.dashboard.IndicatorView.IndicatorViewMenuInfo;
 import org.pyneo.maps.downloader.AreaSelectorActivity;
 import org.pyneo.maps.downloader.FileDownloadListActivity;
 import org.pyneo.maps.poi.GeoDataActivity;
-import org.pyneo.maps.trackimport.PoiActivity;
-import org.pyneo.maps.trackimport.PoiListActivity;
-import org.pyneo.maps.trackimport.PoiManager;
-import org.pyneo.maps.trackimport.PoiPoint;
-import org.pyneo.maps.trackimport.Track;
-import org.pyneo.maps.trackimport.TrackListActivity;
-import org.pyneo.maps.trackimport.XMLparser.PredefMapsParser;
-import org.pyneo.maps.overlays.CurrentTrackOverlay;
-import org.pyneo.maps.overlays.MeasureOverlay;
-import org.pyneo.maps.overlays.MyLocationOverlay;
+import org.pyneo.maps.poi.PoiActivity;
+import org.pyneo.maps.poi.PoiListActivity;
+import org.pyneo.maps.poi.PoiManager;
+import org.pyneo.maps.poi.PoiPoint;
+import org.pyneo.maps.track.Track;
+import org.pyneo.maps.track.TrackListActivity;
+import org.pyneo.maps.track.PredefMapsParser;
+import org.pyneo.maps.map.CurrentTrackOverlay;
+import org.pyneo.maps.map.MeasureOverlay;
+import org.pyneo.maps.map.MyLocationOverlay;
 import org.pyneo.maps.poi.PoiOverlay;
-import org.pyneo.maps.overlays.SearchResultOverlay;
-import org.pyneo.maps.overlays.TileOverlay;
-import org.pyneo.maps.overlays.TrackOverlay;
-import org.pyneo.maps.overlays.YandexTrafficOverlay;
+import org.pyneo.maps.map.SearchResultOverlay;
+import org.pyneo.maps.map.TileOverlay;
+import org.pyneo.maps.map.TrackOverlay;
+import org.pyneo.maps.map.YandexTrafficOverlay;
 import org.pyneo.maps.preference.MixedMapsPreference;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.tileprovider.TileSourceBase;
@@ -81,9 +81,9 @@ import org.pyneo.maps.utils.SearchSuggestionsProvider;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.IMoveListener;
-import org.pyneo.maps.view.MapView;
-import org.pyneo.maps.view.TileView;
-import org.pyneo.maps.view.TileViewOverlay;
+import org.pyneo.maps.map.MapView;
+import org.pyneo.maps.map.TileView;
+import org.pyneo.maps.map.TileViewOverlay;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.TypeConverter;
@@ -1024,7 +1024,6 @@ public class MainActivity extends Activity {
 				return true;
 			}
 			case R.id.routes: {
-				//startActivityForResult(new Intent(this, RouteListActivity.class), R.id.routes);
 				startActivityForResult((new Intent(this, GeoDataActivity.class)), R.id.poilist);
 				return true;
 			}

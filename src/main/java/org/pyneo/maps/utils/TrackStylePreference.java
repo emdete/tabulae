@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.trackimport.Track;
+import org.pyneo.maps.track.Track;
 import org.pyneo.maps.utils.TrackStylePickerDialog.OnTrackStyleChangedListener;
 
 import org.json.JSONException;

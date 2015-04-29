@@ -22,16 +22,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.trackimport.PoiManager;
-import org.pyneo.maps.trackimport.XMLparser.PredefMapsParser;
+import org.pyneo.maps.poi.PoiManager;
+import org.pyneo.maps.track.PredefMapsParser;
 import org.pyneo.maps.tileprovider.TileProviderInet;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.tileprovider.TileSourceBase;
 import org.pyneo.maps.utils.RException;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.IMoveListener;
-import org.pyneo.maps.view.MapView;
-import org.pyneo.maps.view.TileViewOverlay;
+import org.pyneo.maps.map.MapView;
+import org.pyneo.maps.map.TileViewOverlay;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.views.util.Util;

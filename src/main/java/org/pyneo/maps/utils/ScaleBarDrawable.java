@@ -9,9 +9,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.view.MapView;
-import org.pyneo.maps.view.TileView.OpenStreetMapViewProjection;
-import org.pyneo.maps.utils.Ut;
+import org.pyneo.maps.map.MapView;
+import org.pyneo.maps.map.TileView.OpenStreetMapViewProjection;
 
 import org.andnav.osm.util.GeoPoint;
 
