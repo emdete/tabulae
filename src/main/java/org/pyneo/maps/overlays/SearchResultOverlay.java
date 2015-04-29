@@ -15,6 +15,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import org.pyneo.maps.R;
+import org.pyneo.maps.poi.PoiOverlay;
 import org.pyneo.maps.utils.CoordFormatter;
 import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.utils.SimpleThreadFactory;

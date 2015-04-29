@@ -57,16 +57,16 @@
 			android:name=".utils.SearchSuggestionsProvider"
 			android:authorities="org.pyneo.maps.SuggestionProvider" >
 		</provider>
-		<activity android:name=".kml.PoiActivity" ></activity>
-		<activity android:name=".kml.PoiListActivity" ></activity>
-		<activity android:name=".kml.TrackListActivity" ></activity>
-		<activity android:name=".kml.PoiCategoryActivity" ></activity>
-		<activity android:name=".kml.PoiCategoryListActivity" ></activity>
-		<activity android:name=".kml.PoiIconSetActivity" ></activity>
-		<activity android:name=".kml.ImportPoiActivity" ></activity>
-		<activity android:name=".kml.ImportTrackActivity" ></activity>
-		<activity android:name=".kml.TrackActivity" ></activity>
-		<activity android:name=".kml.TrackStatActivity" ></activity>
+		<activity android:name=".trackimport.PoiActivity" ></activity>
+		<activity android:name=".trackimport.PoiListActivity" ></activity>
+		<activity android:name=".trackimport.TrackListActivity" ></activity>
+		<activity android:name=".trackimport.PoiCategoryActivity" ></activity>
+		<activity android:name=".trackimport.PoiCategoryListActivity" ></activity>
+		<activity android:name=".trackimport.PoiIconSetActivity" ></activity>
+		<activity android:name=".trackimport.ImportPoiActivity" ></activity>
+		<activity android:name=".trackimport.ImportTrackActivity" ></activity>
+		<activity android:name=".trackimport.TrackActivity" ></activity>
+		<activity android:name=".trackimport.TrackStatActivity" ></activity>
 		<service
 			android:name=".trackwriter.TrackWriterService"
 			android:icon="@drawable/ic_service"
@@ -97,6 +97,6 @@
 		<activity android:name=".preference.CustomMapsPrefActivity"></activity>
 		<activity android:name=".preference.PairMapsPrefActivity"></activity>
 		<activity android:name=".downloader.FileDownloadListActivity"></activity>
-		<activity android:name=".geoui.GeoDataActivity" android:theme="@style/Theme.AppCompat.Light"></activity>
+		<activity android:name=".poi.GeoDataActivity" android:theme="@style/Theme.AppCompat.Light"></activity>
 	</application>
 </manifest>

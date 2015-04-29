@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.kml.PoiManager;
-import org.pyneo.maps.kml.XMLparser.PredefMapsParser;
-import org.pyneo.maps.kml.constants.PoiConstants;
+import org.pyneo.maps.trackimport.PoiManager;
+import org.pyneo.maps.trackimport.XMLparser.PredefMapsParser;
+import org.pyneo.maps.trackimport.PoiConstants;
 import org.pyneo.maps.utils.Ut;
 
 import java.io.InputStream;

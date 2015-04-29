@@ -10,10 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.kml.Track;
-import org.pyneo.maps.kml.utils.TrackStyleDrawable;
-import org.pyneo.maps.kml.utils.TrackStylePickerDialog;
-import org.pyneo.maps.kml.utils.TrackStylePickerDialog.OnTrackStyleChangedListener;
+import org.pyneo.maps.trackimport.Track;
+import org.pyneo.maps.utils.TrackStylePickerDialog.OnTrackStyleChangedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;

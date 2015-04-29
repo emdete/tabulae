@@ -17,8 +17,8 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 
 import org.pyneo.maps.MainActivity;
-import org.pyneo.maps.kml.PoiManager;
-import org.pyneo.maps.kml.Track;
+import org.pyneo.maps.trackimport.PoiManager;
+import org.pyneo.maps.trackimport.Track;
 import org.pyneo.maps.trackwriter.IRemoteService;
 import org.pyneo.maps.trackwriter.ITrackWriterCallback;
 import org.pyneo.maps.utils.SimpleThreadFactory;

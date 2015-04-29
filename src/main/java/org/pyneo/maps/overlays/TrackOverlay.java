@@ -9,8 +9,8 @@ import android.os.Handler;
 import android.os.Message;
 
 import org.pyneo.maps.MainActivity;
-import org.pyneo.maps.kml.PoiManager;
-import org.pyneo.maps.kml.Track;
+import org.pyneo.maps.trackimport.PoiManager;
+import org.pyneo.maps.trackimport.Track;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.view.TileView;

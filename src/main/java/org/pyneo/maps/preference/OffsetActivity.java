@@ -17,9 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.kml.PoiManager;
+import org.pyneo.maps.trackimport.PoiManager;
 import org.pyneo.maps.overlays.MyLocationOverlay;
-import org.pyneo.maps.overlays.PoiOverlay;
+import org.pyneo.maps.poi.PoiOverlay;
 import org.pyneo.maps.overlays.TrackOverlay;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.tileprovider.TileSourceBase;

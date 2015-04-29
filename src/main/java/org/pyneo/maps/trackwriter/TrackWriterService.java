@@ -22,8 +22,8 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.kml.TrackListActivity;
-import org.pyneo.maps.kml.TrackStatHelper;
+import org.pyneo.maps.trackimport.TrackListActivity;
+import org.pyneo.maps.trackimport.TrackStatHelper;
 import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.Constants;

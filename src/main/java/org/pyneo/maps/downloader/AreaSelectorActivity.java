@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.kml.PoiManager;
-import org.pyneo.maps.kml.XMLparser.PredefMapsParser;
+import org.pyneo.maps.trackimport.PoiManager;
+import org.pyneo.maps.trackimport.XMLparser.PredefMapsParser;
 import org.pyneo.maps.tileprovider.TileProviderInet;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.tileprovider.TileSourceBase;
