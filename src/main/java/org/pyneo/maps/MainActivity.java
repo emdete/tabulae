@@ -147,7 +147,8 @@ public class MainActivity extends Activity {
 	private String mGpsStatusName = "";
 	private int mGpsStatusSatCnt = 0;
 	private int mGpsStatusState = 0;
-	private float mLastSpeed, mLastBearing;
+	private float mLastSpeed;
+	private float mLastBearing;
 	private boolean mCompassEnabled;
 	private boolean mDrivingDirectionUp;
 	private boolean mNorthDirectionUp;
@@ -177,7 +178,8 @@ public class MainActivity extends Activity {
 	private ImageView mOverlayView;
 	private ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new SimpleThreadFactory("MainActivity.Search"));
 	private boolean mGPSFastUpdate;
-	private SampleLocationListener mLocationListener, mNetListener;
+	private SampleLocationListener mLocationListener;
+	private SampleLocationListener mNetListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -203,7 +205,7 @@ public class MainActivity extends Activity {
 		mCompassEnabled = uiState.getBoolean("CompassEnabled", false);
 		mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
 		mAutoFollow = uiState.getBoolean("AutoFollow", true);
-		mMap.getController().setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
+		mMap.setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
 		mGPSFastUpdate = pref.getBoolean("pref_gpsfastupdate", true);
 		mAutoFollow = uiState.getBoolean("AutoFollow", true);
 		setAutoFollow(mAutoFollow, true);
@@ -268,7 +270,7 @@ public class MainActivity extends Activity {
 					mPoiOverlay.clearPoiList();
 					mPoiOverlay.setGpsStatusGeoPoint(0, point, "GEO", "");
 					setAutoFollow(false);
-					mMap.getController().setCenter(point);
+					mMap.setCenter(point);
 				}
 			}
 		}
@@ -278,7 +280,7 @@ public class MainActivity extends Activity {
 			if (bundle.containsKey("center")) {
 				try {
 					final GeoPoint geo = GeoPoint.fromDoubleString(bundle.getString("center"));
-					mMap.getController().setCenter(geo);
+					mMap.setCenter(geo);
 				}
 				catch (Exception e) {
 					Ut.e(e.toString(), e);
@@ -287,7 +289,7 @@ public class MainActivity extends Activity {
 			if (bundle.containsKey("zoom")) {
 				try {
 					final int zoom = Integer.valueOf(bundle.getString("zoom"));
-					mMap.getController().setZoom(zoom);
+					mMap.setZoom(zoom);
 					SharedPreferences.Editor editor = uiState.edit();
 					editor.putInt("ZoomLevel", mMap.getZoomLevel());
 					editor.commit();
@@ -318,7 +320,7 @@ public class MainActivity extends Activity {
 			if (bundle.containsKey("center")) {
 				try {
 					final GeoPoint geo = GeoPoint.fromDoubleString(bundle.getString("center"));
-					mMap.getController().setCenter(geo);
+					mMap.setCenter(geo);
 				}
 				catch (Exception e) {
 					Ut.e(e.toString(), e);
@@ -327,7 +329,7 @@ public class MainActivity extends Activity {
 			if (bundle.containsKey("zoom")) {
 				try {
 					final int zoom = Integer.valueOf(bundle.getString("zoom"));
-					mMap.getController().setZoom(zoom);
+					mMap.setZoom(zoom);
 					SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 					SharedPreferences.Editor editor = uiState.edit();
 					editor.putInt("ZoomLevel", mMap.getZoomLevel());
@@ -394,8 +396,8 @@ public class MainActivity extends Activity {
 						setAutoFollow(false, true);
 						final GeoPoint point = new GeoPoint((int)(res.getDouble("lat") * 1E6), (int)(res.getDouble("lng") * 1E6));
 						mSearchResultOverlay.setLocation(point, address);
-						mMap.getController().setZoom((int)(2 * res.getInt("accuracy")));
-						mMap.getController().setCenter(point);
+						mMap.setZoom((int)(2 * res.getInt("accuracy")));
+						mMap.setCenter(point);
 						setTitle();
 
 					}
@@ -502,7 +504,6 @@ public class MainActivity extends Activity {
 						setTileSource(mTileSource.ID, mOverlayId, !mShowOverlay);
 					}
 				}
-
 				mMap.invalidate(); //postInvalidate();
 			}
 		});
@@ -622,23 +623,26 @@ public class MainActivity extends Activity {
 
 	private void setAutoFollow(boolean autoFollow, final boolean supressToast) {
 		mAutoFollow = autoFollow;
-
 		if (autoFollow) {
-			if (ivAutoFollow != null) ivAutoFollow.setVisibility(ImageView.INVISIBLE);
+			if (ivAutoFollow != null)
+				ivAutoFollow.setVisibility(ImageView.INVISIBLE);
 			if (!supressToast)
 				Toast.makeText(this, R.string.auto_follow_enabled, Toast.LENGTH_SHORT).show();
 		}
 		else {
-			if (ivAutoFollow != null) ivAutoFollow.setVisibility(ImageView.VISIBLE);
+			if (ivAutoFollow != null)
+				ivAutoFollow.setVisibility(ImageView.VISIBLE);
 			if (!supressToast)
 				Toast.makeText(this, R.string.auto_follow_disabled, Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	private void setLastKnownLocation() {
-		final GeoPoint p = mMyLocationOverlay.getLastGeoPoint();
-		if (p != null)
-			mMap.getController().setCenter(p);
+		GeoPoint p = mMyLocationOverlay.getLastGeoPoint();
+		if (p != null) {
+			if (mAutoFollow)
+				mMap.setCenter(p);
+		}
 		else {
 			final LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 			final Location locGps = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -664,7 +668,9 @@ public class MainActivity extends Activity {
 			if (str != null)
 				Toast.makeText(this, str, Toast.LENGTH_LONG).show();
 			if (loc != null) {
-				mMap.getController().setCenter(TypeConverter.locationToGeoPoint(loc));
+				p = TypeConverter.locationToGeoPoint(loc);
+				if (mAutoFollow)
+					mMap.setCenter(p);
 				mMyLocationOverlay.setLocation(loc);
 				mMap.invalidate();
 			}
@@ -730,7 +736,7 @@ public class MainActivity extends Activity {
 			mIndicatorManager.setLocation(mMyLocationOverlay.getLastLocation());
 			mIndicatorManager.setTargetLocation(mMyLocationOverlay.getTargetLocation());
 		}
-		mMap.getController().setZoom(uiState.getInt("ZoomLevel", 0));
+		mMap.setZoom(uiState.getInt("ZoomLevel", 0));
 		setTitle();
 		FillOverlays();
 		if (mCompassEnabled)
@@ -1049,7 +1055,7 @@ public class MainActivity extends Activity {
 	private void doFindTheMap() {
 		final GeoPoint geo = mTileSource.findTheMap(mMap.getZoomLevel());
 		if (geo != null)
-			mMap.getController().setCenter(geo);
+			mMap.setCenter(geo);
 	}
 
 	private void doMeasureStart() {
@@ -1505,7 +1511,7 @@ public class MainActivity extends Activity {
 				if (point != null) {
 					setAutoFollow(false);
 					mPoiOverlay.UpdateList();
-					mMap.getController().setCenter(point.GeoPoint);
+					mMap.setCenter(point.GeoPoint);
 				}
 			}
 			else {
@@ -1518,7 +1524,7 @@ public class MainActivity extends Activity {
 				Track track = mPoiManager.getTrack(data.getIntExtra("trackid", PoiPoint.EMPTY_ID()));
 				if (track != null) {
 					setAutoFollow(false);
-					mMap.getController().setCenter(track.getBeginGeoPoint());
+					mMap.setCenter(track.getBeginGeoPoint());
 				}
 			}
 		}
@@ -1574,7 +1580,7 @@ public class MainActivity extends Activity {
 			}
 			setAutoFollow(false);
 			if (point != null)
-				mMap.getController().setCenter(point);
+				mMap.setCenter(point);
 		}
 	}
 
@@ -1605,13 +1611,14 @@ public class MainActivity extends Activity {
 		public static final String OFF = "off";
 
 		public void onLocationChanged(Location loc) {
+			Ut.i("onLocationChanged loc=" + loc);
 			mMyLocationOverlay.setLocation(loc);
 			mSearchResultOverlay.setLocation(loc);
 			if (loc.getProvider().equals(LocationManager.GPS_PROVIDER) && mNetListener != null) {
 				getLocationManager().removeUpdates(mNetListener);
 				mNetListener = null;
 				mGpsStatusName = LocationManager.GPS_PROVIDER;
-				Ut.d("NETWORK provider removed");
+				Ut.d(LocationManager.NETWORK_PROVIDER + " removed");
 				// TODO when to reenable?
 			}
 			//int cnt = loc.getExtras().getInt("satellites", Integer.MIN_VALUE);
@@ -1622,14 +1629,14 @@ public class MainActivity extends Activity {
 				if (mDrivingDirectionUp)
 					if (loc.getSpeed() > 0.5)
 						mMap.setBearing(loc.getBearing());
-				mMap.getController().setCenter(TypeConverter.locationToGeoPoint(loc));
+				mMap.setCenter(TypeConverter.locationToGeoPoint(loc));
 			}
 			mMap.invalidate();
 			setTitle();
 		}
 
 		public void onProviderDisabled(String provider) {
-			Ut.d("onProviderDisabled " + provider);
+			Ut.d("onProviderDisabled provider=" + provider);
 			if (provider.equalsIgnoreCase(LocationManager.GPS_PROVIDER) && mNetListener != null)
 				mGpsStatusName = LocationManager.NETWORK_PROVIDER;
 			else
@@ -1646,14 +1653,14 @@ public class MainActivity extends Activity {
 		}
 
 		public void onProviderEnabled(String provider) {
-			Ut.d("onProviderEnabled " + provider);
+			Ut.d("onProviderEnabled provider=" + provider);
 			if (provider.equalsIgnoreCase(LocationManager.GPS_PROVIDER) && mNetListener == null)
 				mGpsStatusName = LocationManager.GPS_PROVIDER;
 			setTitle();
 		}
 
 		public void onStatusChanged(String provider, int status, Bundle extras) {
-			Ut.d("onStatusChanged " + provider);
+			Ut.d("onStatusChanged provider=" + provider);
 			mGpsStatusSatCnt = extras.getInt("satellites", Integer.MIN_VALUE);
 			mGpsStatusState = status;
 			mGpsStatusName = provider;

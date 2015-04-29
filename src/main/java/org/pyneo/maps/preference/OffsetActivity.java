@@ -94,8 +94,8 @@ public class OffsetActivity extends Activity {
 			mMap.setTileSource(mTileSource);
 
 			SharedPreferences uiState = getSharedPreferences("MapName", Activity.MODE_PRIVATE);
-			mMap.getController().setZoom(uiState.getInt("ZoomLevel", 0));
-			mMap.getController().setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
+			mMap.setZoom(uiState.getInt("ZoomLevel", 0));
+			mMap.setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
 			setTitle();
 
 			mOffsetLat = mTileSource.OFFSET_LAT;

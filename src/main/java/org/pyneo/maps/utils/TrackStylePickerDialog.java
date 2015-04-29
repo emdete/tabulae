@@ -109,8 +109,8 @@ public class TrackStylePickerDialog extends Dialog implements ColorPickerView.On
 			Ut.e(e.toString(), e);
 		}
 		mMap.setTileSource(mTileSource);
-		mMap.getController().setZoom(pref.getInt("ZoomLevel", 0));
-		mMap.getController().setCenter(new GeoPoint(pref.getInt("Latitude", 0), pref.getInt("Longitude", 0)));
+		mMap.setZoom(pref.getInt("ZoomLevel", 0));
+		mMap.setCenter(new GeoPoint(pref.getInt("Latitude", 0), pref.getInt("Longitude", 0)));
 
 		mWidthBar.setOnSeekBarChangeListener(this);
 		mShadowRadiusBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {

@@ -94,8 +94,8 @@ public class DownloaderActivity extends Activity {
 					}
 					mMap.setTileSource(mTileSource);
 				}
-				mMap.getController().setZoom(zoom);
-				mMap.getController().setCenter(new GeoPoint(lat, lon));
+				mMap.setZoom(zoom);
+				mMap.setCenter(new GeoPoint(lat, lon));
 
 			} else if (msg.what == R.id.tile_done) {
 				final int tileCnt = ((Bundle)msg.obj).getInt(CNT);
@@ -173,7 +173,7 @@ public class DownloaderActivity extends Activity {
 
 		mMap = (MapView)findViewById(R.id.map);
 		mCenter = new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0));
-		mMap.getController().setCenter(mCenter);
+		mMap.setCenter(mCenter);
 		mMap.setLongClickable(false);
 
 		mProgress = (ProgressBar)findViewById(R.id.progress);
@@ -249,8 +249,8 @@ public class DownloaderActivity extends Activity {
 			catch (Exception e) {
 			}
 			mMap.setTileSource(mTileSource);
-			mMap.getController().setZoom(intent.getIntExtra("ZoomLevel", 0));
-			mMap.getController().setCenter(new GeoPoint(intent.getIntExtra("Latitude", 0), intent.getIntExtra("Longitude", 0)));
+			mMap.setZoom(intent.getIntExtra("ZoomLevel", 0));
+			mMap.setCenter(new GeoPoint(intent.getIntExtra("Latitude", 0), intent.getIntExtra("Longitude", 0)));
 			setTitle();
 		}
 

@@ -74,7 +74,7 @@ public class AreaSelectorActivity extends Activity {
 		mMap = (MapView)findViewById(R.id.map);
 		mMap.setMoveListener(mMoveListener);
 		mMap.displayZoomControls(Integer.parseInt(pref.getString("pref_zoomctrl", "1")));
-		mMap.getController().setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
+		mMap.setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
 		mMap.setLongClickable(false);
 		mAreaSelectorOverlay = new AreaSelectorOverlay();
 		mMap.getOverlays().add(mAreaSelectorOverlay);
@@ -306,8 +306,8 @@ public class AreaSelectorActivity extends Activity {
 			Ut.e(e.toString(), e);
 		}
 		mMap.setTileSource(mTileSource);
-		mMap.getController().setZoom(uiState.getInt("ZoomLevelAS", 0));
-		mMap.getController().setCenter(new GeoPoint(uiState.getInt("LatitudeAS", 0), uiState.getInt("LongitudeAS", 0)));
+		mMap.setZoom(uiState.getInt("ZoomLevelAS", 0));
+		mMap.setCenter(new GeoPoint(uiState.getInt("LatitudeAS", 0), uiState.getInt("LongitudeAS", 0)));
 		setTitle();
 
 		final GeoPoint[] p = new GeoPoint[2];

@@ -101,6 +101,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 	}
 
 	public void setLocation(final Location loc) {
+		Ut.i("setLocation loc=" + loc);
 		mLastGeoPoint = TypeConverter.locationToGeoPoint(loc);
 		mAccuracy = loc.getAccuracy();
 		mBearing = loc.getBearing();
@@ -138,6 +139,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 
 	@Override
 	public void onDraw(final Canvas c, final TileView osmv) {
+		Ut.i("onDraw");
 		if (mLastGeoPoint != null) {
 			final OpenStreetMapViewProjection pj = osmv.getProjection();
 			final Point screenCoords = new Point();
@@ -210,6 +212,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 				c.drawBitmap(mArrow, screenCoords.x - (int)(mArrow.getWidth() / 2), screenCoords.y - (int)(mArrow.getHeight() / 2), mPaint);
 			}
 			c.restore();
+			Ut.i("onDraw done");
 		}
 		if (mTargetLocation != null) {
 			final OpenStreetMapViewProjection pj = osmv.getProjection();

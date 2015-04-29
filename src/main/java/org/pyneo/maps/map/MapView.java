@@ -29,7 +29,6 @@ public class MapView extends RelativeLayout {
 	public static final String MAPNAME = "MapName";
 
 	private final TileView mTileView;
-	private final MapController mController;
 	private IMoveListener mMoveListener;
 	private boolean mStopBearing = false;
 	private boolean mUseVolumeControl;
@@ -41,7 +40,6 @@ public class MapView extends RelativeLayout {
 
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 		mUseVolumeControl = pref.getBoolean("pref_use_volume_controls", true);
-		mController = new MapController();
 		mTileView = new TileView(context);
 		mMoveListener = null;
 		addView(mTileView, new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
@@ -95,7 +93,6 @@ public class MapView extends RelativeLayout {
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MapView);
 
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		mController = new MapController();
 		mTileView = new TileView(context);
 		addView(mTileView, new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 
@@ -137,10 +134,6 @@ public class MapView extends RelativeLayout {
 
 	public TileView getTileView() {
 		return mTileView;
-	}
-
-	public MapController getController() {
-		return mController;
 	}
 
 	public TileSource getTileSource() {
@@ -297,22 +290,22 @@ public class MapView extends RelativeLayout {
 			case KeyEvent.KEYCODE_VOLUME_DOWN:
 				if (mUseVolumeControl) {
 					stopPropagation = true;
-					getController().zoomOut();
+					mTileView.setZoomLevel(mTileView.getZoomLevel() - 1);
 				}
 				break;
 			case KeyEvent.KEYCODE_VOLUME_UP:
 				if (mUseVolumeControl) {
 					stopPropagation = true;
-					getController().zoomIn();
+					mTileView.setZoomLevel(mTileView.getZoomLevel() + 1);
 				}
 				break;
 			case KeyEvent.KEYCODE_DPAD_UP:
 				stopPropagation = true;
-				getController().zoomOut();
+				mTileView.setZoomLevel(mTileView.getZoomLevel() - 1);
 				break;
 			case KeyEvent.KEYCODE_DPAD_DOWN:
 				stopPropagation = true;
-				getController().zoomIn();
+				mTileView.setZoomLevel(mTileView.getZoomLevel() + 1);
 				break;
 			case KeyEvent.KEYCODE_DPAD_CENTER:
 				if (mStopBearing)
@@ -332,21 +325,24 @@ public class MapView extends RelativeLayout {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	public class MapController {
-		public void setCenter(GeoPoint point) {
-			mTileView.setMapCenter(point);
-		}
+	public void invalidate() {
+		mTileView.invalidate();
+		super.invalidate();
+	}
 
-		public void setZoom(int zoom) {
-			mTileView.setZoomLevel(zoom);
-		}
+	public void setCenter(GeoPoint point) {
+		mTileView.setMapCenter(point);
+	}
 
-		public void zoomOut() {
-			mTileView.setZoomLevel(mTileView.getZoomLevel() - 1);
-		}
+	public void setZoom(int zoom) {
+		mTileView.setZoomLevel(zoom);
+	}
 
-		public void zoomIn() {
-			mTileView.setZoomLevel(mTileView.getZoomLevel() + 1);
-		}
+	public void zoomOut() {
+		mTileView.setZoomLevel(mTileView.getZoomLevel() - 1);
+	}
+
+	public void zoomIn() {
+		mTileView.setZoomLevel(mTileView.getZoomLevel() + 1);
 	}
 }
