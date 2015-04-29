@@ -1,4 +1,4 @@
-package org.pyneo.maps.track;
+package org.pyneo.maps.map;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,13 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.ArrayList;
 
+/**
+* This class catches events from parsing predefmaps xml and applies the
+* attributes to different objects. Depending on the ctor used this is either a
+* TileSourceBase, a Menu, a PreferenceGroup or a ArrayList.
+*
+* TODO: This should me done cleaner with different subclasses :/
+*/
 public class PredefMapsParser extends DefaultHandler {
 	private static final String MAP = "map";
 	private static final String LAYER = "layer";
@@ -108,6 +115,7 @@ public class PredefMapsParser extends DefaultHandler {
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
 		if (localName.equalsIgnoreCase(MAP)) {
 			if (mRendererInfo != null) {
+				// search for a ID in the xml to properly fill a mRendererInfo
 				if (attributes.getValue(ID).equalsIgnoreCase(mMapId)) {
 					mRendererInfo.ID = attributes.getValue(ID);
 					mRendererInfo.MAPID = attributes.getValue(ID);
@@ -122,44 +130,41 @@ public class PredefMapsParser extends DefaultHandler {
 					mRendererInfo.TILE_SOURCE_TYPE = Integer.parseInt(attributes.getValue(TILE_SOURCE_TYPE));
 					mRendererInfo.PROJECTION = Integer.parseInt(attributes.getValue(PROJECTION));
 					mRendererInfo.YANDEX_TRAFFIC_ON = Integer.parseInt(attributes.getValue(YANDEX_TRAFFIC_ON));
-
 					mRendererInfo.TIMEDEPENDENT = false;
 					if (attributes.getIndex(TIMEDEPENDENT) > -1)
 						mRendererInfo.TIMEDEPENDENT = Boolean.parseBoolean(attributes.getValue(TIMEDEPENDENT));
-
 					mRendererInfo.LAYER = false;
 					if (attributes.getIndex(LAYER) > -1)
 						mRendererInfo.LAYER = Boolean.parseBoolean(attributes.getValue(LAYER));
-
 					mRendererInfo.CACHE = "";
 					if (attributes.getIndex(CACHE) > -1)
 						mRendererInfo.CACHE = attributes.getValue(CACHE);
-
 					mRendererInfo.GOOGLESCALE = false;
 					if (attributes.getIndex(GOOGLESCALE) > -1)
 						mRendererInfo.GOOGLESCALE = Boolean.parseBoolean(attributes.getValue(GOOGLESCALE));
-
+					// TODO prevent double fill (in case two providers are configured with the same id)
 				}
 			} else if (mSubmenu != null) {
+				// fill a menu with all possible tile providers
 				final int i = attributes.getIndex(LAYER);
 				boolean timeDependent = false;
 				final int j = attributes.getIndex(TIMEDEPENDENT);
 				if (j != -1)
 					timeDependent = Boolean.parseBoolean(attributes.getValue(TIMEDEPENDENT));
-
 				if (mSharedPreferences.getBoolean(MainPreferences.PREF_PREDEFMAPS_ + attributes.getValue(ID), true)) {
 					final boolean isLayer = !(i == -1 || !attributes.getValue(LAYER).equalsIgnoreCase(TRUE));
 					if (mNeedOverlays && isLayer && !timeDependent
 						//&& (mNeedProjection == 0 || mNeedProjection == Integer.parseInt(attributes.getValue(PROJECTION)))
 						|| !mNeedOverlays && !isLayer) {
-						final MenuItem item = mSubmenu.add(R.id.isoverlay, Menu.NONE, Menu.NONE, attributes.getValue(NAME));
+						final MenuItem item = mSubmenu.add(R.id.isoverlay, Menu.NONE, Menu.NONE,
+							attributes.getValue(CATEGORY) + ": " + attributes.getValue(NAME));
 						item.setTitleCondensed(attributes.getValue(ID));
 					}
 				}
 			} else if (mPrefMapsgroup != null && mPrefOverlaysgroup != null) {
+				// fill a PreferenceGroup with all possible tile providers
 				final int i = attributes.getIndex(LAYER);
 				final PreferenceGroup prefGroup = (i == -1 || !attributes.getValue(LAYER).equalsIgnoreCase(TRUE))? mPrefMapsgroup: mPrefOverlaysgroup;
-
 				final CheckBoxPreferenceExt pref = new CheckBoxPreferenceExt(mPrefActivity, MainPreferences.PREF_PREDEFMAPS_ + attributes.getValue(ID));
 				pref.setKey(MainPreferences.PREF_PREDEFMAPS_ + attributes.getValue(ID) + "_screen");
 				final Intent intent = new Intent(mPrefActivity, PredefMapsPrefActivity.class)
@@ -171,26 +176,25 @@ public class PredefMapsParser extends DefaultHandler {
 				final int j = attributes.getIndex(GOOGLESCALE);
 				if (j > -1 && attributes.getValue(GOOGLESCALE).equalsIgnoreCase(TRUE))
 					intent.putExtra(GOOGLESCALE, true);
-
 				pref.setIntent(intent);
-				pref.setTitle(attributes.getValue(NAME));
+				pref.setTitle(attributes.getValue(CATEGORY) + ": " + attributes.getValue(NAME));
 				pref.setSummary(attributes.getValue(DESCR));
 				prefGroup.addPreference(pref);
 			} else if (mID != null) {
+				// fill two lists with IDs and NAMEs
 				final int i = attributes.getIndex(LAYER);
 				boolean timeDependent = false;
 				final int j = attributes.getIndex(TIMEDEPENDENT);
 				if (j != -1)
 					timeDependent = Boolean.parseBoolean(attributes.getValue(TIMEDEPENDENT));
-
 				final boolean isLayer = !(i == -1 || !attributes.getValue(LAYER).equalsIgnoreCase(TRUE));
 				final int proj = Integer.parseInt(attributes.getValue(PROJECTION));
-
 				if (mNeedMaps && !isLayer || mNeedOverlays && isLayer && !timeDependent && (mNeedProjection == 0 || mNeedProjection == proj)) {
 					mID.add(attributes.getValue(ID));
 					mName.add(attributes.getValue(NAME));
 				}
-			}
+			} else
+				; // TODO report fail!
 		}
 		super.startElement(uri, localName, name, attributes);
 	}

@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.poi.PoiManager;
-import org.pyneo.maps.track.PredefMapsParser;
+import org.pyneo.maps.map.PredefMapsParser;
 import org.pyneo.maps.tileprovider.TileProviderInet;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.tileprovider.TileSourceBase;

@@ -62,7 +62,7 @@ import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.poi.PoiPoint;
 import org.pyneo.maps.track.Track;
 import org.pyneo.maps.track.TrackListActivity;
-import org.pyneo.maps.track.PredefMapsParser;
+import org.pyneo.maps.map.PredefMapsParser;
 import org.pyneo.maps.map.CurrentTrackOverlay;
 import org.pyneo.maps.map.MeasureOverlay;
 import org.pyneo.maps.map.MyLocationOverlay;

@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 doc = dict(
-	URL_BUILDER_TYPE={
+	TILE_SOURCE_TYPE={
+		0: 'INTERNET',
+		3: 'MAPNA_FILE',
+		4: 'TAR',
+		5: 'SQLITEDB',
+		6: 'BLANK',
+		},
+	URL_BUILDER_TYPE={ # if TILE_SOURCE_TYPE == 0
 		0: 'OSM',
 		1: 'GOOGLE',
 		2: 'YANDEX',
@@ -15,13 +22,6 @@ doc = dict(
 		11: 'VFRCB',
 		12: 'USE_OW_MA_SOURCE',
 		13: 'BLANK',
-		},
-	TILE_SOURCE_TYPE={
-		0: 'INTERNET',
-		3: 'MAPNA_FILE',
-		4: 'TAR',
-		5: 'SQLITEDB',
-		6: 'BLANK',
 		},
 	PROJECTION={
 		1: 'MERCATO_SPHEROIDS',
@@ -216,9 +216,9 @@ maps = (
 		YANDEX_TRAFFIC_ON=0,
 		),
 	dict(
-		cat="",
+		cat="Ordnance Survey",
 		id="openspace",
-		name="Ordnance Survey Map",
+		name="Map",
 		descr="Covering the whole of Great Britain http://www.ordnancesurvey.co.uk",
 		baseurl="http://openspace.ordnancesurvey.co.uk/osmapapi/ts?FORMAT=image%2Fpng&amp;KEY=6694613F8B469C97E0405F0AF160360A&amp;URL=http%3A%2F%2Fopenspace.ordnancesurvey.co.uk%2Fopenspace%2Fsupport.html&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetMap&amp;STYLES=&amp;EXCEPTIONS=application%2Fvnd.ogc.se_inimage&amp;",
 		IMAGE_FILENAMEENDING="",
@@ -353,7 +353,7 @@ maps = (
 		),
 	dict(
 		enabled=False,
-		cat="",
+		cat="Cykloatlas ",
 		name="Cykloatlas CZ",
 		id="cykloatlas",
 		descr="http://www.cykloserver.cz/cykloatlas/",
@@ -369,7 +369,7 @@ maps = (
 		),
 	dict(
 		enabled=False,
-		cat="",
+		cat="Docelu",
 		name="Docelu.pl Poland",
 		id="docelupl",
 		descr="http://docelu.pl",
@@ -384,8 +384,8 @@ maps = (
 		YANDEX_TRAFFIC_ON=0,
 		),
 	dict(
-		cat="",
-		name="MapABC地图",
+		cat="MapABC",
+		name="地图",
 		id="mapabc",
 		isfake="true",
 		descr="",
@@ -401,8 +401,8 @@ maps = (
 		),
 	dict(
 		enabled=False,
-		cat="",
-		name="MyTopo",
+		cat="MyTopo",
+		name="topoG",
 		id="mytopo",
 		descr="http://www.mytopo.com",
 		baseurl="http://maps.mytopo.com/mytopoz63g9R/tilecache.py/1.0.0/topoG/",
@@ -416,8 +416,8 @@ maps = (
 		YANDEX_TRAFFIC_ON=0,
 		),
 	dict(
-		cat="",
-		name="Outdooractive",
+		cat="Outdooractive",
+		name="Map",
 		id="outdooractive",
 		descr="",
 		baseurl="http://s3.outdooractive.com/portal/map/",
@@ -431,8 +431,8 @@ maps = (
 		YANDEX_TRAFFIC_ON=0,
 		),
 	dict(
-		cat="",
-		name="QQ地图",
+		cat="QQ",
+		name="地图",
 		id="qqmap",
 		isfake="true",
 		descr="",
@@ -447,7 +447,7 @@ maps = (
 		YANDEX_TRAFFIC_ON=0,
 		),
 	dict(
-		cat="",
+		cat="map4freerel",
 		name="Relief map",
 		id="map4freerel",
 		descr="http://maps.peterrobins.co.uk/",
@@ -462,7 +462,7 @@ maps = (
 		YANDEX_TRAFFIC_ON=0,
 		),
 	dict(
-		cat="",
+		cat="waw",
 		name="UMP-pcPL Poland",
 		id="ump_pcpl",
 		descr="http://ump.waw.pl",
@@ -1366,8 +1366,8 @@ maps = (
 		YANDEX_TRAFFIC_ON=0,
 		),
 	dict(
-		cat="",
-		name="Blank",
+		cat="Blank",
+		name="Empty",
 		id="blank",
 		descr="",
 		baseurl="",

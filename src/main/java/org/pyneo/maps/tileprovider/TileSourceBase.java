@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 import org.pyneo.maps.MainPreferences;
 import org.pyneo.maps.R;
 import org.pyneo.maps.poi.PoiManager;
-import org.pyneo.maps.track.PredefMapsParser;
+import org.pyneo.maps.map.PredefMapsParser;
 import org.pyneo.maps.preference.MixedMapsPreference;
 import org.pyneo.maps.utils.RException;
 import org.pyneo.maps.utils.Ut;

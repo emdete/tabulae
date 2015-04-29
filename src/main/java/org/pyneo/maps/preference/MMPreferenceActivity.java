@@ -6,7 +6,7 @@ import android.preference.PreferenceActivity;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.poi.PoiManager;
-import org.pyneo.maps.track.PredefMapsParser;
+import org.pyneo.maps.map.PredefMapsParser;
 import org.pyneo.maps.poi.PoiConstants;
 import org.pyneo.maps.utils.Ut;
 
