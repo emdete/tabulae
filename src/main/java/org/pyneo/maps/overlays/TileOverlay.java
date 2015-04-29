@@ -13,7 +13,7 @@ import org.pyneo.maps.tileprovider.MessageHandlerConstants;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.Constants;
-import org.pyneo.maps.view.IMoveListener;
+import org.pyneo.maps.utils.IMoveListener;
 import org.pyneo.maps.view.TileView;
 import org.pyneo.maps.view.TileViewOverlay;
 

@@ -1,4 +1,4 @@
-package org.pyneo.maps.view;
+package org.pyneo.maps.utils;
 
 public interface IMoveListener {
 	public void onMoveDetected();

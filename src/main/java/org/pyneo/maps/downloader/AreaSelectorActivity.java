@@ -29,10 +29,9 @@ import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.tileprovider.TileSourceBase;
 import org.pyneo.maps.utils.RException;
 import org.pyneo.maps.utils.Ut;
-import org.pyneo.maps.view.IMoveListener;
+import org.pyneo.maps.utils.IMoveListener;
 import org.pyneo.maps.view.MapView;
 import org.pyneo.maps.view.TileViewOverlay;
-import org.pyneo.maps.downloader.MapDownloaderService;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.views.util.Util;

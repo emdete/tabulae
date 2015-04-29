@@ -17,7 +17,9 @@ public class TrackStyleOverlay extends TileViewOverlay {
 
 	@Override
 	protected void onDraw(Canvas c, TileView tileView) {
-		if (mPaint == null) return;
+		if (mPaint == null) {
+			return;
+		}
 		if (mPath == null) {
 			final int left = tileView.getWidth() / 10;
 			final int step = (tileView.getWidth() - 2 * left) / 3;
@@ -30,12 +32,10 @@ public class TrackStyleOverlay extends TileViewOverlay {
 			mPath.lineTo(left + 2 * step, tileView.getHeight() - top);
 			mPath.lineTo(left + 3 * step, cent_v);
 		}
-
 		c.drawPath(mPath, mPaint);
 	}
 
 	@Override
 	protected void onDrawFinished(Canvas c, TileView tileView) {
 	}
-
 }

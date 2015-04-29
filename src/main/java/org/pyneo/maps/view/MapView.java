@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.tileprovider.TileSource;
+import org.pyneo.maps.utils.IMoveListener;
 import org.pyneo.maps.utils.ScaleBarDrawable;
 
 import org.andnav.osm.util.GeoPoint;
