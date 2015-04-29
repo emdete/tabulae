@@ -110,6 +110,9 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+/**
+*
+*/
 public class MainActivity extends Activity {
 	private static final String MAPNAME = "MapName";
 	private static final String ACTION_SHOW_POINTS = "org.pyneo.maps.action.SHOW_POINTS";
@@ -152,18 +155,14 @@ public class MainActivity extends Activity {
 		private int iOrientation = -1;
 
 		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
 		}
 
 		public void onSensorChanged(SensorEvent event) {
 			if (iOrientation < 0) {
-				iOrientation = ((WindowManager)getSystemService(Context.WINDOW_SERVICE))
-					.getDefaultDisplay().getOrientation();
+				iOrientation = ((WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
 			}
-
 			mCompassView.setAzimuth(event.values[0] + 90 * iOrientation);
 			mCompassView.invalidate();
-
 			if (mCompassEnabled)
 				if (mNorthDirectionUp)
 					if (mDrivingDirectionUp == false || mLastSpeed == 0) {
@@ -184,24 +183,18 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		Ut.i("onCreate savedInstanceState=" + savedInstanceState);
 		super.onCreate(savedInstanceState);
-
 		if (!OpenStreetMapViewConstants.DEBUGMODE) {
 			CrashReportHandler.attach(this);
 		}
-
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
-
 		createContentView();
-
 		mPoiManager = new PoiManager(this);
 		mLocationListener = new SampleLocationListener();
 		mMap.setMoveListener(mMoveListener);
 		//if(!OpenStreetMapViewConstants.DEBUGMODE) // Emulator was hang on the next line
 		mOrientationSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
-
 		// Init
 		mPrefOverlayButtonBehavior = Integer.parseInt(pref.getString("pref_overlay_button_behavior", "0"));
 		mPrefOverlayButtonVisibility = Integer.parseInt(pref.getString("pref_overlay_button_visibility", "0"));
@@ -210,34 +203,30 @@ public class MainActivity extends Activity {
 		mCompassEnabled = uiState.getBoolean("CompassEnabled", false);
 		mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
 		mAutoFollow = uiState.getBoolean("AutoFollow", true);
-
 		mMap.getController().setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
 		mGPSFastUpdate = pref.getBoolean("pref_gpsfastupdate", true);
 		mAutoFollow = uiState.getBoolean("AutoFollow", true);
 		setAutoFollow(mAutoFollow, true);
-
-		this.mTrackOverlay = new TrackOverlay(this, mPoiManager, mCallbackHandler);
-		this.mCurrentTrackOverlay = new CurrentTrackOverlay(this, mPoiManager);
-		this.mPoiOverlay = new PoiOverlay(this, mPoiManager, null, pref.getBoolean("pref_hidepoi", false));
+		mTrackOverlay = new TrackOverlay(this, mPoiManager, mCallbackHandler);
+		mCurrentTrackOverlay = new CurrentTrackOverlay(this, mPoiManager);
+		mPoiOverlay = new PoiOverlay(this, mPoiManager, null, pref.getBoolean("pref_hidepoi", false));
 		mPoiOverlay.setTapIndex(uiState.getInt("curShowPoiId", PoiOverlay.NO_TAP));
-		this.mMyLocationOverlay = new MyLocationOverlay(this);
-		this.mSearchResultOverlay = new SearchResultOverlay(this, mMap);
+		mMyLocationOverlay = new MyLocationOverlay(this);
+		mSearchResultOverlay = new SearchResultOverlay(this, mMap);
 		mSearchResultOverlay.fromPref(uiState);
 		FillOverlays();
-
 		mDrivingDirectionUp = pref.getBoolean("pref_drivingdirectionup", true);
 		mNorthDirectionUp = pref.getBoolean("pref_northdirectionup", true);
-
 		final int screenOrientation = Integer.parseInt(pref.getString("pref_screen_orientation", "-1"));
 		setRequestedOrientation(screenOrientation);
-
 		final boolean showstatusbar = pref.getBoolean("pref_showstatusbar", true);
 		if (showstatusbar) {
 			getWindow().setFlags(
 				WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 			getWindow().getDecorView().setSystemUiVisibility(0);
-		} else {
+		}
+		else {
 			getWindow().setFlags(
 				WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -248,26 +237,23 @@ public class MainActivity extends Activity {
 				| View.SYSTEM_UI_FLAG_IMMERSIVE // remove for version < API 19
 			);
 		}
-
 		if (uiState.getString("error", "").length() > 0) {
 			showDialog(R.id.error);
 		}
-
 		if (!uiState.getString("app_version", "").equalsIgnoreCase(Ut.getAppVersion(this))) {
 			DisplayMetrics metrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
 			showDialog(R.id.whatsnew);
 		}
-
 		final Intent queryIntent = getIntent();
 		final String queryAction = queryIntent.getAction();
-
 		if (Intent.ACTION_SEARCH.equals(queryAction)) {
 			doSearchQuery(queryIntent);
-		} else if (ACTION_SHOW_POINTS.equalsIgnoreCase(queryAction)) {
+		}
+		else if (ACTION_SHOW_POINTS.equalsIgnoreCase(queryAction)) {
 			ActionShowPoints(queryIntent);
-		} else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
+		}
+		else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
 			Uri uri = queryIntent.getData();
 			if (uri.getScheme().equalsIgnoreCase("geo")) {
 				final String latlon = uri.getEncodedSchemeSpecificPart().replace("?" + uri.getEncodedQuery(), "");
@@ -276,7 +262,8 @@ public class MainActivity extends Activity {
 					queryIntent.putExtra(SearchManager.QUERY, query);
 					doSearchQuery(queryIntent);
 
-				} else {
+				}
+				else {
 					GeoPoint point = GeoPoint.fromDoubleString(latlon);
 					mPoiOverlay.clearPoiList();
 					mPoiOverlay.setGpsStatusGeoPoint(0, point, "GEO", "");
@@ -284,7 +271,8 @@ public class MainActivity extends Activity {
 					mMap.getController().setCenter(point);
 				}
 			}
-		} else if ("SHOW_MAP_ID".equalsIgnoreCase(queryAction)) {
+		}
+		else if ("SHOW_MAP_ID".equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = queryIntent.getExtras();
 			mMapId = bundle.getString(MAPNAME);
 			if (bundle.containsKey("center")) {
@@ -320,9 +308,11 @@ public class MainActivity extends Activity {
 		final String queryAction = intent.getAction();
 		if (Intent.ACTION_SEARCH.equals(queryAction)) {
 			doSearchQuery(intent);
-		} else if (ACTION_SHOW_POINTS.equalsIgnoreCase(queryAction)) {
+		}
+		else if (ACTION_SHOW_POINTS.equalsIgnoreCase(queryAction)) {
 			ActionShowPoints(intent);
-		} else if ("SHOW_MAP_ID".equalsIgnoreCase(queryAction)) {
+		}
+		else if ("SHOW_MAP_ID".equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = intent.getExtras();
 			mMapId = bundle.getString(MAPNAME);
 			if (bundle.containsKey("center")) {
@@ -353,7 +343,7 @@ public class MainActivity extends Activity {
 	private void doSearchQuery(Intent queryIntent) {
 		try {
 			mSearchResultOverlay.Clear();
-			this.mMap.invalidate();
+			mMap.invalidate();
 
 			final String queryString = queryIntent.getStringExtra(SearchManager.QUERY);
 
@@ -364,8 +354,8 @@ public class MainActivity extends Activity {
 			mThreadPool.execute(new Runnable() {
 				@Override
 				public void run() {
-					Handler handler = MainActivity.this.mCallbackHandler;
-					Resources resources = MainActivity.this.getApplicationContext().getResources();
+					Handler handler = mCallbackHandler;
+					Resources resources = getApplicationContext().getResources();
 
 					InputStream in = null;
 					OutputStream out = null;
@@ -377,7 +367,7 @@ public class MainActivity extends Activity {
 
 						URL url = new URL(
 							"http://ajax.googleapis.com/ajax/services/search/local?v=1.0&sll="
-								+ MainActivity.this.mMap.getMapCenter().toDoubleString()
+								+ mMap.getMapCenter().toDoubleString()
 								+ "&q=" + URLEncoder.encode(queryString, "UTF-8")
 								+ "&hl=" + lang /*pref.getString("pref_googlelanguagecode", "en")*/
 								+ "");
@@ -454,7 +444,8 @@ public class MainActivity extends Activity {
 		compassParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		if (!(sideBottom == 2? false: true)) {
 			compassParams.addRule(RelativeLayout.ABOVE, R.id.scale_bar);
-		} else {
+		}
+		else {
 			compassParams.addRule(RelativeLayout.BELOW, R.id.dashboard_area);
 		}
 		mMap.addView(mCompassView, compassParams);
@@ -469,7 +460,8 @@ public class MainActivity extends Activity {
 			followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			if (!(sideBottom == 2? false: true)) {
 				followParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-			} else {
+			}
+			else {
 				followParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 			}
 			((RelativeLayout)findViewById(R.id.right_area)).addView(ivAutoFollow, followParams);
@@ -495,14 +487,18 @@ public class MainActivity extends Activity {
 				if (mTileSource.YANDEX_TRAFFIC_ON == 1) {
 					mShowOverlay = !mShowOverlay;
 					FillOverlays();
-				} else {
+				}
+				else {
 					if (mPrefOverlayButtonBehavior == 1) {
 						v.showContextMenu();
-					} else if (mPrefOverlayButtonBehavior == 2) {
+					}
+					else if (mPrefOverlayButtonBehavior == 2) {
 						setTileSource(mTileSource.ID, mOverlayId, !mShowOverlay);
-					} else if (mOverlayId.equalsIgnoreCase("") && mTileSource.MAP_TYPE != TileSourceBase.MIXMAP_PAIR) {
+					}
+					else if (mOverlayId.equalsIgnoreCase("") && mTileSource.MAP_TYPE != TileSourceBase.MIXMAP_PAIR) {
 						v.showContextMenu();
-					} else {
+					}
+					else {
 						setTileSource(mTileSource.ID, mOverlayId, !mShowOverlay);
 					}
 				}
@@ -562,7 +558,8 @@ public class MainActivity extends Activity {
 								item.setTitleCondensed("mixmap_" + c.getInt(0));
 								//}
 							}
-						} while (c.moveToNext());
+						}
+						while (c.moveToNext());
 					}
 					c.close();
 				}
@@ -589,32 +586,34 @@ public class MainActivity extends Activity {
 	}
 
 	private void FillOverlays() {
-		this.mMap.getOverlays().clear();
+		mMap.getOverlays().clear();
 
 		if (mMeasureOverlay != null)
-			this.mMap.getOverlays().add(mMeasureOverlay);
+			mMap.getOverlays().add(mMeasureOverlay);
 
 		if (mTileOverlay != null)
-			this.mMap.getOverlays().add(mTileOverlay);
+			mMap.getOverlays().add(mTileOverlay);
 
 		if (mTileSource == null) {
-		} else if (mTileSource.YANDEX_TRAFFIC_ON == 1 && mShowOverlay && mYandexTrafficOverlay == null) {
+		}
+		else if (mTileSource.YANDEX_TRAFFIC_ON == 1 && mShowOverlay && mYandexTrafficOverlay == null) {
 			mYandexTrafficOverlay = new YandexTrafficOverlay(this, mMap.getTileView());
-		} else if ((mTileSource.YANDEX_TRAFFIC_ON != 1 || !mShowOverlay) && mYandexTrafficOverlay != null) {
+		}
+		else if ((mTileSource.YANDEX_TRAFFIC_ON != 1 || !mShowOverlay) && mYandexTrafficOverlay != null) {
 			mYandexTrafficOverlay.Free();
 			mYandexTrafficOverlay = null;
 		}
 
 		if (mYandexTrafficOverlay != null)
-			this.mMap.getOverlays().add(mYandexTrafficOverlay);
+			mMap.getOverlays().add(mYandexTrafficOverlay);
 		if (mTrackOverlay != null)
-			this.mMap.getOverlays().add(mTrackOverlay);
+			mMap.getOverlays().add(mTrackOverlay);
 		if (mCurrentTrackOverlay != null)
-			this.mMap.getOverlays().add(mCurrentTrackOverlay);
+			mMap.getOverlays().add(mCurrentTrackOverlay);
 		if (mPoiOverlay != null)
-			this.mMap.getOverlays().add(mPoiOverlay);
-		this.mMap.getOverlays().add(mMyLocationOverlay);
-		this.mMap.getOverlays().add(mSearchResultOverlay);
+			mMap.getOverlays().add(mPoiOverlay);
+		mMap.getOverlays().add(mMyLocationOverlay);
+		mMap.getOverlays().add(mSearchResultOverlay);
 	}
 
 	private void setAutoFollow(boolean autoFollow) {
@@ -628,7 +627,8 @@ public class MainActivity extends Activity {
 			if (ivAutoFollow != null) ivAutoFollow.setVisibility(ImageView.INVISIBLE);
 			if (!supressToast)
 				Toast.makeText(this, R.string.auto_follow_enabled, Toast.LENGTH_SHORT).show();
-		} else {
+		}
+		else {
 			if (ivAutoFollow != null) ivAutoFollow.setVisibility(ImageView.VISIBLE);
 			if (!supressToast)
 				Toast.makeText(this, R.string.auto_follow_disabled, Toast.LENGTH_SHORT).show();
@@ -641,36 +641,33 @@ public class MainActivity extends Activity {
 			mMap.getController().setCenter(p);
 		else {
 			final LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-			final Location loc1 = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			final Location loc2 = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-			boolean boolGpsEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-			boolean boolNetworkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-			String str = "";
+			final Location locGps = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			final Location locNlp = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			String str = null;
 			Location loc = null;
-
-			if (loc1 == null && loc2 != null)
-				loc = loc2;
-			else if (loc1 != null && loc2 == null)
-				loc = loc1;
-			else if (loc1 == null && loc2 == null)
+			if (locGps == null && locNlp != null)
+				loc = locNlp;
+			else if (locGps != null && locNlp == null)
+				loc = locGps;
+			else if (locGps == null && locNlp == null)
 				loc = null;
 			else
-				loc = loc1.getTime() > loc2.getTime()? loc1: loc2;
-
-			if (boolGpsEnabled) {
-			} else if (boolNetworkEnabled)
+				loc = locGps.getElapsedRealtimeNanos() > locNlp.getElapsedRealtimeNanos()? locGps: locNlp;
+			if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			}
+			else if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 				str = getString(R.string.message_gpsdisabled);
 			else if (loc == null)
 				str = getString(R.string.message_locationunavailable);
 			else
 				str = getString(R.string.message_lastknownlocation);
-
-			if (str.length() > 0)
+			if (str != null)
 				Toast.makeText(this, str, Toast.LENGTH_LONG).show();
-
-			if (loc != null)
+			if (loc != null) {
 				mMap.getController().setCenter(TypeConverter.locationToGeoPoint(loc));
+				mMyLocationOverlay.setLocation(loc);
+				mMap.invalidate();
+			}
 		}
 	}
 
@@ -703,7 +700,8 @@ public class MainActivity extends Activity {
 					rightText.setText("" + (mMap.getTileSource().ZOOM_MAXLEVEL + 1) + "+");
 					if (mIndicatorManager != null)
 						mIndicatorManager.setZoom(mMap.getTileSource().ZOOM_MAXLEVEL + 1);
-				} else {
+				}
+				else {
 					rightText.setText("" + (1 + Math.round(zoom)));
 					if (mIndicatorManager != null)
 						mIndicatorManager.setZoom((int)(1 + Math.round(zoom)));
@@ -719,51 +717,42 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		final SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
-
 		if (mMapId == null)
 			mMapId = uiState.getString(MAPNAME, TileSource.MAPNIK);
 		mOverlayId = uiState.getString("OverlayID", "");
 		mShowOverlay = uiState.getBoolean("ShowOverlay", true);
 		mMyLocationOverlay.setTargetLocation(GeoPoint.fromDoubleStringOrNull(uiState.getString("targetlocation", "")));
-
 		setTileSource(mMapId, mOverlayId, mShowOverlay);
 		mMapId = null;
-
 		if (uiState.getBoolean("show_dashboard", true) && mIndicatorManager == null) {
 			mIndicatorManager = new IndicatorManager(this);
 			mIndicatorManager.setCenter(mMap.getMapCenter());
 			mIndicatorManager.setLocation(mMyLocationOverlay.getLastLocation());
 			mIndicatorManager.setTargetLocation(mMyLocationOverlay.getTargetLocation());
 		}
-
 		mMap.getController().setZoom(uiState.getInt("ZoomLevel", 0));
 		setTitle();
-
 		FillOverlays();
-
 		if (mCompassEnabled)
-			mOrientationSensorManager.registerListener(mListener, mOrientationSensorManager
-				.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_UI);
-
+			mOrientationSensorManager.registerListener(mListener,
+				mOrientationSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_UI);
 		if (mTrackOverlay != null)
 			mTrackOverlay.setStopDraw(false);
 		if (mCurrentTrackOverlay != null)
 			mCurrentTrackOverlay.onResume();
-
 		Ut.d("onResume getBestProvider");
 		mLocationListener.getBestProvider();
-
 		if (mIndicatorManager != null)
 			mIndicatorManager.Resume(this);
-
 		if (pref.getBoolean("pref_keepscreenon", true)) {
 			myWakeLock = ((PowerManager)getSystemService(POWER_SERVICE)).newWakeLock(
 				PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "Tabulae");
 			myWakeLock.acquire();
-		} else {
+		}
+		else {
 			myWakeLock = null;
 		}
-
+		setLastKnownLocation();
 		super.onResume();
 	}
 
@@ -771,7 +760,6 @@ public class MainActivity extends Activity {
 	protected void onRestart() {
 		if (mTrackOverlay != null)
 			mTrackOverlay.clearTrack();
-
 		super.onRestart();
 	}
 
@@ -785,7 +773,6 @@ public class MainActivity extends Activity {
 	protected void onPause() {
 		Ut.d("onPause");
 		final GeoPoint point = mMap.getMapCenter();
-
 		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = uiState.edit();
 		if (mTileSource != null) {
@@ -810,7 +797,6 @@ public class MainActivity extends Activity {
 		editor.putBoolean("show_dashboard", mIndicatorManager == null? false: true);
 		editor.putString("targetlocation", mMyLocationOverlay.getTargetLocation() == null? "": mMyLocationOverlay.getTargetLocation().toDoubleString());
 		editor.commit();
-
 		uiState = getSharedPreferences("MapName", Activity.MODE_PRIVATE);
 		editor = uiState.edit();
 		if (mTileSource != null)
@@ -821,33 +807,25 @@ public class MainActivity extends Activity {
 		editor.putBoolean("CompassEnabled", mCompassEnabled);
 		editor.putBoolean("AutoFollow", mAutoFollow);
 		editor.commit();
-
 		if (myWakeLock != null)
 			myWakeLock.release();
-
 		if (mOrientationSensorManager != null)
 			mOrientationSensorManager.unregisterListener(mListener);
-
 		if (mCurrentTrackOverlay != null)
 			mCurrentTrackOverlay.onPause();
-
 		if (mTileSource != null)
 			mTileSource.Free();
 		mTileSource = null;
 		mPoiManager.FreeDatabases();
-
 		if (mTileOverlay != null)
 			mTileOverlay.Free();
-
 		mLocationListener.getLocationManager().removeUpdates(mLocationListener);
 		if (mNetListener != null) {
 			mLocationListener.getLocationManager().removeUpdates(mNetListener);
 			mNetListener = null;
 		}
-
 		if (mIndicatorManager != null)
 			mIndicatorManager.Pause(this);
-
 		super.onPause();
 	}
 
@@ -858,7 +836,6 @@ public class MainActivity extends Activity {
 			mIndicatorManager.Dismiss(this);
 			mIndicatorManager = null;
 		}
-
 		for (TileViewOverlay osmvo : mMap.getOverlays())
 			osmvo.Free();
 		if (mTileSource != null)
@@ -866,17 +843,14 @@ public class MainActivity extends Activity {
 		mTileSource = null;
 		mMap.setMoveListener(null);
 		mThreadPool.shutdown();
-
 		super.onDestroy();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_option_menu, menu);
-
 		return true;
 	}
 
@@ -885,19 +859,19 @@ public class MainActivity extends Activity {
 		Menu submenu = menu.findItem(R.id.mapselector).getSubMenu();
 		submenu.clear();
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-
 		if (mTileSource == null) {
 			menu.findItem(R.id.reload).setVisible(false);
-		} else if (mTileSource.MAP_TYPE == TileSourceBase.PREDEF_ONLINE || mTileSource.MAP_TYPE == TileSourceBase.MIXMAP_CUSTOM) {
+		}
+		else if (mTileSource.MAP_TYPE == TileSourceBase.PREDEF_ONLINE || mTileSource.MAP_TYPE == TileSourceBase.MIXMAP_CUSTOM) {
 			menu.findItem(R.id.reload).setVisible(true);
-		} else {
+		}
+		else {
 			menu.findItem(R.id.reload).setVisible(false);
 		}
-
 		File folder = Ut.getAppMapsDir(this);
 		if (folder.exists()) {
 			File[] files = folder.listFiles();
-			if (files != null)
+			if (files != null) {
 				for (File file: files) {
 					if (file.getName().toLowerCase().endsWith(".mnm")
 					|| file.getName().toLowerCase().endsWith(".tar")
@@ -911,8 +885,8 @@ public class MainActivity extends Activity {
 						}
 					}
 				}
+			}
 		}
-
 		Cursor c = mPoiManager.getGeoDatabase().getMixedMaps();
 		if (c != null) {
 			if (c.moveToFirst()) {
@@ -925,7 +899,6 @@ public class MainActivity extends Activity {
 			}
 			c.close();
 		}
-
 		final SAXParserFactory fac = SAXParserFactory.newInstance();
 		SAXParser parser = null;
 		try {
@@ -938,16 +911,13 @@ public class MainActivity extends Activity {
 		catch (Exception e) {
 			Ut.e(e.toString(), e);
 		}
-
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
-
 		final GeoPoint point = mMap.getMapCenter();
-
 		switch (item.getItemId()) {
 			case R.id.area_selector: {
 				startActivity(new Intent(this, AreaSelectorActivity.class)
@@ -968,7 +938,8 @@ public class MainActivity extends Activity {
 					mIndicatorManager.setLocation(mMyLocationOverlay.getLastLocation());
 					mIndicatorManager.setTargetLocation(mMyLocationOverlay.getTargetLocation());
 					mIndicatorManager.Resume(this);
-				} else {
+				}
+				else {
 					mIndicatorManager.Dismiss(this);
 					mIndicatorManager = null;
 				}
@@ -1066,14 +1037,10 @@ public class MainActivity extends Activity {
 				return true;
 			}
 			default: {
-
 				final String mapid = (String)item.getTitleCondensed();
 				setTileSource(mapid, "", true);
-
 				FillOverlays();
-
 				setTitle();
-
 				return true;
 			}
 		}
@@ -1088,7 +1055,6 @@ public class MainActivity extends Activity {
 	private void doMeasureStart() {
 		if (mMeasureOverlay == null)
 			mMeasureOverlay = new MeasureOverlay(this, findViewById(R.id.bottom_area));
-
 		final View viewBottomArea = findViewById(R.id.bottom_area);
 		viewBottomArea.findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -1098,7 +1064,6 @@ public class MainActivity extends Activity {
 			}
 		});
 		viewBottomArea.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				mMeasureOverlay = null;
@@ -1109,14 +1074,12 @@ public class MainActivity extends Activity {
 
 		final View viewMenuButton = viewBottomArea.findViewById(R.id.menu);
 		viewMenuButton.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				v.showContextMenu();
 			}
 		});
 		viewMenuButton.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 				{
@@ -1144,9 +1107,8 @@ public class MainActivity extends Activity {
 		final String mapId = aMapId == null? (mTileSource == null? TileSource.MAPNIK: mTileSource.ID): aMapId;
 		final String overlayId = aOverlayId == null? mOverlayId: aOverlayId;
 		final String lastMapID = mTileSource == null? TileSource.MAPNIK: mTileSource.ID;
-
-		if (mTileSource != null) mTileSource.Free();
-
+		if (mTileSource != null)
+			mTileSource.Free();
 		if (overlayId != null && !overlayId.equalsIgnoreCase("") && aShowOverlay) {
 			mOverlayId = overlayId;
 			mShowOverlay = true;
@@ -1162,15 +1124,14 @@ public class MainActivity extends Activity {
 				mTileSource = null;
 				addMessage(new RException(R.string.error_other, e.getMessage()));
 			}
-		} else {
+		}
+		else {
 			if (mTileOverlay != null) {
 				mTileOverlay.Free();
 				mTileOverlay = null;
 			}
-
 			try {
 				mTileSource = new TileSource(this, mapId, aShowOverlay);
-
 				mShowOverlay = aShowOverlay;
 				if (mapId != lastMapID)
 					mOverlayId = "";
@@ -1184,18 +1145,19 @@ public class MainActivity extends Activity {
 				addMessage(new RException(R.string.error_other, e.getMessage()));
 			}
 		}
-
 		if (mTileSource != null) {
 			final TileSource tileSource = mTileSource.getTileSourceForTileOverlay();
 			if (tileSource != null) {
 				if (mTileOverlay == null)
 					mTileOverlay = new TileOverlay(mMap.getTileView(), true);
 				mTileOverlay.setTileSource(tileSource);
-			} else if (mTileOverlay != null) {
+			}
+			else if (mTileOverlay != null) {
 				mTileOverlay.Free();
 				mTileOverlay = null;
 			}
-		} else {
+		}
+		else {
 			try {
 				mTileSource = new TileSource(this, TileSource.MAPNIK);
 			}
@@ -1206,26 +1168,21 @@ public class MainActivity extends Activity {
 				Ut.e(e.toString(), e);
 			}
 		}
-
 		mMap.setTileSource(mTileSource);
 		FillOverlays();
-
 		if (mMyLocationOverlay != null && mTileSource != null)
 			mMyLocationOverlay.setScale(mTileSource.MAPTILE_SIZE_FACTOR, mTileSource.GOOGLESCALE_SIZE_FACTOR);
-
 		if (mPrefOverlayButtonVisibility == 2)
 			mOverlayView.setVisibility(mTileSource.MAP_TYPE == TileSourceBase.MIXMAP_PAIR || mTileSource.YANDEX_TRAFFIC_ON == 1? View.VISIBLE: View.GONE);
 	}
 
 	private void addMessage(RException e) {
-
 		LinearLayout msgbox = (LinearLayout)findViewById(e.getID());
 		if (msgbox == null) {
 			msgbox = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.error_message_box, (ViewGroup)findViewById(R.id.message_list));
 			msgbox.setId(e.getID());
 			msgbox.setVisibility(View.VISIBLE);
 			msgbox.findViewById(R.id.message).setOnClickListener(new OnClickListener() {
-
 				public void onClick(View v) {
 					if (v.findViewById(R.id.descr).getVisibility() == View.GONE)
 						v.findViewById(R.id.descr).setVisibility(View.VISIBLE);
@@ -1235,15 +1192,12 @@ public class MainActivity extends Activity {
 			});
 			msgbox.findViewById(R.id.btn).setTag(Integer.valueOf(e.getID()));
 			msgbox.findViewById(R.id.btn).setOnClickListener(new OnClickListener() {
-
 				public void onClick(View v) {
 					final int id = (Integer)v.getTag();
 					findViewById(id).setVisibility(View.GONE);
 				}
 			});
 		}
-		;
-
 		((TextView)msgbox.findViewById(R.id.descr)).setText(e.getStringRes(this));
 	}
 
@@ -1261,7 +1215,8 @@ public class MainActivity extends Activity {
 					}
 					menu.add(0, R.id.menu_share, 0, getText(R.string.menu_share));
 					menu.add(0, R.id.menu_toradar, 0, getText(R.string.menu_toradar));
-				} else {
+				}
+				else {
 					menu.add(0, R.id.menu_addpoi, 0, getText(R.string.menu_addpoi));
 					menu.add(0, R.id.menu_i_am_here, 0, getText(R.string.menu_i_am_here));
 					menu.add(0, R.id.menu_add_target_point, 0, getText(R.string.menu_add_target_point));
@@ -1270,7 +1225,6 @@ public class MainActivity extends Activity {
 				}
 			}
 		}
-
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
@@ -1279,124 +1233,131 @@ public class MainActivity extends Activity {
 		if (item.getGroupId() == R.id.isoverlay) {
 			final String overlayid = (String)item.getTitleCondensed();
 			setTileSource(mTileSource.ID, overlayid, true);
-
 			FillOverlays();
 			setTitle();
 
-		} else if (item.getGroupId() == R.id.menu_dashboard_edit) {
+		}
+		else if (item.getGroupId() == R.id.menu_dashboard_edit) {
 			final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
 			final IndicatorView iv = info.IndicatorView;
 			mIndicatorManager.putTagToIndicatorView(iv, item.getTitleCondensed().toString());
 			mMap.invalidate(); //postInvalidate();
-
-		} else {
+		}
+		else {
 			if (item.getItemId() == R.id.clear) {
 				mMeasureOverlay.Clear();
 				mMap.invalidate(); //postInvalidate();
-			} else if (item.getItemId() == R.id.menu_dashboard_delete) {
+			}
+			else if (item.getItemId() == R.id.menu_dashboard_delete) {
 				final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
 				final IndicatorView iv = info.IndicatorView;
 				mIndicatorManager.removeIndicatorView(this, iv);
 				mMap.invalidate(); //postInvalidate();
 
-			} else if (item.getItemId() == R.id.menu_add_target_point) {
+			}
+			else if (item.getItemId() == R.id.menu_add_target_point) {
 				TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo();
 				mMyLocationOverlay.setTargetLocation(info.EventGeoPoint);
 				if (mIndicatorManager != null)
 					mIndicatorManager.setTargetLocation(info.EventGeoPoint);
 				mMap.invalidate();
-
-			} else if (item.getItemId() == R.id.menu_remove_target_point) {
+			}
+			else if (item.getItemId() == R.id.menu_remove_target_point) {
 				mMyLocationOverlay.setTargetLocation(null);
 				if (mIndicatorManager != null)
 					mIndicatorManager.setTargetLocation(null);
 				mMap.invalidate();
-
-			} else if (item.getItemId() == R.id.menu_dashboard_add) {
+			}
+			else if (item.getItemId() == R.id.menu_dashboard_add) {
 				final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
 				final IndicatorView iv = info.IndicatorView;
 				mIndicatorManager.addIndicatorView(this, iv, iv.getIndicatorTag(), false);
 				mMap.invalidate(); //postInvalidate();
 
-			} else if (item.getItemId() == R.id.menu_dashboard_add_line) {
+			}
+			else if (item.getItemId() == R.id.menu_dashboard_add_line) {
 				final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
 				final IndicatorView iv = info.IndicatorView;
 				mIndicatorManager.addIndicatorView(this, iv, iv.getIndicatorTag(), true);
 				mMap.invalidate(); //postInvalidate();
-
-			} else if (item.getItemId() == R.id.menu_undo) {
+			}
+			else if (item.getItemId() == R.id.menu_undo) {
 				mMeasureOverlay.Undo();
 				mMap.invalidate(); //postInvalidate();
-			} else if (item.getItemId() == R.id.menu_showinfo) {
+			}
+			else if (item.getItemId() == R.id.menu_showinfo) {
 				item.setChecked(!item.isChecked());
 				final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 				Editor editor = pref.edit();
 				editor.putBoolean("pref_show_measure_info", item.isChecked());
 				editor.commit();
 				mMeasureOverlay.setShowInfoBubble(item.isChecked());
-
 				mMap.invalidate(); //postInvalidate();
-			} else if (item.getItemId() == R.id.menu_showlineinfo) {
+			}
+			else if (item.getItemId() == R.id.menu_showlineinfo) {
 				item.setChecked(!item.isChecked());
 				final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 				Editor editor = pref.edit();
 				editor.putBoolean("pref_show_measure_line_info", item.isChecked());
 				editor.commit();
 				mMeasureOverlay.setShowLineInfo(item.isChecked());
-
 				mMap.invalidate(); //postInvalidate();
-			} else if (item.getItemId() == R.id.menu_addmeasurepoint) {
+			}
+			else if (item.getItemId() == R.id.menu_addmeasurepoint) {
 				mMeasureOverlay.addPointOnCenter(mMap.getTileView());
 				mMap.invalidate(); //postInvalidate();
-			} else if (item.getItemId() == R.id.hide_overlay) {
+			}
+			else if (item.getItemId() == R.id.hide_overlay) {
 				setTileSource(mTileSource.ID, mOverlayId, false);
-
 				FillOverlays();
 				setTitle();
-			} else if (item.getItemId() == R.id.menu_i_am_here) {
+			}
+			else if (item.getItemId() == R.id.menu_i_am_here) {
 				final Location loc = new Location("gps");
 				TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo();
 				loc.setLatitude(info.EventGeoPoint.getLatitude());
 				loc.setLongitude(info.EventGeoPoint.getLongitude());
-
 				mMyLocationOverlay.setLocation(loc);
 				mSearchResultOverlay.setLocation(loc);
 				if (mIndicatorManager != null)
 					mIndicatorManager.setLocation(loc);
-
 				mMap.invalidate(); //postInvalidate();
 
-			} else if (item.getItemId() == R.id.menu_addpoi) {
+			}
+			else if (item.getItemId() == R.id.menu_addpoi) {
 				TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo(); //).EventGeoPoint;
 				startActivityForResult((new Intent(this, PoiActivity.class))
 					.putExtra("lat", info.EventGeoPoint.getLatitude())
 					.putExtra("lon", info.EventGeoPoint.getLongitude())
 					.putExtra("alt", info.Elevation)
 					.putExtra("title", "POI"), R.id.menu_addpoi);
-			} else if (item.getItemId() == R.id.menu_editpoi) {
+			}
+			else if (item.getItemId() == R.id.menu_editpoi) {
 				startActivityForResult((new Intent(this, PoiActivity.class)).putExtra("pointid", mMarkerIndex),
 					R.id.menu_editpoi);
 				mMap.invalidate(); //postInvalidate();
-			} else if (item.getItemId() == R.id.menu_deletepoi) {
+			}
+			else if (item.getItemId() == R.id.menu_deletepoi) {
 				final int pointid = mPoiOverlay.getPoiPoint(mMarkerIndex).getId();
 				new AlertDialog.Builder(this)
 					.setTitle(R.string.app_name)
 					.setMessage(getResources().getString(R.string.question_delete, getText(R.string.poi)))
 					.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
-
 							mPoiManager.deletePoi(pointid);
 							mPoiOverlay.UpdateList();
 							mMap.invalidate(); //postInvalidate();
 						}
 					}).setNegativeButton(R.string.no, null).create().show();
-			} else if (item.getItemId() == R.id.menu_hide) {
+			}
+			else if (item.getItemId() == R.id.menu_hide) {
 				final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
 				poi.Hidden = true;
 				mPoiManager.updatePoi(poi);
 				mPoiOverlay.UpdateList();
 				mMap.invalidate(); //postInvalidate();
-			} else if (item.getItemId() == R.id.menu_share) {
+			}
+			else if (item.getItemId() == R.id.menu_share) {
 				try {
 					final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
 					Intent intent1 = new Intent(Intent.ACTION_SEND);
@@ -1411,7 +1372,8 @@ public class MainActivity extends Activity {
 				catch (Exception e) {
 					Ut.e(e.toString(), e);
 				}
-			} else if (item.getItemId() == R.id.menu_toradar) {
+			}
+			else if (item.getItemId() == R.id.menu_toradar) {
 				final PoiPoint poi1 = mPoiOverlay.getPoiPoint(mMarkerIndex);
 				try {
 					Intent i = new Intent("com.google.android.radar.SHOW_RADAR");
@@ -1427,12 +1389,10 @@ public class MainActivity extends Activity {
 				}
 			}
 		}
-
 		final ContextMenuInfo menuInfo = item.getMenuInfo();
 		if (menuInfo != null && menuInfo instanceof TileView.PoiMenuInfo) {
 			((TileView.PoiMenuInfo)menuInfo).EventGeoPoint = null;
 		}
-
 		return super.onContextItemSelected(item);
 	}
 
@@ -1447,7 +1407,8 @@ public class MainActivity extends Activity {
 						Browser.saveBookmark(MainActivity.this, "Mobile Yandex", "m.yandex.ru");
 					}
 				}).create();
-		} else if (id == R.id.whatsnew) {
+		}
+		else if (id == R.id.whatsnew) {
 			return new AlertDialog.Builder(this) //.setIcon( R.drawable.alert_dialog_icon)
 				.setTitle(R.string.about_dialog_whats_new)
 				.setMessage(R.string.whats_new_dialog_text)
@@ -1458,7 +1419,8 @@ public class MainActivity extends Activity {
 					}
 				})
 				.create();
-		} else if (id == R.id.about) {
+		}
+		else if (id == R.id.about) {
 			return new AlertDialog.Builder(this) //.setIcon(R.drawable.alert_dialog_icon)
 				.setTitle(R.string.menu_about)
 				.setMessage(getText(R.string.app_name) + " v." + Ut.getAppVersion(this) + "\n\n"
@@ -1474,7 +1436,8 @@ public class MainActivity extends Activity {
 								/* User clicked Cancel so do some stuff */
 					}
 				}).create();
-		} else if (id == R.id.error) {
+		}
+		else if (id == R.id.error) {
 			return new AlertDialog.Builder(this) //.setIcon(R.drawable.alert_dialog_icon)
 				.setTitle(R.string.error_title)
 				.setMessage(getText(R.string.error_text))
@@ -1535,7 +1498,8 @@ public class MainActivity extends Activity {
 		if (requestCode == R.id.menu_editpoi || requestCode == R.id.menu_addpoi) {
 			mPoiOverlay.UpdateList();
 			mMap.invalidate(); //postInvalidate();
-		} else if (requestCode == R.id.poilist) {
+		}
+		else if (requestCode == R.id.poilist) {
 			if (resultCode == RESULT_OK) {
 				PoiPoint point = mPoiManager.getPoiPoint(data.getIntExtra("pointid", PoiPoint.EMPTY_ID()));
 				if (point != null) {
@@ -1543,11 +1507,13 @@ public class MainActivity extends Activity {
 					mPoiOverlay.UpdateList();
 					mMap.getController().setCenter(point.GeoPoint);
 				}
-			} else {
+			}
+			else {
 				mPoiOverlay.UpdateList();
 				mMap.invalidate(); //postInvalidate();
 			}
-		} else if (requestCode == R.id.tracks) {
+		}
+		else if (requestCode == R.id.tracks) {
 			if (resultCode == RESULT_OK) {
 				Track track = mPoiManager.getTrack(data.getIntExtra("trackid", PoiPoint.EMPTY_ID()));
 				if (track != null) {
@@ -1555,9 +1521,10 @@ public class MainActivity extends Activity {
 					mMap.getController().setCenter(track.getBeginGeoPoint());
 				}
 			}
-		} else if (requestCode == R.id.settings_activity_closed) {
+		}
+		else if (requestCode == R.id.settings_activity_closed) {
 			finish();
-			startActivity(new Intent(this, this.getClass()));
+			startActivity(new Intent(this, getClass()));
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);
@@ -1617,13 +1584,17 @@ public class MainActivity extends Activity {
 			final int what = msg.what;
 			if (what == Ut.MAPTILEFSLOADER_SUCCESS_ID) {
 				mMap.invalidate(); //postInvalidate();
-			} else if (what == R.id.user_moved_map) {
+			}
+			else if (what == R.id.user_moved_map) {
 				// setAutoFollow(false);
-			} else if (what == R.id.set_title) {
+			}
+			else if (what == R.id.set_title) {
 				setTitle();
-			} else if (what == R.id.add_yandex_bookmark) {
+			}
+			else if (what == R.id.add_yandex_bookmark) {
 				showDialog(R.id.add_yandex_bookmark);
-			} else if (what == Ut.ERROR_MESSAGE) {
+			}
+			else if (what == Ut.ERROR_MESSAGE) {
 				if (msg.obj != null)
 					Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
 			}
@@ -1636,29 +1607,24 @@ public class MainActivity extends Activity {
 		public void onLocationChanged(Location loc) {
 			mMyLocationOverlay.setLocation(loc);
 			mSearchResultOverlay.setLocation(loc);
-
 			if (loc.getProvider().equals(LocationManager.GPS_PROVIDER) && mNetListener != null) {
 				getLocationManager().removeUpdates(mNetListener);
 				mNetListener = null;
 				mGpsStatusName = LocationManager.GPS_PROVIDER;
 				Ut.d("NETWORK provider removed");
+				// TODO when to reenable?
 			}
-
 			//int cnt = loc.getExtras().getInt("satellites", Integer.MIN_VALUE);
 			mGpsStatusName = loc.getProvider(); // + " 2 " + (cnt >= 0 ? cnt : 0);
 			setTitle();
-
 			mLastSpeed = loc.getSpeed();
-
 			if (mAutoFollow) {
 				if (mDrivingDirectionUp)
 					if (loc.getSpeed() > 0.5)
 						mMap.setBearing(loc.getBearing());
-
 				mMap.getController().setCenter(TypeConverter.locationToGeoPoint(loc));
-			} else
-				mMap.invalidate();
-
+			}
+			mMap.invalidate();
 			setTitle();
 		}
 
@@ -1668,7 +1634,6 @@ public class MainActivity extends Activity {
 				mGpsStatusName = LocationManager.NETWORK_PROVIDER;
 			else
 				mGpsStatusName = OFF;
-
 			if (provider.equalsIgnoreCase(LocationManager.NETWORK_PROVIDER) && mNetListener != null) {
 				getLocationManager().removeUpdates(mNetListener);
 				mNetListener = null;
@@ -1706,17 +1671,13 @@ public class MainActivity extends Activity {
 			final LocationManager lm = getLocationManager();
 			final List<String> listProviders = lm.getAllProviders();
 			mGpsStatusName = OFF;
-
 			if (!mGPSFastUpdate) {
 				minTime = 2000;
 				minDistance = 20;
 			}
-
 			lm.removeUpdates(mLocationListener);
-
 			if (mNetListener != null)
 				lm.removeUpdates(mNetListener);
-
 			if (listProviders.contains(LocationManager.GPS_PROVIDER)) {
 				Ut.d("GPS Provider available");
 				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, mLocationListener);
@@ -1735,24 +1696,23 @@ public class MainActivity extends Activity {
 					Ut.e(e.toString(), e);
 				}
 
-			} else if (listProviders.contains(LocationManager.NETWORK_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+			}
+			else if (listProviders.contains(LocationManager.NETWORK_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 				Ut.d("only NETWORK Provider Enabled");
 				lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, mLocationListener);
 				mGpsStatusName = LocationManager.NETWORK_PROVIDER;
-			} else {
+			}
+			else {
 				Ut.d("NO Provider Enabled");
 			}
-
 			setTitle();
 		}
 	}
 
 	private class MoveListener implements IMoveListener {
-
 		public void onMoveDetected() {
 			if (mIndicatorManager != null)
 				mIndicatorManager.setCenter(mMap.getMapCenter());
-
 			if (mAutoFollow)
 				setAutoFollow(false);
 		}
@@ -1766,7 +1726,5 @@ public class MainActivity extends Activity {
 			if (mIndicatorManager != null)
 				mIndicatorManager.setCenter(mMap.getMapCenter());
 		}
-
 	}
-
 }
