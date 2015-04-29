@@ -92,7 +92,7 @@ public class PoiListFragment extends ListFragment implements
 
 		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 			if (cursor.getColumnName(columnIndex).equalsIgnoreCase(CATNAME)) {
-				CoordFormatter mCf = new CoordFormatter(context);
+				CoordFormatter mCf = new CoordFormatter(ctx);
 				((TextView)view.findViewById(R.id.title2)).setText(cursor.getString(cursor.getColumnIndex(CATNAME))
 						+ ", " + mCf.convertLat(cursor.getDouble(cursor.getColumnIndex(LAT)))
 						+ ", " + mCf.convertLon(cursor.getDouble(cursor.getColumnIndex(LON)))
