@@ -20,7 +20,7 @@ public class IconManager {
 	private static IconManager mIconManager = null;
 	private Context mAppContext;
 
-	public IconManager(Context ctx) {
+	private IconManager(Context ctx) {
 		super();
 		mAppContext = ctx.getApplicationContext();
 	}
@@ -28,45 +28,47 @@ public class IconManager {
 	public static IconManager getInstance(Context ctx) {
 		if (mIconManager == null)
 			mIconManager = new IconManager(ctx);
-
 		return mIconManager;
+	}
+
+	public Bitmap getNolocationIcon() {
+		final Bitmap bmp = getBitmapFileFromProp("pref_icon", "icons/cursors");
+		if (bmp != null)
+			return bmp;
+		return getBitmap(R.drawable.needle_off);
 	}
 
 	public Bitmap getLocationIcon() {
 		final Bitmap bmp = getBitmapFileFromProp("pref_person_icon", "icons/cursors");
 		if (bmp != null)
 			return bmp;
-		else
-			return getBitmap(R.drawable.needle_pinned);
+		return getBitmap(R.drawable.needle_pinned);
 	}
 
 	public Bitmap getArrowIcon() {
 		final Bitmap bmp = getBitmapFileFromProp("pref_arrow_icon", "icons/cursors");
 		if (bmp != null)
 			return bmp;
-		else
-			return getBitmap(R.drawable.needle);
+		return getBitmap(R.drawable.needle);
 	}
 
 	public Bitmap getTargetIcon() {
 		final Bitmap bmp = getBitmapFileFromProp("pref_target_icon", "icons/cursors");
 		if (bmp != null)
 			return bmp;
-		else
-			return getBitmap(R.drawable.r_mark);
+		return getBitmap(R.drawable.r_mark);
 	}
 
 	private Bitmap getBitmapFileFromProp(String propName, String folderName) {
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mAppContext);
 		final String prefPersonFileName = pref.getString(propName, "");
-
 		if (!prefPersonFileName.equalsIgnoreCase("")) {
 			final File folder = Ut.getAppMainDir(mAppContext, folderName);
 			if (folder.exists()) {
-				final File file = new File(folder.getAbsolutePath() + "/" + prefPersonFileName);
-				if (file.exists()) {
+				final String file = folder.getAbsolutePath() + "/" + prefPersonFileName;
+				if (new File(file).exists()) {
 					try {
-						final Bitmap bmp = BitmapFactory.decodeFile(folder.getAbsolutePath() + "/" + prefPersonFileName);
+						final Bitmap bmp = BitmapFactory.decodeFile(file);
 						if (bmp != null)
 							return bmp;
 					}
@@ -77,7 +79,6 @@ public class IconManager {
 				}
 			}
 		}
-
 		return null;
 	}
 

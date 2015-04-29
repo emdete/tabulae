@@ -35,12 +35,9 @@ public class PoiListFragment extends ListFragment implements
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.poi_list, container, false);
 		setHasOptionsMenu(true);
-
 		mAdapter = new PoiListSimpleCursorAdapter(savedInstanceState, getActivity(),
 			R.layout.poi_list_item, null,
 			new String[]{"name", "iconid", "catname", "descr"},
@@ -49,9 +46,7 @@ public class PoiListFragment extends ListFragment implements
 		mAdapter.setViewBinder(binder);
 		mAdapter.setAdapterView((ListView)view.findViewById(android.R.id.list));
 		setListAdapter(mAdapter);
-
 		getLoaderManager().initLoader(URL_LOADER, null, this);
-
 		return view;
 	}
 
@@ -88,24 +83,23 @@ public class PoiListFragment extends ListFragment implements
 		private static final String LAT = "lat";
 		private static final String LON = "lon";
 		private static final String ICONID = "iconid";
-		private CoordFormatter mCf;
-		private IconManager mIconManager;
+		private Context ctx;
 
 		public PoiViewBinder(Context context) {
 			super();
-			mCf = new CoordFormatter(context);
-			mIconManager = IconManager.getInstance(context);
+			ctx = context;
 		}
 
 		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 			if (cursor.getColumnName(columnIndex).equalsIgnoreCase(CATNAME)) {
+				CoordFormatter mCf = new CoordFormatter(context);
 				((TextView)view.findViewById(R.id.title2)).setText(cursor.getString(cursor.getColumnIndex(CATNAME))
 						+ ", " + mCf.convertLat(cursor.getDouble(cursor.getColumnIndex(LAT)))
 						+ ", " + mCf.convertLon(cursor.getDouble(cursor.getColumnIndex(LON)))
 				);
 				return true;
 			} else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
-				((ImageView)view.findViewById(R.id.pic)).setImageResource(mIconManager.getPoiIconResId(cursor.getInt(columnIndex)));
+				((ImageView)view.findViewById(R.id.pic)).setImageResource(IconManager.getInstance(ctx).getPoiIconResId(cursor.getInt(columnIndex)));
 				return true;
 			}
 			return false;
@@ -115,9 +109,8 @@ public class PoiListFragment extends ListFragment implements
 
 	private static class PoiListSimpleCursorAdapter extends MultiChoiceSimpleCursorAdapter {
 
-		public PoiListSimpleCursorAdapter(Bundle savedInstanceState,
-										  Context context, int layout, Cursor cursor, String[] from,
-										  int[] to) {
+		public PoiListSimpleCursorAdapter(Bundle savedInstanceState, Context
+				context, int layout, Cursor cursor, String[] from, int[] to) {
 			super(savedInstanceState, context, layout, cursor, from, to, 0);
 		}
 
@@ -137,7 +130,5 @@ public class PoiListFragment extends ListFragment implements
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 			return false;
 		}
-
 	}
-
 }
