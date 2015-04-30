@@ -183,7 +183,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Ut.i("onCreate savedInstanceState=" + savedInstanceState);
+		Ut.d("onCreate savedInstanceState=" + savedInstanceState);
 		super.onCreate(savedInstanceState);
 		if (!OpenStreetMapViewConstants.DEBUGMODE) {
 			CrashReportHandler.attach(this);
@@ -300,7 +300,7 @@ public class MainActivity extends Activity {
 			}
 			queryIntent.setAction("");
 		}
-		Ut.i("onCreate done");
+		Ut.d("onCreate done");
 	}
 
 	@Override
@@ -1611,7 +1611,7 @@ public class MainActivity extends Activity {
 		public static final String OFF = "off";
 
 		public void onLocationChanged(Location loc) {
-			Ut.i("onLocationChanged loc=" + loc);
+			Ut.d("onLocationChanged loc=" + loc);
 			mMyLocationOverlay.setLocation(loc);
 			mSearchResultOverlay.setLocation(loc);
 			if (loc.getProvider().equals(LocationManager.GPS_PROVIDER) && mNetListener != null) {

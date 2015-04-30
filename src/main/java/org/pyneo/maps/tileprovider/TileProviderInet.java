@@ -109,7 +109,7 @@ public class TileProviderInet extends TileProviderBase {
 								data = mCacheProvider.getTile(tileurl, x, y, z);
 						}
 						if (data == null) {
-							Ut.i("Downloading maptile url=" + tileurl);
+							Ut.d("Downloading maptile url=" + tileurl);
 							HttpURLConnection httpConnection = (HttpURLConnection) new URL(tileurl).openConnection();
 							httpConnection.setInstanceFollowRedirects(false);
 							httpConnection.setRequestProperty("User-Agent", "Tabulae");
@@ -126,7 +126,7 @@ public class TileProviderInet extends TileProviderBase {
 								mCacheProvider.putTile(tileurl, x, y, z, data);
 						}
 						else {
-							Ut.i("Using maptile from cache url=" + tileurl);
+							Ut.d("Using maptile from cache url=" + tileurl);
 						}
 						if (data != null) {
 							final Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);

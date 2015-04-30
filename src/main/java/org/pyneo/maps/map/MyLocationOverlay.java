@@ -101,7 +101,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 	}
 
 	public void setLocation(final Location loc) {
-		Ut.i("setLocation loc=" + loc);
+		Ut.d("setLocation loc=" + loc);
 		mLastGeoPoint = TypeConverter.locationToGeoPoint(loc);
 		mAccuracy = loc.getAccuracy();
 		mBearing = loc.getBearing();
