@@ -1,4 +1,6 @@
 
+v.1.0.3
+
 v.1.0.2
 - export of gpx now uses UTC for timestamps (thank you junkyardsparkle for noting)
 - remove unsupported cloudmade tile provider (thank you junkyardsparkle for noting)
