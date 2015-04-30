@@ -43,13 +43,13 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 	private Track mTrack;
 	private Point mBaseCoords;
 	private GeoPoint mBaseLocation;
-	private TrackThread mThread;
+	private Thread mInitialLoader;
 	private TileView.OpenStreetMapViewProjection mBasePj;
-	private boolean mThreadRunned = false;
+	private boolean mInitialLoading = false;
 	private ITrackWriterCallback mCallback = new ITrackWriterCallback.Stub() {
-		public void newPointWrited(double lat, double lon) {
-			Ut.i("newPointWrited lat=" + lat + ", lon=" + lon + ", mThreadRunned=" + mThreadRunned);
-			if (mThreadRunned)
+		public void newPointWritten(double lat, double lon) {
+			Ut.i("newPointWritten lat=" + lat + ", lon=" + lon + ", mInitialLoading=" + mInitialLoading);
+			if (mInitialLoading)
 				return;
 			if (mPath == null) {
 				mPath = new Path();
@@ -102,8 +102,7 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 		mLastZoom = -1;
 		mBasePj = null;
 		mOsmv = null;
-		mThread = new TrackThread();
-		mThread.setName("Current Track thread");
+		mInitialLoader = new InitialLoader();
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setStyle(Paint.Style.STROKE);
@@ -126,12 +125,12 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 
 	@Override
 	protected void onDraw(Canvas c, TileView osmv) {
-		if (!mThreadRunned && (mTrack == null || mLastZoom != osmv.getZoomLevel())) {
+		if (!mInitialLoading && (mTrack == null || mLastZoom != osmv.getZoomLevel())) {
 			mOsmv = osmv;
 			mLastZoom = osmv.getZoomLevel();
 			mBasePj = mOsmv.getProjection();
-			mThreadRunned = true;
-			mThreadExecutor.execute(mThread);
+			mInitialLoading = true;
+			mThreadExecutor.execute(mInitialLoader);
 			return;
 		}
 		if (mPath == null) {
@@ -181,7 +180,11 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 		}
 	}
 
-	private class TrackThread extends Thread {
+	private class InitialLoader extends Thread {
+		InitialLoader() {
+			setName("Track InitialLoader Thread");
+		}
+
 		@Override
 		public void run() {
 			mPath = null;
@@ -215,7 +218,7 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 			catch (Exception e) {
 				Ut.e(e.toString(), e);
 			}
-			mThreadRunned = false;
+			mInitialLoading = false;
 		}
 	}
 }

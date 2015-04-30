@@ -52,7 +52,7 @@ public class TrackWriterService extends Service implements Constants {
 					for (int i = 0; i < N; i++) {
 						try {
 							final Location loc = (Location)msg.obj;
-							mCallbacks.getBroadcastItem(i).newPointWrited(loc.getLatitude(), loc.getLongitude());
+							mCallbacks.getBroadcastItem(i).newPointWritten(loc.getLatitude(), loc.getLongitude());
 							mCallbacks.getBroadcastItem(i).onTrackStatUpdate(mTrackStat.Cnt, mTrackStat.Distance, mTrackStat.Duration, mTrackStat.MaxSpeed, mTrackStat.AvgSpeed, mTrackStat.MoveTime, mTrackStat.AvgMoveSpeed);
 						}
 						catch (RemoteException e) {

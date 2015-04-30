@@ -75,7 +75,7 @@ public class IndicatorManager implements IndicatorConst {
 	private ITrackWriterCallback mCallback = new ITrackWriterCallback.Stub() {
 
 		@Override
-		public void newPointWrited(double lat, double lon) throws RemoteException {
+		public void newPointWritten(double lat, double lon) throws RemoteException {
 		}
 
 		@Override
