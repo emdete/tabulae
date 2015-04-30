@@ -63,13 +63,13 @@ import org.pyneo.maps.poi.PoiPoint;
 import org.pyneo.maps.track.Track;
 import org.pyneo.maps.track.TrackListActivity;
 import org.pyneo.maps.map.PredefMapsParser;
-import org.pyneo.maps.map.CurrentTrackOverlay;
+import org.pyneo.maps.track.CurrentTrackOverlay;
 import org.pyneo.maps.map.MeasureOverlay;
 import org.pyneo.maps.map.MyLocationOverlay;
 import org.pyneo.maps.poi.PoiOverlay;
 import org.pyneo.maps.map.SearchResultOverlay;
 import org.pyneo.maps.map.TileOverlay;
-import org.pyneo.maps.map.TrackOverlay;
+import org.pyneo.maps.track.TrackOverlay;
 import org.pyneo.maps.map.YandexTrafficOverlay;
 import org.pyneo.maps.preference.MixedMapsPreference;
 import org.pyneo.maps.tileprovider.TileSource;
@@ -396,7 +396,7 @@ public class MainActivity extends Activity {
 						setAutoFollow(false, true);
 						final GeoPoint point = new GeoPoint((int)(res.getDouble("lat") * 1E6), (int)(res.getDouble("lng") * 1E6));
 						mSearchResultOverlay.setLocation(point, address);
-						mMap.setZoom((int)(2 * res.getInt("accuracy")));
+						mMap.setZoom((int) (2 * res.getInt("accuracy")));
 						mMap.setCenter(point);
 						setTitle();
 

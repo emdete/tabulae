@@ -29,8 +29,9 @@ import android.widget.Toast;
 
 import org.pyneo.maps.MainActivity;
 import org.pyneo.maps.R;
-import org.pyneo.maps.trackwriter.IRemoteService;
-import org.pyneo.maps.trackwriter.ITrackWriterCallback;
+import org.pyneo.maps.track.IRemoteService;
+import org.pyneo.maps.track.TrackWriterService;
+import org.pyneo.maps.track.ITrackWriterCallback;
 import org.pyneo.maps.utils.CoordFormatter;
 import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.utils.Ut;
@@ -136,7 +137,9 @@ public class IndicatorManager implements IndicatorConst {
 		}
 
 		try {
-			ctx.bindService(new Intent(ctx, IRemoteService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/);
+			if (!ctx.bindService(new Intent(ctx, TrackWriterService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/)) {
+				Ut.e("bindService failed class=" + TrackWriterService.class);
+			}
 		}
 		catch (Exception e) {
 			Ut.e(e.toString(), e);
@@ -223,7 +226,9 @@ public class IndicatorManager implements IndicatorConst {
 			Ut.e(e.toString(), e);
 		}
 		mLocationListener.onGpsStatusChanged(0);
-		ctx.bindService(new Intent(ctx, IRemoteService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/);
+		if (!ctx.bindService(new Intent(ctx, TrackWriterService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/)) {
+			Ut.e("bindService failed class=" + TrackWriterService.class);
+		}
 	}
 
 	public void Dismiss(MainActivity ctx) {

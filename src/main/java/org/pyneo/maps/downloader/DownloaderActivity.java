@@ -253,8 +253,9 @@ public class DownloaderActivity extends Activity {
 			mMap.setCenter(new GeoPoint(intent.getIntExtra("Latitude", 0), intent.getIntExtra("Longitude", 0)));
 			setTitle();
 		}
-
-		bindService(new Intent(this, IRemoteService.class), mConnection, 0);
+		if (!bindService(new Intent(this, MapDownloaderService.class), mConnection, 0)) {
+			Ut.e("bindService failed class=" + MapDownloaderService.class);
+		}
 		super.onResume();
 	}
 

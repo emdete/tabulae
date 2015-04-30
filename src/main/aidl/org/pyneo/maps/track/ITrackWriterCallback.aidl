@@ -1,4 +1,4 @@
-package org.pyneo.maps.trackwriter;
+package org.pyneo.maps.track;
 
 oneway interface ITrackWriterCallback {
     /**

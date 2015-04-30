@@ -1,4 +1,4 @@
-package org.pyneo.maps.map;
+package org.pyneo.maps.track;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,11 +17,14 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 
 import org.pyneo.maps.MainActivity;
+import org.pyneo.maps.map.TileView;
+import org.pyneo.maps.map.TileViewOverlay;
 import org.pyneo.maps.track.DatabaseHelper;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.track.Track;
-import org.pyneo.maps.trackwriter.IRemoteService;
-import org.pyneo.maps.trackwriter.ITrackWriterCallback;
+import org.pyneo.maps.track.TrackWriterService;
+import org.pyneo.maps.track.IRemoteService;
+import org.pyneo.maps.track.ITrackWriterCallback;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
@@ -32,8 +35,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CurrentTrackOverlay extends TileViewOverlay {
-	protected ExecutorService mThreadExecutor = Executors.newSingleThreadExecutor(new SimpleThreadFactory("CurrentTrack"));
-	IRemoteService mService = null;
+	private ExecutorService mThreadExecutor = Executors.newSingleThreadExecutor(new SimpleThreadFactory("CurrentTrack"));
+	private IRemoteService mService = null;
 	private Paint mPaint;
 	private int mLastZoom;
 	private Path mPath;
@@ -41,32 +44,31 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 	private Point mBaseCoords;
 	private GeoPoint mBaseLocation;
 	private TrackThread mThread;
-	private org.pyneo.maps.map.TileView.OpenStreetMapViewProjection mBasePj;
+	private TileView.OpenStreetMapViewProjection mBasePj;
 	private boolean mThreadRunned = false;
 	private ITrackWriterCallback mCallback = new ITrackWriterCallback.Stub() {
 		public void newPointWrited(double lat, double lon) {
-
+			Ut.i("newPointWrited lat=" + lat + ", lon=" + lon + ", mThreadRunned=" + mThreadRunned);
 			if (mThreadRunned)
 				return;
-
 			if (mPath == null) {
 				mPath = new Path();
 				mBaseLocation = new GeoPoint((int)(lat * 1E6), (int)(lon * 1E6));
 				mBasePj = mOsmv.getProjection();
 				mBaseCoords = mBasePj.toPixels2(mBaseLocation);
 				mPath.setLastPoint(mBaseCoords.x, mBaseCoords.y);
-			} else {
+			}
+			else {
 				final GeoPoint geopoint = new GeoPoint((int)(lat * 1E6), (int)(lon * 1E6));
 				final Point point = mBasePj.toPixels2(geopoint);
 				mPath.lineTo(point.x, point.y);
 			}
-
 		}
 
 		@Override
-		public void onTrackStatUpdate(int Cnt, double Distance, long Duration, double MaxSpeed, double AvgSpeed, long MoveTime, double AvgMoveSpeed)
+		public void onTrackStatUpdate(int Cnt, double Distance, long Duration,
+			double MaxSpeed, double AvgSpeed, long MoveTime, double AvgMoveSpeed)
 			throws RemoteException {
-
 		}
 
 	};
@@ -77,10 +79,9 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 
 	public CurrentTrackOverlay(MainActivity mainMapActivity, PoiManager poiManager) {
 		mConnection = new ServiceConnection() {
-			public void onServiceConnected(ComponentName className,
-										   IBinder service) {
+			public void onServiceConnected(ComponentName className, IBinder service) {
+				Ut.i("onServiceConnected: registerCallback");
 				mService = IRemoteService.Stub.asInterface(service);
-
 				try {
 					mService.registerCallback(mCallback);
 				}
@@ -93,7 +94,6 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 				mService = null;
 			}
 		};
-
 		final String defStyle = PreferenceManager.getDefaultSharedPreferences(mainMapActivity).getString("pref_track_style_current", "");
 		mTrack = new Track(defStyle);
 		mContext = mainMapActivity;
@@ -101,11 +101,9 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 		mBaseLocation = new GeoPoint(0, 0);
 		mLastZoom = -1;
 		mBasePj = null;
-
 		mOsmv = null;
 		mThread = new TrackThread();
 		mThread.setName("Current Track thread");
-
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setStyle(Paint.Style.STROKE);
@@ -114,7 +112,6 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 		mPaint.setStrokeWidth(mTrack.Width);
 		mPaint.setAlpha(Color.alpha(mTrack.ColorShadow));
 		mPaint.setShadowLayer((float)mTrack.ShadowRadius, 0, 0, mTrack.ColorShadow);
-
 		mIsBound = false;
 	}
 
@@ -140,7 +137,7 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 		if (mPath == null) {
 			return;
 		}
-		final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = osmv.getProjection();
+		final TileView.OpenStreetMapViewProjection pj = osmv.getProjection();
 		final Point screenCoords = new Point();
 		pj.toPixels(mBaseLocation, screenCoords);
 		c.save();
@@ -156,13 +153,13 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 
 	@Override
 	protected void onDrawFinished(Canvas c, TileView osmv) {
-
 	}
 
 	public void onResume() {
 		mTrack = null;
-		mContext.bindService(new Intent(mContext, IRemoteService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/);
-		mIsBound = true;
+		if (!(mIsBound = mContext.bindService(new Intent(mContext, TrackWriterService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/))) {
+			Ut.e("bindService failed class=" + TrackWriterService.class);
+		}
 	}
 
 	public void onPause() {
@@ -186,7 +183,6 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 	}
 
 	private class TrackThread extends Thread {
-
 		@Override
 		public void run() {
 			mPath = null;
@@ -208,11 +204,9 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 				}
 				if (db != null) {
 					final Cursor c = db.rawQuery("SELECT lat, lon FROM trackpoints ORDER BY id", null);
-
 					mPath = mBasePj.toPixelsTrackPoints(c, mBaseCoords, mBaseLocation);
 					if (mPath != null && mPath.isEmpty())
 						mPath = null;
-
 					db.close();
 				}
 			}

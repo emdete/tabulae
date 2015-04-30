@@ -1,4 +1,4 @@
-package org.pyneo.maps.map;
+package org.pyneo.maps.track;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.Message;
 
 import org.pyneo.maps.MainActivity;
+import org.pyneo.maps.map.TileView;
+import org.pyneo.maps.map.TileViewOverlay;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.track.Track;
 import org.pyneo.maps.utils.SimpleThreadFactory;
@@ -62,8 +64,8 @@ public class TrackOverlay extends TileViewOverlay {
 
 	@Override
 	protected void onDraw(Canvas c, TileView osmv) {
-		if (mStopDraw) return;
-
+		if (mStopDraw)
+			return;
 		if (!mThreadRunned && (mTracks == null || mLastZoom != osmv.getZoomLevel())) {
 			mPaths = null;
 			mLastZoom = osmv.getZoomLevel();
@@ -73,21 +75,16 @@ public class TrackOverlay extends TileViewOverlay {
 			mThreadExecutor.execute(mThread);
 			return;
 		}
-
 		if (mPaths == null)
 			return;
-
 		final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = osmv.getProjection();
 		final Point screenCoords = new Point();
-
 		pj.toPixels(mBaseLocation, screenCoords);
-
 		c.save();
 		if (screenCoords.x != mBaseCoords.x && screenCoords.y != mBaseCoords.y) {
 			c.translate(screenCoords.x - mBaseCoords.x, screenCoords.y - mBaseCoords.y);
 			c.scale((float)osmv.mTouchScale, (float)osmv.mTouchScale, mBaseCoords.x, mBaseCoords.y);
 		}
-		;
 		for (int i = 0; i < mPaths.length; i++)
 			if (mPaths[i] != null && mPaints[i] != null)
 				c.drawPath(mPaths[i], mPaints[i]);
@@ -103,13 +100,10 @@ public class TrackOverlay extends TileViewOverlay {
 	}
 
 	private class TrackThread extends Thread {
-
 		@Override
 		public void run() {
 			Ut.d("run TrackThread");
-
 			mPaths = null;
-
 			if (mTracks == null) {
 				mTracks = mPoiManager.getTrackChecked(false);
 				if (mTracks == null) {
@@ -120,11 +114,9 @@ public class TrackOverlay extends TileViewOverlay {
 				}
 				Ut.d("Track loaded");
 			}
-
 			try {
 				mPaths = new Path[mTracks.length];
 				mPaints = new Paint[mTracks.length];
-
 				for (int i = 0; i < mTracks.length; i++) {
 					if (mTracks[i] != null) {
 						try {
@@ -137,7 +129,6 @@ public class TrackOverlay extends TileViewOverlay {
 							mPaints[i].setStrokeWidth(mTracks[i].Width);
 							mPaints[i].setAlpha(Color.alpha(mTracks[i].ColorShadow));
 							mPaints[i].setShadowLayer((float)mTracks[i].ShadowRadius, 0, 0, mTracks[i].ColorShadow);
-
 							Message.obtain(mMainMapActivityCallbackHandler, Ut.MAPTILEFSLOADER_SUCCESS_ID).sendToTarget();
 						}
 						catch (Exception e) {
@@ -150,9 +141,7 @@ public class TrackOverlay extends TileViewOverlay {
 			catch (Exception e) {
 				Ut.e(e.toString(), e);
 			}
-
 			mThreadRunned = false;
 		}
 	}
-
 }

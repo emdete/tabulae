@@ -22,8 +22,6 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.trackwriter.IRemoteService;
-import org.pyneo.maps.trackwriter.ITrackWriterCallback;
 import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.Constants;

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.pyneo.maps.trackwriter;
+package org.pyneo.maps.track;
 
-import org.pyneo.maps.trackwriter.ITrackWriterCallback;
+import org.pyneo.maps.track.ITrackWriterCallback;
 
 interface IRemoteService {
     /**

@@ -52,51 +52,47 @@
 				<data android:scheme="geo" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".MainPreferences" ></activity>
-		<provider
-			android:name=".utils.SearchSuggestionsProvider"
-			android:authorities="org.pyneo.maps.SuggestionProvider" >
-		</provider>
-		<activity android:name=".poi.PoiActivity" ></activity>
-		<activity android:name=".poi.PoiListActivity" ></activity>
-		<activity android:name=".track.TrackListActivity" ></activity>
-		<activity android:name=".poi.PoiCategoryActivity" ></activity>
-		<activity android:name=".poi.PoiCategoryListActivity" ></activity>
-		<activity android:name=".poi.PoiIconSetActivity" ></activity>
-		<activity android:name=".poi.ImportPoiActivity" ></activity>
-		<activity android:name=".track.ImportTrackActivity" ></activity>
-		<activity android:name=".track.TrackActivity" ></activity>
-		<activity android:name=".track.TrackStatActivity" ></activity>
+		<activity android:name=".MainPreferences" />
+		<activity android:name=".poi.PoiActivity" />
+		<activity android:name=".poi.PoiListActivity" />
+		<activity android:name=".track.TrackListActivity" />
+		<activity android:name=".poi.PoiCategoryActivity" />
+		<activity android:name=".poi.PoiCategoryListActivity" />
+		<activity android:name=".poi.PoiIconSetActivity" />
+		<activity android:name=".poi.ImportPoiActivity" />
+		<activity android:name=".track.ImportTrackActivity" />
+		<activity android:name=".track.TrackActivity" />
+		<activity android:name=".track.TrackStatActivity" />
+		<activity android:name="org.openintents.filemanager.FileManagerActivity" />
+		<activity android:name=".downloader.AreaSelectorActivity" android:launchMode="singleInstance" />
+		<activity android:name=".downloader.DownloaderActivity" />
+		<activity android:name=".preference.MixedMapsPreference" />
+		<activity android:name=".preference.UserMapsPrefActivity" />
+		<activity android:name=".preference.PredefMapsPrefActivity" />
+		<activity android:name=".preference.CustomMapsPrefActivity" />
+		<activity android:name=".preference.PairMapsPrefActivity" />
+		<activity android:name=".downloader.FileDownloadListActivity" />
+		<activity android:name=".poi.GeoDataActivity" android:theme="@style/Theme.AppCompat.Light" />
 		<service
 			android:name=".track.TrackWriterService"
 			android:icon="@drawable/ic_service"
-			android:process=":trackwriter" >
-			<!-- intent-filter>
-				<action android:name=".trackwriter" />
-				<action android:name=".trackwriter.IRemoteService" />
-			</intent-filter -->
+			android:process=":track"
+			>
+			<intent-filter>
+				<action android:name=".track" />
+				<action android:name=".track.IRemoteService" />
+			</intent-filter>
 		</service>
-		<activity android:name="org.openintents.filemanager.FileManagerActivity" ></activity>
-		<activity
-			android:name=".downloader.AreaSelectorActivity"
-			android:launchMode="singleInstance" >
-		</activity>
 		<service
 			android:name=".downloader.MapDownloaderService"
 			android:icon="@drawable/ic_service"
-			android:process=":mapdownloader" >
-			<!--intent-filter>
+			android:process=":mapdownloader"
+			>
+			<intent-filter>
 				<action android:name=".downloader" />
 				<action android:name=".downloader.IRemoteService" />
-			</intent-filter -->
+			</intent-filter>
 		</service>
-		<activity android:name=".downloader.DownloaderActivity" ></activity>
-		<activity android:name=".preference.MixedMapsPreference"></activity>
-		<activity android:name=".preference.UserMapsPrefActivity"></activity>
-		<activity android:name=".preference.PredefMapsPrefActivity"></activity>
-		<activity android:name=".preference.CustomMapsPrefActivity"></activity>
-		<activity android:name=".preference.PairMapsPrefActivity"></activity>
-		<activity android:name=".downloader.FileDownloadListActivity"></activity>
-		<activity android:name=".poi.GeoDataActivity" android:theme="@style/Theme.AppCompat.Light"></activity>
+		<provider android:name=".utils.SearchSuggestionsProvider" android:authorities="org.pyneo.maps.SuggestionProvider" />
 	</application>
 </manifest>

@@ -288,13 +288,9 @@ public class AreaSelectorActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-//		bindService(new Intent(IRemoteService.class.getName()), mConnection, 0);
-
 		final SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
-
 		if (mTileSource != null)
 			mTileSource.Free();
-
 		try {
 			mTileSource = new TileSource(this, uiState.getString(MAPNAMEAREASELECTOR, TileSource.MAPNIK));
 			if (mTileSource.MAP_TYPE != TileSourceBase.PREDEF_ONLINE && mTileSource.MAP_TYPE != TileSourceBase.MIXMAP_CUSTOM) {
@@ -309,7 +305,6 @@ public class AreaSelectorActivity extends Activity {
 		mMap.setZoom(uiState.getInt("ZoomLevelAS", 0));
 		mMap.setCenter(new GeoPoint(uiState.getInt("LatitudeAS", 0), uiState.getInt("LongitudeAS", 0)));
 		setTitle();
-
 		final GeoPoint[] p = new GeoPoint[2];
 		p[0] = new GeoPoint(uiState.getInt("LatitudeAS1", 0), uiState.getInt("LongitudeAS1", 0));
 		p[1] = new GeoPoint(uiState.getInt("LatitudeAS2", 0), uiState.getInt("LongitudeAS2", 0));
@@ -344,8 +339,6 @@ public class AreaSelectorActivity extends Activity {
 
 	@Override
 	protected void onPause() {
-//		unbindService(mConnection);
-
 		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = uiState.edit();
 		editor.putString(MAPNAMEAREASELECTOR, mTileSource.ID);

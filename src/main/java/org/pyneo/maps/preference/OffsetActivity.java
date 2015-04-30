@@ -20,7 +20,7 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.map.MyLocationOverlay;
 import org.pyneo.maps.poi.PoiOverlay;
-import org.pyneo.maps.map.TrackOverlay;
+import org.pyneo.maps.track.TrackOverlay;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.tileprovider.TileSourceBase;
 import org.pyneo.maps.utils.Ut;
