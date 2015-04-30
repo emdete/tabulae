@@ -8,8 +8,8 @@
 	<string name="app_name" translatable="false">Tabulae</string>
 	<string name="app_user_id" translatable="false"></string>
 	<string name="app_user_label" translatable="false">Pyneo.Org</string>
-	<string name="auto_follow_disabled">Auto-Follow Disabled</string>
-	<string name="auto_follow_enabled">Auto-Follow Enabled</string>
+	<string name="auto_follow_disabled">Center Disabled</string>
+	<string name="auto_follow_enabled">Center Enabled</string>
 	<string name="avg_moving_speed">AVG MOVING SPEED</string>
 	<string name="avg_pace">AVG PACE</string>
 	<string name="avg_speed">AVG SPEED</string>
@@ -37,12 +37,12 @@
 	<string name="dashboard_title_target_bearing">Bearing2Target</string>
 	<string name="dashboard_title_target_distance">Distance2Target</string>
 	<string name="dialog_color_picker">Color Picker</string>
-	<string name="distance">DISTANCE</string>
+	<string name="distance">Distance</string>
 	<string name="dist">Distance</string>
 	<string name="downloader_notif_text">Downloading in progress</string>
 	<string name="downloader_notif_ticket">Downloading started&#8230;</string>
 	<string name="downloader_notif_title">Tabulae tile downloader</string>
-	<string name="duration">DURATION</string>
+	<string name="duration">Duration</string>
 	<string name="error_diskio">Can\'t open file %s Disk IO error</string>
 	<string name="error">ERROR&#8230;</string>
 	<string name="error_illegalmapid">Illegal map ID \'%s\'. Recommended clearing index data in settings.</string>
@@ -94,7 +94,7 @@
 	<string name="menu_layers">Layers</string>
 	<string name="menu_mapselector">Maps</string>
 	<string name="menu_measure">Measure</string>
-	<string name="menu_mylocation">My location</string>
+	<string name="menu_mylocation">Center</string>
 	<string name="menu_poilist">POI</string>
 	<string name="menu_reload">Reload screen tiles</string>
 	<string name="menu_remove_target_point">Remove target point</string>
@@ -239,8 +239,8 @@
 	<string name="pref_person_icon">Location cursor</string>
 	<string name="pref_screen_orientation">Screen Orientation</string>
 	<string name="pref_screen_orientation_summary">Choose the screen orientation</string>
-	<string name="pref_show_autofollow_button">Auto-Follow button</string>
-	<string name="pref_show_autofollow_button_summary">Show auto-follow button on the screen</string>
+	<string name="pref_show_autofollow_button">Center button</string>
+	<string name="pref_show_autofollow_button_summary">Show center button on the screen</string>
 	<string name="pref_showscalebar">Show scale bar</string>
 	<string name="pref_showscalebar_summary">Show scale bar at left bottom corner</string>
 	<string name="pref_showstatusbar">Show status bar</string>

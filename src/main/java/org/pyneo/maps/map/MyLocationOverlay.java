@@ -49,8 +49,8 @@ public class MyLocationOverlay extends TileViewOverlay {
 	private float mBearing;
 	private float mSpeed;
 	private long mLocAge;
-	private Paint mPaintAccurasyFill;
-	private Paint mPaintAccurasyBorder;
+	private Paint mPaintAccuracyFill;
+	private Paint mPaintAccuracyBorder;
 	private Paint mPaintLineToGPS;
 	private boolean mNeedCrosshair;
 	private boolean mNeedCircleDistance;
@@ -66,15 +66,15 @@ public class MyLocationOverlay extends TileViewOverlay {
 
 	public MyLocationOverlay(final Context ctx) {
 		mCtx = ctx.getApplicationContext();
-		mPaintAccurasyFill = new Paint();
-		mPaintAccurasyFill.setAntiAlias(true);
-		mPaintAccurasyFill.setStrokeWidth(2);
-		mPaintAccurasyFill.setStyle(Paint.Style.FILL);
-		mPaintAccurasyFill.setColor(0x4490B8D8);
-		mPaintAccurasyBorder = new Paint(mPaintAccurasyFill);
-		mPaintAccurasyBorder.setStyle(Paint.Style.STROKE);
-		mPaintAccurasyBorder.setColor(0xFF90B8D8);
-		mPaintLineToGPS = new Paint(mPaintAccurasyFill);
+		mPaintAccuracyFill = new Paint();
+		mPaintAccuracyFill.setAntiAlias(true);
+		mPaintAccuracyFill.setStrokeWidth(2);
+		mPaintAccuracyFill.setStyle(Paint.Style.FILL);
+		mPaintAccuracyFill.setColor(0x4490B8D8);
+		mPaintAccuracyBorder = new Paint(mPaintAccuracyFill);
+		mPaintAccuracyBorder.setStyle(Paint.Style.STROKE);
+		mPaintAccuracyBorder.setColor(0xFF90B8D8);
+		mPaintLineToGPS = new Paint(mPaintAccuracyFill);
 		mPaintLineToGPS.setColor(ctx.getResources().getColor(R.color.line_to_gps));
 		mPaintCross.setAntiAlias(true);
 		mPaintCross.setStyle(Paint.Style.STROKE);
@@ -139,7 +139,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 
 	@Override
 	public void onDraw(final Canvas c, final TileView osmv) {
-		Ut.i("onDraw");
+		Ut.d("onDraw");
 		if (mLastGeoPoint != null) {
 			final OpenStreetMapViewProjection pj = osmv.getProjection();
 			final Point screenCoords = new Point();
@@ -166,13 +166,13 @@ public class MyLocationOverlay extends TileViewOverlay {
 				c.drawCircle(screenCoords.x, screenCoords.y, mWidth * 3, mPaintCross);
 				c.drawCircle(screenCoords.x, screenCoords.y, mWidth * 4, mPaintCross);
 			}
-			if (mPrefAccuracy != 0
-				&& mSpeed <= 0.278
-				&& ((mAccuracy > 0 && mPrefAccuracy == 1) || (mPrefAccuracy > 1 && mAccuracy >= mPrefAccuracy))
+			if (mPrefAccuracy != 0 // not off
+				&& ((mAccuracy > 0 && mPrefAccuracy == 1) // always on or
+				|| (mPrefAccuracy > 1 && mAccuracy >= mPrefAccuracy)) // larger than
 			) {
-				int PixelRadius = (int)(osmv.mTouchScale * mAccuracy / ((float)METER_IN_PIXEL / (1 << osmv.getZoomLevel())));
-				c.drawCircle(screenCoords.x, screenCoords.y, PixelRadius, mPaintAccurasyFill);
-				c.drawCircle(screenCoords.x, screenCoords.y, PixelRadius, mPaintAccurasyBorder);
+				int pixelRadius = (int)(osmv.mTouchScale * mAccuracy / ((float)METER_IN_PIXEL / (1 << osmv.getZoomLevel())));
+				c.drawCircle(screenCoords.x, screenCoords.y, pixelRadius, mPaintAccuracyFill);
+				c.drawCircle(screenCoords.x, screenCoords.y, pixelRadius, mPaintAccuracyBorder);
 			}
 			if (mLineToGPS) {
 				c.drawLine(screenCoords.x, screenCoords.y, osmv.getWidth() / 2, osmv.getHeight() / 2, mPaintLineToGPS);
@@ -212,7 +212,6 @@ public class MyLocationOverlay extends TileViewOverlay {
 				c.drawBitmap(mArrow, screenCoords.x - (int)(mArrow.getWidth() / 2), screenCoords.y - (int)(mArrow.getHeight() / 2), mPaint);
 			}
 			c.restore();
-			Ut.i("onDraw done");
 		}
 		if (mTargetLocation != null) {
 			final OpenStreetMapViewProjection pj = osmv.getProjection();

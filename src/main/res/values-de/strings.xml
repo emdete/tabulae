@@ -66,7 +66,7 @@
 	<string name="pref_locale_summary">Sprache der Benutzeroberfläche unabhängig von Systemeinstellung</string>
 	<string name="menu_settings">Einstellungen</string>
 	<string name="menu_exit">Beenden</string>
-	<string name="menu_mylocation">Mein Standort</string>
+	<string name="menu_mylocation">Zentrieren</string>
 	<string name="menu_mapselector">Karten</string>
 	<string name="menu_compass">Kompass</string>
 	<string name="menu_about">Über</string>
@@ -79,8 +79,8 @@
 	<string name="menu_deleteall">Alle löschen</string>
 	<string name="menu_area_selector">Mache offline verfügbar</string>
 	<string name="no_traffic">In dieser Zoomeinstellung sind Verkehrsinfos nicht verfügbar</string>
-	<string name="auto_follow_enabled">Automatisch-Folgen aktiviert</string>
-	<string name="auto_follow_disabled">Automatisch-Folgen deaktiviert</string>
+	<string name="auto_follow_enabled">Zentrieren aktiviert</string>
+	<string name="auto_follow_disabled">Zentrieren deaktiviert</string>
 	<string name="message_geodata_notavailable">Daten auf SD-Karte sind nicht verfügbar. Vorgang kann nicht durchgeführt werden.</string>
 	<string name="no_inet_conn">Keine Internet-Verbindung ...</string>
 	<string name="no_items">Deine Suche stimmte mit keinem Element überein</string>
@@ -273,8 +273,8 @@
 	<string name="dashboard_title_map_center_lon">Zentrum Längengrad</string>
 	<string name="dashboard_title_map_zoom">Zoom</string>
 	<string name="dashboard_title_target_distance">Entfernung zum Ziel</string>
-	<string name="pref_show_autofollow_button">Auto-Folgen button</string>
-	<string name="pref_show_autofollow_button_summary">Zeige Auto-follow button </string>
+	<string name="pref_show_autofollow_button">Knopf zum Zentrieren</string>
+	<string name="pref_show_autofollow_button_summary">Zeige zentrier button </string>
 	<string name="load_tiles_to_online_cache">Tiles im Puffer speichern</string>
 	<string name="pref_use_volume_controls">Lautstärkekontrolle</string>
 	<string name="pref_use_volume_controls_summary">Benutze Lautstärkekontrolle</string>
