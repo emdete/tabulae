@@ -1,7 +1,10 @@
 
 v.1.0.2
 - export of gpx now uses UTC for timestamps (thank you junkyardsparkle for noting)
-+ source code reformatting for beauty
+- remove unsupported cloudmade tile provider (thank you junkyardsparkle for noting)
++ fix refresh of needle display
++ fix refresh of distance scale (thank you junkyardsparkle for noting)
++ lots of refactoring of the code
 
 v.1.0.1
 + fixes for fdroid
