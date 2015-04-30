@@ -48,7 +48,7 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 	private boolean mInitialLoading = false;
 	private ITrackWriterCallback mCallback = new ITrackWriterCallback.Stub() {
 		public void newPointWritten(double lat, double lon) {
-			Ut.i("newPointWritten lat=" + lat + ", lon=" + lon + ", mInitialLoading=" + mInitialLoading);
+			Ut.d("newPointWritten lat=" + lat + ", lon=" + lon + ", mPath=" + mPath);
 			if (mInitialLoading)
 				return;
 			if (mPath == null) {
@@ -125,7 +125,9 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 
 	@Override
 	protected void onDraw(Canvas c, TileView osmv) {
-		if (!mInitialLoading && (mTrack == null || mLastZoom != osmv.getZoomLevel())) {
+		if (mInitialLoading)
+			return;
+		if (mTrack == null || mLastZoom != osmv.getZoomLevel()) {
 			mOsmv = osmv;
 			mLastZoom = osmv.getZoomLevel();
 			mBasePj = mOsmv.getProjection();
@@ -133,9 +135,8 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 			mThreadExecutor.execute(mInitialLoader);
 			return;
 		}
-		if (mPath == null) {
+		if (mPath == null)
 			return;
-		}
 		final TileView.OpenStreetMapViewProjection pj = osmv.getProjection();
 		final Point screenCoords = new Point();
 		pj.toPixels(mBaseLocation, screenCoords);
@@ -144,7 +145,6 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 			c.translate(screenCoords.x - mBaseCoords.x, screenCoords.y - mBaseCoords.y);
 			c.scale((float)osmv.mTouchScale, (float)osmv.mTouchScale, mBaseCoords.x, mBaseCoords.y);
 		}
-		Ut.i("onDraw drawPath");
 		c.drawPath(mPath, mPaint);
 		c.restore();
 	}
