@@ -70,12 +70,14 @@ public class TrackListActivity extends ListActivity {
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					startService(new Intent(TrackListActivity.this, TrackWriterService.class));
+					finish();
 				}
 			});
 		((Button)findViewById(R.id.pauseButton))
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					stopService(new Intent(TrackListActivity.this, TrackWriterService.class));
+					finish();
 				}
 			});
 		((Button)findViewById(R.id.stopButton))
