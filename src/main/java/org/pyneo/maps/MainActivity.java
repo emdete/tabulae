@@ -70,7 +70,6 @@ import org.pyneo.maps.poi.PoiOverlay;
 import org.pyneo.maps.map.SearchResultOverlay;
 import org.pyneo.maps.map.TileOverlay;
 import org.pyneo.maps.track.TrackOverlay;
-import org.pyneo.maps.map.YandexTrafficOverlay;
 import org.pyneo.maps.preference.MixedMapsPreference;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.tileprovider.TileSourceBase;
@@ -153,7 +152,6 @@ public class MainActivity extends Activity {
 	private TileOverlay mTileOverlay = null;
 	private TileSource mTileSource;
 	private TrackOverlay mTrackOverlay;
-	private YandexTrafficOverlay mYandexTrafficOverlay = null;
 	private final SensorEventListener mListener = new SensorEventListener() {
 		private int iOrientation = -1;
 
@@ -587,17 +585,6 @@ public class MainActivity extends Activity {
 			mMap.getOverlays().add(mMeasureOverlay);
 		if (mTileOverlay != null)
 			mMap.getOverlays().add(mTileOverlay);
-		if (mTileSource == null) {
-		}
-		else if (mTileSource.YANDEX_TRAFFIC_ON == 1 && mShowOverlay && mYandexTrafficOverlay == null) {
-			mYandexTrafficOverlay = new YandexTrafficOverlay(this, mMap.getTileView());
-		}
-		else if ((mTileSource.YANDEX_TRAFFIC_ON != 1 || !mShowOverlay) && mYandexTrafficOverlay != null) {
-			mYandexTrafficOverlay.Free();
-			mYandexTrafficOverlay = null;
-		}
-		if (mYandexTrafficOverlay != null)
-			mMap.getOverlays().add(mYandexTrafficOverlay);
 		if (mTrackOverlay != null)
 			mMap.getOverlays().add(mTrackOverlay);
 		if (mCurrentTrackOverlay != null)
@@ -683,7 +670,7 @@ public class MainActivity extends Activity {
 					mMap.getTileSource().MAP_TYPE != TileSourceBase.MIXMAP_PAIR &&
 					mMap.getTileSource().getTileSourceBaseOverlay() != null
 				)
-					leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME + overlayName + " / " + mMap.getTileSource().getTileSourceBaseOverlay().NAME;
+					leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME + overlayName + " / " + mMap.getTileSource().getTileSourceBaseOverlay().NAME);
 				else
 					leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME + overlayName);
 			}
@@ -1396,17 +1383,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		if (id == R.id.add_yandex_bookmark) {
-			return new AlertDialog.Builder(this)
-				.setTitle(R.string.ya_dialog_title)
-				.setMessage(R.string.ya_dialog_message)
-				.setPositiveButton(R.string.ya_dialog_button_caption, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						Browser.saveBookmark(MainActivity.this, "Mobile Yandex", "m.yandex.ru");
-					}
-				}).create();
-		}
-		else if (id == R.id.whatsnew) {
+		if (id == R.id.whatsnew) {
 			return new AlertDialog.Builder(this) //.setIcon( R.drawable.alert_dialog_icon)
 				.setTitle(R.string.about_dialog_whats_new)
 				.setMessage(R.string.whats_new_dialog_text)
@@ -1588,9 +1565,6 @@ public class MainActivity extends Activity {
 			}
 			else if (what == R.id.set_title) {
 				setTitle();
-			}
-			else if (what == R.id.add_yandex_bookmark) {
-				showDialog(R.id.add_yandex_bookmark);
 			}
 			else if (what == Ut.ERROR_MESSAGE) {
 				if (msg.obj != null)

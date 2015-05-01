@@ -187,8 +187,6 @@ public class OffsetActivity extends Activity {
 				// setAutoFollow(false);
 			} else if (what == R.id.set_title) {
 				setTitle();
-			} else if (what == R.id.add_yandex_bookmark) {
-				showDialog(R.id.add_yandex_bookmark);
 			} else if (what == Ut.ERROR_MESSAGE) {
 				if (msg.obj != null)
 					Toast.makeText(OffsetActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
