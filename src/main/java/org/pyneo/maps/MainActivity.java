@@ -116,42 +116,44 @@ import javax.xml.parsers.SAXParserFactory;
 public class MainActivity extends Activity {
 	private static final String MAPNAME = "MapName";
 	private static final String ACTION_SHOW_POINTS = "org.pyneo.maps.action.SHOW_POINTS";
-
-	private MapView mMap;
-	private ImageView ivAutoFollow;
-	private CompassView mCompassView;
-
-	private TileSource mTileSource;
-	private PoiManager mPoiManager;
-	private Handler mCallbackHandler = new MainActivityCallbackHandler();
-	private MoveListener mMoveListener = new MoveListener();
-	private SensorManager mOrientationSensorManager;
-	private PowerManager.WakeLock myWakeLock;
-	private IndicatorManager mIndicatorManager;
-
-	// Overlays
-	private YandexTrafficOverlay mYandexTrafficOverlay = null;
-	private TileOverlay mTileOverlay = null;
-	private boolean mShowOverlay = false;
-	private String mMapId = null;
-	private String mOverlayId = "";
-	private MyLocationOverlay mMyLocationOverlay;
-	private PoiOverlay mPoiOverlay;
-	private TrackOverlay mTrackOverlay;
-	private CurrentTrackOverlay mCurrentTrackOverlay;
-	private SearchResultOverlay mSearchResultOverlay;
-	private MeasureOverlay mMeasureOverlay;
-
-	private int mMarkerIndex;
 	private boolean mAutoFollow = true;
-	private String mGpsStatusName = "";
-	private int mGpsStatusSatCnt = 0;
-	private int mGpsStatusState = 0;
-	private float mLastSpeed;
-	private float mLastBearing;
 	private boolean mCompassEnabled;
 	private boolean mDrivingDirectionUp;
+	private boolean mGPSFastUpdate;
 	private boolean mNorthDirectionUp;
+	private boolean mShowOverlay = false;
+	private CompassView mCompassView;
+	private CurrentTrackOverlay mCurrentTrackOverlay;
+	private ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new SimpleThreadFactory("MainActivity.Search"));
+	private float mLastBearing;
+	private float mLastSpeed;
+	private Handler mCallbackHandler = new MainActivityCallbackHandler();
+	private ImageView ivAutoFollow;
+	private ImageView mOverlayView;
+	private IndicatorManager mIndicatorManager;
+	private int mGpsStatusSatCnt = 0;
+	private int mGpsStatusState = 0;
+	private int mMarkerIndex;
+	private int mPrefOverlayButtonBehavior;
+	private int mPrefOverlayButtonVisibility;
+	private MapView mMap;
+	private MeasureOverlay mMeasureOverlay;
+	private MoveListener mMoveListener = new MoveListener();
+	private MyLocationOverlay mMyLocationOverlay;
+	private PoiManager mPoiManager;
+	private PoiOverlay mPoiOverlay;
+	private PowerManager.WakeLock myWakeLock;
+	private SampleLocationListener mLocationListener;
+	private SampleLocationListener mNetListener;
+	private SearchResultOverlay mSearchResultOverlay;
+	private SensorManager mOrientationSensorManager;
+	private String mStatusLocationProviderName = "";
+	private String mMapId = null;
+	private String mOverlayId = "";
+	private TileOverlay mTileOverlay = null;
+	private TileSource mTileSource;
+	private TrackOverlay mTrackOverlay;
+	private YandexTrafficOverlay mYandexTrafficOverlay = null;
 	private final SensorEventListener mListener = new SensorEventListener() {
 		private int iOrientation = -1;
 
@@ -173,13 +175,6 @@ public class MainActivity extends Activity {
 		}
 
 	};
-	private int mPrefOverlayButtonBehavior;
-	private int mPrefOverlayButtonVisibility;
-	private ImageView mOverlayView;
-	private ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new SimpleThreadFactory("MainActivity.Search"));
-	private boolean mGPSFastUpdate;
-	private SampleLocationListener mLocationListener;
-	private SampleLocationListener mNetListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +211,7 @@ public class MainActivity extends Activity {
 		mMyLocationOverlay = new MyLocationOverlay(this);
 		mSearchResultOverlay = new SearchResultOverlay(this, mMap);
 		mSearchResultOverlay.fromPref(uiState);
-		FillOverlays();
+		fillOverlays();
 		mDrivingDirectionUp = pref.getBoolean("pref_drivingdirectionup", true);
 		mNorthDirectionUp = pref.getBoolean("pref_northdirectionup", true);
 		final int screenOrientation = Integer.parseInt(pref.getString("pref_screen_orientation", "-1"));
@@ -253,7 +248,7 @@ public class MainActivity extends Activity {
 			doSearchQuery(queryIntent);
 		}
 		else if (ACTION_SHOW_POINTS.equalsIgnoreCase(queryAction)) {
-			ActionShowPoints(queryIntent);
+			doShowPoints(queryIntent);
 		}
 		else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
 			Uri uri = queryIntent.getData();
@@ -312,7 +307,7 @@ public class MainActivity extends Activity {
 			doSearchQuery(intent);
 		}
 		else if (ACTION_SHOW_POINTS.equalsIgnoreCase(queryAction)) {
-			ActionShowPoints(intent);
+			doShowPoints(intent);
 		}
 		else if ("SHOW_MAP_ID".equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = intent.getExtras();
@@ -488,7 +483,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				if (mTileSource.YANDEX_TRAFFIC_ON == 1) {
 					mShowOverlay = !mShowOverlay;
-					FillOverlays();
+					fillOverlays();
 				}
 				else {
 					if (mPrefOverlayButtonBehavior == 1) {
@@ -586,15 +581,12 @@ public class MainActivity extends Activity {
 		return rl;
 	}
 
-	private void FillOverlays() {
+	private void fillOverlays() {
 		mMap.getOverlays().clear();
-
 		if (mMeasureOverlay != null)
 			mMap.getOverlays().add(mMeasureOverlay);
-
 		if (mTileOverlay != null)
 			mMap.getOverlays().add(mTileOverlay);
-
 		if (mTileSource == null) {
 		}
 		else if (mTileSource.YANDEX_TRAFFIC_ON == 1 && mShowOverlay && mYandexTrafficOverlay == null) {
@@ -604,7 +596,6 @@ public class MainActivity extends Activity {
 			mYandexTrafficOverlay.Free();
 			mYandexTrafficOverlay = null;
 		}
-
 		if (mYandexTrafficOverlay != null)
 			mMap.getOverlays().add(mYandexTrafficOverlay);
 		if (mTrackOverlay != null)
@@ -687,18 +678,19 @@ public class MainActivity extends Activity {
 		try {
 			final TextView leftText = (TextView)findViewById(R.id.left_text);
 			if (leftText != null) {
-				String overlayName = "";
-				if (mMap.getTileSource() != null && mMap.getTileSource().MAP_TYPE != TileSourceBase.MIXMAP_PAIR)
-					if (mMap.getTileSource().getTileSourceBaseOverlay() != null)
-						overlayName = " / " + mMap.getTileSource().getTileSourceBaseOverlay().NAME;
-				leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME + overlayName);
+				if ( // do we have an overlay?
+					mMap.getTileSource() != null &&
+					mMap.getTileSource().MAP_TYPE != TileSourceBase.MIXMAP_PAIR &&
+					mMap.getTileSource().getTileSourceBaseOverlay() != null
+				)
+					leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME + overlayName + " / " + mMap.getTileSource().getTileSourceBaseOverlay().NAME;
+				else
+					leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME + overlayName);
 			}
-
-			final TextView gpsText = (TextView)findViewById(R.id.gps_text);
-			if (gpsText != null) {
-				gpsText.setText(mGpsStatusName);
+			final TextView statusLocationProvider = (TextView)findViewById(R.id.gps_text);
+			if (statusLocationProvider != null) {
+				statusLocationProvider.setText(mStatusLocationProviderName);
 			}
-
 			final TextView rightText = (TextView)findViewById(R.id.right_text);
 			if (rightText != null) {
 				final double zoom = mMap.getZoomLevelScaled();
@@ -738,7 +730,7 @@ public class MainActivity extends Activity {
 		}
 		mMap.setZoom(uiState.getInt("ZoomLevel", 0));
 		setTitle();
-		FillOverlays();
+		fillOverlays();
 		if (mCompassEnabled)
 			mOrientationSensorManager.registerListener(mListener,
 				mOrientationSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_UI);
@@ -1045,7 +1037,7 @@ public class MainActivity extends Activity {
 			default: {
 				final String mapid = (String)item.getTitleCondensed();
 				setTileSource(mapid, "", true);
-				FillOverlays();
+				fillOverlays();
 				setTitle();
 				return true;
 			}
@@ -1074,7 +1066,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				mMeasureOverlay = null;
 				((ViewGroup)findViewById(R.id.bottom_area)).removeAllViews();
-				FillOverlays();
+				fillOverlays();
 			}
 		});
 
@@ -1106,7 +1098,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		FillOverlays();
+		fillOverlays();
 	}
 
 	private void setTileSource(String aMapId, String aOverlayId, boolean aShowOverlay) {
@@ -1175,7 +1167,7 @@ public class MainActivity extends Activity {
 			}
 		}
 		mMap.setTileSource(mTileSource);
-		FillOverlays();
+		fillOverlays();
 		if (mMyLocationOverlay != null && mTileSource != null)
 			mMyLocationOverlay.setScale(mTileSource.MAPTILE_SIZE_FACTOR, mTileSource.GOOGLESCALE_SIZE_FACTOR);
 		if (mPrefOverlayButtonVisibility == 2)
@@ -1239,7 +1231,7 @@ public class MainActivity extends Activity {
 		if (item.getGroupId() == R.id.isoverlay) {
 			final String overlayid = (String)item.getTitleCondensed();
 			setTileSource(mTileSource.ID, overlayid, true);
-			FillOverlays();
+			fillOverlays();
 			setTitle();
 
 		}
@@ -1315,7 +1307,7 @@ public class MainActivity extends Activity {
 			}
 			else if (item.getItemId() == R.id.hide_overlay) {
 				setTileSource(mTileSource.ID, mOverlayId, false);
-				FillOverlays();
+				fillOverlays();
 				setTitle();
 			}
 			else if (item.getItemId() == R.id.menu_i_am_here) {
@@ -1562,7 +1554,7 @@ public class MainActivity extends Activity {
 		return mLastBearing;
 	}
 
-	private void ActionShowPoints(Intent queryIntent) {
+	private void doShowPoints(Intent queryIntent) {
 		final ArrayList<String> locations = queryIntent.getStringArrayListExtra("locations");
 		if (!locations.isEmpty()) {
 			GeoPoint point = null;
@@ -1617,12 +1609,12 @@ public class MainActivity extends Activity {
 			if (loc.getProvider().equals(LocationManager.GPS_PROVIDER) && mNetListener != null) {
 				getLocationManager().removeUpdates(mNetListener);
 				mNetListener = null;
-				mGpsStatusName = LocationManager.GPS_PROVIDER;
+				mStatusLocationProviderName = LocationManager.GPS_PROVIDER;
 				Ut.d(LocationManager.NETWORK_PROVIDER + " removed");
 				// TODO when to reenable?
 			}
 			//int cnt = loc.getExtras().getInt("satellites", Integer.MIN_VALUE);
-			mGpsStatusName = loc.getProvider(); // + " 2 " + (cnt >= 0 ? cnt : 0);
+			mStatusLocationProviderName = loc.getProvider(); // + " 2 " + (cnt >= 0 ? cnt : 0);
 			setTitle();
 			mLastSpeed = loc.getSpeed();
 			if (mAutoFollow) {
@@ -1638,16 +1630,16 @@ public class MainActivity extends Activity {
 		public void onProviderDisabled(String provider) {
 			Ut.d("onProviderDisabled provider=" + provider);
 			if (provider.equalsIgnoreCase(LocationManager.GPS_PROVIDER) && mNetListener != null)
-				mGpsStatusName = LocationManager.NETWORK_PROVIDER;
+				mStatusLocationProviderName = LocationManager.NETWORK_PROVIDER;
 			else
-				mGpsStatusName = OFF;
+				mStatusLocationProviderName = OFF;
 			if (provider.equalsIgnoreCase(LocationManager.NETWORK_PROVIDER) && mNetListener != null) {
 				getLocationManager().removeUpdates(mNetListener);
 				mNetListener = null;
 				if (getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER))
-					mGpsStatusName = LocationManager.GPS_PROVIDER;
+					mStatusLocationProviderName = LocationManager.GPS_PROVIDER;
 				else
-					mGpsStatusName = OFF;
+					mStatusLocationProviderName = OFF;
 			}
 			setTitle();
 		}
@@ -1655,7 +1647,7 @@ public class MainActivity extends Activity {
 		public void onProviderEnabled(String provider) {
 			Ut.d("onProviderEnabled provider=" + provider);
 			if (provider.equalsIgnoreCase(LocationManager.GPS_PROVIDER) && mNetListener == null)
-				mGpsStatusName = LocationManager.GPS_PROVIDER;
+				mStatusLocationProviderName = LocationManager.GPS_PROVIDER;
 			setTitle();
 		}
 
@@ -1663,7 +1655,7 @@ public class MainActivity extends Activity {
 			Ut.d("onStatusChanged provider=" + provider);
 			mGpsStatusSatCnt = extras.getInt("satellites", Integer.MIN_VALUE);
 			mGpsStatusState = status;
-			mGpsStatusName = provider;
+			mStatusLocationProviderName = provider;
 			Ut.d(provider + " status: " + status + " cnt: " + extras.getInt("satellites", Integer.MIN_VALUE));
 			setTitle();
 		}
@@ -1677,7 +1669,7 @@ public class MainActivity extends Activity {
 			int minDistance = 0;
 			final LocationManager lm = getLocationManager();
 			final List<String> listProviders = lm.getAllProviders();
-			mGpsStatusName = OFF;
+			mStatusLocationProviderName = OFF;
 			if (!mGPSFastUpdate) {
 				minTime = 2000;
 				minDistance = 20;
@@ -1689,14 +1681,14 @@ public class MainActivity extends Activity {
 				Ut.d("GPS Provider available");
 				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, mLocationListener);
 				if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
-					mGpsStatusName = LocationManager.GPS_PROVIDER;
+					mStatusLocationProviderName = LocationManager.GPS_PROVIDER;
 
 				try {
 					if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 						Ut.d("NETWORK Provider Enabled");
 						mNetListener = new SampleLocationListener();
 						lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, mNetListener);
-						mGpsStatusName = LocationManager.NETWORK_PROVIDER;
+						mStatusLocationProviderName = LocationManager.NETWORK_PROVIDER;
 					}
 				}
 				catch (Exception e) {
@@ -1707,7 +1699,7 @@ public class MainActivity extends Activity {
 			else if (listProviders.contains(LocationManager.NETWORK_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 				Ut.d("only NETWORK Provider Enabled");
 				lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, mLocationListener);
-				mGpsStatusName = LocationManager.NETWORK_PROVIDER;
+				mStatusLocationProviderName = LocationManager.NETWORK_PROVIDER;
 			}
 			else {
 				Ut.d("NO Provider Enabled");
