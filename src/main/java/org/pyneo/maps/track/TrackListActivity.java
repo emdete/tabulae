@@ -2,6 +2,7 @@ package org.pyneo.maps.track;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.net.Uri;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -322,6 +323,7 @@ public class TrackListActivity extends ListActivity {
 		menu.add(0, R.id.menu_stat, 0, getText(R.string.menu_stat));
 		menu.add(0, R.id.menu_editpoi, 0, getText(R.string.menu_edit));
 		menu.add(0, R.id.menu_deletepoi, 0, getText(R.string.menu_delete));
+		menu.add(0, R.id.menu_share, 0, getText(R.string.menu_share));
 		menu.add(0, R.id.menu_exporttogpxpoi, 0, getText(R.string.menu_exporttogpx));
 		menu.add(0, R.id.menu_exporttokmlpoi, 0, getText(R.string.menu_exporttokml));
 
@@ -345,47 +347,52 @@ public class TrackListActivity extends ListActivity {
 				.setMessage(getResources().getString(R.string.question_delete, getText(R.string.track)))
 				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-
 						mPoiManager.deleteTrack(id);
 						((SimpleCursorAdapter)getListAdapter()).getCursor().requery();
 					}
 				}).setNegativeButton(R.string.no, null).create().show();
 
+		} else if (item.getItemId() == R.id.menu_share) {
+			File file = new File(Ut.getAppExportDir(TrackListActivity.this).getAbsolutePath() + "/track" + id + ".gpx");
+			if (file.exists()) {
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("application/gpx+xml");
+				intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file.getAbsolutePath()));
+				startActivity(intent);
+			}
+			else {
+				Toast.makeText(this, R.string.trackwriter_export_before_send, Toast.LENGTH_LONG).show();
+			}
 		} else if (item.getItemId() == R.id.menu_exporttogpxpoi) {
-			DoExportTrackGPX(id);
+			doExportTrackGPX(id);
 		} else if (item.getItemId() == R.id.menu_exporttokmlpoi) {
-			DoExportTrackKML(id);
+			doExportTrackKML(id);
 		}
 
 		return super.onContextItemSelected(item);
 	}
 
-	private void DoExportTrackKML(int id) {
+	private void doExportTrackKML(int id) {
 		dlgWait = Ut.ShowWaitDialog(this, 0);
 		final int trackid = id;
 		if (mThreadExecutor == null)
-			mThreadExecutor = Executors.newSingleThreadExecutor(new SimpleThreadFactory("DoExportTrackKML"));
-
+			mThreadExecutor = Executors.newSingleThreadExecutor(new SimpleThreadFactory("doExportTrackKML"));
 		this.mThreadExecutor.execute(new Runnable() {
 			public void run() {
 				final Track track = mPoiManager.getTrack(trackid);
-
 				SimpleXML xml = new SimpleXML("kml");
 				xml.setAttr("xmlns:gx", "http://www.google.com/kml/ext/2.2");
 				xml.setAttr("xmlns", "http://www.opengis.net/kml/2.2");
-
 				SimpleXML Placemark = xml.createChild("Placemark");
 				Placemark.createChild("name").setText(track.Name);
 				Placemark.createChild("description").setText(track.Descr);
 				SimpleXML LineString = Placemark.createChild("LineString");
 				SimpleXML coordinates = LineString.createChild("coordinates");
 				StringBuilder builder = new StringBuilder();
-
 				for (TrackPoint tp : track.getPoints()) {
 					builder.append(tp.lon).append(",").append(tp.lat).append(",").append(tp.alt).append(" ");
 				}
 				coordinates.setText(builder.toString().trim());
-
 				File folder = Ut.getAppExportDir(TrackListActivity.this);
 				String filename = folder.getAbsolutePath() + "/track" + trackid + ".kml";
 				File file = new File(filename);
@@ -406,23 +413,18 @@ public class TrackListActivity extends ListActivity {
 					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
 					Ut.e(e.toString(), e);
 				}
-
 				dlgWait.dismiss();
 			}
 		});
-
 	}
 
-	private void DoExportTrackGPX(int id) {
+	private void doExportTrackGPX(final int trackid) {
 		dlgWait = Ut.ShowWaitDialog(this, 0);
-		final int trackid = id;
 		if (mThreadExecutor == null)
-			mThreadExecutor = Executors.newSingleThreadExecutor(new SimpleThreadFactory("DoExportTrackGPX"));
-
+			mThreadExecutor = Executors.newSingleThreadExecutor(new SimpleThreadFactory("doExportTrackGPX"));
 		this.mThreadExecutor.execute(new Runnable() {
 			public void run() {
 				final Track track = mPoiManager.getTrack(trackid);
-
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 				formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 				SimpleXML xml = new SimpleXML("gpx");
@@ -431,10 +433,8 @@ public class TrackListActivity extends ListActivity {
 				xml.setAttr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 				xml.setAttr("creator", "Tabulae - https://github.com/emdete/Tabulae");
 				xml.setAttr("version", "1.0");
-
 				xml.createChild("name").setText(track.Name);
 				xml.createChild("desc").setText(track.Descr);
-
 				SimpleXML trk = xml.createChild("trk");
 				SimpleXML trkseg = trk.createChild("trkseg");
 				SimpleXML trkpt = null;
@@ -445,7 +445,6 @@ public class TrackListActivity extends ListActivity {
 					trkpt.createChild("ele").setText(Double.toString(tp.alt));
 					trkpt.createChild("time").setText(formatter.format(tp.date));
 				}
-
 				File folder = Ut.getAppExportDir(TrackListActivity.this);
 				String filename = folder.getAbsolutePath() + "/track" + trackid + ".gpx";
 				File file = new File(filename);

@@ -3,6 +3,8 @@ v.1.0.3
 - fix bug on display track while moving
 - fix bug with display of needle (three states, move/center)
 + improve map selection (category and name in menu and settings)
++ share location by url now uses OSM
++ implemented share of my location and tracks
 
 v.1.0.2
 - export of gpx now uses UTC for timestamps (thank you junkyardsparkle for noting)
@@ -17,6 +19,16 @@ v.1.0.1
 
 v.1.0.0
 + new name for a fork
++ use utf-8 encoding of the sources (cp1251 destroyed the display of the degree sign)
++ fix naming of activies (the head version seemed to be a development stuck in the middle)
++ remove google analytics
++ adapt some requirements for modern api (ActionBar)
++ reorder menu
++ translate russian comments
++ reformat sources
++ move build to gradle
++ dos2unix line endings
++ rename to Tabulae
 
 v.0.9.4
 + Dashboard. Use Menu - Dashboard. Long press on dashboard to add or change value

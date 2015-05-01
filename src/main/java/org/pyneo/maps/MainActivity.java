@@ -1000,6 +1000,19 @@ public class MainActivity extends Activity {
 				return true;
 			}
 			case R.id.menu_share: {
+				Intent intent1 = new Intent(Intent.ACTION_SEND);
+				intent1.setType("text/plain");
+				intent1.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
+					.append("")
+					.append('\n')
+					.append("http://www.openstreetmap.org/#map=")
+					.append(mMap.getZoomLevel())
+					.append('/')
+					.append(point.getLatitude())
+					.append('/')
+					.append(point.getLongitude())
+					.toString());
+				startActivity(intent1);
 				return true;
 			}
 			case R.id.compass: {
@@ -1362,7 +1375,7 @@ public class MainActivity extends Activity {
 						.append('/')
 						.append(point.getLongitude())
 						.toString());
-					startActivity(Intent.createChooser(intent1, getText(R.string.menu_share)));
+					startActivity(intent1);
 				}
 				catch (Exception e) {
 					Ut.e(e.toString(), e);

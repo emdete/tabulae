@@ -299,6 +299,7 @@
 	<string name="tostart">to Start</string>
 	<string name="track_style_picker">Track style piker</string>
 	<string name="track">track</string>
+	<string name="trackwriter_export_before_send">Please export track as GPX first</string>
 	<string name="trackwriter_nothing">Nothing to save</string>
 	<string name="trackwriter_saved">Track saved</string>
 	<string name="warning_delete_all_poi">Are you sure you want to delete all poi?</string>

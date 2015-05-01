@@ -1,24 +1,27 @@
 Tabulae
 =======
 
-Origin
-------
+Overview
+--------
 
-This app is a fork from RMaps found at
+This is a simple rastermap viewing app with the following features:
 
-[robertprojects](https://code.google.com/p/robertprojects/source)
+*	Show maps from various providers like OSM, Google, BING, MapQuest, ArcGIS, Yandex and more
 
-the app is described at
+*	Record and show tracks
 
-[robertdeveloper](http://robertdeveloper.blogspot.com/2009/08/rmaps.html)
+*	Record, show and edit POIs
 
+*	Download tiles for offline usage
 
-email of the developer is
+-	Share your location, your POIs or your track with others
 
-[robertk506@gmail.com](mailto:robertk506@gmail.com)
+-	Have a dashboard with configureabe parameters
 
 Uses
 ----
+
+The app uses the following libraries:
 
 [osmdroid](https://github.com/osmdroid/osmdroid)
 
@@ -33,33 +36,6 @@ Uses
 All libraries are copied as source into the project tree instead of
 using subprojects or the like.
 
-Changes
--------
-
-I started to do some cosmetic changes:
-
--	use utf-8 encoding of the sources (cp1251 destroyed the display of the
-	degree sign)
-
--	fix naming of activies (the head version seemed to be a development stuck
-	in the middle)
-
--	remove google analytics
-
--	adapt some requirements for modern api (ActionBar)
-
--	reorder menu
-
--	translate russian comments
-
--	reformat sources
-
--	move build to gradle
-
--	dos2unix line endings
-
--	rename to Tabulae
-
 Debugging
 ---------
 
@@ -67,8 +43,8 @@ The app does alot of debug logging but that level must be enabled. you can do
 so by issuing `setprop log.tag.org.pyneo.maps DEBUG` in a shell on the
 device.
 
-ToDos
-=====
+ToDos / known Bugs
+------------------
 
 - fix bug on display of multiple stored tracks on different zooms
 
@@ -93,4 +69,20 @@ ToDos
 - fix bug in db usage (already closed)
 
 - make it possible to have follow not centered
+
+Origin
+------
+
+This app is a fork from RMaps found at
+
+[robertprojects](https://code.google.com/p/robertprojects/source)
+
+the app is described at
+
+[robertdeveloper](http://robertdeveloper.blogspot.com/2009/08/rmaps.html)
+
+
+email of the developer is
+
+[robertk506@gmail.com](mailto:robertk506@gmail.com)
 

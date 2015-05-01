@@ -263,7 +263,7 @@ public class PoiListActivity extends ListActivity {
 					.append('/')
 					.append(point.getLongitude())
 					.toString());
-				startActivity(Intent.createChooser(intent1, getText(R.string.menu_share)));
+				startActivity(intent1);
 			}
 			catch (Exception e) {
 			}

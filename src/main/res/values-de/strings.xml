@@ -122,6 +122,7 @@
 	<string name="btn_start">Start</string>
 	<string name="btn_pause">Pause</string>
 	<string name="btn_stop">Stop</string>
+	<string name="trackwriter_export_before_send">Bitte zuerst als GPX exportieren</string>
 	<string name="trackwriter_nothing">Nichts zu speichern</string>
 	<string name="trackwriter_saved">Pfad gespeichert</string>
 	<string name="pref_trackwriter_mindistance_summary">Kleinster Abstand zwischen zwei Aufzeichnungen Deiner Position</string>

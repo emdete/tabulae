@@ -269,7 +269,7 @@ public class Ut implements Constants {
 		sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 		sendIntent.putExtra(Intent.EXTRA_EMAIL, email);
 		sendIntent.setType("message/rfc822");
-		return Intent.createChooser(sendIntent, "Error report to the author");
+		return sendIntent;
 	}
 
 	public static String formatDistance(Context ctx, float dist, int units) {
