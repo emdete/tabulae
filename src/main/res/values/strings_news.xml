@@ -3,6 +3,9 @@
 <string name='whats_new_dialog_text' translatable='false'>
 \n
 v.1.0.3\n
+- fix bug on display track while moving\n
+- fix bug with display of needle (three states, move/center)\n
++ improve map selection (category and name in menu and settings)\n
 \n
 v.1.0.2\n
 - export of gpx now uses UTC for timestamps (thank you junkyardsparkle for noting)\n

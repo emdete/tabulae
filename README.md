@@ -70,21 +70,17 @@ device.
 ToDos
 =====
 
-- fix bug on display of old tracks on different zooms
+- fix bug on display of multiple stored tracks on different zooms
 
-- fix bug on display track while moving
-
-- fix bug with display of needle (three states, move/center)
-
-- fix big on scale limits of maps
+- fix bug on scale limits of maps
 
 - fix bug on location provider usage
 
-- improve map selection
-
 - refactor code, remove as much code as possible
 
-- allow multiple moving positions (to see friends) via intent (Conversations)
+- allow auto generated colors when writing tracks
+
+- allow multiple moving positions to see friends (for example via intent from Conversations)
 
 - discard tiles from cache after time
 
@@ -93,4 +89,8 @@ ToDos
 - display tiles with error from download better
 
 - go on when download stucks (dislpay cached ones with higher prio)
+
+- fix bug in db usage (already closed)
+
+- make it possible to have follow not centered
 
