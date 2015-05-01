@@ -28,6 +28,7 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.utils.SimpleXML;
 import org.pyneo.maps.utils.CoordFormatter;
 import org.pyneo.maps.utils.Ut;
+import org.andnav.osm.util.GeoPoint;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -249,12 +250,18 @@ public class PoiListActivity extends ListActivity {
 			((SimpleCursorAdapter)getListAdapter()).getCursor().requery();
 		} else if (item.getItemId() == R.id.menu_share) {
 			try {
+				final GeoPoint point = poi.GeoPoint;
 				Intent intent1 = new Intent(Intent.ACTION_SEND);
 				intent1.setType("text/plain");
 				intent1.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
 					.append(poi.Title)
-					.append("\nhttp://maps.google.com/?q=")
-					.append(poi.GeoPoint.toDoubleString())
+					.append('\n')
+					.append("http://www.openstreetmap.org/#map=")
+					.append(16) // zoom
+					.append('/')
+					.append(point.getLatitude())
+					.append('/')
+					.append(point.getLongitude())
 					.toString());
 				startActivity(Intent.createChooser(intent1, getText(R.string.menu_share)));
 			}

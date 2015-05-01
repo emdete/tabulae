@@ -670,9 +670,10 @@ public class MainActivity extends Activity {
 					mMap.getTileSource().MAP_TYPE != TileSourceBase.MIXMAP_PAIR &&
 					mMap.getTileSource().getTileSourceBaseOverlay() != null
 				)
-					leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME + overlayName + " / " + mMap.getTileSource().getTileSourceBaseOverlay().NAME);
+					leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME
+						+ " / " + mMap.getTileSource().getTileSourceBaseOverlay().NAME);
 				else
-					leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME + overlayName);
+					leftText.setText(mMap.getTileSource().CATEGORY + ": " + mMap.getTileSource().NAME);
 			}
 			final TextView statusLocationProvider = (TextView)findViewById(R.id.gps_text);
 			if (statusLocationProvider != null) {
@@ -996,6 +997,9 @@ public class MainActivity extends Activity {
 				return true;
 			}
 			case R.id.mapselector: {
+				return true;
+			}
+			case R.id.menu_share: {
 				return true;
 			}
 			case R.id.compass: {
@@ -1345,12 +1349,18 @@ public class MainActivity extends Activity {
 			else if (item.getItemId() == R.id.menu_share) {
 				try {
 					final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
+					final GeoPoint point = poi.GeoPoint;
 					Intent intent1 = new Intent(Intent.ACTION_SEND);
 					intent1.setType("text/plain");
 					intent1.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
 						.append(poi.Title)
-						.append("\nhttp://maps.google.com/?q=")
-						.append(poi.GeoPoint.toDoubleString())
+						.append('\n')
+						.append("http://www.openstreetmap.org/#map=")
+						.append(16) // zoom
+						.append('/')
+						.append(point.getLatitude())
+						.append('/')
+						.append(point.getLongitude())
 						.toString());
 					startActivity(Intent.createChooser(intent1, getText(R.string.menu_share)));
 				}
