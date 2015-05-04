@@ -7,6 +7,7 @@ v.1.0.3\n
 - fix bug with display of needle (three states, move/center)\n
 + improve map selection (category and name in menu and settings)\n
 + share location by url now uses OSM\n
++ implemented share of my location and tracks\n
 \n
 v.1.0.2\n
 - export of gpx now uses UTC for timestamps (thank you junkyardsparkle for noting)\n
@@ -21,6 +22,16 @@ v.1.0.1\n
 \n
 v.1.0.0\n
 + new name for a fork\n
++ use utf-8 encoding of the sources (cp1251 destroyed the display of the degree sign)\n
++ fix naming of activies (the head version seemed to be a development stuck in the middle)\n
++ remove google analytics\n
++ adapt some requirements for modern api (ActionBar)\n
++ reorder menu\n
++ translate russian comments\n
++ reformat sources\n
++ move build to gradle\n
++ dos2unix line endings\n
++ rename to Tabulae\n
 \n
 v.0.9.4\n
 + Dashboard. Use Menu - Dashboard. Long press on dashboard to add or change value\n

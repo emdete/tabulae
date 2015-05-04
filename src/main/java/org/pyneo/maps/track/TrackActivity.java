@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.pyneo.maps.R;
+import org.pyneo.maps.poi.PoiConstants;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.poi.PoiPoint;
 import org.pyneo.maps.utils.TrackStyleDrawable;
@@ -51,7 +52,7 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt("id", PoiPoint.EMPTY_ID());
+		int id = extras.getInt("id", PoiConstants.EMPTY_ID);
 
 		if (id < 0) {
 			mTrack = new Track();
@@ -77,13 +78,13 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 			}
 		});
 
-		((Button)findViewById(R.id.saveButton))
+		findViewById(R.id.saveButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					doSaveAction();
 				}
 			});
-		((Button)findViewById(R.id.discardButton))
+		findViewById(R.id.discardButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					TrackActivity.this.finish();

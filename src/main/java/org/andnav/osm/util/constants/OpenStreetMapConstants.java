@@ -11,11 +11,11 @@ public interface OpenStreetMapConstants {
 	// Final Fields
 	// ===========================================================
 
-	public static final String DEBUGTAG = "org.andnav.osm";
+	String DEBUGTAG = "org.andnav.osm";
 
-	public static final int NOT_SET = Integer.MIN_VALUE;
-	public static final String GPS = "gps";
-	public static final String NETWORK = "network";
+	int NOT_SET = Integer.MIN_VALUE;
+	String GPS = "gps";
+	String NETWORK = "network";
 
 	// ===========================================================
 	// Methods

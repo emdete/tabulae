@@ -7,7 +7,7 @@ public interface GeoConstants {
 	// Final Fields
 	// ===========================================================
 	
-	public static final int RADIUS_EARTH_METERS = 6378140;
+	int RADIUS_EARTH_METERS = 6378140;
 	
 	// ===========================================================
 	// Methods

@@ -138,7 +138,7 @@ public class PoiOverlay extends TileViewOverlay {
 			for (int i = this.mItemList.size() - 1; i >= 0; i--) {
 				if (i != mTapId) {
 					PoiPoint item = this.mItemList.valueAt(i);
-					pj.toPixels(item.GeoPoint, curScreenCoords);
+					pj.toPixels(item.mGeoPoint, curScreenCoords);
 
 					c.save();
 					c.rotate(mapView.getBearing(), curScreenCoords.x,
@@ -153,7 +153,7 @@ public class PoiOverlay extends TileViewOverlay {
 			if (mTapId > NO_TAP) {
 				PoiPoint item = this.mItemList.get(mTapId);
 				if (item != null) {
-					pj.toPixels(item.GeoPoint, curScreenCoords);
+					pj.toPixels(item.mGeoPoint, curScreenCoords);
 
 					c.save();
 					c.rotate(mapView.getBearing(), curScreenCoords.x,
@@ -176,10 +176,10 @@ public class PoiOverlay extends TileViewOverlay {
 			final TextView descr = (TextView)mT.findViewById(R.id.descr);
 			final TextView coord = (TextView)mT.findViewById(R.id.coord);
 
-			pic.setImageResource(focusedItem.IconId);
-			title.setText(focusedItem.Title);
-			descr.setText(focusedItem.Descr);
-			coord.setText(Ut.formatGeoPoint(focusedItem.GeoPoint, mCtx));
+			pic.setImageResource(focusedItem.mIconId);
+			title.setText(focusedItem.mTitle);
+			descr.setText(focusedItem.mDescr);
+			coord.setText(Ut.formatGeoPoint(focusedItem.mGeoPoint, mCtx));
 
 			mT.measure(0, 0);
 			mT.layout(0, 0, mT.getMeasuredWidth(), mT.getMeasuredHeight());
@@ -197,16 +197,16 @@ public class PoiOverlay extends TileViewOverlay {
 			final int bottom = top + this.mMarkerHeight;
 
 			Drawable marker = null;
-			if (mBtnMap.indexOfKey(focusedItem.IconId) > 0)
-				marker = mBtnMap.get(focusedItem.IconId);
+			if (mBtnMap.indexOfKey(focusedItem.mIconId) > 0)
+				marker = mBtnMap.get(focusedItem.mIconId);
 			else {
 				try {
-					marker = mCtx.getResources().getDrawable(focusedItem.IconId);
+					marker = mCtx.getResources().getDrawable(focusedItem.mIconId);
 				}
 				catch (Exception e) {
 					marker = mCtx.getResources().getDrawable(R.drawable.poi);
 				}
-				mBtnMap.put(focusedItem.IconId, marker);
+				mBtnMap.put(focusedItem.mIconId, marker);
 			}
 
 			marker.setBounds(left, top, right, bottom);
@@ -242,7 +242,7 @@ public class PoiOverlay extends TileViewOverlay {
 
 			for (int i = 0; i < this.mItemList.size(); i++) {
 				final PoiPoint mItem = this.mItemList.valueAt(i);
-				pj.toPixels(mItem.GeoPoint, mapView.getBearing(), mCurScreenCoords);
+				pj.toPixels(mItem.mGeoPoint, mapView.getBearing(), mCurScreenCoords);
 
 				final int pxUp = 2;
 				final int left = (int)(mCurScreenCoords.x + mDensity * (5 - pxUp));
@@ -302,13 +302,13 @@ public class PoiOverlay extends TileViewOverlay {
 	}
 
 	@SuppressWarnings("hiding")
-	public static interface OnItemTapListener<PoiPoint> {
-		public boolean onItemTap(final int aIndex, final PoiPoint aItem);
+	public interface OnItemTapListener<PoiPoint> {
+		boolean onItemTap(final int aIndex, final PoiPoint aItem);
 	}
 
 	@SuppressWarnings("hiding")
-	public static interface OnItemLongPressListener<PoiPoint> {
-		public boolean onItemLongPress(final int aIndex, final PoiPoint aItem);
+	public interface OnItemLongPressListener<PoiPoint> {
+		boolean onItemLongPress(final int aIndex, final PoiPoint aItem);
 	}
 
 	private class PoiListThread extends Thread {

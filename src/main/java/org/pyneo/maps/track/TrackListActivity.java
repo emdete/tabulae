@@ -67,21 +67,21 @@ public class TrackListActivity extends ListActivity {
 
 		mHandler = new SimpleInvalidationHandler();
 
-		((Button)findViewById(R.id.startButton))
+		findViewById(R.id.startButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					startService(new Intent(TrackListActivity.this, TrackWriterService.class));
 					finish();
 				}
 			});
-		((Button)findViewById(R.id.pauseButton))
+		findViewById(R.id.pauseButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					stopService(new Intent(TrackListActivity.this, TrackWriterService.class));
 					finish();
 				}
 			});
-		((Button)findViewById(R.id.stopButton))
+		findViewById(R.id.stopButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					stopService(new Intent(TrackListActivity.this, TrackWriterService.class));
@@ -128,7 +128,6 @@ public class TrackListActivity extends ListActivity {
 						db = null;
 					}
 				}
-				;
 				int res = 0;
 				if (db != null) {
 					try {
@@ -144,7 +143,6 @@ public class TrackListActivity extends ListActivity {
 						mPoiManager.updateTrack(tr);
 					}
 				}
-				;
 
 				dlgWait.dismiss();
 				Message.obtain(mHandler, R.id.tracks, res, 0).sendToTarget();
@@ -165,7 +163,6 @@ public class TrackListActivity extends ListActivity {
 				}
 				catch (Exception e) {
 				}
-				;
 
 				if (res > 0) {
 					Track tr = mPoiManager.getTrack(res);
@@ -224,7 +221,6 @@ public class TrackListActivity extends ListActivity {
 			adapter.setViewBinder(mViewBinder);
 			setListAdapter(adapter);
 		}
-		;
 	}
 
 	private void UpdateTracksStat() {
@@ -500,11 +496,11 @@ public class TrackListActivity extends ListActivity {
 				if (msg.arg1 == 0)
 					Toast
 						.makeText(TrackListActivity.this,
-							getString(R.string.message_error) + " " + (String)msg.obj,
+							getString(R.string.message_error) + " " + msg.obj,
 							Toast.LENGTH_LONG).show();
 				else
 					Toast.makeText(TrackListActivity.this,
-						getString(R.string.message_trackexported) + " " + (String)msg.obj,
+						getString(R.string.message_trackexported) + " " + msg.obj,
 						Toast.LENGTH_LONG).show();
 			}
 		}

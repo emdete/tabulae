@@ -30,7 +30,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.provider.Browser;
 import android.provider.SearchRecentSuggestions;
 import android.util.DisplayMetrics;
 import android.view.ContextMenu;
@@ -57,6 +56,7 @@ import org.pyneo.maps.downloader.AreaSelectorActivity;
 import org.pyneo.maps.downloader.FileDownloadListActivity;
 import org.pyneo.maps.poi.GeoDataActivity;
 import org.pyneo.maps.poi.PoiActivity;
+import org.pyneo.maps.poi.PoiConstants;
 import org.pyneo.maps.poi.PoiListActivity;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.poi.PoiPoint;
@@ -88,17 +88,11 @@ import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.TypeConverter;
 import org.andnav.osm.views.util.StreamUtils;
 import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -116,10 +110,10 @@ public class MainActivity extends Activity {
 	private static final String MAPNAME = "MapName";
 	private static final String ACTION_SHOW_POINTS = "org.pyneo.maps.action.SHOW_POINTS";
 	private boolean mAutoFollow = true;
-	private boolean mCompassEnabled;
-	private boolean mDrivingDirectionUp;
-	private boolean mGPSFastUpdate;
-	private boolean mNorthDirectionUp;
+	private boolean mCompassEnabled = false;
+	private boolean mDrivingDirectionUp = true;
+	private boolean mGPSFastUpdate = true;
+	private boolean mNorthDirectionUp = true;
 	private boolean mShowOverlay = false;
 	private CompassView mCompassView;
 	private CurrentTrackOverlay mCurrentTrackOverlay;
@@ -164,12 +158,12 @@ public class MainActivity extends Activity {
 			}
 			mCompassView.setAzimuth(event.values[0] + 90 * iOrientation);
 			mCompassView.invalidate();
-			if (mCompassEnabled)
-				if (mNorthDirectionUp)
-					if (mDrivingDirectionUp == false || mLastSpeed == 0) {
-						mMap.setBearing(updateBearing(event.values[0]) + 90 * iOrientation);
-						mMap.invalidate();
-					}
+			if (mCompassEnabled && mNorthDirectionUp) {
+				if (!mDrivingDirectionUp || mLastSpeed == 0) {
+					mMap.setBearing(updateBearing(event.values[0]) + 90 * iOrientation);
+					mMap.invalidate();
+				}
+			}
 		}
 
 	};
@@ -195,12 +189,11 @@ public class MainActivity extends Activity {
 		mPrefOverlayButtonVisibility = Integer.parseInt(pref.getString("pref_overlay_button_visibility", "0"));
 		if (mPrefOverlayButtonVisibility == 1) // Always hide
 			mOverlayView.setVisibility(View.GONE);
-		mCompassEnabled = uiState.getBoolean("CompassEnabled", false);
+		mCompassEnabled = uiState.getBoolean("CompassEnabled", mCompassEnabled);
 		mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
-		mAutoFollow = uiState.getBoolean("AutoFollow", true);
 		mMap.setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
-		mGPSFastUpdate = pref.getBoolean("pref_gpsfastupdate", true);
-		mAutoFollow = uiState.getBoolean("AutoFollow", true);
+		mGPSFastUpdate = pref.getBoolean("pref_gpsfastupdate", mGPSFastUpdate);
+		mAutoFollow = uiState.getBoolean("AutoFollow", mAutoFollow);
 		setAutoFollow(mAutoFollow, true);
 		mTrackOverlay = new TrackOverlay(this, mPoiManager, mCallbackHandler);
 		mCurrentTrackOverlay = new CurrentTrackOverlay(this, mPoiManager);
@@ -210,8 +203,8 @@ public class MainActivity extends Activity {
 		mSearchResultOverlay = new SearchResultOverlay(this, mMap);
 		mSearchResultOverlay.fromPref(uiState);
 		fillOverlays();
-		mDrivingDirectionUp = pref.getBoolean("pref_drivingdirectionup", true);
-		mNorthDirectionUp = pref.getBoolean("pref_northdirectionup", true);
+		mDrivingDirectionUp = pref.getBoolean("pref_drivingdirectionup", mDrivingDirectionUp);
+		mNorthDirectionUp = pref.getBoolean("pref_northdirectionup", mNorthDirectionUp);
 		final int screenOrientation = Integer.parseInt(pref.getString("pref_screen_orientation", "-1"));
 		setRequestedOrientation(screenOrientation);
 		final boolean showstatusbar = pref.getBoolean("pref_showstatusbar", true);
@@ -339,57 +332,28 @@ public class MainActivity extends Activity {
 		try {
 			mSearchResultOverlay.Clear();
 			mMap.invalidate();
-
 			final String queryString = queryIntent.getStringExtra(SearchManager.QUERY);
-
 			// Record the query string in the recent queries suggestions provider.
 			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestionsProvider.AUTHORITY, SearchSuggestionsProvider.MODE);
 			suggestions.saveRecentQuery(queryString, null);
-
 			mThreadPool.execute(new Runnable() {
 				@Override
 				public void run() {
 					Handler handler = mCallbackHandler;
 					Resources resources = getApplicationContext().getResources();
-
 					InputStream in = null;
 					OutputStream out = null;
-
 					try {
+						// TODO: replaced by https://developers.google.com/places/webservice/, OSM?
 						//final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 						Configuration config = getBaseContext().getResources().getConfiguration();
 						final String lang = config.locale.getLanguage();
-
-						URL url = new URL(
-							"http://ajax.googleapis.com/ajax/services/search/local?v=1.0&sll="
-								+ mMap.getMapCenter().toDoubleString()
-								+ "&q=" + URLEncoder.encode(queryString, "UTF-8")
-								+ "&hl=" + lang /*pref.getString("pref_googlelanguagecode", "en")*/
-								+ "");
-						in = new BufferedInputStream(url.openStream(), StreamUtils.IO_BUFFER_SIZE);
-
-						final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
-						out = new BufferedOutputStream(dataStream, StreamUtils.IO_BUFFER_SIZE);
-						StreamUtils.copy(in, out);
-						out.flush();
-
-						String str = dataStream.toString();
-						JSONObject json = new JSONObject(str);
-						//Ut.dd(json.toString(4)); //
-						JSONArray results = (JSONArray)((JSONObject)json.get("responseData")).get("results");
-						//Ut.dd("results.length="+results.length());
-						if (results.length() == 0) {
-							handler.obtainMessage(Ut.ERROR_MESSAGE, resources.getString(R.string.no_items));
-							return;
-						}
-						JSONObject res = results.getJSONObject(0);
-
 						//handler.obtainMessage(Ut.SEARCH_OK_MESSAGE, res);
-						final String address = res.getString("addressLines").replace("\"", "").replace("[", "").replace("]", "").replace(",", ", ").replace("  ", " ");
+						final String address = "";
 						setAutoFollow(false, true);
-						final GeoPoint point = new GeoPoint((int)(res.getDouble("lat") * 1E6), (int)(res.getDouble("lng") * 1E6));
+						final GeoPoint point = new GeoPoint(0, 0);
 						mSearchResultOverlay.setLocation(point, address);
-						mMap.setZoom((int) (2 * res.getInt("accuracy")));
+						//mMap.setZoom(0);
 						mMap.setCenter(point);
 						setTitle();
 
@@ -706,7 +670,7 @@ public class MainActivity extends Activity {
 		if (mMapId == null)
 			mMapId = uiState.getString(MAPNAME, TileSource.MAPNIK);
 		mOverlayId = uiState.getString("OverlayID", "");
-		mShowOverlay = uiState.getBoolean("ShowOverlay", true);
+		mShowOverlay = uiState.getBoolean("ShowOverlay", mShowOverlay);
 		mMyLocationOverlay.setTargetLocation(GeoPoint.fromDoubleStringOrNull(uiState.getString("targetlocation", "")));
 		setTileSource(mMapId, mOverlayId, mShowOverlay);
 		mMapId = null;
@@ -1025,7 +989,6 @@ public class MainActivity extends Activity {
 					mOrientationSensorManager.unregisterListener(mListener);
 					mMap.setBearing(0);
 				}
-				;
 				return true;
 			}
 			case R.id.mylocation: {
@@ -1232,169 +1195,195 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		if (item.getGroupId() == R.id.isoverlay) {
-			final String overlayid = (String)item.getTitleCondensed();
-			setTileSource(mTileSource.ID, overlayid, true);
-			fillOverlays();
-			setTitle();
-
-		}
-		else if (item.getGroupId() == R.id.menu_dashboard_edit) {
-			final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
-			final IndicatorView iv = info.IndicatorView;
-			mIndicatorManager.putTagToIndicatorView(iv, item.getTitleCondensed().toString());
-			mMap.invalidate(); //postInvalidate();
-		}
-		else {
-			if (item.getItemId() == R.id.clear) {
-				mMeasureOverlay.Clear();
-				mMap.invalidate(); //postInvalidate();
-			}
-			else if (item.getItemId() == R.id.menu_dashboard_delete) {
-				final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
-				final IndicatorView iv = info.IndicatorView;
-				mIndicatorManager.removeIndicatorView(this, iv);
-				mMap.invalidate(); //postInvalidate();
-
-			}
-			else if (item.getItemId() == R.id.menu_add_target_point) {
-				TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo();
-				mMyLocationOverlay.setTargetLocation(info.EventGeoPoint);
-				if (mIndicatorManager != null)
-					mIndicatorManager.setTargetLocation(info.EventGeoPoint);
-				mMap.invalidate();
-			}
-			else if (item.getItemId() == R.id.menu_remove_target_point) {
-				mMyLocationOverlay.setTargetLocation(null);
-				if (mIndicatorManager != null)
-					mIndicatorManager.setTargetLocation(null);
-				mMap.invalidate();
-			}
-			else if (item.getItemId() == R.id.menu_dashboard_add) {
-				final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
-				final IndicatorView iv = info.IndicatorView;
-				mIndicatorManager.addIndicatorView(this, iv, iv.getIndicatorTag(), false);
-				mMap.invalidate(); //postInvalidate();
-
-			}
-			else if (item.getItemId() == R.id.menu_dashboard_add_line) {
-				final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
-				final IndicatorView iv = info.IndicatorView;
-				mIndicatorManager.addIndicatorView(this, iv, iv.getIndicatorTag(), true);
-				mMap.invalidate(); //postInvalidate();
-			}
-			else if (item.getItemId() == R.id.menu_undo) {
-				mMeasureOverlay.Undo();
-				mMap.invalidate(); //postInvalidate();
-			}
-			else if (item.getItemId() == R.id.menu_showinfo) {
-				item.setChecked(!item.isChecked());
-				final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-				Editor editor = pref.edit();
-				editor.putBoolean("pref_show_measure_info", item.isChecked());
-				editor.commit();
-				mMeasureOverlay.setShowInfoBubble(item.isChecked());
-				mMap.invalidate(); //postInvalidate();
-			}
-			else if (item.getItemId() == R.id.menu_showlineinfo) {
-				item.setChecked(!item.isChecked());
-				final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-				Editor editor = pref.edit();
-				editor.putBoolean("pref_show_measure_line_info", item.isChecked());
-				editor.commit();
-				mMeasureOverlay.setShowLineInfo(item.isChecked());
-				mMap.invalidate(); //postInvalidate();
-			}
-			else if (item.getItemId() == R.id.menu_addmeasurepoint) {
-				mMeasureOverlay.addPointOnCenter(mMap.getTileView());
-				mMap.invalidate(); //postInvalidate();
-			}
-			else if (item.getItemId() == R.id.hide_overlay) {
-				setTileSource(mTileSource.ID, mOverlayId, false);
+		switch (item.getGroupId()) {
+			case R.id.isoverlay: {
+				final String overlayid = (String)item.getTitleCondensed();
+				setTileSource(mTileSource.ID, overlayid, true);
 				fillOverlays();
 				setTitle();
+				break;
 			}
-			else if (item.getItemId() == R.id.menu_i_am_here) {
-				final Location loc = new Location("gps");
-				TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo();
-				loc.setLatitude(info.EventGeoPoint.getLatitude());
-				loc.setLongitude(info.EventGeoPoint.getLongitude());
-				mMyLocationOverlay.setLocation(loc);
-				mSearchResultOverlay.setLocation(loc);
-				if (mIndicatorManager != null)
-					mIndicatorManager.setLocation(loc);
+			case R.id.menu_dashboard_edit: {
+				final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
+				final IndicatorView iv = info.IndicatorView;
+				mIndicatorManager.putTagToIndicatorView(iv, item.getTitleCondensed().toString());
 				mMap.invalidate(); //postInvalidate();
+				break;
+			}
+			default: {
+				switch (item.getItemId()) {
+					case R.id.clear: {
+						mMeasureOverlay.Clear();
+						mMap.invalidate(); //postInvalidate();
+						break;
+					}
+					case R.id.menu_dashboard_delete: {
+						final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
+						final IndicatorView iv = info.IndicatorView;
+						mIndicatorManager.removeIndicatorView(this, iv);
+						mMap.invalidate(); //postInvalidate();
 
-			}
-			else if (item.getItemId() == R.id.menu_addpoi) {
-				TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo(); //).EventGeoPoint;
-				startActivityForResult((new Intent(this, PoiActivity.class))
-					.putExtra("lat", info.EventGeoPoint.getLatitude())
-					.putExtra("lon", info.EventGeoPoint.getLongitude())
-					.putExtra("alt", info.Elevation)
-					.putExtra("title", "POI"), R.id.menu_addpoi);
-			}
-			else if (item.getItemId() == R.id.menu_editpoi) {
-				startActivityForResult((new Intent(this, PoiActivity.class)).putExtra("pointid", mMarkerIndex),
-					R.id.menu_editpoi);
-				mMap.invalidate(); //postInvalidate();
-			}
-			else if (item.getItemId() == R.id.menu_deletepoi) {
-				final int pointid = mPoiOverlay.getPoiPoint(mMarkerIndex).getId();
-				new AlertDialog.Builder(this)
-					.setTitle(R.string.app_name)
-					.setMessage(getResources().getString(R.string.question_delete, getText(R.string.poi)))
-					.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							mPoiManager.deletePoi(pointid);
-							mPoiOverlay.UpdateList();
-							mMap.invalidate(); //postInvalidate();
+						break;
+					}
+					case R.id.menu_add_target_point: {
+						TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo();
+						mMyLocationOverlay.setTargetLocation(info.EventGeoPoint);
+						if (mIndicatorManager != null)
+							mIndicatorManager.setTargetLocation(info.EventGeoPoint);
+						mMap.invalidate();
+						break;
+					}
+					case R.id.menu_remove_target_point: {
+						mMyLocationOverlay.setTargetLocation(null);
+						if (mIndicatorManager != null)
+							mIndicatorManager.setTargetLocation(null);
+						mMap.invalidate();
+						break;
+					}
+					case R.id.menu_dashboard_add: {
+						final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
+						final IndicatorView iv = info.IndicatorView;
+						mIndicatorManager.addIndicatorView(this, iv, iv.getIndicatorTag(), false);
+						mMap.invalidate(); //postInvalidate();
+
+						break;
+					}
+					case R.id.menu_dashboard_add_line: {
+						final IndicatorViewMenuInfo info = (IndicatorViewMenuInfo)item.getMenuInfo();
+						final IndicatorView iv = info.IndicatorView;
+						mIndicatorManager.addIndicatorView(this, iv, iv.getIndicatorTag(), true);
+						mMap.invalidate(); //postInvalidate();
+						break;
+					}
+					case R.id.menu_undo: {
+						mMeasureOverlay.Undo();
+						mMap.invalidate(); //postInvalidate();
+						break;
+					}
+					case R.id.menu_showinfo: {
+						item.setChecked(!item.isChecked());
+						final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+						Editor editor = pref.edit();
+						editor.putBoolean("pref_show_measure_info", item.isChecked());
+						editor.commit();
+						mMeasureOverlay.setShowInfoBubble(item.isChecked());
+						mMap.invalidate(); //postInvalidate();
+						break;
+					}
+					case R.id.menu_showlineinfo: {
+						item.setChecked(!item.isChecked());
+						final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+						Editor editor = pref.edit();
+						editor.putBoolean("pref_show_measure_line_info", item.isChecked());
+						editor.commit();
+						mMeasureOverlay.setShowLineInfo(item.isChecked());
+						mMap.invalidate(); //postInvalidate();
+						break;
+					}
+					case R.id.menu_addmeasurepoint: {
+						mMeasureOverlay.addPointOnCenter(mMap.getTileView());
+						mMap.invalidate(); //postInvalidate();
+						break;
+					}
+					case R.id.hide_overlay: {
+						setTileSource(mTileSource.ID, mOverlayId, false);
+						fillOverlays();
+						setTitle();
+						break;
+					}
+					case R.id.menu_i_am_here: {
+						final Location loc = new Location("gps");
+						TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo();
+						loc.setLatitude(info.EventGeoPoint.getLatitude());
+						loc.setLongitude(info.EventGeoPoint.getLongitude());
+						mMyLocationOverlay.setLocation(loc);
+						mSearchResultOverlay.setLocation(loc);
+						if (mIndicatorManager != null)
+							mIndicatorManager.setLocation(loc);
+						mMap.invalidate(); //postInvalidate();
+
+						break;
+					}
+					case R.id.menu_addpoi: {
+						TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo(); //).EventGeoPoint;
+						startActivityForResult((new Intent(this, PoiActivity.class))
+							.putExtra("lat", info.EventGeoPoint.getLatitude())
+							.putExtra("lon", info.EventGeoPoint.getLongitude())
+							.putExtra("alt", info.Elevation)
+							.putExtra("title", "POI"), R.id.menu_addpoi);
+						break;
+					}
+					case R.id.menu_editpoi: {
+						startActivityForResult((new Intent(this, PoiActivity.class)).putExtra("pointid", mMarkerIndex),
+							R.id.menu_editpoi);
+						mMap.invalidate(); //postInvalidate();
+						break;
+					}
+					case R.id.menu_deletepoi: {
+						final int pointid = mPoiOverlay.getPoiPoint(mMarkerIndex).getId();
+						new AlertDialog.Builder(this)
+							.setTitle(R.string.app_name)
+							.setMessage(getResources().getString(R.string.question_delete, getText(R.string.poi)))
+							.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									mPoiManager.deletePoi(pointid);
+									mPoiOverlay.UpdateList();
+									mMap.invalidate(); //postInvalidate();
+								}
+							}).setNegativeButton(R.string.no, null).create().show();
+						break;
+					}
+					case R.id.menu_hide: {
+						final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
+						poi.mHidden = true;
+						mPoiManager.updatePoi(poi);
+						mPoiOverlay.UpdateList();
+						mMap.invalidate(); //postInvalidate();
+						break;
+					}
+					case R.id.menu_share: {
+						try {
+							final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
+							final GeoPoint point = poi.mGeoPoint;
+							Intent intent1 = new Intent(Intent.ACTION_SEND);
+							intent1.setType("text/plain");
+							intent1.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
+								.append(poi.mTitle)
+								.append('\n')
+								.append("http://www.openstreetmap.org/#map=")
+								.append(16) // zoom
+								.append('/')
+								.append(point.getLatitude())
+								.append('/')
+								.append(point.getLongitude())
+								.toString());
+							startActivity(intent1);
 						}
-					}).setNegativeButton(R.string.no, null).create().show();
-			}
-			else if (item.getItemId() == R.id.menu_hide) {
-				final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
-				poi.Hidden = true;
-				mPoiManager.updatePoi(poi);
-				mPoiOverlay.UpdateList();
-				mMap.invalidate(); //postInvalidate();
-			}
-			else if (item.getItemId() == R.id.menu_share) {
-				try {
-					final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
-					final GeoPoint point = poi.GeoPoint;
-					Intent intent1 = new Intent(Intent.ACTION_SEND);
-					intent1.setType("text/plain");
-					intent1.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
-						.append(poi.Title)
-						.append('\n')
-						.append("http://www.openstreetmap.org/#map=")
-						.append(16) // zoom
-						.append('/')
-						.append(point.getLatitude())
-						.append('/')
-						.append(point.getLongitude())
-						.toString());
-					startActivity(intent1);
+						catch (Exception e) {
+							Ut.e(e.toString(), e);
+						}
+						break;
+					}
+					case R.id.menu_toradar: {
+						final PoiPoint poi1 = mPoiOverlay.getPoiPoint(mMarkerIndex);
+						try {
+							Intent i = new Intent("com.google.android.radar.SHOW_RADAR");
+							i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+							i.putExtra("name", poi1.mTitle);
+							i.putExtra("latitude", poi1.mGeoPoint.getLatitudeE6() / 1000000f);
+							i.putExtra("longitude", poi1.mGeoPoint.getLongitudeE6() / 1000000f);
+							startActivity(i);
+						}
+						catch (Exception e) {
+							Toast.makeText(this, R.string.message_noradar, Toast.LENGTH_LONG).show();
+							Ut.e(e.toString(), e);
+						}
+						break;
+					}
+					default: {
+					}
 				}
-				catch (Exception e) {
-					Ut.e(e.toString(), e);
-				}
-			}
-			else if (item.getItemId() == R.id.menu_toradar) {
-				final PoiPoint poi1 = mPoiOverlay.getPoiPoint(mMarkerIndex);
-				try {
-					Intent i = new Intent("com.google.android.radar.SHOW_RADAR");
-					i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					i.putExtra("name", poi1.Title);
-					i.putExtra("latitude", (float)(poi1.GeoPoint.getLatitudeE6() / 1000000f));
-					i.putExtra("longitude", (float)(poi1.GeoPoint.getLongitudeE6() / 1000000f));
-					startActivity(i);
-				}
-				catch (Exception e) {
-					Toast.makeText(this, R.string.message_noradar, Toast.LENGTH_LONG).show();
-					Ut.e(e.toString(), e);
-				}
+				break;
 			}
 		}
 		final ContextMenuInfo menuInfo = item.getMenuInfo();
@@ -1406,125 +1395,126 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		if (id == R.id.whatsnew) {
-			return new AlertDialog.Builder(this) //.setIcon( R.drawable.alert_dialog_icon)
-				.setTitle(R.string.about_dialog_whats_new)
-				.setMessage(R.string.whats_new_dialog_text)
-				.setNegativeButton(R.string.about_dialog_close, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-
-								/* User clicked Cancel so do some stuff */
-					}
-				})
-				.create();
-		}
-		else if (id == R.id.about) {
-			return new AlertDialog.Builder(this) //.setIcon(R.drawable.alert_dialog_icon)
-				.setTitle(R.string.menu_about)
-				.setMessage(getText(R.string.app_name) + " v." + Ut.getAppVersion(this) + "\n\n"
-					+ getText(R.string.about_dialog_text))
-				.setPositiveButton(R.string.about_dialog_whats_new, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-
-						showDialog(R.id.whatsnew);
-					}
-				}).setNegativeButton(R.string.about_dialog_close, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-
-								/* User clicked Cancel so do some stuff */
-					}
-				}).create();
-		}
-		else if (id == R.id.error) {
-			return new AlertDialog.Builder(this) //.setIcon(R.drawable.alert_dialog_icon)
-				.setTitle(R.string.error_title)
-				.setMessage(getText(R.string.error_text))
-				.setPositiveButton(R.string.error_send, new DialogInterface.OnClickListener() {
-					@SuppressWarnings("static-access")
-					public void onClick(DialogInterface dialog, int whichButton) {
-
-						SharedPreferences settings = getPreferences(Activity.MODE_PRIVATE);
-						String text = settings.getString("error", "");
-						String subj = "Tabulae error: ";
-						try {
-							final String[] lines = text.split("\n", 2);
-							final Pattern p = Pattern.compile("[.][\\w]+[:| |\\t|\\n]");
-							final Matcher m = p.matcher(lines[0] + "\n");
-							if (m.find())
-								subj += m.group().replace(".", "").replace(":", "").replace("\n", "") + " at ";
-							final Pattern p2 = Pattern.compile("[.][\\w]+[(][\\w| |\\t]*[)]");
-							final Matcher m2 = p2.matcher(lines[1]);
-							if (m2.find())
-								subj += m2.group().substring(2);
+		switch (id) {
+			case R.id.whatsnew: {
+				return new AlertDialog.Builder(this)
+					//.setIcon( R.drawable.alert_dialog_icon)
+					.setTitle(R.string.about_dialog_whats_new)
+					.setMessage(R.string.whats_new_dialog_text)
+					.setNegativeButton(R.string.about_dialog_close, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							/* User clicked Cancel so do some stuff */
 						}
-						catch (Exception ignored) {
-							Ut.e(ignored.toString(), ignored);
+					}).create();
+			}
+			case R.id.about: {
+				return new AlertDialog.Builder(this)
+					//.setIcon(R.drawable.alert_dialog_icon)
+					.setTitle(R.string.menu_about)
+					.setMessage(getText(R.string.app_name) + " v." + Ut.getAppVersion(this) + "\n\n"
+						+ getText(R.string.about_dialog_text))
+					.setPositiveButton(R.string.about_dialog_whats_new, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							showDialog(R.id.whatsnew);
 						}
+					}).setNegativeButton(R.string.about_dialog_close, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							/* User clicked Cancel so do some stuff */
+						}
+					}).create();
+			}
+			case R.id.error: {
+				return new AlertDialog.Builder(this)
+					//.setIcon(R.drawable.alert_dialog_icon)
+					.setTitle(R.string.error_title)
+					.setMessage(getText(R.string.error_text))
+					.setPositiveButton(R.string.error_send, new DialogInterface.OnClickListener() {
+						@SuppressWarnings("static-access")
+						public void onClick(DialogInterface dialog, int whichButton) {
+							SharedPreferences settings = getPreferences(Activity.MODE_PRIVATE);
+							String text = settings.getString("error", "");
+							String subj = "Tabulae error: ";
+							try {
+								final String[] lines = text.split("\n", 2);
+								final Pattern p = Pattern.compile("[.][\\w]+[:| |\\t|\\n]");
+								final Matcher m = p.matcher(lines[0] + "\n");
+								if (m.find())
+									subj += m.group().replace(".", "").replace(":", "").replace("\n", "") + " at ";
+								final Pattern p2 = Pattern.compile("[.][\\w]+[(][\\w| |\\t]*[)]");
+								final Matcher m2 = p2.matcher(lines[1]);
+								if (m2.find())
+									subj += m2.group().substring(2);
+							}
+							catch (Exception ignored) {
+								Ut.e(ignored.toString(), ignored);
+							}
+							final Build b = new Build();
+							final Build.VERSION v = new Build.VERSION();
+							text = "Your message:"
+								+ "\n\nTabulae: " + Ut.getAppVersion(MainActivity.this)
+								+ "\nAndroid: " + v.RELEASE
+								+ "\nDevice: " + b.BOARD + " " + b.BRAND + " " + b.DEVICE +/*" "+b.MANUFACTURER+*/" " + b.MODEL + " " + b.PRODUCT
+								+ "\n\n" + text;
+							startActivity(Ut.SendMail(subj, text));
+							SharedPreferences uiState = getPreferences(0);
+							SharedPreferences.Editor editor = uiState.edit();
+							editor.putString("error", "");
+							editor.commit();
 
-						final Build b = new Build();
-						final Build.VERSION v = new Build.VERSION();
-						text = "Your message:"
-							+ "\n\nTabulae: " + Ut.getAppVersion(MainActivity.this)
-							+ "\nAndroid: " + v.RELEASE
-							+ "\nDevice: " + b.BOARD + " " + b.BRAND + " " + b.DEVICE +/*" "+b.MANUFACTURER+*/" " + b.MODEL + " " + b.PRODUCT
-							+ "\n\n" + text;
-
-						startActivity(Ut.SendMail(subj, text));
-
-						SharedPreferences uiState = getPreferences(0);
-						SharedPreferences.Editor editor = uiState.edit();
-						editor.putString("error", "");
-						editor.commit();
-
-					}
-				}).setNegativeButton(R.string.about_dialog_close, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-
-						SharedPreferences uiState = getPreferences(0);
-						SharedPreferences.Editor editor = uiState.edit();
-						editor.putString("error", "");
-						editor.commit();
-					}
-				}).create();
-
+						}
+					}).setNegativeButton(R.string.about_dialog_close, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							SharedPreferences uiState = getPreferences(0);
+							SharedPreferences.Editor editor = uiState.edit();
+							editor.putString("error", "");
+							editor.commit();
+						}
+					}).create();
+			}
 		}
 		return null;
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == R.id.menu_editpoi || requestCode == R.id.menu_addpoi) {
-			mPoiOverlay.UpdateList();
-			mMap.invalidate(); //postInvalidate();
-		}
-		else if (requestCode == R.id.poilist) {
-			if (resultCode == RESULT_OK) {
-				PoiPoint point = mPoiManager.getPoiPoint(data.getIntExtra("pointid", PoiPoint.EMPTY_ID()));
-				if (point != null) {
-					setAutoFollow(false);
-					mPoiOverlay.UpdateList();
-					mMap.setCenter(point.GeoPoint);
-				}
-			}
-			else {
+		switch (requestCode) {
+			case R.id.menu_editpoi:
+			case R.id.menu_addpoi: {
 				mPoiOverlay.UpdateList();
 				mMap.invalidate(); //postInvalidate();
+				break;
 			}
-		}
-		else if (requestCode == R.id.tracks) {
-			if (resultCode == RESULT_OK) {
-				Track track = mPoiManager.getTrack(data.getIntExtra("trackid", PoiPoint.EMPTY_ID()));
-				if (track != null) {
-					setAutoFollow(false);
-					mMap.setCenter(track.getBeginGeoPoint());
+			case R.id.poilist: {
+				if (resultCode == RESULT_OK) {
+					PoiPoint point = mPoiManager.getPoiPoint(data.getIntExtra("pointid", PoiConstants.EMPTY_ID));
+					if (point != null) {
+						setAutoFollow(false);
+						mPoiOverlay.UpdateList();
+						mMap.setCenter(point.mGeoPoint);
+					}
 				}
+				else {
+					mPoiOverlay.UpdateList();
+					mMap.invalidate(); //postInvalidate();
+				}
+				break;
+			}
+			case R.id.tracks: {
+				if (resultCode == RESULT_OK) {
+					Track track = mPoiManager.getTrack(data.getIntExtra("trackid", PoiConstants.EMPTY_ID));
+					if (track != null) {
+						setAutoFollow(false);
+						mMap.setCenter(track.getBeginGeoPoint());
+					}
+				}
+				break;
+			}
+			case R.id.settings_activity_closed: {
+				finish();
+				startActivity(new Intent(this, getClass()));
+				break;
 			}
 		}
-		else if (requestCode == R.id.settings_activity_closed) {
-			finish();
-			startActivity(new Intent(this, getClass()));
-		}
-
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 

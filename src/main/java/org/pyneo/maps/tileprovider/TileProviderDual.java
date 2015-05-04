@@ -89,7 +89,6 @@ public class TileProviderDual extends TileProviderBase {
 		} else {
 			bmpDual = super.getTile(x, y, z);
 		}
-		;
 
 		return bmpDual;
 	}

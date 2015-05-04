@@ -128,7 +128,6 @@ public class AreaSelectorActivity extends Activity {
 				editor.putInt("LongitudeAS2", 0);
 				editor.putBoolean("step2", false);
 			}
-			;
 
 			editor.commit();
 
@@ -169,7 +168,7 @@ public class AreaSelectorActivity extends Activity {
 		LinearLayout ll1 = (LinearLayout)findViewById(R.id.LayerArea1);
 		LinearLayout ll2 = (LinearLayout)findViewById(R.id.LayerArea2);
 		CheckBox cb;
-		final double tileLength = ((TileProviderInet)mTileSource.getTileProvider()).getTileLength();
+		final double tileLength = mTileSource.getTileProvider().getTileLength();
 		final int[] coordArr = mAreaSelectorOverlay.getCoordArr();
 
 		for (int i = mTileSource.ZOOM_MINLEVEL; i <= mTileSource.ZOOM_MAXLEVEL; i++) {

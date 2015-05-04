@@ -194,7 +194,6 @@ public class PoiListActivity extends ListActivity {
 						}
 					}).create();
 		}
-		;
 
 		return super.onCreateDialog(id);
 	}
@@ -207,7 +206,7 @@ public class PoiListActivity extends ListActivity {
 
 		menu.add(0, R.id.menu_gotopoi, 0, getText(R.string.menu_goto));
 		menu.add(0, R.id.menu_editpoi, 0, getText(R.string.menu_edit));
-		if (poi.Hidden)
+		if (poi.mHidden)
 			menu.add(0, R.id.menu_show, 0, getText(R.string.menu_show));
 		else
 			menu.add(0, R.id.menu_hide, 0, getText(R.string.menu_hide));
@@ -241,20 +240,20 @@ public class PoiListActivity extends ListActivity {
 				}).setNegativeButton(R.string.no, null).create().show();
 
 		} else if (item.getItemId() == R.id.menu_hide) {
-			poi.Hidden = true;
+			poi.mHidden = true;
 			mPoiManager.updatePoi(poi);
 			((SimpleCursorAdapter)getListAdapter()).getCursor().requery();
 		} else if (item.getItemId() == R.id.menu_show) {
-			poi.Hidden = false;
+			poi.mHidden = false;
 			mPoiManager.updatePoi(poi);
 			((SimpleCursorAdapter)getListAdapter()).getCursor().requery();
 		} else if (item.getItemId() == R.id.menu_share) {
 			try {
-				final GeoPoint point = poi.GeoPoint;
+				final GeoPoint point = poi.mGeoPoint;
 				Intent intent1 = new Intent(Intent.ACTION_SEND);
 				intent1.setType("text/plain");
 				intent1.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
-					.append(poi.Title)
+					.append(poi.mTitle)
 					.append('\n')
 					.append("http://www.openstreetmap.org/#map=")
 					.append(16) // zoom
@@ -271,9 +270,9 @@ public class PoiListActivity extends ListActivity {
 			try {
 				Intent i = new Intent("com.google.android.radar.SHOW_RADAR");
 				i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				i.putExtra("name", poi.Title);
-				i.putExtra("latitude", (float)(poi.GeoPoint.getLatitudeE6() / 1000000f));
-				i.putExtra("longitude", (float)(poi.GeoPoint.getLongitudeE6() / 1000000f));
+				i.putExtra("name", poi.mTitle);
+				i.putExtra("latitude", poi.mGeoPoint.getLatitudeE6() / 1000000f);
+				i.putExtra("longitude", poi.mGeoPoint.getLongitudeE6() / 1000000f);
 				startActivity(i);
 			}
 			catch (Exception e) {
@@ -283,8 +282,6 @@ public class PoiListActivity extends ListActivity {
 
 		return super.onContextItemSelected(item);
 	}
-
-	;
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -328,20 +325,19 @@ public class PoiListActivity extends ListActivity {
 						poi = mPoiManager.getPoiPoint(c.getInt(4));
 
 						SimpleXML wpt = fold.createChild("Placemark");
-						wpt.createChild(PoiConstants.NAME).setText(poi.Title);
-						wpt.createChild(PoiConstants.DESCRIPTION).setText(poi.Descr);
+						wpt.createChild(PoiConstants.NAME).setText(poi.mTitle);
+						wpt.createChild(PoiConstants.DESCRIPTION).setText(poi.mDescr);
 						SimpleXML point = wpt.createChild("Point");
-						point.createChild("coordinates").setText(new StringBuilder().append(poi.GeoPoint.getLongitude()).append(",").append(poi.GeoPoint.getLatitude()).toString());
+						point.createChild("coordinates").setText(new StringBuilder().append(poi.mGeoPoint.getLongitude()).append(",").append(poi.mGeoPoint.getLatitude()).toString());
 						SimpleXML ext = wpt.createChild("ExtendedData");
 						SimpleXML category = ext.createChild(PoiConstants.CATEGORYID);
-						final PoiCategory poiCat = mPoiManager.getPoiCategory(poi.CategoryId);
+						final PoiCategory poiCat = mPoiManager.getPoiCategory(poi.mCategoryId);
 						category.setAttr(PoiConstants.CATEGORYID, Integer.toString(poiCat.getId()));
 						category.setAttr(PoiConstants.NAME, poiCat.Title);
 						category.setAttr(PoiConstants.ICONID, Integer.toString(poiCat.IconId));
 
 					} while (c.moveToNext());
 				}
-				;
 				c.close();
 			}
 
@@ -398,22 +394,21 @@ public class PoiListActivity extends ListActivity {
 						poi = mPoiManager.getPoiPoint(c.getInt(4));
 
 						SimpleXML wpt = xml.createChild("wpt");
-						wpt.setAttr(PoiConstants.LAT, Double.toString(poi.GeoPoint.getLatitude()));
-						wpt.setAttr(PoiConstants.LON, Double.toString(poi.GeoPoint.getLongitude()));
-						wpt.createChild(PoiConstants.ELE).setText(Double.toString(poi.Alt));
-						wpt.createChild(PoiConstants.NAME).setText(poi.Title);
-						wpt.createChild(PoiConstants.DESC).setText(poi.Descr);
-						wpt.createChild(PoiConstants.TYPE).setText(mPoiManager.getPoiCategory(poi.CategoryId).Title);
+						wpt.setAttr(PoiConstants.LAT, Double.toString(poi.mGeoPoint.getLatitude()));
+						wpt.setAttr(PoiConstants.LON, Double.toString(poi.mGeoPoint.getLongitude()));
+						wpt.createChild(PoiConstants.ELE).setText(Double.toString(poi.mAlt));
+						wpt.createChild(PoiConstants.NAME).setText(poi.mTitle);
+						wpt.createChild(PoiConstants.DESC).setText(poi.mDescr);
+						wpt.createChild(PoiConstants.TYPE).setText(mPoiManager.getPoiCategory(poi.mCategoryId).Title);
 						SimpleXML ext = wpt.createChild("extensions");
 						SimpleXML category = ext.createChild(PoiConstants.CATEGORYID);
-						final PoiCategory poiCat = mPoiManager.getPoiCategory(poi.CategoryId);
+						final PoiCategory poiCat = mPoiManager.getPoiCategory(poi.mCategoryId);
 						category.setAttr(PoiConstants.CATEGORYID, Integer.toString(poiCat.getId()));
 						category.setAttr(PoiConstants.NAME, poiCat.Title);
 						category.setAttr(PoiConstants.ICONID, Integer.toString(poiCat.IconId));
 
 					} while (c.moveToNext());
 				}
-				;
 				c.close();
 			}
 

@@ -137,13 +137,13 @@ public class MeasureOverlay extends TileViewOverlay {
 						c.drawTextOnPath(String.format(Locale.UK, "%.1f╟", pt.Bearing), path, 0, mPaintText.getTextSize(), mPaintText);
 					}
 
-					c.drawBitmap(pic, p0.x - (int)(pic.getWidth() / 2), p0.y - (int)(pic.getHeight() / 2), mPaint);
+					c.drawBitmap(pic, p0.x - pic.getWidth() / 2, p0.y - pic.getHeight() / 2, mPaint);
 				}
 
 				p0 = p1;
 			}
 
-			c.drawBitmap(pic, p0.x - (int)(pic.getWidth() / 2), p0.y - (int)(pic.getHeight() / 2), mPaint);
+			c.drawBitmap(pic, p0.x - pic.getWidth() / 2, p0.y - pic.getHeight() / 2, mPaint);
 
 		}
 
@@ -162,7 +162,7 @@ public class MeasureOverlay extends TileViewOverlay {
 
 			c.restore();
 
-			c.drawBitmap(pic, screenCoords.x - (int)(pic.getWidth() / 2), screenCoords.y - (int)(pic.getHeight() / 2), mPaint);
+			c.drawBitmap(pic, screenCoords.x - pic.getWidth() / 2, screenCoords.y - pic.getHeight() / 2, mPaint);
 		}
 
 	}

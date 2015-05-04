@@ -52,7 +52,7 @@ public class TrackStatActivity extends Activity {
 				((TextView)findViewById(R.id.avgspeed_data)).setText(mDf.formatSpeed2(stat.AvgSpeed)[0]);
 				((TextView)findViewById(R.id.avgpace_data)).setText(String.format("%d:%02d", (int)(units.MINKM(stat.AvgPace) / 60), (int)(units.MINKM(stat.AvgPace) - 60 * (int)(units.MINKM(stat.AvgPace) / 60))));
 				((TextView)findViewById(R.id.maxspeed_data)).setText(mDf.formatSpeed2(stat.MaxSpeed)[0]);
-				((TextView)findViewById(R.id.movetime_data)).setText(sdf.format(new Date((long)(stat.MoveTime))));
+				((TextView)findViewById(R.id.movetime_data)).setText(sdf.format(new Date(stat.MoveTime)));
 				((TextView)findViewById(R.id.moveavgspeed_data)).setText(mDf.formatSpeed2(stat.AvgMoveSpeed)[0]);
 				((TextView)findViewById(R.id.minele_data)).setText(String.format("%.1f", units.M(stat.MinEle)));
 				((TextView)findViewById(R.id.maxele_data)).setText(String.format("%.1f", units.M(stat.MaxEle)));

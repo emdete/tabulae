@@ -73,10 +73,10 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 		// Load the preferences from an XML resource
 		addPreferencesFromResource(R.xml.mainpreferences);
 
-		((ListPreference)findPreference("pref_person_icon")).setEntries((String[])arrEntry.toArray(new String[arrEntry.size()]));
-		((ListPreference)findPreference("pref_person_icon")).setEntryValues((String[])arrEntryValues.toArray(new String[arrEntry.size()]));
-		((ListPreference)findPreference("pref_arrow_icon")).setEntries((String[])arrEntry.toArray(new String[arrEntry.size()]));
-		((ListPreference)findPreference("pref_arrow_icon")).setEntryValues((String[])arrEntryValues.toArray(new String[arrEntry.size()]));
+		((ListPreference)findPreference("pref_person_icon")).setEntries(arrEntry.toArray(new String[arrEntry.size()]));
+		((ListPreference)findPreference("pref_person_icon")).setEntryValues(arrEntryValues.toArray(new String[arrEntry.size()]));
+		((ListPreference)findPreference("pref_arrow_icon")).setEntries(arrEntry.toArray(new String[arrEntry.size()]));
+		((ListPreference)findPreference("pref_arrow_icon")).setEntryValues(arrEntryValues.toArray(new String[arrEntry.size()]));
 
 		findPreference("pref_dir_main").setSummary(aPref.getString("pref_dir_main", Ut.getExternalStorageDirectory() + "/tabulae/"));
 		findPreference("pref_dir_maps").setSummary(aPref.getString("pref_dir_maps", Ut.getExternalStorageDirectory() + "/tabulae/maps/"));

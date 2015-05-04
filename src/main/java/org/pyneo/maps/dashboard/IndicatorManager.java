@@ -273,7 +273,7 @@ public class IndicatorManager implements IndicatorConst {
 		}
 
 		mIndicatorViewList.clear();
-		((ViewGroup)((MainActivity)ctx).findViewById(R.id.dashboard_area)).removeAllViews();
+		((ViewGroup) ctx.findViewById(R.id.dashboard_area)).removeAllViews();
 	}
 
 	public int getOrientation(Activity context) {

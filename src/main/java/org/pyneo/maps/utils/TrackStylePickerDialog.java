@@ -127,8 +127,8 @@ public class TrackStylePickerDialog extends Dialog implements ColorPickerView.On
 			}
 		});
 
-		((Button)findViewById(R.id.saveButton)).setOnClickListener(this);
-		((Button)findViewById(R.id.discardButton)).setOnClickListener(this);
+		findViewById(R.id.saveButton).setOnClickListener(this);
+		findViewById(R.id.discardButton).setOnClickListener(this);
 		mAddShadowBox = (CheckBox)findViewById(R.id.add_shadow_box);
 		mAddShadowBox.setOnClickListener(new View.OnClickListener() {
 
@@ -182,7 +182,7 @@ public class TrackStylePickerDialog extends Dialog implements ColorPickerView.On
 	}
 
 	public interface OnTrackStyleChangedListener {
-		public void onTrackStyleChanged(int color, int width, int colorshadow, double shadowradius);
+		void onTrackStyleChanged(int color, int width, int colorshadow, double shadowradius);
 	}
 
 }

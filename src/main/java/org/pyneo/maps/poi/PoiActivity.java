@@ -88,7 +88,7 @@ public class PoiActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt("pointid", PoiPoint.EMPTY_ID());
+		int id = extras.getInt("pointid", PoiConstants.EMPTY_ID);
 
 		if (id < 0) {
 			mPoiPoint = new PoiPoint();
@@ -105,27 +105,27 @@ public class PoiActivity extends Activity {
 			if (mPoiPoint == null)
 				finish();
 
-			mTitle.setText(mPoiPoint.Title);
+			mTitle.setText(mPoiPoint.mTitle);
 			for (int pos = 0; pos < mSpinner.getCount(); pos++) {
-				if (mSpinner.getItemIdAtPosition(pos) == mPoiPoint.CategoryId) {
+				if (mSpinner.getItemIdAtPosition(pos) == mPoiPoint.mCategoryId) {
 					mSpinner.setSelection(pos);
 					break;
 				}
 			}
-			mLat.setText(mCf.convertLat(mPoiPoint.GeoPoint.getLatitude()));
-			mLon.setText(mCf.convertLon(mPoiPoint.GeoPoint.getLongitude()));
-			mAlt.setText(String.format(Locale.UK, "%.1f", mPoiPoint.Alt));
-			mDescr.setText(mPoiPoint.Descr);
-			mHidden.setChecked(mPoiPoint.Hidden);
+			mLat.setText(mCf.convertLat(mPoiPoint.mGeoPoint.getLatitude()));
+			mLon.setText(mCf.convertLon(mPoiPoint.mGeoPoint.getLongitude()));
+			mAlt.setText(String.format(Locale.UK, "%.1f", mPoiPoint.mAlt));
+			mDescr.setText(mPoiPoint.mDescr);
+			mHidden.setChecked(mPoiPoint.mHidden);
 		}
 
-		((Button)findViewById(R.id.saveButton))
+		findViewById(R.id.saveButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					doSaveAction();
 				}
 			});
-		((Button)findViewById(R.id.discardButton))
+		findViewById(R.id.discardButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					PoiActivity.this.finish();
@@ -151,13 +151,13 @@ public class PoiActivity extends Activity {
 	}
 
 	private void doSaveAction() {
-		mPoiPoint.Title = mTitle.getText().toString();
-		mPoiPoint.CategoryId = (int)mSpinner.getSelectedItemId();
-		mPoiPoint.Descr = mDescr.getText().toString();
-		mPoiPoint.GeoPoint = GeoPoint.fromDouble(CoordFormatter.convert(mLat.getText().toString()), CoordFormatter.convert(mLon.getText().toString()));
-		mPoiPoint.Hidden = mHidden.isChecked();
+		mPoiPoint.mTitle = mTitle.getText().toString();
+		mPoiPoint.mCategoryId = (int)mSpinner.getSelectedItemId();
+		mPoiPoint.mDescr = mDescr.getText().toString();
+		mPoiPoint.mGeoPoint = GeoPoint.fromDouble(CoordFormatter.convert(mLat.getText().toString()), CoordFormatter.convert(mLon.getText().toString()));
+		mPoiPoint.mHidden = mHidden.isChecked();
 		try {
-			mPoiPoint.Alt = Double.parseDouble(mAlt.getText().toString());
+			mPoiPoint.mAlt = Double.parseDouble(mAlt.getText().toString());
 		}
 		catch (NumberFormatException e) {
 		}

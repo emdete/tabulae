@@ -240,7 +240,7 @@ public class TileProviderTAR extends TileProviderFileBase {
 							minzoom = zoom;
 					}
 
-					mProgressDialog.setProgress((int)(offset / 1024));
+					mProgressDialog.setProgress(offset / 1024);
 
 					if (mStopIndexing)
 						break;

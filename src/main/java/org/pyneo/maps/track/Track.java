@@ -41,8 +41,6 @@ public class Track implements PoiConstants {
 		this(EMPTY_ID, "", "", false, 0, 0, 0, 0, 0, new Date(0), "", "");
 	}
 
-	;
-
 	public Track(final String style) {
 		this(EMPTY_ID, "", "", false, 0, 0, 0, 0, 0, new Date(0), style, style);
 	}

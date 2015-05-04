@@ -94,7 +94,7 @@ public class PoiCategoryListActivity extends ListActivity {
 		PoiCategory category = mPoiManager.getPoiCategory(id);
 
 		menu.add(0, R.id.menu_editpoi, 0, getText(R.string.menu_edit));
-		if (category.Hidden == true)
+		if (category.Hidden)
 			menu.add(0, R.id.menu_show, 0, getText(R.string.menu_show));
 		else
 			menu.add(0, R.id.menu_hide, 0, getText(R.string.menu_hide));

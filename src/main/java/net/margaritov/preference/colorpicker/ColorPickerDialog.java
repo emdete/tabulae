@@ -41,7 +41,7 @@ public class ColorPickerDialog
 	private OnColorChangedListener mListener;
 
 	public interface OnColorChangedListener {
-		public void onColorChanged(int color);
+		void onColorChanged(int color);
 	}
 	
 	public ColorPickerDialog(Context context, int initialColor) {

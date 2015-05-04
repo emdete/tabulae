@@ -68,12 +68,14 @@ public class IconifiedTextListAdapter extends BaseAdapter implements Filterable 
 			return results;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		protected void publishResults(CharSequence arg0, FilterResults arg1) {
 			mItems = (List<IconifiedText>) arg1.values;
 			notifyDataSetChanged();
 		}
 
+		@SuppressWarnings("unchecked")
 		List<IconifiedText> synchronousFilter(CharSequence filter) {
 			FilterResults results = performFiltering(filter);
 			return (List<IconifiedText>)results.values;

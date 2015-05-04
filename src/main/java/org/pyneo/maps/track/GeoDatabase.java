@@ -150,7 +150,7 @@ public class GeoDatabase implements PoiConstants {
 		else if (!mDatabase.isOpen())
 			mDatabase = getDatabase();
 
-		if (ret == false)
+		if (!ret)
 			try {
 				Toast.makeText(mCtx, mCtx.getText(R.string.message_geodata_notavailable), Toast.LENGTH_LONG).show();
 			}
@@ -482,7 +482,6 @@ public class GeoDatabase implements PoiConstants {
 			// Not change the order of the fields
 			return mDatabase.rawQuery(STAT_get_map, args);
 		}
-		;
 		return null;
 	}
 

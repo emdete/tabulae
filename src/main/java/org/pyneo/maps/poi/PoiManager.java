@@ -52,9 +52,9 @@ public class PoiManager implements PoiConstants {
 
 	public void updatePoi(final PoiPoint point) {
 		if (point.getId() < 0)
-			mGeoDatabase.addPoi(point.Title, point.Descr, point.GeoPoint.getLatitude(), point.GeoPoint.getLongitude(), point.Alt, point.CategoryId, point.PointSourceId, point.Hidden == true? ONE: ZERO, point.IconId);
+			mGeoDatabase.addPoi(point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mPointSourceId, point.mHidden? ONE: ZERO, point.mIconId);
 		else
-			mGeoDatabase.updatePoi(point.getId(), point.Title, point.Descr, point.GeoPoint.getLatitude(), point.GeoPoint.getLongitude(), point.Alt, point.CategoryId, point.PointSourceId, point.Hidden == true? ONE: ZERO, point.IconId);
+			mGeoDatabase.updatePoi(point.getId(), point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mPointSourceId, point.mHidden? ONE: ZERO, point.mIconId);
 	}
 
 	private SparseArray<PoiPoint> doCreatePoiListFromCursor(Cursor c) {
@@ -125,9 +125,9 @@ public class PoiManager implements PoiConstants {
 
 	public void updatePoiCategory(PoiCategory poiCategory) {
 		if (poiCategory.getId() < ZERO)
-			mGeoDatabase.addPoiCategory(poiCategory.Title, poiCategory.Hidden == true? ONE: ZERO, poiCategory.IconId);
+			mGeoDatabase.addPoiCategory(poiCategory.Title, poiCategory.Hidden? ONE: ZERO, poiCategory.IconId);
 		else
-			mGeoDatabase.updatePoiCategory(poiCategory.getId(), poiCategory.Title, poiCategory.Hidden == true? ONE: ZERO, poiCategory.IconId, poiCategory.MinZoom);
+			mGeoDatabase.updatePoiCategory(poiCategory.getId(), poiCategory.Title, poiCategory.Hidden? ONE: ZERO, poiCategory.IconId, poiCategory.MinZoom);
 	}
 
 	public void DeleteAllPoi() {
@@ -237,7 +237,6 @@ public class PoiManager implements PoiConstants {
 
 				track = new Track(id, c.getString(0), c.getString(1), c.getInt(2) == ONE? true: false, c.getInt(3), c.getDouble(4), c.getDouble(5), c.getInt(6), c.getInt(7), new Date(c.getLong(8) * 1000), style, defStyle);
 			}
-			;
 			c.close();
 			c = null;
 

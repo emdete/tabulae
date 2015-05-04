@@ -137,7 +137,7 @@ public class ColorPickerView extends View {
 	private Point	mStartTouchPoint = null;
 
 	public interface OnColorChangedListener {
-		public void onColorChanged(int color);
+		void onColorChanged(int color);
 	}
 
 	public ColorPickerView(Context context){
@@ -903,7 +903,7 @@ public class ColorPickerView extends View {
 			mValShader = null;
 			mSatShader = null;
 			mHueShader = null;
-			mAlphaShader = null;;
+			mAlphaShader = null;
 
 			requestLayout();
 		}

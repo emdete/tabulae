@@ -1,9 +1,9 @@
 package org.pyneo.maps.utils;
 
 public interface IMoveListener {
-	public void onMoveDetected();
+	void onMoveDetected();
 
-	public void onZoomDetected();
+	void onZoomDetected();
 
-	public void onCenterDetected();
+	void onCenterDetected();
 }

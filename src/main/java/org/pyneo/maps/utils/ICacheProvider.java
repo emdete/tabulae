@@ -1,13 +1,13 @@
 package org.pyneo.maps.utils;
 
 public interface ICacheProvider {
-	public byte[] getTile(final String aURLstring, final int aX, final int aY, final int aZ);
+	byte[] getTile(final String aURLstring, final int aX, final int aY, final int aZ);
 
-	public void putTile(final String aURLstring, final int aX, final int aY, final int aZ, final byte[] aData) throws RException;
+	void putTile(final String aURLstring, final int aX, final int aY, final int aZ, final byte[] aData) throws RException;
 
-	public void Free();
+	void Free();
 
-	public double getTileLenght();
+	double getTileLenght();
 
-	public void deleteTile(final String aURLstring, final int aX, final int aY, final int aZ);
+	void deleteTile(final String aURLstring, final int aX, final int aY, final int aZ);
 }

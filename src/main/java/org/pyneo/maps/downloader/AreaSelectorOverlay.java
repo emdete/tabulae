@@ -72,10 +72,10 @@ public class AreaSelectorOverlay extends TileViewOverlay {
 
 		c.drawRect(mRect, mPaint);
 		final Bitmap pic = getPic(tileView);
-		c.drawBitmap(pic, p0.x - (int)(pic.getWidth() / 2), p0.y - (int)(pic.getHeight() / 2), mPaint);
-		c.drawBitmap(pic, p1.x - (int)(pic.getWidth() / 2), p1.y - (int)(pic.getHeight() / 2), mPaint);
-		c.drawBitmap(pic, p0.x - (int)(pic.getWidth() / 2), p1.y - (int)(pic.getHeight() / 2), mPaint);
-		c.drawBitmap(pic, p1.x - (int)(pic.getWidth() / 2), p0.y - (int)(pic.getHeight() / 2), mPaint);
+		c.drawBitmap(pic, p0.x - pic.getWidth() / 2, p0.y - pic.getHeight() / 2, mPaint);
+		c.drawBitmap(pic, p1.x - pic.getWidth() / 2, p1.y - pic.getHeight() / 2, mPaint);
+		c.drawBitmap(pic, p0.x - pic.getWidth() / 2, p1.y - pic.getHeight() / 2, mPaint);
+		c.drawBitmap(pic, p1.x - pic.getWidth() / 2, p0.y - pic.getHeight() / 2, mPaint);
 	}
 
 	@Override

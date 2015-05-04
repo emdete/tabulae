@@ -23,17 +23,16 @@ android {
 		versionCode 10003
 		versionName "1.0.3"
 	}
-	android {
-		lintOptions {
-			abortOnError false
-			disable 'MissingTranslation'
+	lintOptions {
+		abortOnError false
+		disable 'MissingTranslation'
+	}
+}
+
+allprojects {
+	gradle.projectsEvaluated {
+		tasks.withType(JavaCompile) {
+			options.compilerArgs << "-Xlint:-deprecation"
 		}
 	}
 }
-/* allprojects {
-	gradle.projectsEvaluated {
-		tasks.withType(JavaCompile) {
-			options.compilerArgs << "-Xlint:unchecked"
-		}
-	}
-} */

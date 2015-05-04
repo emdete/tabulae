@@ -118,7 +118,7 @@ public abstract class MultiChoiceAdapterHelperBase implements OnItemLongClickLis
         if (!isActionModeStarted()) {
             startActionMode();
         }
-        checkedItems.add((long) handle);
+        checkedItems.add(handle);
         owner.notifyDataSetChanged();
         onItemSelectedStateChanged();
     }

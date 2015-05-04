@@ -27,9 +27,9 @@ public abstract class VerScaleGestureDetector {
 	public abstract boolean onTouchEvent(MotionEvent ev);
 
 	public interface OnGestureListener {
-		public void onScale(double aScaleFactor);
+		void onScale(double aScaleFactor);
 
-		public void onScaleEnd();
+		void onScaleEnd();
 	}
 
 	private static class CupcakeDetector extends VerScaleGestureDetector {

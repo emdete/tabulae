@@ -53,15 +53,15 @@ public class GpxPoiParser extends DefaultHandler {
 		builder.delete(0, builder.length());
 		if (localName.equalsIgnoreCase(WPT)) {
 			mPoiPoint = new PoiPoint();
-			mPoiPoint.CategoryId = mCategoryId;
-			mPoiPoint.GeoPoint = GeoPoint.from2DoubleString(attributes.getValue(LAT), attributes.getValue(LON));
+			mPoiPoint.mCategoryId = mCategoryId;
+			mPoiPoint.mGeoPoint = GeoPoint.from2DoubleString(attributes.getValue(LAT), attributes.getValue(LON));
 		} else if (localName.equalsIgnoreCase("categoryid") && mPoiPoint != null) {
 			final String attrName = attributes.getValue(PoiConstants.NAME);
 			if (mCategoryMap.containsKey(attrName)) {
-				mPoiPoint.CategoryId = mCategoryMap.get(attrName);
+				mPoiPoint.mCategoryId = mCategoryMap.get(attrName);
 			} else {
-				mPoiPoint.CategoryId = (int)mPoiManager.getGeoDatabase().addPoiCategory(attrName, 0, Integer.parseInt(attributes.getValue(PoiConstants.ICONID)));
-				mCategoryMap.put(attrName, mPoiPoint.CategoryId);
+				mPoiPoint.mCategoryId = (int)mPoiManager.getGeoDatabase().addPoiCategory(attrName, 0, Integer.parseInt(attributes.getValue(PoiConstants.ICONID)));
+				mCategoryMap.put(attrName, mPoiPoint.mCategoryId);
 			}
 		}
 		super.startElement(uri, localName, name, attributes);
@@ -70,18 +70,18 @@ public class GpxPoiParser extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String name) throws SAXException {
 		if (localName.equalsIgnoreCase(WPT)) {
-			if (mPoiPoint.Title.equalsIgnoreCase("")) mPoiPoint.Title = "POI";
+			if (mPoiPoint.mTitle.equalsIgnoreCase("")) mPoiPoint.mTitle = "POI";
 			mPoiManager.updatePoi(mPoiPoint);
 		} else if (localName.equalsIgnoreCase(NAME)) {
 			if (mPoiPoint != null)
-				mPoiPoint.Title = builder.toString().trim();
+				mPoiPoint.mTitle = builder.toString().trim();
 		} else if (localName.equalsIgnoreCase(CMT)) {
 			if (mPoiPoint != null)
-				mPoiPoint.Descr = builder.toString().trim();
+				mPoiPoint.mDescr = builder.toString().trim();
 		} else if (localName.equalsIgnoreCase(DESC)) {
 			if (mPoiPoint != null)
-				if (mPoiPoint.Descr.equals(""))
-					mPoiPoint.Descr = builder.toString().trim();
+				if (mPoiPoint.mDescr.equals(""))
+					mPoiPoint.mDescr = builder.toString().trim();
 		}
 		super.endElement(uri, localName, name);
 	}

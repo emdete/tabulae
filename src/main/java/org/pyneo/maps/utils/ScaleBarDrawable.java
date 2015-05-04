@@ -80,7 +80,7 @@ public class ScaleBarDrawable extends Drawable {
 				mDist = "" + dist + " ml";
 				dist = (int)(dist * 1609.344);
 			} else if (dist >= 5280) {
-				mDist = "" + (int)(dist / 5280) + " ml";
+				mDist = "" + dist / 5280 + " ml";
 				dist = (int)(dist * 0.305);
 			} else {
 				mDist = "" + dist + " ft";
@@ -92,7 +92,7 @@ public class ScaleBarDrawable extends Drawable {
 		final Point p = new Point();
 		pj.toPixels(c2, p);
 		mWidth = p.x - mOsmv.getWidth() / 2;
-		mWidth2 = (int)mWidth / 2;
+		mWidth2 = mWidth / 2;
 
 		canvas.drawRect(margin + 0, 0, margin + mWidth + 2, 4, mPaint2);
 		canvas.drawRect(margin + 0, 0, margin + 4, h + 2, mPaint2);

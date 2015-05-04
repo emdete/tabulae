@@ -311,7 +311,6 @@ public class SQLiteMapDatabase implements ICacheProvider {
 				final File file = new File(mDatabase[0].getPath());
 				ret = file.length() / cnt;
 			}
-			;
 		}
 		return ret;
 	}

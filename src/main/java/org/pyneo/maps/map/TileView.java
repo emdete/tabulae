@@ -470,11 +470,11 @@ public class TileView extends View {
 		}
 
 		/**
-		 * Converts x/y ScreenCoordinates to the underlying GeoPoint.
+		 * Converts x/y ScreenCoordinates to the underlying mGeoPoint.
 		 *
 		 * @param x
 		 * @param y
-		 * @return GeoPoint under x/y.
+		 * @return mGeoPoint under x/y.
 		 */
 		public GeoPoint fromPixels(float x, float y) {
 			/* Subtract the offset caused by touch. */
@@ -515,7 +515,7 @@ public class TileView extends View {
 		}
 
 		/**
-		 * Converts a GeoPoint to its ScreenCoordinates. <br/>
+		 * Converts a mGeoPoint to its ScreenCoordinates. <br/>
 		 * <br/>
 		 * <b>CAUTION</b> ! Conversion currently has a large error on
 		 * <code>zoomLevels <= 7</code>.<br/>
@@ -532,11 +532,11 @@ public class TileView extends View {
 		 * 4 	98304m 	10px
 		 * </PRE>
 		 *
-		 * @param in    the GeoPoint you want the onScreenCoordinates of.
+		 * @param in    the mGeoPoint you want the onScreenCoordinates of.
 		 * @param reuse just pass null if you do not have a Point to be
 		 *              'recycled'.
 		 * @return the Point containing the approximated ScreenCoordinates of
-		 * the GeoPoint passed.
+		 * the mGeoPoint passed.
 		 */
 		public Point toPixels(final GeoPoint in, final Point reuse) {
 			return toPixels(in, reuse, true);

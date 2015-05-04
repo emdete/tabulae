@@ -181,7 +181,6 @@ public class TrackWriterService extends Service implements Constants {
 				db = null;
 			}
 		}
-		;
 
 		if (db == null) {
 			Toast.makeText(this,
@@ -190,7 +189,6 @@ public class TrackWriterService extends Service implements Constants {
 			this.stopSelf();
 			return;
 		}
-		;
 
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		final int minTime = Integer.parseInt(pref.getString("pref_trackwriter_mintime", "2000"));

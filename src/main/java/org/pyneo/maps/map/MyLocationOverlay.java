@@ -197,19 +197,19 @@ public class MyLocationOverlay extends TileViewOverlay {
 				c.rotate(osmv.getBearing(), screenCoords.x, screenCoords.y);
 				if (mNolocationIcon == null)
 					mNolocationIcon = IconManager.getInstance(mCtx).getNolocationIcon();
-				c.drawBitmap(mNolocationIcon, screenCoords.x - (int)(mNolocationIcon.getWidth() / 2), screenCoords.y - (int)(mNolocationIcon.getHeight() / 2), mPaint);
+				c.drawBitmap(mNolocationIcon, screenCoords.x - mNolocationIcon.getWidth() / 2, screenCoords.y - mNolocationIcon.getHeight() / 2, mPaint);
 			}
 			else if (mSpeed <= 0.278) { // not moving
 				c.rotate(osmv.getBearing(), screenCoords.x, screenCoords.y);
 				if (mLocationIcon == null)
 					mLocationIcon = IconManager.getInstance(mCtx).getLocationIcon();
-				c.drawBitmap(mLocationIcon, screenCoords.x - (int)(mLocationIcon.getWidth() / 2), screenCoords.y - (int)(mLocationIcon.getHeight() / 2), mPaint);
+				c.drawBitmap(mLocationIcon, screenCoords.x - mLocationIcon.getWidth() / 2, screenCoords.y - mLocationIcon.getHeight() / 2, mPaint);
 			}
 			else {
 				if (mArrow == null)
 					mArrow = IconManager.getInstance(mCtx).getArrowIcon();
 				c.rotate(mBearing, screenCoords.x, screenCoords.y);
-				c.drawBitmap(mArrow, screenCoords.x - (int)(mArrow.getWidth() / 2), screenCoords.y - (int)(mArrow.getHeight() / 2), mPaint);
+				c.drawBitmap(mArrow, screenCoords.x - mArrow.getWidth() / 2, screenCoords.y - mArrow.getHeight() / 2, mPaint);
 			}
 			c.restore();
 		}
@@ -219,7 +219,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 			pj.toPixels(mTargetLocation, screenCoordsTarg);
 			if (mTargetIcon == null)
 				mTargetIcon = IconManager.getInstance(mCtx).getTargetIcon();
-			c.drawBitmap(mTargetIcon, screenCoordsTarg.x - (int)(mTargetIcon.getWidth() / 2), screenCoordsTarg.y - (int)(mTargetIcon.getHeight() / 2), mPaint);
+			c.drawBitmap(mTargetIcon, screenCoordsTarg.x - mTargetIcon.getWidth() / 2, screenCoordsTarg.y - mTargetIcon.getHeight() / 2, mPaint);
 		}
 		final int x = osmv.getWidth() / 2;
 		final int y = osmv.getHeight() / 2;

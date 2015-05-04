@@ -58,7 +58,7 @@ public class GeoPoint implements MathConstants, GeoConstants {
 		final String[] f = s.split(",");
 		return new GeoPoint((int) (Double.parseDouble(f[0]) * 1E6), (int) (Double.parseDouble(f[1]) * 1E6));
 		// return new
-		// GeoPoint((int)(Double.parseDouble(s.substring(0,commaPos-1))* 1E6),
+		// mGeoPoint((int)(Double.parseDouble(s.substring(0,commaPos-1))* 1E6),
 		// (int)(Double.parseDouble(s.substring(commaPos+1,s.length()))* 1E6));
 	}
 

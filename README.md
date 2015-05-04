@@ -46,7 +46,7 @@ device.
 ToDos / known Bugs
 ------------------
 
-- fix bug on display of multiple stored tracks on different zooms
+- fix bug displaying multiple stored tracks on different zooms
 
 - fix bug on scale limits of maps
 
@@ -67,6 +67,8 @@ ToDos / known Bugs
 - go on when download stucks (dislpay cached ones with higher prio)
 
 - fix bug in db usage (already closed)
+
+- add pixel zoom
 
 - make it possible to have follow not centered
 

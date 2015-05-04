@@ -86,7 +86,7 @@ public class TileProviderFileBase extends TileProviderBase {
 		boolean res = false;
 		if (c == null)
 			return true;
-		else if (c.moveToFirst() == false)
+		else if (!c.moveToFirst())
 			res = true;
 		else if (aBlockIndexing)
 			res = false;

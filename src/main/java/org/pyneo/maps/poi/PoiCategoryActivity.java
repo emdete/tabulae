@@ -38,7 +38,7 @@ public class PoiCategoryActivity extends Activity implements PoiConstants {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt("id", PoiPoint.EMPTY_ID());
+		int id = extras.getInt("id", PoiConstants.EMPTY_ID);
 
 		if (id < 0) {
 			mPoiCategory = new PoiCategory();
@@ -58,13 +58,13 @@ public class PoiCategoryActivity extends Activity implements PoiConstants {
 			mMinZoom.setText(Integer.toString(mPoiCategory.MinZoom));
 		}
 
-		((Button)findViewById(R.id.saveButton))
+		findViewById(R.id.saveButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					doSaveAction();
 				}
 			});
-		((Button)findViewById(R.id.discardButton))
+		findViewById(R.id.discardButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					PoiCategoryActivity.this.finish();

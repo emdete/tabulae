@@ -50,19 +50,19 @@ public class ImportTrackActivity extends Activity {
 		mFileName = (EditText)findViewById(R.id.FileName);
 		mFileName.setText(settings.getString("IMPORT_TRACK_FILENAME", Ut.getAppImportDir(this).getAbsolutePath()));
 
-		((Button)findViewById(R.id.SelectFileBtn))
+		findViewById(R.id.SelectFileBtn)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					doSelectFile();
 				}
 			});
-		((Button)findViewById(R.id.ImportBtn))
+		findViewById(R.id.ImportBtn)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					doImportTrack();
 				}
 			});
-		((Button)findViewById(R.id.discardButton))
+		findViewById(R.id.discardButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					ImportTrackActivity.this.finish();
@@ -171,7 +171,6 @@ public class ImportTrackActivity extends Activity {
 				ImportTrackActivity.this.finish();
 			}
 
-			;
 		});
 
 	}

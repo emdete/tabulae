@@ -140,7 +140,6 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 						}
 						break;
 					}
-					;
 				} while (c.moveToNext());
 			}
 			c.close();

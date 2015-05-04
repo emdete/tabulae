@@ -150,7 +150,7 @@ public class FileDownloadListActivity extends ListActivity {
 			super.onProgressUpdate(progress);
 			//mProgressDialog.setMax(progress[1]/1024);
 			//mProgressDialog.setProgress(progress[0]/1024);
-			mProgressDialog.setMessage(String.format("%s: %dKB", mapName, (int)(progress[0] / 1024)));
+			mProgressDialog.setMessage(String.format("%s: %dKB", mapName, progress[0] / 1024));
 		}
 
 		@Override

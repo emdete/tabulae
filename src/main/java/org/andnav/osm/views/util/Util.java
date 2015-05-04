@@ -55,13 +55,13 @@ public class Util implements OpenStreetMapViewConstants{
 						/ Math.PI)
 						/ 2 * (1 << zoom));
 			else {
-				final double E2 = (double) aLat * Math.PI / 180;
+				final double E2 = aLat * Math.PI / 180;
 				final long sradiusa = 6378137;
 				final long sradiusb = 6356752;
-				final double J2 = (double) Math.sqrt(sradiusa * sradiusa
+				final double J2 = Math.sqrt(sradiusa * sradiusa
 						- sradiusb * sradiusb)
 						/ sradiusa;
-				final double M2 = (double) Math.log((1 + Math.sin(E2))
+				final double M2 = Math.log((1 + Math.sin(E2))
 						/ (1 - Math.sin(E2)))
 						/ 2
 						- J2
