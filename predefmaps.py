@@ -806,7 +806,7 @@ maps = (
 		),
 	dict(
 		cat="OSM",
-		name="Standart",
+		name="Standard",
 		id="mapnik",
 		descr="http://www.openstreetmap.org/",
 		baseurl="http://tile.openstreetmap.org/",
