@@ -36,5 +36,10 @@ def conv_svg(b, n):
 			))
 
 for n in glob('.svg'):
-	conv_svg(100 if 'needle' in n else 48, n)
+	if 'ic_' in n:
+		conv_svg(48, n)
+	elif 'needle' in n:
+		conv_svg(100, n)
+	else:
+		conv_svg(80, n)
 
