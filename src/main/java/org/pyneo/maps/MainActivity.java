@@ -1563,19 +1563,20 @@ public class MainActivity extends Activity {
 	private class MainActivityCallbackHandler extends Handler {
 		@Override
 		public void handleMessage(final Message msg) {
-			final int what = msg.what;
-			if (what == Ut.MAPTILEFSLOADER_SUCCESS_ID) {
-				mMap.invalidate(); //postInvalidate();
-			}
-			else if (what == R.id.user_moved_map) {
-				// setAutoFollow(false);
-			}
-			else if (what == R.id.set_title) {
-				setTitle();
-			}
-			else if (what == Ut.ERROR_MESSAGE) {
-				if (msg.obj != null)
-					Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
+			switch (msg.what) {
+				case Ut.MAPTILEFSLOADER_SUCCESS_ID: {
+					mMap.invalidate(); //postInvalidate();
+				}
+				case R.id.user_moved_map: {
+					// setAutoFollow(false);
+				}
+				case R.id.set_title: {
+					setTitle();
+				}
+				case Ut.ERROR_MESSAGE: {
+					if (msg.obj != null)
+						Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
+				}
 			}
 		}
 	}

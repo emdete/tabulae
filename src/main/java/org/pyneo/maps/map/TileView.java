@@ -28,6 +28,7 @@ import org.andnav.osm.views.util.Util;
 import org.pyneo.maps.utils.IMoveListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TileView extends View {
@@ -786,6 +787,18 @@ public class TileView extends View {
 			}
 
 			return out;
+		}
+
+		public String toString() {
+			return this.getClass().getName() +
+				", viewWidth=" + viewWidth +
+				", viewHeight=" + viewHeight +
+				", bb=" + bb +
+				", zoomLevel=" + zoomLevel +
+				", tileSizePx=" + tileSizePx +
+				", centerMapTileCoords=" + Arrays.toString(centerMapTileCoords) +
+				", upperLeftCornerOfCenterMapTile=" + upperLeftCornerOfCenterMapTile +
+				".";
 		}
 	}
 }
