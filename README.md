@@ -72,6 +72,8 @@ ToDos / known Bugs
 
 - make it possible to have follow not centered
 
+- make https aware (disable all http tile provider)
+
 Origin
 ------
 
