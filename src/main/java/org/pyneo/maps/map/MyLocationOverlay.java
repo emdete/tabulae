@@ -106,7 +106,8 @@ public class MyLocationOverlay extends TileViewOverlay {
 		mAccuracy = loc.getAccuracy();
 		mBearing = loc.getBearing();
 		mSpeed = loc.getSpeed();
-		mLocAge = (android.os.SystemClock.elapsedRealtimeNanos() - loc.getElapsedRealtimeNanos()) / 1000000000L;
+		mLocAge = System.nanoTime() / 1000000000L - loc.getTime();
+		// TODO: from API17 up use: mLocAge = (android.os.SystemClock.elapsedRealtimeNanos() - loc.getElapsedRealtimeNanos()) / 1000000000L;
 		mLoc = loc;
 	}
 

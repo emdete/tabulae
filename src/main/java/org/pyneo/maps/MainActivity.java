@@ -148,10 +148,10 @@ public class MainActivity extends Activity {
 	private TrackOverlay mTrackOverlay;
 	private final SensorEventListener mListener = new SensorEventListener() {
 		private int iOrientation = -1;
-
+		@Override
 		public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		}
-
+		@Override
 		public void onSensorChanged(SensorEvent event) {
 			if (iOrientation < 0) {
 				iOrientation = ((WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
@@ -165,7 +165,6 @@ public class MainActivity extends Activity {
 				}
 			}
 		}
-
 	};
 
 	@Override
@@ -175,20 +174,18 @@ public class MainActivity extends Activity {
 		if (!OpenStreetMapViewConstants.DEBUGMODE) {
 			CrashReportHandler.attach(this);
 		}
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		createContentView();
 		mPoiManager = new PoiManager(this);
 		mLocationListener = new SampleLocationListener();
 		mMap.setMoveListener(mMoveListener);
-		//if(!OpenStreetMapViewConstants.DEBUGMODE) // Emulator was hang on the next line
 		mOrientationSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
-		// Init
 		mPrefOverlayButtonBehavior = Integer.parseInt(pref.getString("pref_overlay_button_behavior", "0"));
 		mPrefOverlayButtonVisibility = Integer.parseInt(pref.getString("pref_overlay_button_visibility", "0"));
-		if (mPrefOverlayButtonVisibility == 1) // Always hide
+		if (mPrefOverlayButtonVisibility == 1) { // Always hide
 			mOverlayView.setVisibility(View.GONE);
+		}
 		mCompassEnabled = uiState.getBoolean("CompassEnabled", mCompassEnabled);
 		mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
 		mMap.setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
@@ -209,15 +206,11 @@ public class MainActivity extends Activity {
 		setRequestedOrientation(screenOrientation);
 		final boolean showstatusbar = pref.getBoolean("pref_showstatusbar", true);
 		if (showstatusbar) {
-			getWindow().setFlags(
-				WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 			getWindow().getDecorView().setSystemUiVisibility(0);
 		}
 		else {
-			getWindow().setFlags(
-				WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 			getWindow().getDecorView().setSystemUiVisibility(0
 				| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN // hide action bar
 				| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
@@ -598,7 +591,8 @@ public class MainActivity extends Activity {
 			else if (locGps == null && locNlp == null)
 				loc = null;
 			else
-				loc = locGps.getElapsedRealtimeNanos() > locNlp.getElapsedRealtimeNanos()? locGps: locNlp;
+				loc = locGps.getTime() > locNlp.getTime()? locGps: locNlp;
+				// TODO: from API17 up use: loc = locGps.getElapsedRealtimeNanos() > locNlp.getElapsedRealtimeNanos()? locGps: locNlp;
 			if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			}
 			else if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
