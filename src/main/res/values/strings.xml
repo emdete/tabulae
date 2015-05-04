@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
 	<string name="about_dialog_close">Close</string>
-	<string name="about_dialog_text" translatable="false">\n ©2014 M. Dietrich\n ©2009 Robert.Developer\n Osmdroid by Nicolas Gramlich\n App icon by Everaldo Coelho\n With the assistance of\n Dmytro Sandu\n Snake Joe\n Christoffer Blindheim\n Translators\n Vitek Fedra CZ\n Blast IT\n Mike DE\n All rights reserved\n \n Questions, sentences mail to tabulae@pyneo.org\n \n How to and FAQ you can find on http://pyneo.org/tabulae/\n</string>
+	<string name="about_dialog_text" translatable="false">\n ©2014 M. Dietrich\n ©2009 Robert.Developer\n Osmdroid by Nicolas Gramlich\n App- and some other icons by M. Dietrich\n With the assistance of\n Dmytro Sandu\n Snake Joe\n Christoffer Blindheim\n Translators\n Vitek Fedra CZ\n Blast IT\n Mike DE\n All rights reserved\n \n Questions, sentences mail to tabulae@pyneo.org\n \n How to and FAQ you can find on http://pyneo.org/tabulae/\n</string>
 	<string name="about_dialog_whats_new">What\'s new&#8230;</string>
 	<string name="activity">Activity</string>
 	<string name="add_shadow_box">Add shadow</string>
@@ -22,14 +22,14 @@
 	<string name="btn_stop">Stop</string>
 	<string name="clear">Clear</string>
 	<string name="dashboard_message_cant_remove_last_indicator">Can\'t remove last indicator</string>
-	<string name="dashboard_title_gps_accuracy">GPS Accuracy</string>
-	<string name="dashboard_title_gps_altitude">GPS Altitude</string>
-	<string name="dashboard_title_gps_bearing">GPS Bearing</string>
-	<string name="dashboard_title_gps_latitude">GPS Latitude</string>
-	<string name="dashboard_title_gps_longitude">GPS Longitude</string>
+	<string name="dashboard_title_gps_accuracy">Accuracy</string>
+	<string name="dashboard_title_gps_altitude">Altitude</string>
+	<string name="dashboard_title_gps_bearing">Bearing</string>
+	<string name="dashboard_title_gps_latitude">Latitude</string>
+	<string name="dashboard_title_gps_longitude">Longitude</string>
 	<string name="dashboard_title_gps_provider">Loc Provider</string>
-	<string name="dashboard_title_gps_speed">GPS Speed</string>
-	<string name="dashboard_title_gps_time">GPS Timestamp</string>
+	<string name="dashboard_title_gps_speed">Speed</string>
+	<string name="dashboard_title_gps_time">Timestamp</string>
 	<string name="dashboard_title_map_center_lat">Center Latitude</string>
 	<string name="dashboard_title_map_center_lon">Center Longitude</string>
 	<string name="dashboard_title_map_name">Map Name</string>
@@ -123,9 +123,9 @@
 	<string name="message_corruptindex">You have corrupt index data. I recommend to clear index data in settings.</string>
 	<string name="message_error">Error: %s</string>
 	<string name="message_geodata_notavailable">Data on SD card is not available. Operation cannot be performed.</string>
-	<string name="message_gpsdisabled">GPS is disabled. Trying to use wireless network to determine your location&#8230;</string>
-	<string name="message_lastknownlocation">GPS and Network detection is disabled. Showing last known location&#8230;</string>
-	<string name="message_locationunavailable">GPS and Network detection is disabled. Your current location is temporarily unavailable&#8230;</string>
+	<string name="message_gpsdisabled">Satellite-location is disabled. Trying to use wireless network to determine your location&#8230;</string>
+	<string name="message_lastknownlocation">Satellite- and Networklocation is disabled. Showing last known location&#8230;</string>
+	<string name="message_locationunavailable">Satellite- and Networklocation is disabled. Your current location is temporarily unavailable&#8230;</string>
 	<string name="message_nogpsstatus">GPS Status not found. Please install it!</string>
 	<string name="message_noradar">Radar application not found. Please install it! You can install GPS Status or Radar from the Market.</string>
 	<string name="message_poiexported">The POIs exported to %s</string>
@@ -182,8 +182,7 @@
 	<string name="pref_coordformat_summary">Latitude, longitude format for display</string>
 	<string name="pref_crosshair">Crosshair on centre</string>
 	<string name="pref_crosshair_summary">Show litle crosshair on centre of the map</string>
-	<string name="pref_custommap_dialogmessage">For example:\n http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n Addition to the obvious {z}, {x}, {y} you can use {galileo} for Google maps\n Write me to email if you need to extends this list of parameters.\n
-	</string>
+	<string name="pref_custommap_dialogmessage">For example:\n http://c.tile.openstreetmap.org/{z}/{x}/{y}.png\n Addition to the obvious {z}, {x}, {y} you can use {galileo} for Google maps\n Write me to email if you need to extends this list of parameters.\n </string>
 	<string name="pref_dir">Directories</string>
 	<string name="pref_dir_export">Export files directory</string>
 	<string name="pref_dir_import">Import files directory</string>
@@ -198,7 +197,7 @@
 	<string name="pref_googlelanguagecode_summary">Localisation of Google Map</string>
 	<string name="pref_googlescale_summary">Get enlarged tiles from Google. It is recommended to clear the cache after changing the parameter</string>
 	<string name="pref_googlescale">Tiles size factor</string>
-	<string name="pref_gpsfastupdate">Fast update GPS data</string>
+	<string name="pref_gpsfastupdate">Fast update location</string>
 	<string name="pref_gpsfastupdate_summary">Slow updating saves the battery theoretically</string>
 	<string name="pref_hidepoi">Hide POI</string>
 	<string name="pref_hidepoi_summary">Dont show POI icons on the map</string>
@@ -210,8 +209,8 @@
 	<string name="pref_keepscreenon">Keep the screen on</string>
 	<string name="pref_keepscreenon_summaryoff">Screen will be automatically turned off in case of inactivity</string>
 	<string name="pref_keepscreenon_summary">Screen will not be turned off while you see map</string>
-	<string name="pref_line_gps">Line to GPS</string>
-	<string name="pref_line_gps_summary">Show line between current GPS location and center of screen</string>
+	<string name="pref_line_gps">Line to location</string>
+	<string name="pref_line_gps_summary">Show line between current location and center of screen</string>
 	<string name="pref_locale_summary">UI language independent of system setting</string>
 	<string name="pref_locale">UI Language</string>
 	<string name="pref_main_maps">Predefined Maps</string>
