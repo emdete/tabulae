@@ -499,15 +499,15 @@ public class TileView extends View {
 		}
 
 		public GeoPoint fromPixels(float x, float y, double bearing) {
-			final int x1 = (int)(x - getWidth() / 2);
-			final int y1 = (int)(y - getHeight() / 2);
+			final int x1 = (int)(x - viewWidth / 2);
+			final int y1 = (int)(y - viewHeight / 2);
 			final double hypot = Math.hypot(x1, y1);
 			final double angle = -1 * Math.signum(y1) * Math.toDegrees(Math.acos(x1 / hypot));
 			final double angle2 = angle - bearing;
 			final int x2 = (int)(Math.cos(Math.toRadians(angle2)) * hypot);
 			final int y2 = (int)(Math.sin(Math.toRadians(angle2 - 180)) * hypot);
 
-			return fromPixels((float)(getWidth() / 2 + x2), (float)(getHeight() / 2 + y2));
+			return fromPixels((float)(viewWidth / 2 + x2), (float)(viewHeight / 2 + y2));
 		}
 
 		public float metersToEquatorPixels(final float aMeters) {
@@ -547,15 +547,15 @@ public class TileView extends View {
 			final Point point = toPixels(in, reuse, true);
 			final Point out = (reuse != null)? reuse: new Point();
 
-			final int x1 = point.x - getWidth() / 2;
-			final int y1 = point.y - getHeight() / 2;
+			final int x1 = point.x - viewWidth / 2;
+			final int y1 = point.y - viewHeight / 2;
 			final double hypot = Math.hypot(x1, y1);
 			final double angle = -1 * Math.signum(y1) * Math.toDegrees(Math.acos(x1 / hypot));
 			final double angle2 = angle + bearing;
 			final int x2 = (int)(Math.cos(Math.toRadians(angle2)) * hypot);
 			final int y2 = (int)(Math.sin(Math.toRadians(angle2 - 180)) * hypot);
 
-			out.set(getWidth() / 2 + x2, getHeight() / 2 + y2);
+			out.set(viewWidth / 2 + x2, viewHeight / 2 + y2);
 			return out;
 		}
 

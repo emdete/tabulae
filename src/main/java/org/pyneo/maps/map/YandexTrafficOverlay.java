@@ -33,6 +33,7 @@ public class YandexTrafficOverlay extends TileViewOverlay implements Constants {
 			mTileSource = new TileSource(ctx, "yandextraffic");
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 		mTileSource.setHandler(mHandler);
 	}

@@ -87,6 +87,7 @@ public class Ut implements Constants {
 				break;
 			}
 			catch (ParseException e) {
+				Ut.e(e.toString(), e);
 			}
 		}
 
@@ -98,6 +99,7 @@ public class Ut implements Constants {
 			return string.substring(start, end).equalsIgnoreCase(string2);
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 			return false;
 		}
 	}
@@ -125,6 +127,7 @@ public class Ut implements Constants {
 			res = pi.versionName;
 		}
 		catch (NameNotFoundException e) {
+			Ut.e(e.toString(), e);
 		}
 
 		return res;
@@ -331,7 +334,8 @@ public class Ut implements Constants {
 			fis.close();
 			return sb.toString();
 		}
-		catch (Exception ex) {
+		catch (Exception e) {
+			Ut.e(e.toString(), e);
 			return "";
 		}
 	}

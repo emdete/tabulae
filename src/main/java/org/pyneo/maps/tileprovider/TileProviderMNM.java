@@ -241,7 +241,7 @@ public class TileProviderMNM extends TileProviderFileBase {
 
 			}
 			catch (Exception e) {
-				Ut.e(e.getLocalizedMessage());
+				Ut.e(e.getLocalizedMessage(), e);
 				return false;
 			}
 

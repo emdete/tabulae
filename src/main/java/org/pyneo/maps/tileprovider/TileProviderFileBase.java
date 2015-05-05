@@ -123,6 +123,7 @@ public class TileProviderFileBase extends TileProviderBase {
 			}
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 
 		return ret;
@@ -141,6 +142,7 @@ public class TileProviderFileBase extends TileProviderBase {
 			}
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 
 		return ret;

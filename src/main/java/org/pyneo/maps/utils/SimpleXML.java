@@ -64,6 +64,7 @@ public class SimpleXML {
 									ret.ftext += s;
 								}
 								catch (Exception e) {
+									Ut.d("e: " + e.toString());
 								}
 							}
 						} else {
@@ -75,6 +76,7 @@ public class SimpleXML {
 
 			}
 			catch (Exception e) {
+				Ut.d("e: " + e.toString());
 			}
 		}
 		return ret;
@@ -86,6 +88,7 @@ public class SimpleXML {
 			ret = SimpleXML.loadXml(new ByteArrayInputStream(txxml.getBytes()));
 		}
 		catch (Exception e) {
+			Ut.d("e: " + e.toString());
 		}
 
 		return ret;
@@ -101,6 +104,7 @@ public class SimpleXML {
 			ret = SimpleXML.fromNode(doc.getDocumentElement());
 		}
 		catch (Exception e) {
+			Ut.d("e: " + e.toString());
 		}
 
 		return ret;
@@ -117,6 +121,7 @@ public class SimpleXML {
 			return new String(baos.toByteArray());
 		}
 		catch (Exception e) {
+			Ut.d("e: " + e.toString());
 		}
 
 		return "";
@@ -161,6 +166,7 @@ public class SimpleXML {
 				fparent.fchild.remove(this);
 			}
 			catch (Exception e) {
+				Ut.d("e: " + e.toString());
 			}
 		}
 		if (newParent instanceof SimpleXML) {
@@ -169,6 +175,7 @@ public class SimpleXML {
 				fparent.fchild.add(this);
 			}
 			catch (Exception e) {
+				Ut.d("e: " + e.toString());
 			}
 		} else {
 			fparent = null;
@@ -193,6 +200,7 @@ public class SimpleXML {
 			}
 		}
 		catch (Exception e) {
+			Ut.d("e: " + e.toString());
 		}
 
 		return ret;
@@ -235,6 +243,7 @@ public class SimpleXML {
 			}
 		}
 		catch (Exception e) {
+			Ut.d("e: " + e.toString());
 		}
 
 		return ret;

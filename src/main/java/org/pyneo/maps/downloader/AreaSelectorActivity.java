@@ -282,6 +282,7 @@ public class AreaSelectorActivity extends Activity {
 			}
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 	}
 
@@ -434,6 +435,7 @@ public class AreaSelectorActivity extends Activity {
 			mTileSource = new TileSource(this, mapid);
 		}
 		catch (RException e) {
+			Ut.e(e.toString(), e);
 			//addMessage(e);
 		}
 		mMap.setTileSource(mTileSource);

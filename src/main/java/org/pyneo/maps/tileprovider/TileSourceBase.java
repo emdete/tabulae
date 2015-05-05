@@ -107,6 +107,7 @@ public class TileSourceBase {
 							this.MAP_TYPE = MIXMAP_PAIR;
 						}
 						catch (JSONException e) {
+							Ut.e(e.toString(), e);
 						}
 					} else if (c.getInt(2) == 2 || c.getInt(2) == 3) { // Custom source
 						final JSONObject json = MixedMapsPreference.getMapCustomParams(c.getString(3));

@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.pyneo.maps.R;
+import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.CoordFormatter;
 
 import org.andnav.osm.util.GeoPoint;
@@ -31,20 +32,16 @@ public class PoiActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		this.setContentView(R.layout.poi);
-
 		if (mPoiManager == null)
 			mPoiManager = new PoiManager(this);
 		mCf = new CoordFormatter(this);
-
 		mTitle = (EditText)findViewById(R.id.Title);
 		mLat = (EditText)findViewById(R.id.Lat);
 		mLon = (EditText)findViewById(R.id.Lon);
 		mAlt = (EditText)findViewById(R.id.Alt);
 		mDescr = (EditText)findViewById(R.id.Descr);
 		mHidden = (CheckBox)findViewById(R.id.Hidden);
-
 		mLat.setHint(mCf.getHint());
 		mLat.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
@@ -59,7 +56,6 @@ public class PoiActivity extends Activity {
 				}
 			}
 		});
-
 		mLon.setHint(mCf.getHint());
 		mLon.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
@@ -74,7 +70,6 @@ public class PoiActivity extends Activity {
 				}
 			}
 		});
-
 		mSpinner = (Spinner)findViewById(R.id.spinnerCategory);
 		Cursor c = mPoiManager.getGeoDatabase().getPoiCategoryListCursor();
 		startManagingCursor(c);
@@ -85,11 +80,9 @@ public class PoiActivity extends Activity {
 			new int[]{android.R.id.text1, R.id.pic});
 		adapter.setDropDownViewResource(R.layout.poi_category_spinner_dropdown);
 		mSpinner.setAdapter(adapter);
-
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
 		int id = extras.getInt("pointid", PoiConstants.EMPTY_ID);
-
 		if (id < 0) {
 			mPoiPoint = new PoiPoint();
 			mTitle.setText(extras.getString("title"));
@@ -101,10 +94,8 @@ public class PoiActivity extends Activity {
 			mHidden.setChecked(false);
 		} else {
 			mPoiPoint = mPoiManager.getPoiPoint(id);
-
 			if (mPoiPoint == null)
 				finish();
-
 			mTitle.setText(mPoiPoint.mTitle);
 			for (int pos = 0; pos < mSpinner.getCount(); pos++) {
 				if (mSpinner.getItemIdAtPosition(pos) == mPoiPoint.mCategoryId) {
@@ -118,7 +109,6 @@ public class PoiActivity extends Activity {
 			mDescr.setText(mPoiPoint.mDescr);
 			mHidden.setChecked(mPoiPoint.mHidden);
 		}
-
 		findViewById(R.id.saveButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
@@ -160,12 +150,10 @@ public class PoiActivity extends Activity {
 			mPoiPoint.mAlt = Double.parseDouble(mAlt.getText().toString());
 		}
 		catch (NumberFormatException e) {
+			Ut.e(e.toString(), e);
 		}
-
 		mPoiManager.updatePoi(mPoiPoint);
 		finish();
-
 		Toast.makeText(PoiActivity.this, R.string.message_saved, Toast.LENGTH_SHORT).show();
 	}
-
 }

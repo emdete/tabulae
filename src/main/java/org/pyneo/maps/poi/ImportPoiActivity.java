@@ -196,6 +196,7 @@ public class ImportPoiActivity extends Activity {
 						mPoiManager.rollbackTransaction();
 					}
 					catch (IllegalStateException e) {
+						Ut.e(e.toString(), e);
 					}
 					catch (OutOfMemoryError e) {
 						Ut.w("OutOfMemoryError");

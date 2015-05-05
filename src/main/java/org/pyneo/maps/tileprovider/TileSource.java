@@ -236,11 +236,6 @@ public class TileSource extends TileSourceBase {
 		if (mTileProvider != null) mTileProvider.Free();
 	}
 
-	protected void finalize() throws Throwable {
-		Ut.d("TileSource finalize");
-		super.finalize();
-	}
-
 	public int getZOOM_MINLEVEL() {
 		return ZOOM_MINLEVEL;
 	}

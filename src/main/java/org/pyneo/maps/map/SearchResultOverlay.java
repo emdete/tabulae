@@ -19,6 +19,7 @@ import org.pyneo.maps.poi.PoiOverlay;
 import org.pyneo.maps.utils.CoordFormatter;
 import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.utils.SimpleThreadFactory;
+import org.pyneo.maps.utils.Ut;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.TypeConverter;
@@ -192,6 +193,7 @@ public class SearchResultOverlay extends TileViewOverlay {
 						mElevation = json.getJSONArray("results").getJSONObject(0).getDouble("elevation");
 					}
 					catch (JSONException e) {
+						Ut.e(e.toString(), e);
 						mElevation = 0.0;
 					}
 					setDescr();
@@ -199,8 +201,10 @@ public class SearchResultOverlay extends TileViewOverlay {
 
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 				catch (OutOfMemoryError e) {
+					Ut.e(e.toString(), e);
 					System.gc();
 				}
 				finally {

@@ -32,6 +32,7 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 			json = new JSONObject(jsonstring);
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 			json = new JSONObject();
 			try {
 				json.put(MAPID, "");
@@ -41,6 +42,7 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 				json.put(OVERLAYPROJECTION, 0);
 			}
 			catch (JSONException e1) {
+				Ut.e(e1.toString(), e1);
 			}
 		}
 		return json;
@@ -52,6 +54,7 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 			json = new JSONObject(jsonstring);
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 			json = new JSONObject();
 			try {
 				json.put(BASEURL, "");
@@ -63,6 +66,7 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 				json.put(STRETCH, 1.0f);
 			}
 			catch (JSONException e1) {
+				Ut.e(e1.toString(), e1);
 			}
 		}
 		return json;
@@ -151,7 +155,8 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 		if (menuInfo == null || menuInfo != null && ((AdapterView.AdapterContextMenuInfo)menuInfo).id == 0) {
 			menu.add(Menu.NONE, R.id.add_dualmap, Menu.NONE, R.string.menu_add_dualmap);
 			menu.add(Menu.NONE, R.id.add_ownsourcemap, Menu.NONE, R.string.menu_add_ownsourcemap);
-		} else if (menuInfo != null && ((AdapterView.AdapterContextMenuInfo)menuInfo).position != 0) {
+		}
+		else if (menuInfo != null && ((AdapterView.AdapterContextMenuInfo)menuInfo).position != 0) {
 			menu.add(Menu.NONE, R.id.menu_deletepoi, Menu.NONE, R.string.menu_delete);
 			((AdapterView.AdapterContextMenuInfo)menuInfo).id = 0;
 		}
@@ -163,10 +168,12 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 		if (item.getItemId() == R.id.add_dualmap) {
 			mPoiManager.addMap(1, getMapPairParams("").toString());
 			loadMixedMaps();
-		} else if (item.getItemId() == R.id.add_ownsourcemap) {
+		}
+		else if (item.getItemId() == R.id.add_ownsourcemap) {
 			mPoiManager.addMap(2, getMapCustomParams("").toString());
 			loadMixedMaps();
-		} else if (item.getItemId() == R.id.menu_deletepoi) {
+		}
+		else if (item.getItemId() == R.id.menu_deletepoi) {
 			PreferenceGroup prefGroup = (PreferenceGroup)findPreference("pref_mixmaps_group");
 			final String key = prefGroup.getPreference(((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position - 2).getKey();
 			final String params[] = key.split("_");
@@ -194,7 +201,8 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 				CheckBoxPreferenceExt pref = (CheckBoxPreferenceExt)findPreference(key.replace("_name", ""));
 				if (pref != null)
 					pref.setTitle(sharedPreferences.getString(key, ""));
-			} else if (key.endsWith("_enabled")) {
+			}
+			else if (key.endsWith("_enabled")) {
 				CheckBoxPreferenceExt pref = (CheckBoxPreferenceExt)findPreference(key.replace("_enabled", ""));
 				if (pref != null)
 					pref.setChecked(sharedPreferences.getBoolean(key, true));

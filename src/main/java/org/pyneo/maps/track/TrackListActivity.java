@@ -134,6 +134,7 @@ public class TrackListActivity extends ListActivity {
 						res = mPoiManager.getGeoDatabase().saveTrackFromWriter(db);
 					}
 					catch (Exception e) {
+						Ut.e(e.toString(), e);
 					}
 					db.close();
 
@@ -162,8 +163,8 @@ public class TrackListActivity extends ListActivity {
 					res = (int)mPoiManager.getGeoDatabase().JoinTracks();
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
-
 				if (res > 0) {
 					Track tr = mPoiManager.getTrack(res);
 					tr.CalculateStat();
@@ -171,7 +172,6 @@ public class TrackListActivity extends ListActivity {
 				} else {
 					res = 0; // Nothing to save
 				}
-
 				dlgWait.dismiss();
 				Message.obtain(mHandler, R.id.tracks, res, 0).sendToTarget();
 			}
@@ -191,14 +191,12 @@ public class TrackListActivity extends ListActivity {
 	protected void onResume() {
 		final SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 		mSortOrder = uiState.getString("sortOrder", mSortOrder);
-
 		FillData();
 		super.onResume();
 	}
 
 	private void FillData() {
 		Cursor c = mPoiManager.getGeoDatabase().getTrackListCursor(mUnits == 0? getResources().getString(R.string.km): getResources().getString(R.string.ml), mSortOrder);
-
 		if (mNeedTracksStatUpdate) {
 			mNeedTracksStatUpdate = false;
 			if (c != null) {
@@ -209,10 +207,8 @@ public class TrackListActivity extends ListActivity {
 				}
 			}
 		}
-
 		if (c != null) {
 			startManagingCursor(c);
-
 			SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 				R.layout.track_list_item
 				, c,
@@ -402,12 +398,12 @@ public class TrackListActivity extends ListActivity {
 					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 1, 0, filename).sendToTarget();
 				}
 				catch (FileNotFoundException e) {
-					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
 					Ut.e(e.toString(), e);
+					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
 				}
 				catch (IOException e) {
-					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
 					Ut.e(e.toString(), e);
+					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
 				}
 				dlgWait.dismiss();
 			}
@@ -454,12 +450,12 @@ public class TrackListActivity extends ListActivity {
 					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 1, 0, filename).sendToTarget();
 				}
 				catch (FileNotFoundException e) {
-					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
 					Ut.e(e.toString(), e);
+					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
 				}
 				catch (IOException e) {
-					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
 					Ut.e(e.toString(), e);
+					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 0, 0, e.getMessage()).sendToTarget();
 				}
 
 				dlgWait.dismiss();

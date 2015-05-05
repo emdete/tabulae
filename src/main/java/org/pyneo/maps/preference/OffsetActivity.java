@@ -90,6 +90,7 @@ public class OffsetActivity extends Activity {
 				mTileSource = new TileSource(this, intent.getStringExtra("MAPID"));
 			}
 			catch (Exception e) {
+				Ut.e(e.toString(), e);
 			}
 			mMap.setTileSource(mTileSource);
 
@@ -155,6 +156,7 @@ public class OffsetActivity extends Activity {
 			}
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 	}
 

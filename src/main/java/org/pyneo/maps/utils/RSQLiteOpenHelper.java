@@ -15,6 +15,7 @@ package org.pyneo.maps.utils;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import org.pyneo.maps.utils.Ut;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -131,6 +132,7 @@ public abstract class RSQLiteOpenHelper {
 						mDatabase.close();
 					}
 					catch (Exception e) {
+						Ut.e(e.toString(), e);
 					}
 //                    mDatabase.unlock();
 				}
@@ -169,7 +171,7 @@ public abstract class RSQLiteOpenHelper {
 		}
 		catch (SQLiteException e) {
 			if (mName == null) throw e;  // Can't open a temp database read-only!
-			Log.e(TAG, "Couldn't open " + mName + " for writing (will try read-only):", e);
+			Ut.e(e.toString(), e);
 		}
 
 		SQLiteDatabase db = null;

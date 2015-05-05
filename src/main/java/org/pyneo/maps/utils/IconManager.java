@@ -73,8 +73,10 @@ public class IconManager {
 							return bmp;
 					}
 					catch (Exception e) {
+						Ut.e(e.toString(), e);
 					}
 					catch (OutOfMemoryError e) {
+						Ut.e(e.toString(), e);
 					}
 				}
 			}
@@ -107,9 +109,11 @@ public class IconManager {
 			return BitmapFactory.decodeResource(mAppContext.getResources(), resId);
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 			return null;
 		}
 		catch (OutOfMemoryError e) {
+			Ut.e(e.toString(), e);
 			return null;
 		}
 	}

@@ -59,9 +59,6 @@ public class SQLiteMapDatabase implements ICacheProvider {
 		for (int i = 0; i < mDatabase.length; i++)
 			if (mDatabase[i] != null)
 				mDatabase[i].close();
-
-		//RException aException = null;
-
 		mBaseFile = new File(aFileName);
 		final File folder = mBaseFile.getParentFile();
 		if (folder != null) {
@@ -73,13 +70,13 @@ public class SQLiteMapDatabase implements ICacheProvider {
 				for (int i = 0; i < files.length; i++) {
 					if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
 						j = j + 1;
-
 						try {
 							final int index = Integer.getInteger(files[i].getName().replace(mBaseFile.getName(), ""));
 							if (index > mBaseFileIndex)
 								mBaseFileIndex = index;
 						}
 						catch (Exception e) {
+							Ut.e(e.toString(), e);
 						}
 					}
 				}
@@ -108,8 +105,8 @@ public class SQLiteMapDatabase implements ICacheProvider {
 							}
 							j = j + 1;
 						}
-						catch (Throwable e) {
-							//aException = new RException(R.string.error_diskio, files[i].getAbsolutePath());
+						catch (Exception e) {
+							Ut.e(e.toString(), e);
 						}
 					}
 				}
@@ -123,9 +120,6 @@ public class SQLiteMapDatabase implements ICacheProvider {
 				}
 			}
 		}
-
-//		if(aException != null)
-//			throw aException;
 	}
 
 	public synchronized void setFile(final String aFileName) throws SQLiteException, RException {
@@ -147,7 +141,6 @@ public class SQLiteMapDatabase implements ICacheProvider {
 		mMinMaxZoom[0] = 22; //min
 		mMinMaxZoom[1] = 0; //max
 		int zoom;
-
 		for (int i = 0; i < mDatabase.length; i++)
 			if (mDatabase[i] != null) {
 				try {
@@ -156,6 +149,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 						mMinMaxZoom[0] = zoom;
 				}
 				catch (SQLException e) {
+					Ut.e(e.toString(), e);
 				}
 				try {
 					zoom = (int)this.mDatabase[i].compileStatement(SQL_GET_MAXZOOM).simpleQueryForLong();
@@ -163,6 +157,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 						mMinMaxZoom[1] = zoom;
 				}
 				catch (SQLException e) {
+					Ut.e(e.toString(), e);
 				}
 			}
 	}
@@ -170,14 +165,12 @@ public class SQLiteMapDatabase implements ICacheProvider {
 	public synchronized int getMaxZoom() {
 		if (mMinMaxZoom == null)
 			updateMinMaxZoom();
-
 		return mMinMaxZoom[1];
 	}
 
 	public synchronized int getMinZoom() {
 		if (mMinMaxZoom == null)
 			updateMinMaxZoom();
-
 		return mMinMaxZoom[0];
 	}
 
@@ -199,42 +192,35 @@ public class SQLiteMapDatabase implements ICacheProvider {
 	}
 
 	public synchronized byte[] getTile(final int aX, final int aY, final int aZ) {
+		final String[] args = {"" + aX, "" + aY, "" + (17 - aZ)};
 		byte[] ret = null;
-
-		int j = 0;
 		for (int i = 0; i < mDatabase.length; i++) {
-			j = mCurrentIndex + i;
+			int j = mCurrentIndex + i;
 			if (j >= mDatabase.length)
 				j = j - mDatabase.length;
-
 			if (this.mDatabase[j] != null && this.mDatabase[j].isOpen() && !this.mDatabase[j].isDbLockedByOtherThreads()) {
-				final String[] args = {"" + aX, "" + aY, "" + (17 - aZ)};
 				try {
 					final Cursor c = this.mDatabase[j].rawQuery(SQL_SELECT_IMAGE, args);
 					if (c != null) {
 						if (c.moveToFirst()) {
 							ret = c.getBlob(c.getColumnIndexOrThrow(RET));
 							c.close();
-
 							if (ret != null)
 								if (ret.length == 0) {
 									mDatabase[j].delete(TILES, SQL_DELTILE_WHERE, args);
 									ret = null;
 								}
-
 							mCurrentIndex = j;
 							break;
 						} else
 							c.close();
 					}
 				}
-				catch (Throwable e) {
+				catch (Exception e) {
 					Ut.e(e.toString(), e);
 				}
 			}
-
 		}
-
 		return ret;
 	}
 
@@ -333,6 +319,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 										break;
 									}
 									catch (JSONException e) {
+										Ut.e(e.toString(), e);
 									}
 								}
 							}
@@ -369,6 +356,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 
 		}
 		catch (JSONException e) {
+			Ut.e(e.toString(), e);
 		}
 		for (int i = 0; i < mDatabase.length; i++) {
 			if (mDatabase[i] != null)
@@ -388,6 +376,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 							this.mDatabase[i].execSQL(SQL_UPDATE_PARAMS, arg);
 						}
 						catch (SQLException e1) {
+							Ut.e(e.toString(), e1);
 						}
 					}
 					break;

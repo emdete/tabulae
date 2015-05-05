@@ -265,6 +265,7 @@ public class PoiListActivity extends ListActivity {
 				startActivity(intent1);
 			}
 			catch (Exception e) {
+				Ut.e(e.toString(), e);
 			}
 		} else if (item.getItemId() == R.id.menu_toradar) {
 			try {

@@ -71,6 +71,7 @@ public class TileProviderSQLITEDB extends TileProviderFileBase {
 								mPending2.wait();
 							}
 							catch (InterruptedException e) {
+								Ut.e(e.toString(), e);
 							}
 						}
 					} else {
@@ -81,7 +82,7 @@ public class TileProviderSQLITEDB extends TileProviderFileBase {
 								bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
 								mTileCache.putTile(xyz.TILEURL, bmp);
 							}
-							catch (Throwable e) {
+							catch (Exception e) {
 								Ut.e(e.toString(), e);
 							}
 						}

@@ -2,6 +2,8 @@ package org.pyneo.maps.track;
 
 import android.location.Location;
 
+import org.pyneo.maps.utils.Ut;
+
 import java.util.Date;
 
 public class TrackStatHelper {
@@ -68,6 +70,7 @@ public class TrackStatHelper {
 				Distance += results[0];
 			}
 			catch (Exception e) {
+				Ut.e(e.toString(), e);
 			}
 
 			Duration = date.getTime() - Date1.getTime();

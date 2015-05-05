@@ -34,10 +34,6 @@ public class TileProviderBase {
 			mTileCache.Free();
 	}
 
-	protected void finalize() throws Throwable {
-		super.finalize();
-	}
-
 	public Bitmap getTile(final int x, final int y, final int z) {
 		return mLoadingMapTile;
 	}

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import org.pyneo.maps.R;
 import org.pyneo.maps.track.Track;
 import org.pyneo.maps.utils.TrackStylePickerDialog.OnTrackStyleChangedListener;
+import org.pyneo.maps.utils.Ut;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +65,7 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 			ColorShadow = json.optInt(Track.COLORSHADOW, 0xffA565FE);
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 			Color = 0xffA565FE;
 			Width = 4;
 			ShadowRadius = 0;
@@ -104,6 +106,7 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 			ColorShadow = json.optInt(Track.COLORSHADOW, 0xffA565FE);
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 			Color = 0xffA565FE;
 			Width = 4;
 			ShadowRadius = 0;
@@ -124,9 +127,9 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 			}
 		}
 		catch (ClassCastException e) {
+			Ut.e(e.toString(), e);
 			mValue = mDefaultValue;
 		}
-
 		return mValue;
 	}
 
@@ -139,6 +142,7 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 			json.put(Track.SHADOWRADIUS, shadowradius);
 		}
 		catch (JSONException e) {
+			Ut.e(e.toString(), e);
 		}
 
 		if (isPersistent()) {
@@ -150,8 +154,7 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 			getOnPreferenceChangeListener().onPreferenceChange(this, color);
 		}
 		catch (NullPointerException e) {
-
+			Ut.e(e.toString(), e);
 		}
 	}
-
 }

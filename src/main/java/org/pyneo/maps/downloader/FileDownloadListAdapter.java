@@ -34,8 +34,8 @@ public class FileDownloadListAdapter extends BaseAdapter {
 			}
 		}
 		catch (JSONException e) {
+			Ut.e(e.toString(), e);
 		}
-
 	}
 
 	@Override
@@ -57,19 +57,16 @@ public class FileDownloadListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		mInflater = (LayoutInflater)mCtx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view;
-
 		if (convertView == null) {
 			view = mInflater.inflate(R.layout.file_downloadlist_item, parent, false);
-		} else {
+		}
+		else {
 			view = convertView;
 		}
-
 		final JSONObject json = mArray.get(position);
 		view.setId(json.optInt("id", 0));
 		((TextView)view.findViewById(R.id.name)).setText(json.optString("listtitle", "Name"));
 		((TextView)view.findViewById(R.id.descr)).setText(json.optString("owner", ""));
-
 		return view;
 	}
-
 }

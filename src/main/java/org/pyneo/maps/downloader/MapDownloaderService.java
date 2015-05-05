@@ -76,6 +76,7 @@ public class MapDownloaderService extends Service {
 							mCoordArr[2], mCoordArr[3]);
 					}
 					catch (RemoteException e) {
+						Ut.e(e.toString(), e);
 					}
 			}
 		}
@@ -111,6 +112,7 @@ public class MapDownloaderService extends Service {
 			return;
 		}
 		catch (NoSuchMethodException e) {
+			Ut.e(e.toString(), e);
 			// Running on an older platform.
 			mStartForeground = mStopForeground = null;
 		}
@@ -119,6 +121,7 @@ public class MapDownloaderService extends Service {
 				mSetForegroundSignature);
 		}
 		catch (NoSuchMethodException e) {
+			Ut.e(e.toString(), e);
 			throw new IllegalStateException(
 				"OS doesn't have Service.startForeground OR Service.setForeground!");
 		}
@@ -214,6 +217,7 @@ public class MapDownloaderService extends Service {
 					mCoordArr[1], mCoordArr[2], mCoordArr[3]);
 			}
 			catch (RemoteException e) {
+				Ut.e(e.toString(), e);
 			}
 		}
 		mCallbacks.finishBroadcast();
@@ -256,6 +260,7 @@ public class MapDownloaderService extends Service {
 				}
 			}
 			catch (InterruptedException e) {
+				Ut.e(e.toString(), e);
 			}
 		}
 
@@ -265,7 +270,8 @@ public class MapDownloaderService extends Service {
 				mMapDatabase.getMinZoom(), mMapDatabase.getMaxZoom());
 			provider.Free();
 		}
-		catch (Exception e1) {
+		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 
 		final int N = mCallbacks.beginBroadcast();
@@ -274,6 +280,7 @@ public class MapDownloaderService extends Service {
 				mCallbacks.getBroadcastItem(i).downloadDone();
 			}
 			catch (RemoteException e) {
+				Ut.e(e.toString(), e);
 			}
 		}
 		mCallbacks.finishBroadcast();
@@ -380,8 +387,10 @@ public class MapDownloaderService extends Service {
 			method.invoke(this, args);
 		}
 		catch (InvocationTargetException e) {
+			Ut.e(e.toString(), e);
 		}
 		catch (IllegalAccessException e) {
+			Ut.e(e.toString(), e);
 		}
 	}
 
@@ -457,6 +466,7 @@ public class MapDownloaderService extends Service {
 								tileParam.Y, tileParam.Z);
 					}
 					catch (RemoteException e) {
+						Ut.e(e.toString(), e);
 					}
 				}
 				mCallbacks.finishBroadcast();
@@ -519,11 +529,13 @@ public class MapDownloaderService extends Service {
 							Message.obtain(mHandler, R.id.tile_done, tileParam).sendToTarget();
 					}
 					catch (Exception e) {
+						Ut.e(e.toString(), e);
 						Ut.appendLog(mLogFileName, String.format("%tc %s\n	Error: %s", System.currentTimeMillis(), tileParam.TILEURL, e.getMessage()));
 						if (mHandler != null)
 							Message.obtain(mHandler, R.id.tile_error, tileParam).sendToTarget();
 					}
 					catch (OutOfMemoryError e) {
+						Ut.e(e.toString(), e);
 						Ut.appendLog(mLogFileName, String.format("%tc %s\n	Error: %s", System.currentTimeMillis(), tileParam.TILEURL, e.getMessage()));
 						if (mHandler != null)
 							Message.obtain(mHandler, R.id.tile_error, tileParam).sendToTarget();
@@ -593,6 +605,7 @@ public class MapDownloaderService extends Service {
 				return new XYZ(null, x, y, zArr[zInd]);
 			}
 			catch (Exception e) {
+				Ut.e(e.toString(), e);
 				return null;
 			}
 		}

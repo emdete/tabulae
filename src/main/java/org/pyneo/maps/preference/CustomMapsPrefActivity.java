@@ -11,6 +11,7 @@ import android.preference.PreferenceCategory;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.OnlineCachePreference;
+import org.pyneo.maps.utils.Ut;
 
 import org.json.JSONObject;
 
@@ -158,7 +159,8 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 					findPreference(key).setSummary(mMapHelper.NAME);
 				if (findPreference(PREF_MIXMAPS_ + mMapHelper.ID) != null)
 					findPreference(PREF_MIXMAPS_ + mMapHelper.ID).setTitle(mMapHelper.NAME);
-			} else if (key.endsWith(BASEURL)) {
+			}
+			else if (key.endsWith(BASEURL)) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(BASEURL, sharedPreferences.getString(key, ""));
@@ -167,9 +169,11 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 						findPreference(key).setSummary(sharedPreferences.getString(key, ""));
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 
-			} else if (key.endsWith("_projection")) {
+			}
+			else if (key.endsWith("_projection")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(MAPPROJECTION, Integer.parseInt(sharedPreferences.getString(key, "")));
@@ -178,18 +182,22 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 
-			} else if (key.endsWith("_stretch")) {
+			}
+			else if (key.endsWith("_stretch")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(STRETCH, Double.parseDouble(sharedPreferences.getString(key, "")));
 					mMapHelper.PARAMS = json.toString();
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 
-			} else if (key.endsWith("_isoverlay")) {
+			}
+			else if (key.endsWith("_isoverlay")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(ISOVERLAY, sharedPreferences.getBoolean(key, false));
@@ -197,18 +205,22 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 					mMapHelper.TYPE = sharedPreferences.getBoolean(key, false)? 3: 2;
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 
-			} else if (key.endsWith("_onlinecache")) {
+			}
+			else if (key.endsWith("_onlinecache")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(ONLINECACHE, sharedPreferences.getBoolean(key, false));
 					mMapHelper.PARAMS = json.toString();
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 
-			} else if (key.endsWith("_minzoom")) {
+			}
+			else if (key.endsWith("_minzoom")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(MINZOOM, Integer.parseInt(sharedPreferences.getString(key, "1")));
@@ -217,9 +229,11 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 
-			} else if (key.endsWith("_maxzoom")) {
+			}
+			else if (key.endsWith("_maxzoom")) {
 				final JSONObject json = MixedMapsPreference.getMapCustomParams(mMapHelper.PARAMS);
 				try {
 					json.put(MAXZOOM, Integer.parseInt(sharedPreferences.getString(key, "20")));
@@ -228,11 +242,10 @@ public class CustomMapsPrefActivity extends MMPreferenceActivity implements OnSh
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
-
 			}
 			mMapHelper.updateMap();
 		}
 	}
-
 }

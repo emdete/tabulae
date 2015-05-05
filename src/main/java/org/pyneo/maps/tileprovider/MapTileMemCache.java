@@ -2,6 +2,8 @@ package org.pyneo.maps.tileprovider;
 
 import android.graphics.Bitmap;
 
+import org.pyneo.maps.utils.Ut;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -88,6 +90,7 @@ public class MapTileMemCache {
 			}
 		}
 		catch (ConcurrentModificationException e) {
+			Ut.e(e.toString(), e);
 			// TODO It's need other iteration code
 		}
 		mHardCachedTiles.clear();

@@ -91,6 +91,7 @@ public class DownloaderActivity extends Activity {
 						mTileSource = new TileSource(DownloaderActivity.this, mMapID);
 					}
 					catch (Exception e) {
+						Ut.e(e.toString(), e);
 					}
 					mMap.setTileSource(mTileSource);
 				}
@@ -218,6 +219,7 @@ public class DownloaderActivity extends Activity {
 					mService.registerCallback(mCallback);
 				}
 				catch (RemoteException e) {
+					Ut.e(e.toString(), e);
 				}
 			}
 
@@ -247,6 +249,7 @@ public class DownloaderActivity extends Activity {
 				mTileSource = new TileSource(this, intent.getStringExtra("MAPID"));
 			}
 			catch (Exception e) {
+				Ut.e(e.toString(), e);
 			}
 			mMap.setTileSource(mTileSource);
 			mMap.setZoom(intent.getIntExtra("ZoomLevel", 0));
@@ -290,7 +293,7 @@ public class DownloaderActivity extends Activity {
 			}
 		}
 		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 	}
-
 }

@@ -13,6 +13,7 @@ import android.preference.PreferenceCategory;
 import org.pyneo.maps.R;
 import org.pyneo.maps.tileprovider.TileSourceBase;
 import org.pyneo.maps.utils.RException;
+import org.pyneo.maps.utils.Ut;
 
 import org.json.JSONObject;
 
@@ -116,6 +117,7 @@ public class PairMapsPrefActivity extends MMPreferenceActivity implements OnShar
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 
 			} else if (key.endsWith(MAPID)) {
@@ -142,8 +144,10 @@ public class PairMapsPrefActivity extends MMPreferenceActivity implements OnShar
 						}
 					}
 					catch (SQLiteException e) {
+						Ut.e(e.toString(), e);
 					}
 					catch (RException e) {
+						Ut.e(e.toString(), e);
 					}
 
 					mMapHelper.PARAMS = json.toString();
@@ -151,6 +155,7 @@ public class PairMapsPrefActivity extends MMPreferenceActivity implements OnShar
 						findPreference(key).setSummary(((ListPreference)findPreference(key)).getEntry());
 				}
 				catch (Exception e) {
+					Ut.e(e.toString(), e);
 				}
 
 			}

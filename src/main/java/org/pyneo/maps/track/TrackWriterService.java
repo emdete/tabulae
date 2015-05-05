@@ -56,10 +56,10 @@ public class TrackWriterService extends Service implements Constants {
 							mCallbacks.getBroadcastItem(i).onTrackStatUpdate(mTrackStat.Cnt, mTrackStat.Distance, mTrackStat.Duration, mTrackStat.MaxSpeed, mTrackStat.AvgSpeed, mTrackStat.MoveTime, mTrackStat.AvgMoveSpeed);
 						}
 						catch (RemoteException e) {
+							Ut.e(e.toString(), e);
 						}
 					}
 					mCallbacks.finishBroadcast();
-
 				}
 				break;
 				default:
@@ -101,6 +101,7 @@ public class TrackWriterService extends Service implements Constants {
 						cb.onTrackStatUpdate(mTrackStat.Cnt, mTrackStat.Distance, mTrackStat.Duration, mTrackStat.MaxSpeed, mTrackStat.AvgSpeed, mTrackStat.MoveTime, mTrackStat.AvgMoveSpeed);
 					}
 					catch (RemoteException e) {
+						Ut.e(e.toString(), e);
 					}
 				}
 			}
@@ -143,6 +144,7 @@ public class TrackWriterService extends Service implements Constants {
 			return;
 		}
 		catch (NoSuchMethodException e) {
+			Ut.e(e.toString(), e);
 			// Running on an older platform.
 			mStartForeground = mStopForeground = null;
 		}
@@ -151,6 +153,7 @@ public class TrackWriterService extends Service implements Constants {
 				mSetForegroundSignature);
 		}
 		catch (NoSuchMethodException e) {
+			Ut.e(e.toString(), e);
 			throw new IllegalStateException(
 				"OS doesn't have Service.startForeground OR Service.setForeground!");
 		}
@@ -178,6 +181,7 @@ public class TrackWriterService extends Service implements Constants {
 				db = new DatabaseHelper(this, folder.getAbsolutePath() + "/writedtrack.db").getWritableDatabase();
 			}
 			catch (Exception e) {
+				Ut.e(e.toString(), e);
 				db = null;
 			}
 		}
@@ -258,8 +262,10 @@ public class TrackWriterService extends Service implements Constants {
 			method.invoke(this, args);
 		}
 		catch (InvocationTargetException e) {
+			Ut.e(e.toString(), e);
 		}
 		catch (IllegalAccessException e) {
+			Ut.e(e.toString(), e);
 		}
 	}
 
