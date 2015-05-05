@@ -958,19 +958,24 @@ public class MainActivity extends Activity {
 				return true;
 			}
 			case R.id.menu_share: {
-				Intent intent1 = new Intent(Intent.ACTION_SEND);
-				intent1.setType("text/plain");
-				intent1.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
 					.append("")
 					.append('\n')
-					.append("http://www.openstreetmap.org/#map=")
+					.append("http://www.openstreetmap.org/?mlat=")
+					.append(point.getLatitude())
+					.append("&mlon=")
+					.append(point.getLongitude())
+					.append("#map=")
 					.append(mMap.getZoomLevel())
 					.append('/')
 					.append(point.getLatitude())
 					.append('/')
 					.append(point.getLongitude())
+					.append("&layers=T")
 					.toString());
-				startActivity(intent1);
+				startActivity(intent);
 				return true;
 			}
 			case R.id.compass: {
@@ -1339,19 +1344,24 @@ public class MainActivity extends Activity {
 						try {
 							final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
 							final GeoPoint point = poi.mGeoPoint;
-							Intent intent1 = new Intent(Intent.ACTION_SEND);
-							intent1.setType("text/plain");
-							intent1.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
+							Intent intent = new Intent(Intent.ACTION_SEND);
+							intent.setType("text/plain");
+							intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
 								.append(poi.mTitle)
 								.append('\n')
-								.append("http://www.openstreetmap.org/#map=")
+								.append("http://www.openstreetmap.org/?mlat=")
+								.append(point.getLatitude())
+								.append("&mlon=")
+								.append(point.getLongitude())
+								.append("#map=")
 								.append(16) // zoom
 								.append('/')
 								.append(point.getLatitude())
 								.append('/')
 								.append(point.getLongitude())
+								.append("&layers=T")
 								.toString());
-							startActivity(intent1);
+							startActivity(intent);
 						}
 						catch (Exception e) {
 							Ut.e(e.toString(), e);
