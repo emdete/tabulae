@@ -96,7 +96,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 				for (int i = 0; i < files.length; i++) {
 					if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
 						try {
-							mDatabase[j] = new CashDatabaseHelper(null, files[i].getAbsolutePath()).getWritableDatabase();
+							mDatabase[j] = new CacheDatabaseHelper(null, files[i].getAbsolutePath()).getWritableDatabase();
 							mDatabase[j].setMaximumSize(MAX_DATABASE_SIZE);
 							if (mDatabaseWritable == null) {
 								mDatabaseWritable = mDatabase[j];
@@ -116,11 +116,11 @@ public class SQLiteMapDatabase implements ICacheProvider {
 					}
 				}
 				if (dbFilesCnt == 0) {
-					mDatabase[0] = new CashDatabaseHelper(null, mBaseFile.getAbsolutePath()).getWritableDatabase();
+					mDatabase[0] = new CacheDatabaseHelper(null, mBaseFile.getAbsolutePath()).getWritableDatabase();
 					mDatabaseWritable = mDatabase[0];
 				}
 				if (aCreateNewDatabaseFile) {
-					mDatabase[j] = new CashDatabaseHelper(null, mBaseFile.getAbsolutePath() + (mBaseFileIndex + 1)).getWritableDatabase();
+					mDatabase[j] = new CacheDatabaseHelper(null, mBaseFile.getAbsolutePath() + (mBaseFileIndex + 1)).getWritableDatabase();
 					mDatabaseWritable = mDatabase[j];
 				}
 			}
@@ -411,8 +411,8 @@ public class SQLiteMapDatabase implements ICacheProvider {
 		return coord;
 	}
 
-	protected class CashDatabaseHelper extends RSQLiteOpenHelper {
-		public CashDatabaseHelper(final Context context, final String name) {
+	protected class CacheDatabaseHelper extends RSQLiteOpenHelper {
+		public CacheDatabaseHelper(final Context context, final String name) {
 			super(context, name, null, 3);
 		}
 
@@ -425,7 +425,5 @@ public class SQLiteMapDatabase implements ICacheProvider {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		}
-
 	}
-
 }
