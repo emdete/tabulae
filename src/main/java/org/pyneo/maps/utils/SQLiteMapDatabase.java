@@ -71,9 +71,13 @@ public class SQLiteMapDatabase implements ICacheProvider {
 					if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
 						j = j + 1;
 						try {
-							final Integer index = Integer.getInteger(files[i].getName().replace(mBaseFile.getName(), ""));
-							if (index != null && index > mBaseFileIndex)
-								mBaseFileIndex = index;
+							String k = files[i].getName().replace(mBaseFile.getName(), "");
+							if (k.length() > 0) {
+								final Integer index = Integer.parseInt(k);
+								if (index > mBaseFileIndex) {
+									mBaseFileIndex = index;
+								}
+							}
 						}
 						catch (Exception e) {
 							Ut.e(e.toString(), e);
@@ -97,7 +101,8 @@ public class SQLiteMapDatabase implements ICacheProvider {
 							if (mDatabaseWritable == null) {
 								mDatabaseWritable = mDatabase[j];
 								minsize = files[i].length();
-							} else {
+							}
+							else {
 								if (files[i].length() < minsize) {
 									mDatabaseWritable = mDatabase[j];
 									minsize = files[i].length();
@@ -212,7 +217,8 @@ public class SQLiteMapDatabase implements ICacheProvider {
 								}
 							mCurrentIndex = j;
 							break;
-						} else
+						}
+						else
 							c.close();
 					}
 				}
