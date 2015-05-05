@@ -71,8 +71,8 @@ public class SQLiteMapDatabase implements ICacheProvider {
 					if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
 						j = j + 1;
 						try {
-							final int index = Integer.getInteger(files[i].getName().replace(mBaseFile.getName(), ""));
-							if (index > mBaseFileIndex)
+							final Integer index = Integer.getInteger(files[i].getName().replace(mBaseFile.getName(), ""));
+							if (index != null && index > mBaseFileIndex)
 								mBaseFileIndex = index;
 						}
 						catch (Exception e) {
