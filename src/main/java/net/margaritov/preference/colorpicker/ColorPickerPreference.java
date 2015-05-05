@@ -17,6 +17,7 @@
 package net.margaritov.preference.colorpicker;
 
 import net.margaritov.preference.colorpicker.AlphaPatternDrawable;
+import org.pyneo.maps.utils.Ut;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,7 +28,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,7 +66,7 @@ public class ColorPickerPreference
 		super(context, attrs, defStyle);
 		init(context, attrs);
 	}
-	
+
 	@Override
 	protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
 		onColorChanged(restoreValue ? getValue() : (Integer) defaultValue);
@@ -81,7 +81,7 @@ public class ColorPickerPreference
 				try {
 					mDefaultValue = convertToColorInt(defaultValue);
 				} catch (NumberFormatException e) {
-					Log.e("ColorPickerPreference", "Wrong color: " + defaultValue);
+					Ut.e("Wrong color: " + defaultValue);
 					mDefaultValue = convertToColorInt("#FF000000");
 				}
 			} else {

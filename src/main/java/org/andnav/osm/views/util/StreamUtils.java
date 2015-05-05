@@ -6,34 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.pyneo.maps.utils.Ut;
 
 public class StreamUtils {
-	// ===========================================================
-	// Constants
-	// ===========================================================
-	
 	public static final int IO_BUFFER_SIZE = 8 * 1024;
 
-	// ===========================================================
-	// Fields
-	// ===========================================================
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
-
-	// ===========================================================
-	// Methods from SuperClass/Interfaces
-	// ===========================================================
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
-	
 	/**
 	 * Copy the content of the input stream into the output stream, using a temporary
 	 * byte array buffer whose size is defined by {@link #IO_BUFFER_SIZE}.
@@ -61,12 +38,8 @@ public class StreamUtils {
 			try {
 				stream.close();
 			} catch (IOException e) {
-				android.util.Log.e("IO", "Could not close stream", e);
+				Ut.e("Could not close stream", e);
 			}
 		}
-	} 
-
-	// ===========================================================
-	// Inner and Anonymous Classes
-	// ===========================================================
+	}
 }

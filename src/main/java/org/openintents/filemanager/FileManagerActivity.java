@@ -231,7 +231,7 @@ public class FileManagerActivity extends ListActivity {
      }
 
      private void handleMessage(Message message) {
-//    	 Log.v(TAG, "Received message " + message.what);
+//    	 Ut.v("Received message " + message.what);
 
     	 switch (message.what) {
     	 case MESSAGE_SHOW_DIRECTORY_CONTENTS:
@@ -728,7 +728,7 @@ public class FileManagerActivity extends ListActivity {
 //		try {
 //			info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 //		} catch (ClassCastException e) {
-//			Log.e(TAG, "bad menuInfo", e);
+//			Ut.e("bad menuInfo", e);
 //			return;
 //		}
 ///*
@@ -774,8 +774,8 @@ public class FileManagerActivity extends ListActivity {
 //	        intent.setDataAndType(data, type);
 //	        //intent.addCategory(Intent.CATEGORY_SELECTED_ALTERNATIVE);
 //
-//	        Log.v(TAG, "Data=" + data);
-//	        Log.v(TAG, "Type=" + type);
+//	        Ut.v("Data=" + data);
+//	        Ut.v("Type=" + type);
 //
 //	        if (type != null) {
 //	        	// Add additional options for the MIME type of the selected file.

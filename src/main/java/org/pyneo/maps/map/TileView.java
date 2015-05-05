@@ -478,23 +478,17 @@ public class TileView extends View {
 		 * @return mGeoPoint under x/y.
 		 */
 		public GeoPoint fromPixels(float x, float y) {
-			/* Subtract the offset caused by touch. */
-			//Log.d(DEBUGTAG, "x = "+x+" mTouchMapOffsetX = "+mTouchMapOffsetX+"   ");
-
+			// Subtract the offset caused by touch.
+			//Ut.d("x=" + x + ", mTouchMapOffsetX=" + mTouchMapOffsetX);
 			x -= 0;
 			y -= 0;
-
 			//int xx = centerMapTileCoords[0]*tileSizePx+(int)x-upperLeftCornerOfCenterMapTile.x;
 			//int asd = Util.x2lon(xx, zoomLevel, tileSizePx);
-			GeoPoint p = bb.getGeoPointOfRelativePositionWithLinearInterpolation(x / viewWidth, y
-				/ viewHeight);
-
-			//Log.d(DEBUGTAG, "lon "+p.getLongitudeE6()+" "+xx+" "+asd+" OffsetX = "+mTouchMapOffsetX);
-			//Log.d(DEBUGTAG, "	"+centerMapTileCoords[0]+" "+tileSizePx+" "+x+" "+upperLeftCornerOfCenterMapTile.x);
+			GeoPoint p = bb.getGeoPointOfRelativePositionWithLinearInterpolation(x / viewWidth, y / viewHeight);
+			//Ut.d("lon "+p.getLongitudeE6()+" "+xx+" "+asd+" OffsetX = "+mTouchMapOffsetX);
+			//Ut.d("	"+centerMapTileCoords[0]+" "+tileSizePx+" "+x+" "+upperLeftCornerOfCenterMapTile.x);
 			//p.setLongitudeE6(asd);
-
-			//for(int i =0; i<=tileSizePx*(1<<zoomLevel); i++){int Q = Util.x2lon(i, zoomLevel, tileSizePx);Log.d(DEBUGTAG, "lon "+i+" "+Q);}
-
+			//for(int i =0; i<=tileSizePx*(1<<zoomLevel); i++){int Q = Util.x2lon(i, zoomLevel, tileSizePx);Ut.d("lon "+i+" "+Q);}
 			return p;
 		}
 

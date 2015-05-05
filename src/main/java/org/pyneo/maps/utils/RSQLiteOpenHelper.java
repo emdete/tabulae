@@ -21,7 +21,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
 
 /**
  * A helper class to manage database creation and version management.
@@ -33,8 +32,6 @@ import android.util.Log;
  * in the <em>samples/</em> directory of the SDK.</p>
  */
 public abstract class RSQLiteOpenHelper {
-	private static final String TAG = RSQLiteOpenHelper.class.getSimpleName();
-
 	//    private final Context mContext;
 	private final String mName;
 	private final CursorFactory mFactory;
@@ -184,9 +181,8 @@ public abstract class RSQLiteOpenHelper {
 				throw new SQLiteException("Can't upgrade read-only database from version " +
 					db.getVersion() + " to " + mNewVersion + ": " + path);
 			}
-
 			onOpen(db);
-			Log.w(TAG, "Opened " + mName + " in read-only mode");
+			Ut.w("Opened " + mName + " in read-only mode");
 			mDatabase = db;
 			return mDatabase;
 		}
