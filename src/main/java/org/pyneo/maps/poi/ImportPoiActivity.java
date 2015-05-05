@@ -198,19 +198,13 @@ public class ImportPoiActivity extends Activity {
 					catch (IllegalStateException e) {
 						Ut.e(e.toString(), e);
 					}
-					catch (OutOfMemoryError e) {
-						Ut.w("OutOfMemoryError");
-						mPoiManager.rollbackTransaction();
-					}
 					Ut.dd("Pois commited");
 				}
-
 				dlgWait.dismiss();
 				ImportPoiActivity.this.finish();
 			}
 
 		});
-
 	}
 
 	@Override

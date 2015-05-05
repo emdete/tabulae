@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.CheckBoxPreferenceExt;
+import org.pyneo.maps.utils.Ut;
 
 import org.json.JSONException;
 import org.json.JSONObject;

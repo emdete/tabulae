@@ -163,10 +163,6 @@ public class TileProviderTAR extends TileProviderFileBase {
 					}
 
 				}
-				catch (OutOfMemoryError e) {
-					SendMessageFail();
-					System.gc();
-				}
 				catch (Exception e) {
 					SendMessageFail();
 				}

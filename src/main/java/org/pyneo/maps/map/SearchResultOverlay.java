@@ -203,10 +203,6 @@ public class SearchResultOverlay extends TileViewOverlay {
 				catch (Exception e) {
 					Ut.e(e.toString(), e);
 				}
-				catch (OutOfMemoryError e) {
-					Ut.e(e.toString(), e);
-					System.gc();
-				}
 				finally {
 					StreamUtils.closeStream(in);
 					StreamUtils.closeStream(out);

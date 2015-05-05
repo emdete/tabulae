@@ -79,9 +79,6 @@ public class TileProviderDual extends TileProviderBase {
 
 				mTileCache.putTile(tileurl, bmpDual);
 			}
-			catch (OutOfMemoryError e) {
-				bmpDual = bmpMap;
-			}
 			catch (Exception e) {
 				bmpDual = bmpMap;
 			}

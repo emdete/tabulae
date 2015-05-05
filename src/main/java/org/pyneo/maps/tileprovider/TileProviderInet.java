@@ -138,10 +138,6 @@ public class TileProviderInet extends TileProviderBase {
 						Ut.e(e.toString(), e);
 						SendMessageFail();
 					}
-					catch (OutOfMemoryError e) {
-						SendMessageFail();
-						System.gc();
-					}
 					finally {
 						StreamUtils.closeStream(in);
 						StreamUtils.closeStream(out);

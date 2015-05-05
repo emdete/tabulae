@@ -534,13 +534,6 @@ public class MapDownloaderService extends Service {
 						if (mHandler != null)
 							Message.obtain(mHandler, R.id.tile_error, tileParam).sendToTarget();
 					}
-					catch (OutOfMemoryError e) {
-						Ut.e(e.toString(), e);
-						Ut.appendLog(mLogFileName, String.format("%tc %s\n	Error: %s", System.currentTimeMillis(), tileParam.TILEURL, e.getMessage()));
-						if (mHandler != null)
-							Message.obtain(mHandler, R.id.tile_error, tileParam).sendToTarget();
-						System.gc();
-					}
 					finally {
 						StreamUtils.closeStream(in);
 						StreamUtils.closeStream(out);

@@ -24,14 +24,7 @@ public class CompassView extends View {
 
 	private boolean getCompassImg() {
 		if (mCompass == null) {
-			try {
-				this.mCompass = mCtx.getResources().getDrawable(R.drawable.arrow_n);
-			}
-			catch (OutOfMemoryError e) {
-				Ut.w("OutOfMemoryError");
-				Ut.e(e.toString(), e);
-				return false;
-			}
+			this.mCompass = mCtx.getResources().getDrawable(R.drawable.arrow_n);
 			return true;
 		}
 		else {
