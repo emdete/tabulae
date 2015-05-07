@@ -1035,7 +1035,6 @@ public class MainActivity extends Activity {
 				fillOverlays();
 			}
 		});
-
 		final View viewMenuButton = viewBottomArea.findViewById(R.id.menu);
 		viewMenuButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -1063,7 +1062,6 @@ public class MainActivity extends Activity {
 				menu.add(Menu.NONE, R.id.clear, Menu.NONE, R.string.clear);
 			}
 		});
-
 		fillOverlays();
 	}
 

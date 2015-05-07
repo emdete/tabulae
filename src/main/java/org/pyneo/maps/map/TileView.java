@@ -223,7 +223,7 @@ public class TileView extends View {
 	}
 
 	public OpenStreetMapViewProjection getProjection() {
-		return new OpenStreetMapViewProjection();
+		return new OpenStreetMapViewProjection(mZoom, mTouchScale);
 	}
 
 	public OpenStreetMapViewProjection getProjection(int zoom, double touchScale) {
@@ -430,43 +430,28 @@ public class TileView extends View {
 	public class OpenStreetMapViewProjection {
 
 		private static final int EQUATORCIRCUMFENCE = 40075676; //40075004;
-		final int viewWidth;
-		final int viewHeight;
 		final BoundingBoxE6 bb;
 		final int zoomLevel;
 		final int tileSizePx;
 		final int[] centerMapTileCoords;
 		final Point upperLeftCornerOfCenterMapTile;
 
-		public OpenStreetMapViewProjection() {
-			this(mZoom, mTouchScale);
-		}
-
-		public OpenStreetMapViewProjection(int zoom, double touchScale) {
-			viewWidth = getWidth();
-			viewHeight = getHeight();
-
-			/*
-			 * Do some calculations and drag attributes to local variables to
-			 * save some performance.
-			 */
+		private OpenStreetMapViewProjection(int zoom, double touchScale) {
+			// Do some calculations and drag attributes to local variables to
+			// save some performance.
 			zoomLevel = zoom; // LATER Draw to
 			// attributes and so
 			// make it only
 			// 'valid' for a
 			// short time.
 			tileSizePx = (int)(mTileSource.getTileSizePx(zoomLevel) * touchScale);
-
-			/*
-			 * Get the center MapTile which is above this.mLatitudeE6 and
-			 * this.mLongitudeE6 .
-			 */
+			// Get the center MapTile which is above this.mLatitudeE6 and
+			// this.mLongitudeE6 .
 			centerMapTileCoords = Util.getMapTileFromCoordinates(
 				mLatitudeE6, mLongitudeE6,
 				zoomLevel, null, mTileSource.PROJECTION);
 			upperLeftCornerOfCenterMapTile = mTileOverlay.getUpperLeftCornerOfCenterMapTileInScreen(TileView.this,
 				centerMapTileCoords, tileSizePx, null);
-
 			bb = getDrawnBoundingBoxE6();
 		}
 
@@ -484,7 +469,7 @@ public class TileView extends View {
 			y -= 0;
 			//int xx = centerMapTileCoords[0]*tileSizePx+(int)x-upperLeftCornerOfCenterMapTile.x;
 			//int asd = Util.x2lon(xx, zoomLevel, tileSizePx);
-			GeoPoint p = bb.getGeoPointOfRelativePositionWithLinearInterpolation(x / viewWidth, y / viewHeight);
+			GeoPoint p = bb.getGeoPointOfRelativePositionWithLinearInterpolation(x / getWidth(), y / getHeight());
 			//Ut.d("lon "+p.getLongitudeE6()+" "+xx+" "+asd+" OffsetX = "+mTouchMapOffsetX);
 			//Ut.d("	"+centerMapTileCoords[0]+" "+tileSizePx+" "+x+" "+upperLeftCornerOfCenterMapTile.x);
 			//p.setLongitudeE6(asd);
@@ -493,20 +478,15 @@ public class TileView extends View {
 		}
 
 		public GeoPoint fromPixels(float x, float y, double bearing) {
-			final int x1 = (int)(x - viewWidth / 2);
-			final int y1 = (int)(y - viewHeight / 2);
+			final int x1 = (int)(x - getWidth() / 2);
+			final int y1 = (int)(y - getHeight() / 2);
 			final double hypot = Math.hypot(x1, y1);
 			final double angle = -1 * Math.signum(y1) * Math.toDegrees(Math.acos(x1 / hypot));
 			final double angle2 = angle - bearing;
 			final int x2 = (int)(Math.cos(Math.toRadians(angle2)) * hypot);
 			final int y2 = (int)(Math.sin(Math.toRadians(angle2 - 180)) * hypot);
 
-			return fromPixels((float)(viewWidth / 2 + x2), (float)(viewHeight / 2 + y2));
-		}
-
-		public float metersToEquatorPixels(final float aMeters) {
-			return aMeters / EQUATORCIRCUMFENCE
-				* mTileSource.getTileSizePx(zoomLevel);
+			return fromPixels((float)(getWidth() / 2 + x2), (float)(getHeight() / 2 + y2));
 		}
 
 		/**
@@ -541,15 +521,15 @@ public class TileView extends View {
 			final Point point = toPixels(in, reuse, true);
 			final Point out = (reuse != null)? reuse: new Point();
 
-			final int x1 = point.x - viewWidth / 2;
-			final int y1 = point.y - viewHeight / 2;
+			final int x1 = point.x - getWidth() / 2;
+			final int y1 = point.y - getHeight() / 2;
 			final double hypot = Math.hypot(x1, y1);
 			final double angle = -1 * Math.signum(y1) * Math.toDegrees(Math.acos(x1 / hypot));
 			final double angle2 = angle + bearing;
 			final int x2 = (int)(Math.cos(Math.toRadians(angle2)) * hypot);
 			final int y2 = (int)(Math.sin(Math.toRadians(angle2 - 180)) * hypot);
 
-			out.set(viewWidth / 2 + x2, viewHeight / 2 + y2);
+			out.set(getWidth() / 2 + x2, getHeight() / 2 + y2);
 			return out;
 		}
 
@@ -785,8 +765,6 @@ public class TileView extends View {
 
 		public String toString() {
 			return this.getClass().getName() +
-				", viewWidth=" + viewWidth +
-				", viewHeight=" + viewHeight +
 				", bb=" + bb +
 				", zoomLevel=" + zoomLevel +
 				", tileSizePx=" + tileSizePx +
