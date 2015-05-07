@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 from os import listdir, system
-from PIL.Image import frombytes, open as fromfile, eval as image_eval, merge as image_merge
-from PIL.ImageOps import invert, autocontrast, grayscale, equalize, solarize
-from gi.repository import Rsvg
-# TODO use cairo like in
-#import cairo
-#surface = cairo.SVGSurface('output.svg', width, height)
-#context = cairo.Context(surface)
-#svg.render_cairo(context)
+from gi.repository import Rsvg# cairo
 
 # see https://developer.android.com/guide/practices/screens_support.html
 # see https://developer.android.com/design/style/iconography.html
@@ -39,9 +32,14 @@ def conv_svg(width, height, basename):
 			suffix, basename, int(width * d / 4), int(height * d / 4), basename,
 			))
 
+print(dir(cairo))
 handle = Rsvg.Handle()
 for n in glob('.svg'):
 	svg = handle.new_from_file(n+'.svg')
 	width, height = svg.get_properties('width', 'height')
+	# TODO use cairo like in
+	#surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, width, height)
+	#context = cairo.Context(surface)
+	#svg.render_cairo(context)
 	conv_svg(width, height, n)
 
