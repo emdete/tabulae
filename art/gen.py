@@ -3,6 +3,11 @@ from os import listdir, system
 from PIL.Image import frombytes, open as fromfile, eval as image_eval, merge as image_merge
 from PIL.ImageOps import invert, autocontrast, grayscale, equalize, solarize
 from gi.repository import Rsvg
+# TODO use cairo like in
+#import cairo
+#surface = cairo.SVGSurface('output.svg', width, height)
+#context = cairo.Context(surface)
+#svg.render_cairo(context)
 
 # see https://developer.android.com/guide/practices/screens_support.html
 # see https://developer.android.com/design/style/iconography.html
