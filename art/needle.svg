@@ -1,25 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 -1 5669 5738" >
-<!-- copyright M. Dietrich <mdt@pyneo.org> -->
-<g>
-  <circle
-     cx="2834"
-     cy="2834"
-     r="944"
-     style="fill:#ababab;fill-opacity:0.66000001;stroke:#000000;stroke-width:80.41135406;stroke-miterlimit:4;stroke-dasharray:none" />
-  <circle
-     cx="2834"
-     cy="2834"
-     r="2834"
-     style="fill:none;stroke:#000000;stroke-width:0" />
-  <polyline
-     style="stroke:#000000;stroke-width:79;stroke-linecap:butt;stroke-linejoin:miter"
-     points="2834,3779 2834,5669 " />
-  <polyline
-     style="stroke:#000000;stroke-width:79;stroke-linecap:butt;stroke-linejoin:miter"
-     points="2834,1417 2834,1889 " />
-  <polyline
-     style="fill:#ababab;fill-opacity:0.66000001;stroke:#000000;stroke-width:80.41135406;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none"
-     points="2834,0 2362,1417 3307,1417 2834,0 " />
-</g>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" viewBox="0 0 100 100" width="100" height="100">
+	<!-- copyright M. Dietrich <mdt@pyneo.org> -->
+	<g transform="matrix(0.01587533,0,0,0.01549799,4.9905233,5.9697974)">
+		<path style="fill:#ababab;fill-opacity:0.66000001;stroke:#000000;stroke-width:80.41135406;stroke-miterlimit:4;stroke-dasharray:none" d="m 3778,2834 c 23.2441,612.1778 -645.5659,1104.2111 -1222.9711,901.8376 C 1963.7152,3577.017 1690.2531,2792.9719 2054.8832,2300.9775 2381.3646,1782.8038 3211.1428,1753.4189 3573.4606,2247.2002 3705.2325,2412.3993 3778.5146,2622.7137 3778,2834 Z" />
+		<path style="fill:none;stroke:#000000;stroke-width:0" d="M 5668,2834 C 5737.7815,4671.8303 3729.9346,6148.9728 1996.4957,5541.4236 221.30164,5064.6251 -599.66378,2710.8288 494.99887,1233.8032 1475.135,-321.81566 3966.2275,-410.03261 5053.9485,1072.3573 5449.5435,1568.3046 5669.5448,2199.6935 5668,2834 Z" />
+		<path style="stroke:#000000;stroke-width:79;stroke-linecap:butt;stroke-linejoin:miter" d="m 2834,3779 c 0,630 0,1260 0,1890" />
+		<path style="stroke:#000000;stroke-width:79;stroke-linecap:butt;stroke-linejoin:miter" d="m 2834,1417 c 0,157.3333 0,314.6667 0,472" />
+		<path style="fill:#ababab;fill-opacity:0.66000001;stroke:#000000;stroke-width:80.41135406;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" d="m 2834,0 c -157.3333,472.33333 -314.6667,944.66667 -472,1417 315,0 630,0 945,0 C 3149.3333,944.66667 2991.6667,472.33333 2834,0 Z" />
+	</g>
 </svg>
