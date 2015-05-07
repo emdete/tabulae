@@ -2,6 +2,7 @@
 from os import listdir, system
 from PIL.Image import frombytes, open as fromfile, eval as image_eval, merge as image_merge
 from PIL.ImageOps import invert, autocontrast, grayscale, equalize, solarize
+from gi.repository import Rsvg
 
 # see https://developer.android.com/guide/practices/screens_support.html
 # see https://developer.android.com/design/style/iconography.html
@@ -27,19 +28,15 @@ def glob(w):
 		if n.endswith(w):
 			yield n[:-len(w)]
 
-def conv_svg(b, n):
-	print(n)
-	for d, t in SIZES:
-		d = int(b * d / 4)
+def conv_svg(width, height, basename):
+	for d, suffix in SIZES:
 		system("inkscape -e ../src/main/res/drawable-{}dpi/{}.png -C -w {} -h {} {}.svg".format(
-			t, n, d, d, n,
+			suffix, basename, int(width * d / 4), int(height * d / 4), basename,
 			))
 
+handle = Rsvg.Handle()
 for n in glob('.svg'):
-	if 'ic_' in n:
-		conv_svg(48, n)
-	elif 'needle' in n:
-		conv_svg(100, n)
-	else:
-		conv_svg(80, n)
+	svg = handle.new_from_file(n+'.svg')
+	width, height = svg.get_properties('width', 'height')
+	conv_svg(width, height, n)
 
