@@ -109,6 +109,8 @@ import javax.xml.parsers.SAXParserFactory;
 public class MainActivity extends Activity {
 	private static final String MAPNAME = "MapName";
 	private static final String ACTION_SHOW_POINTS = "org.pyneo.maps.action.SHOW_POINTS";
+	private static final String ACTION_CONVERSATIONS_SHOW = "eu.siacs.conversations.location.show";
+	private static final String ACTION_CONVERSATIONS_REQUEST = "eu.siacs.conversations.location.request";
 	private boolean mAutoFollow = true;
 	private boolean mCompassEnabled = false;
 	private boolean mDrivingDirectionUp = true;
@@ -227,12 +229,19 @@ public class MainActivity extends Activity {
 			showDialog(R.id.whatsnew);
 		}
 		final Intent queryIntent = getIntent();
+		Ut.i("onCreate process intent=" + queryIntent);
 		final String queryAction = queryIntent.getAction();
-		if (Intent.ACTION_SEARCH.equals(queryAction)) {
+		Ut.i("onCreate process action=" + queryAction);
+		if (Intent.ACTION_MAIN.equals(queryAction)) {
+			;
+		}
+		else if (Intent.ACTION_SEARCH.equals(queryAction)) {
 			doSearchQuery(queryIntent);
+			Ut.i("onCreate doSearchQuery");
 		}
 		else if (ACTION_SHOW_POINTS.equalsIgnoreCase(queryAction)) {
 			doShowPoints(queryIntent);
+			Ut.i("onCreate doShowPoints");
 		}
 		else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
 			Uri uri = queryIntent.getData();
@@ -252,6 +261,7 @@ public class MainActivity extends Activity {
 					mMap.setCenter(point);
 				}
 			}
+			Ut.i("onCreate setGpsStatusGeoPoint");
 		}
 		else if ("SHOW_MAP_ID".equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = queryIntent.getExtras();
@@ -278,8 +288,52 @@ public class MainActivity extends Activity {
 				}
 			}
 			queryIntent.setAction("");
+			Ut.i("onCreate SharedPreferences");
 		}
-		Ut.d("onCreate done");
+		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
+			if (queryIntent.hasExtra("longitude") && queryIntent.hasExtra("latitude")) {
+				String name = queryIntent.getStringExtra("name");
+				double longitude = queryIntent.getDoubleExtra("longitude", 0);
+				double latitude = queryIntent.getDoubleExtra("latitude", 0);
+				// altitude?
+				// accuracy?
+				Location location = new Location(name);
+				location.setLatitude(latitude);
+				location.setLongitude(longitude);
+				GeoPoint point = GeoPoint.fromDoubleString("" + latitude + ',' + longitude); // TODO
+				mPoiOverlay.clearPoiList();
+				mPoiOverlay.setGpsStatusGeoPoint(0, point, name, "");
+				setAutoFollow(false);
+				mMap.setCenter(point);
+				Ut.i("onCreate location received");
+			}
+			else
+				Ut.w("onCreate conversations intent recceived with no lat/lon");
+		}
+		else if (ACTION_CONVERSATIONS_REQUEST.equals(queryAction)) {
+			Location location = mMyLocationOverlay.getLastLocation();
+			Intent result = new Intent();
+			if (location != null) {
+				result.putExtra("latitude", location.getLatitude());
+				result.putExtra("longitude", location.getLongitude());
+				result.putExtra("altitude", location.getAltitude());
+				result.putExtra("accuracy", (int)location.getAccuracy());
+				Ut.i("onCreate location sent");
+			}
+			else {
+				// TODO defere location determination
+				result.putExtra("latitude", 52.0);
+				result.putExtra("longitude", 7.0);
+				result.putExtra("altitude", 90.0);
+				result.putExtra("accuracy", 300);
+				Ut.w("onCreate cannot send lat/lon to conversations, dummy sent");
+			}
+			setResult(RESULT_OK, result);
+			finish();
+		}
+		else
+			Ut.i("onCreate no fit");
+		Ut.i("onCreate done");
 	}
 
 	@Override
@@ -373,52 +427,46 @@ public class MainActivity extends Activity {
 
 	private View createContentView() {
 		setContentView(R.layout.main);
-
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-
 		final RelativeLayout rl = (RelativeLayout)findViewById(R.id.map_area);
-		final int sideBottom = Integer.parseInt(pref.getString("pref_zoomctrl", "1"));
-		final boolean showTitle = pref.getBoolean("pref_showtitle", true);
-		final boolean showAutoFollow = pref.getBoolean("pref_show_autofollow_button", true);
-
-		if (!showTitle)
+		final int pref_zoomctrl = Integer.parseInt(pref.getString("pref_zoomctrl", "1"));
+		final boolean pref_showtitle = pref.getBoolean("pref_showtitle", true);
+		final boolean pref_show_autofollow_button = pref.getBoolean("pref_show_autofollow_button", true);
+		final boolean pref_showscalebar = pref.getBoolean("pref_showscalebar", true);
+		if (!pref_showtitle)
 			findViewById(R.id.screen).setVisibility(View.GONE);
-
-		mMap = new MapView(this, Integer.parseInt(pref.getString("pref_zoomctrl", "1")), pref.getBoolean("pref_showscalebar", true)? 1: 0);
+		mMap = new MapView(this, pref_zoomctrl, pref_showscalebar? 1: 0);
 		mMap.setId(R.id.main);
 		final RelativeLayout.LayoutParams pMap = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		rl.addView(mMap, pMap);
-
-		mCompassView = new CompassView(this, sideBottom == 2? false: true);
+		mCompassView = new CompassView(this, pref_zoomctrl != 2);
 		mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
-
-		final RelativeLayout.LayoutParams compassParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		final RelativeLayout.LayoutParams compassParams = new RelativeLayout.LayoutParams(
+			RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		compassParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		if (!(sideBottom == 2? false: true)) {
+		if (pref_zoomctrl == 2) {
 			compassParams.addRule(RelativeLayout.ABOVE, R.id.scale_bar);
 		}
 		else {
 			compassParams.addRule(RelativeLayout.BELOW, R.id.dashboard_area);
 		}
 		mMap.addView(mCompassView, compassParams);
-
-		if (showAutoFollow) {
+		if (pref_show_autofollow_button) {
 			ivAutoFollow = new ImageView(this);
 			ivAutoFollow.setImageResource(R.drawable.autofollow);
 			ivAutoFollow.setVisibility(ImageView.INVISIBLE);
-
 			final RelativeLayout.LayoutParams followParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 			followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			if (!(sideBottom == 2? false: true)) {
+			if (pref_zoomctrl == 2) {
 				followParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 			}
 			else {
 				followParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 			}
 			((RelativeLayout)findViewById(R.id.right_area)).addView(ivAutoFollow, followParams);
-
 			ivAutoFollow.setOnClickListener(new OnClickListener() {
+				@Override
 				public void onClick(View v) {
 					setAutoFollow(true);
 					mSearchResultOverlay.Clear();
@@ -426,15 +474,13 @@ public class MainActivity extends Activity {
 				}
 			});
 		}
-
 		mOverlayView = new ImageView(this);
 		mOverlayView.setImageResource(R.drawable.r_overlays);
 		final int pad = getResources().getDimensionPixelSize(R.dimen.zoom_ctrl_padding);
 		mOverlayView.setPadding(0, pad, 0, pad);
 		((LinearLayout)mMap.findViewById(R.id.right_panel)).addView(mOverlayView);
-
 		mOverlayView.setOnClickListener(new View.OnClickListener() {
-
+			@Override
 			public void onClick(View v) {
 				if (mTileSource.YANDEX_TRAFFIC_ON == 1) {
 					mShowOverlay = !mShowOverlay;
@@ -468,7 +514,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		mOverlayView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-
+			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 				mMap.getTileView().mPoiMenuInfo.EventGeoPoint = null;
 				menu.setHeaderTitle(R.string.menu_title_overlays);
@@ -514,7 +560,6 @@ public class MainActivity extends Activity {
 					}
 					c.close();
 				}
-
 				final SAXParserFactory fac = SAXParserFactory.newInstance();
 				SAXParser parser = null;
 				try {
@@ -530,9 +575,7 @@ public class MainActivity extends Activity {
 
 			}
 		});
-
 		registerForContextMenu(mMap);
-
 		return rl;
 	}
 
@@ -619,7 +662,6 @@ public class MainActivity extends Activity {
 				mMap.getTileSource().CATEGORY + ": " +
 				mMap.getTileSource().NAME
 				);
-
 		try {
 			final TextView leftText = (TextView)findViewById(R.id.left_text);
 			if (leftText != null) {
@@ -738,7 +780,7 @@ public class MainActivity extends Activity {
 		if (mPoiOverlay != null)
 			editor.putInt("curShowPoiId", mPoiOverlay.getTapIndex());
 		mSearchResultOverlay.toPref(editor);
-		editor.putBoolean("show_dashboard", mIndicatorManager == null? false: true);
+		editor.putBoolean("show_dashboard", mIndicatorManager != null);
 		editor.putString("targetlocation", mMyLocationOverlay.getTargetLocation() == null? "": mMyLocationOverlay.getTargetLocation().toDoubleString());
 		editor.commit();
 		uiState = getSharedPreferences("MapName", Activity.MODE_PRIVATE);
@@ -1668,7 +1710,7 @@ public class MainActivity extends Activity {
 			if (mNetListener != null)
 				lm.removeUpdates(mNetListener);
 			if (listProviders.contains(LocationManager.GPS_PROVIDER)) {
-				Ut.d("GPS Provider available");
+				Ut.d("SATELLITE Provider available");
 				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, mLocationListener);
 				if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
 					mStatusLocationProviderName = LocationManager.GPS_PROVIDER;
