@@ -83,7 +83,7 @@ public class IconManager {
 
 	public int getPoiIconResId(int id) {
 		if (id == poi) {
-			return R.drawable.poi;
+			return R.drawable.poi_red;
 		} else if (id == poiblue) {
 			return R.drawable.poiblue;
 		} else if (id == poigreen) {

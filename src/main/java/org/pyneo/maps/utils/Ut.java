@@ -32,12 +32,12 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class Ut implements Constants {
-	public static final int MAPTILEFSLOADER_SUCCESS_ID = 1000;
-	public static final int MAPTILEFSLOADER_FAIL_ID = MAPTILEFSLOADER_SUCCESS_ID + 1;
-	public static final int INDEXIND_SUCCESS_ID = MAPTILEFSLOADER_SUCCESS_ID + 2;
-	public static final int INDEXIND_FAIL_ID = MAPTILEFSLOADER_SUCCESS_ID + 3;
-	public static final int ERROR_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 4;
-	public static final int SEARCH_OK_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 5;
+	static public final int MAPTILEFSLOADER_SUCCESS_ID = 1000;
+	static public final int MAPTILEFSLOADER_FAIL_ID = MAPTILEFSLOADER_SUCCESS_ID + 1;
+	static public final int INDEXIND_SUCCESS_ID = MAPTILEFSLOADER_SUCCESS_ID + 2;
+	static public final int INDEXIND_FAIL_ID = MAPTILEFSLOADER_SUCCESS_ID + 3;
+	static public final int ERROR_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 4;
+	static public final int SEARCH_OK_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 5;
 	static public boolean LOGDEBUG = false;
 	static { LOGDEBUG = Log.isLoggable(LOGTAG, Log.DEBUG); }
 
@@ -52,8 +52,8 @@ public class Ut implements Constants {
 		"yyyy-MM-dd HH:mm",
 		"yyyy-MM-dd",
 	};
-	private static String EXTERNAL_SD = "/storage/extSdCard";
-	private static String SIGNAL_FILE_NAME = "/TabulaeOnSDCard";
+	static private final String EXTERNAL_SD = "/storage/extSdCard";
+	static private final String SIGNAL_FILE_NAME = "/TabulaeOnSDCard";
 
 	public static long copy(final InputStream in, final OutputStream out) throws IOException {
 		long length = 0;
@@ -170,7 +170,7 @@ public class Ut implements Constants {
 	}
 
 	public static void w(String str) {
-		if (LOGDEBUG)
+		//if (LOGDEBUG)
 			Log.w(LOGTAG, str);
 		toLogFile(str);
 	}

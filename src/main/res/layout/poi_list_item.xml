@@ -14,7 +14,7 @@
 		android:layout_marginLeft="4dp"
 		android:layout_marginRight="8dp"
 		android:layout_marginTop="4dp"
-		android:src="@drawable/poiblue"
+		android:src="@drawable/poi_blue"
 		/>
 	<TextView
 		android:id="@+id/title1"

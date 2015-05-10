@@ -50,12 +50,12 @@ public class PoiOverlay extends TileViewOverlay {
 		mCanUpdateList = !hidepoi;
 		mTapId = NO_TAP;
 
-		Drawable marker = ctx.getResources().getDrawable(R.drawable.poi);
+		Drawable marker = ctx.getResources().getDrawable(R.drawable.poi_red);
 		this.mMarkerWidth = marker.getIntrinsicWidth();
 		this.mMarkerHeight = marker.getIntrinsicHeight();
 
 		mBtnMap = new SparseArray<Drawable>();
-		mBtnMap.put(Integer.valueOf(R.drawable.poi), marker);
+		mBtnMap.put(Integer.valueOf(R.drawable.poi_red), marker);
 		this.mMarkerHotSpot = new Point(0, mMarkerHeight);
 
 		this.mOnItemTapListener = onItemTapListener;
@@ -92,7 +92,7 @@ public class PoiOverlay extends TileViewOverlay {
 	}
 
 	public void setGpsStatusGeoPoint(final int id, final GeoPoint geopoint, final String title, final String descr) {
-		PoiPoint poi = new PoiPoint(id, title, descr, geopoint, 0, R.drawable.poi_satttelite);
+		PoiPoint poi = new PoiPoint(id, title, descr, geopoint, 0, R.drawable.poi_satellite);
 
 		if (mItemList == null)
 			mItemList = new SparseArray<PoiPoint>();
@@ -204,7 +204,7 @@ public class PoiOverlay extends TileViewOverlay {
 					marker = mCtx.getResources().getDrawable(focusedItem.mIconId);
 				}
 				catch (Exception e) {
-					marker = mCtx.getResources().getDrawable(R.drawable.poi);
+					marker = mCtx.getResources().getDrawable(R.drawable.poi_red);
 				}
 				mBtnMap.put(focusedItem.mIconId, marker);
 			}

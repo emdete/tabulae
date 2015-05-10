@@ -12,7 +12,7 @@
 		android:layout_marginBottom="2dp"
 		android:layout_marginRight="8dp"
 		android:layout_marginTop="2dp"
-		android:src="@drawable/poi"
+		android:src="@drawable/poi_red"
 		/>
 	<TextView
 		android:id="@android:id/text1"

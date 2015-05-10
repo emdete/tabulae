@@ -19,11 +19,11 @@ public class PoiCategory implements PoiConstants {
 	}
 
 	public PoiCategory() {
-		this(PoiConstants.EMPTY_ID, "", false, R.drawable.poi, 14);
+		this(PoiConstants.EMPTY_ID, "", false, R.drawable.poi_red, 14);
 	}
 
 	public PoiCategory(String title) {
-		this(PoiConstants.EMPTY_ID, title, false, R.drawable.poi, 14);
+		this(PoiConstants.EMPTY_ID, title, false, R.drawable.poi_red, 14);
 	}
 
 	public int getId() {

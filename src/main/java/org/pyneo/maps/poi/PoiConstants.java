@@ -59,7 +59,7 @@ public interface PoiConstants {
 	String SQL_UPDATE_1_1 = "DROP TABLE IF EXISTS 'points_45392250'; ";
 	String SQL_UPDATE_1_2 = "CREATE TABLE 'points_45392250' AS SELECT * FROM 'points';";
 	String SQL_UPDATE_1_3 = "DROP TABLE 'points';";
-	String SQL_UPDATE_1_5 = "INSERT INTO 'points' (pointid, name, descr, lat, lon, alt, hidden, categoryid, pointsourceid, iconid) SELECT pointid, name, descr, lat, lon, alt, hidden, categoryid, pointsourceid, " + R.drawable.poi + " FROM 'points_45392250';";
+	String SQL_UPDATE_1_5 = "INSERT INTO 'points' (pointid, name, descr, lat, lon, alt, hidden, categoryid, pointsourceid, iconid) SELECT pointid, name, descr, lat, lon, alt, hidden, categoryid, pointsourceid, " + R.drawable.poi_red + " FROM 'points_45392250';";
 	String SQL_UPDATE_1_6 = "DROP TABLE 'points_45392250';";
 	String SQL_UPDATE_1_7 = "DROP TABLE IF EXISTS 'category_46134312'; ";
 	String SQL_UPDATE_1_8 = "CREATE TABLE 'category_46134312' AS SELECT * FROM 'category';";

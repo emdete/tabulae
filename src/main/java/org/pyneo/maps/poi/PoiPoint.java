@@ -30,7 +30,7 @@ public class PoiPoint implements PoiConstants {
 	}
 
 	public PoiPoint() {
-		this(EMPTY_ID, "", "", null, R.drawable.poi, 0, 0, 0, 0);
+		this(EMPTY_ID, "", "", null, R.drawable.poi_red, 0, 0, 0, 0);
 	}
 
 	public PoiPoint(int id, String mTitle, String mDescr, GeoPoint mGeoPoint, int categoryid, int iconid) {

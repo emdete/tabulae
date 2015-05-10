@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -114,7 +113,7 @@ public class PoiCategoryActivity extends Activity implements PoiConstants {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if (resultCode == RESULT_OK) {
-			mPoiCategory.IconId = data.getIntExtra("iconid", R.drawable.poi);
+			mPoiCategory.IconId = data.getIntExtra("iconid", R.drawable.poi_red);
 			mIcon.setImageResource(mPoiCategory.IconId);
 		}
 

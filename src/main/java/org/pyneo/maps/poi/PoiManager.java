@@ -47,7 +47,7 @@ public class PoiManager implements PoiConstants {
 	}
 
 	public void addPoi(final String title, final String descr, GeoPoint point) {
-		mGeoDatabase.addPoi(title, descr, point.getLatitude(), point.getLongitude(), ZERO, ZERO, ZERO, ZERO, R.drawable.poi);
+		mGeoDatabase.addPoi(title, descr, point.getLatitude(), point.getLongitude(), ZERO, ZERO, ZERO, ZERO, R.drawable.poi_red);
 	}
 
 	public void updatePoi(final PoiPoint point) {
@@ -116,7 +116,7 @@ public class PoiManager implements PoiConstants {
 		final Cursor c = mGeoDatabase.getPoiCategory(id);
 		if (c != null) {
 			if (c.moveToFirst())
-				category = new PoiCategory(id, c.getString(0), c.getInt(2) == ONE? true: false, c.getInt(3), c.getInt(4));
+				category = new PoiCategory(id, c.getString(0), c.getInt(2) == ONE, c.getInt(3), c.getInt(4));
 			c.close();
 		}
 
@@ -192,7 +192,7 @@ public class PoiManager implements PoiConstants {
 					if (style == null || style.equalsIgnoreCase(""))
 						style = "";
 
-					tracks[pos] = new Track(c.getInt(3), c.getString(0), c.getString(1), c.getInt(2) == ONE? true: false, c.getInt(4), c.getDouble(5), c.getDouble(6), c.getInt(7), c.getInt(8), new Date(c.getLong(9) * 1000), style, defStyle);
+					tracks[pos] = new Track(c.getInt(3), c.getString(0), c.getString(1), c.getInt(2) == ONE, c.getInt(4), c.getDouble(5), c.getDouble(6), c.getInt(7), c.getInt(8), new Date(c.getLong(9) * 1000), style, defStyle);
 
 					if (aNeedPoints) {
 						Cursor cpoints = mGeoDatabase.getTrackPoints(tracks[pos].getId());
@@ -235,7 +235,7 @@ public class PoiManager implements PoiConstants {
 				if (style == null || style.equalsIgnoreCase(""))
 					style = "";
 
-				track = new Track(id, c.getString(0), c.getString(1), c.getInt(2) == ONE? true: false, c.getInt(3), c.getDouble(4), c.getDouble(5), c.getInt(6), c.getInt(7), new Date(c.getLong(8) * 1000), style, defStyle);
+				track = new Track(id, c.getString(0), c.getString(1), c.getInt(2) == ONE, c.getInt(3), c.getDouble(4), c.getDouble(5), c.getInt(6), c.getInt(7), new Date(c.getLong(8) * 1000), style, defStyle);
 			}
 			c.close();
 			c = null;

@@ -117,7 +117,7 @@ public class TileSourceBase {
 						this.NAME = c.getString(1);
 						this.BASEURL = json.optString(MixedMapsPreference.BASEURL, "");
 						this.PROJECTION = json.optInt(MixedMapsPreference.MAPPROJECTION, 1);
-						this.LAYER = c.getInt(2) == 2? false: true;
+						this.LAYER = c.getInt(2) != 2;
 						this.MAP_TYPE = MIXMAP_CUSTOM;
 						this.URL_BUILDER_TYPE = 12;
 						this.ZOOM_MINLEVEL = json.optInt(MixedMapsPreference.MINZOOM, 1) - 1;

@@ -20,7 +20,7 @@ public class Units {
 	public Units(SharedPreferences aPref) {
 		super();
 
-		mMetricSystem = Integer.parseInt(aPref.getString("pref_units", "0")) == 0? true: false;
+		mMetricSystem = Integer.parseInt(aPref.getString("pref_units", "0")) == 0;
 	}
 
 	public String KM() {
