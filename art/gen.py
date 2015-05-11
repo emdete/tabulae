@@ -32,7 +32,6 @@ def conv_svg(width, height, basename):
 			suffix, basename, int(width * d / 4), int(height * d / 4), basename,
 			))
 
-print(dir(cairo))
 handle = Rsvg.Handle()
 for n in glob('.svg'):
 	svg = handle.new_from_file(n+'.svg')
