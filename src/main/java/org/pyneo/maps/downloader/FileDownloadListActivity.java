@@ -28,7 +28,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class FileDownloadListActivity extends ListActivity {
+public class FileDownloadListActivity extends ListActivity implements Constants {
 	ProgressDialog mProgressDialog;
 	DownloadFile mDownloadFile;
 
@@ -172,7 +172,7 @@ public class FileDownloadListActivity extends ListActivity {
 
 				final Intent intent = new Intent(FileDownloadListActivity.this, MainActivity.class)
 					.setAction("SHOW_MAP_ID")
-					.putExtra("MapName", "usermap_" + name)
+					.putExtra(MAPNAME, "usermap_" + name)
 					.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				if (!mapCenter.equalsIgnoreCase(""))
 					intent.putExtra("center", mapCenter);

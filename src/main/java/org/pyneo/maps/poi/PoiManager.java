@@ -15,7 +15,7 @@ import org.andnav.osm.util.GeoPoint;
 
 import java.util.Date;
 
-public class PoiManager implements PoiConstants {
+public class PoiManager implements Constants {
 	protected final Context mCtx;
 	private GeoDatabase mGeoDatabase;
 	private boolean mStopProcessing;
@@ -82,9 +82,9 @@ public class PoiManager implements PoiConstants {
 	}
 
 	public void addPoiStartActivity(Context ctx, GeoPoint touchDownPoint) {
-		ctx.startActivity((new Intent(ctx, PoiActivity.class)).putExtra(LAT,
-			touchDownPoint.getLatitude()).putExtra(LON,
-			touchDownPoint.getLongitude()));
+		ctx.startActivity((new Intent(ctx, PoiActivity.class))
+			.putExtra(LAT, touchDownPoint.getLatitude())
+			.putExtra(LON, touchDownPoint.getLongitude()));
 	}
 
 	public PoiPoint getPoiPoint(int id) {

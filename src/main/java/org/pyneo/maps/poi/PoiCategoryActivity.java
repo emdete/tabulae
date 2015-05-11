@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import org.pyneo.maps.R;
 
-public class PoiCategoryActivity extends Activity implements PoiConstants {
+public class PoiCategoryActivity extends Activity implements Constants {
 	EditText mTitle;
 	CheckBox mHidden;
 	ImageView mIcon;
@@ -37,7 +37,7 @@ public class PoiCategoryActivity extends Activity implements PoiConstants {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt("id", PoiConstants.EMPTY_ID);
+		int id = extras.getInt("id", Constants.EMPTY_ID);
 
 		if (id < 0) {
 			mPoiCategory = new PoiCategory();

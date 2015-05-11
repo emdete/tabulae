@@ -56,7 +56,6 @@ import org.pyneo.maps.downloader.AreaSelectorActivity;
 import org.pyneo.maps.downloader.FileDownloadListActivity;
 import org.pyneo.maps.poi.GeoDataActivity;
 import org.pyneo.maps.poi.PoiActivity;
-import org.pyneo.maps.poi.PoiConstants;
 import org.pyneo.maps.poi.PoiListActivity;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.poi.PoiPoint;
@@ -86,8 +85,7 @@ import org.pyneo.maps.map.TileViewOverlay;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.TypeConverter;
-import org.andnav.osm.views.util.StreamUtils;
-import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
+import org.andnav.osm.util.StreamUtils;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -106,11 +104,7 @@ import javax.xml.parsers.SAXParserFactory;
 /**
 *
 */
-public class MainActivity extends Activity {
-	private static final String MAPNAME = "MapName";
-	private static final String ACTION_SHOW_POINTS = "org.pyneo.maps.action.SHOW_POINTS";
-	private static final String ACTION_CONVERSATIONS_SHOW = "eu.siacs.conversations.location.show";
-	private static final String ACTION_CONVERSATIONS_REQUEST = "eu.siacs.conversations.location.request";
+public class MainActivity extends Activity implements Constants {
 	private boolean mAutoFollow = true;
 	private boolean mCompassEnabled = false;
 	private boolean mDrivingDirectionUp = true;
@@ -126,7 +120,7 @@ public class MainActivity extends Activity {
 		@Override
 		public void handleMessage(final Message msg) {
 			switch (msg.what) {
-				case Ut.MAPTILEFSLOADER_SUCCESS_ID: {
+				case Ut.TILEPROVIDER_SUCCESS_ID: {
 					mMap.invalidate(); //postInvalidate();
 				}
 				case R.id.user_moved_map: {
@@ -135,7 +129,7 @@ public class MainActivity extends Activity {
 				case R.id.set_title: {
 					setTitle();
 				}
-				case Ut.ERROR_MESSAGE: {
+				case Ut.TILEPROVIDER_ERROR_MESSAGE: {
 					if (msg.obj != null)
 						Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
 				}
@@ -152,6 +146,20 @@ public class MainActivity extends Activity {
 	private int mPrefOverlayButtonVisibility;
 	private MapView mMap;
 	private MeasureOverlay mMeasureOverlay;
+	private MyLocationOverlay mMyLocationOverlay;
+	private PoiManager mPoiManager;
+	private PoiOverlay mPoiOverlay;
+	private PowerManager.WakeLock myWakeLock;
+	private SampleLocationListener mLocationListener;
+	private SampleLocationListener mNetListener;
+	private SearchResultOverlay mSearchResultOverlay;
+	private SensorManager mOrientationSensorManager;
+	private String mStatusLocationProviderName = "";
+	private String mMapId = null;
+	private String mOverlayId = "";
+	private TileOverlay mTileOverlay = null;
+	private TileSource mTileSource;
+	private TrackOverlay mTrackOverlay;
 	private IMoveListener mMoveListener = new IMoveListener() {
 		@Override
 		public void onMoveDetected() {
@@ -170,20 +178,6 @@ public class MainActivity extends Activity {
 				mIndicatorManager.setCenter(mMap.getMapCenter());
 		}
 	};
-	private MyLocationOverlay mMyLocationOverlay;
-	private PoiManager mPoiManager;
-	private PoiOverlay mPoiOverlay;
-	private PowerManager.WakeLock myWakeLock;
-	private SampleLocationListener mLocationListener;
-	private SampleLocationListener mNetListener;
-	private SearchResultOverlay mSearchResultOverlay;
-	private SensorManager mOrientationSensorManager;
-	private String mStatusLocationProviderName = "";
-	private String mMapId = null;
-	private String mOverlayId = "";
-	private TileOverlay mTileOverlay = null;
-	private TileSource mTileSource;
-	private TrackOverlay mTrackOverlay;
 	private final SensorEventListener mListener = new SensorEventListener() {
 		private int iOrientation = -1;
 		@Override
@@ -209,7 +203,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		Ut.d("onCreate savedInstanceState=" + savedInstanceState);
 		super.onCreate(savedInstanceState);
-		if (!OpenStreetMapViewConstants.DEBUGMODE) {
+		if (!LOGDEBUG) {
 			CrashReportHandler.attach(this);
 		}
 		setContentView(R.layout.main);
@@ -447,7 +441,7 @@ public class MainActivity extends Activity {
 			}
 			Ut.i("onCreate setGpsStatusGeoPoint");
 		}
-		else if ("SHOW_MAP_ID".equalsIgnoreCase(queryAction)) {
+		else if (ACTION_SHOW_MAP_ID.equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = queryIntent.getExtras();
 			mMapId = bundle.getString(MAPNAME);
 			if (bundle.containsKey("center")) {
@@ -475,10 +469,10 @@ public class MainActivity extends Activity {
 			Ut.i("onCreate SharedPreferences");
 		}
 		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
-			if (queryIntent.hasExtra("longitude") && queryIntent.hasExtra("latitude")) {
-				String name = queryIntent.getStringExtra("name");
-				double longitude = queryIntent.getDoubleExtra("longitude", 0);
-				double latitude = queryIntent.getDoubleExtra("latitude", 0);
+			if (queryIntent.hasExtra(LONGITUDE) && queryIntent.hasExtra(LATITUDE)) {
+				String name = queryIntent.getStringExtra(NAME);
+				double longitude = queryIntent.getDoubleExtra(LONGITUDE, 0);
+				double latitude = queryIntent.getDoubleExtra(LATITUDE, 0);
 				// altitude?
 				// accuracy?
 				Location location = new Location(name);
@@ -492,25 +486,25 @@ public class MainActivity extends Activity {
 				Ut.i("onCreate location received");
 			}
 			else
-				Ut.w("onCreate conversations intent recceived with no lat/lon");
+				Ut.w("onCreate conversations intent recceived with no latitude/longitude");
 		}
 		else if (ACTION_CONVERSATIONS_REQUEST.equals(queryAction)) {
 			Location location = mMyLocationOverlay.getLastLocation();
 			Intent result = new Intent();
 			if (location != null) {
-				result.putExtra("latitude", location.getLatitude());
-				result.putExtra("longitude", location.getLongitude());
-				result.putExtra("altitude", location.getAltitude());
-				result.putExtra("accuracy", (int)location.getAccuracy());
+				result.putExtra(LATITUDE, location.getLatitude());
+				result.putExtra(LONGITUDE, location.getLongitude());
+				result.putExtra(ALTITUDE, location.getAltitude());
+				result.putExtra(ACCURACY, (int)location.getAccuracy());
 				Ut.i("onCreate location sent");
 			}
 			else {
 				// TODO defere location determination
-				result.putExtra("latitude", 52.0);
-				result.putExtra("longitude", 7.0);
-				result.putExtra("altitude", 90.0);
-				result.putExtra("accuracy", 300);
-				Ut.w("onCreate cannot send lat/lon to conversations, dummy sent");
+				result.putExtra(LATITUDE, 52.0);
+				result.putExtra(LONGITUDE, 7.0);
+				result.putExtra(ALTITUDE, 90.0);
+				result.putExtra(ACCURACY, 300);
+				Ut.w("onCreate cannot send latitude/longitude to conversations, dummy sent");
 			}
 			setResult(RESULT_OK, result);
 			finish();
@@ -531,7 +525,7 @@ public class MainActivity extends Activity {
 		else if (ACTION_SHOW_POINTS.equalsIgnoreCase(queryAction)) {
 			doShowPoints(intent);
 		}
-		else if ("SHOW_MAP_ID".equalsIgnoreCase(queryAction)) {
+		else if (ACTION_SHOW_MAP_ID.equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = intent.getExtras();
 			mMapId = bundle.getString(MAPNAME);
 			if (bundle.containsKey("center")) {
@@ -579,7 +573,7 @@ public class MainActivity extends Activity {
 						//final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 						Configuration config = getBaseContext().getResources().getConfiguration();
 						final String lang = config.locale.getLanguage();
-						//handler.obtainMessage(Ut.SEARCH_OK_MESSAGE, res);
+						//handler.obtainMessage(Ut.TILEPROVIDER_SEARCH_OK_MESSAGE, res);
 						final String address = "";
 						setAutoFollow(false, true);
 						final GeoPoint point = new GeoPoint(0, 0);
@@ -591,7 +585,7 @@ public class MainActivity extends Activity {
 					}
 					catch (Exception e) {
 						try {
-							handler.obtainMessage(Ut.ERROR_MESSAGE, resources.getString(R.string.no_inet_conn));
+							handler.obtainMessage(Ut.TILEPROVIDER_ERROR_MESSAGE, resources.getString(R.string.no_inet_conn));
 						}
 						catch (NotFoundException e1) {
 							Ut.e(e.toString(), e);
@@ -792,7 +786,7 @@ public class MainActivity extends Activity {
 		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = uiState.edit();
 		if (mTileSource != null) {
-			editor.putString("MapName", mTileSource.ID);
+			editor.putString(MAPNAME, mTileSource.ID);
 			try {
 				editor.putString("OverlayID", mTileOverlay == null? mTileSource.getOverlayName(): mTileOverlay.getTileSource().ID);
 			}
@@ -813,10 +807,10 @@ public class MainActivity extends Activity {
 		editor.putBoolean("show_dashboard", mIndicatorManager != null);
 		editor.putString("targetlocation", mMyLocationOverlay.getTargetLocation() == null? "": mMyLocationOverlay.getTargetLocation().toDoubleString());
 		editor.commit();
-		uiState = getSharedPreferences("MapName", Activity.MODE_PRIVATE);
+		uiState = getSharedPreferences(MAPNAME, Activity.MODE_PRIVATE);
 		editor = uiState.edit();
 		if (mTileSource != null)
-			editor.putString("MapName", mTileSource.ID);
+			editor.putString(MAPNAME, mTileSource.ID);
 		editor.putInt("Latitude", point.getLatitudeE6());
 		editor.putInt("Longitude", point.getLongitudeE6());
 		editor.putInt("ZoomLevel", mMap.getZoomLevel());
@@ -1003,7 +997,11 @@ public class MainActivity extends Activity {
 				return true;
 			}
 			case R.id.poilist: {
-				startActivityForResult((new Intent(this, PoiListActivity.class)).putExtra("lat", point.getLatitude()).putExtra("lon", point.getLongitude()).putExtra("title", "POI"), R.id.poilist);
+				startActivityForResult((new Intent(this, PoiListActivity.class))
+					.putExtra(LAT, point.getLatitude())
+					.putExtra(LON, point.getLongitude())
+					.putExtra("title", "POI"),
+					R.id.poilist);
 				return true;
 			}
 			case R.id.tracks: {
@@ -1374,8 +1372,8 @@ public class MainActivity extends Activity {
 					case R.id.menu_addpoi: {
 						TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)item.getMenuInfo(); //).EventGeoPoint;
 						startActivityForResult((new Intent(this, PoiActivity.class))
-							.putExtra("lat", info.EventGeoPoint.getLatitude())
-							.putExtra("lon", info.EventGeoPoint.getLongitude())
+							.putExtra(LAT, info.EventGeoPoint.getLatitude())
+							.putExtra(LON, info.EventGeoPoint.getLongitude())
 							.putExtra("alt", info.Elevation)
 							.putExtra("title", "POI"), R.id.menu_addpoi);
 						break;
@@ -1441,9 +1439,9 @@ public class MainActivity extends Activity {
 						try {
 							Intent i = new Intent("com.google.android.radar.SHOW_RADAR");
 							i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-							i.putExtra("name", poi1.mTitle);
-							i.putExtra("latitude", poi1.mGeoPoint.getLatitudeE6() / 1000000f);
-							i.putExtra("longitude", poi1.mGeoPoint.getLongitudeE6() / 1000000f);
+							i.putExtra(NAME, poi1.mTitle);
+							i.putExtra(LATITUDE, poi1.mGeoPoint.getLatitudeE6() / 1000000f);
+							i.putExtra(LONGITUDE, poi1.mGeoPoint.getLongitudeE6() / 1000000f);
 							startActivity(i);
 						}
 						catch (Exception e) {
@@ -1558,7 +1556,7 @@ public class MainActivity extends Activity {
 			}
 			case R.id.poilist: {
 				if (resultCode == RESULT_OK) {
-					PoiPoint point = mPoiManager.getPoiPoint(data.getIntExtra("pointid", PoiConstants.EMPTY_ID));
+					PoiPoint point = mPoiManager.getPoiPoint(data.getIntExtra("pointid", EMPTY_ID));
 					if (point != null) {
 						setAutoFollow(false);
 						mPoiOverlay.UpdateList();
@@ -1573,7 +1571,7 @@ public class MainActivity extends Activity {
 			}
 			case R.id.tracks: {
 				if (resultCode == RESULT_OK) {
-					Track track = mPoiManager.getTrack(data.getIntExtra("trackid", PoiConstants.EMPTY_ID));
+					Track track = mPoiManager.getTrack(data.getIntExtra("trackid", EMPTY_ID));
 					if (track != null) {
 						setAutoFollow(false);
 						mMap.setCenter(track.getBeginGeoPoint());

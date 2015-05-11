@@ -24,8 +24,7 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.utils.CoordFormatter;
 import org.pyneo.maps.utils.IconManager;
 
-public class PoiListFragment extends ListFragment implements
-	LoaderManager.LoaderCallbacks<Cursor> {
+public class PoiListFragment extends ListFragment implements Constants, LoaderManager.LoaderCallbacks<Cursor> {
 	private static final int URL_LOADER = 0;
 	private SQLiteCursorLoader mLoader;
 	private PoiListSimpleCursorAdapter mAdapter;
@@ -80,8 +79,6 @@ public class PoiListFragment extends ListFragment implements
 
 	private static class PoiViewBinder implements PoiListSimpleCursorAdapter.ViewBinder {
 		private static final String CATNAME = "catname";
-		private static final String LAT = "lat";
-		private static final String LON = "lon";
 		private static final String ICONID = "iconid";
 		private Context ctx;
 

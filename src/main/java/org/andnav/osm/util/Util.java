@@ -1,8 +1,8 @@
 // Created by plusminus on 17:53:07 - 25.09.2008
-package org.andnav.osm.views.util;
+package org.andnav.osm.util;
 
 import org.andnav.osm.util.BoundingBoxE6;
-import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
+import org.andnav.osm.util.Constants;
 
 import org.pyneo.maps.utils.OSGB36;
 
@@ -11,30 +11,7 @@ import org.pyneo.maps.utils.OSGB36;
  * @author Nicolas Gramlich
  *
  */
-public class Util implements OpenStreetMapViewConstants{
-	// ===========================================================
-	// Constants
-	// ===========================================================
-
-	// ===========================================================
-	// Fields
-	// ===========================================================
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
-
-	// ===========================================================
-	// Methods from SuperClass/Interfaces
-	// ===========================================================
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
+public class Util implements Constants {
 
 	public static int[] getMapTileFromCoordinates(final int aLat, final int aLon, final int zoom, final int[] reuse, final int aProjection) {
 		return getMapTileFromCoordinates(aLat / 1E6, aLon / 1E6, zoom, reuse, aProjection);

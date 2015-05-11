@@ -13,7 +13,7 @@ import android.os.Message;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.views.util.StreamUtils;
+import org.andnav.osm.util.StreamUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -247,7 +247,7 @@ public class TileProviderMNM extends TileProviderFileBase {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result)
-				Message.obtain(mCallbackHandler, MessageHandlerConstants.MAPTILEFSLOADER_INDEXIND_SUCCESS_ID).sendToTarget();
+				Message.obtain(mCallbackHandler, Constants.MAPTILEFSLOADER_INDEXIND_SUCCESS_ID).sendToTarget();
 
 			if (mProgressDialog != null)
 				mProgressDialog.dismiss();

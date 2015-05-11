@@ -57,7 +57,7 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.TimeZone;
 
-public class IndicatorManager implements IndicatorConst {
+public class IndicatorManager implements Constants {
 	private final CoordFormatter mCf;
 	private final DistanceFormatter mDf;
 	private final SimpleDateFormat sdf;

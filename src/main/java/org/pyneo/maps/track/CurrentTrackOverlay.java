@@ -19,12 +19,7 @@ import android.preference.PreferenceManager;
 import org.pyneo.maps.MainActivity;
 import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
-import org.pyneo.maps.track.DatabaseHelper;
 import org.pyneo.maps.poi.PoiManager;
-import org.pyneo.maps.track.Track;
-import org.pyneo.maps.track.TrackWriterService;
-import org.pyneo.maps.track.IRemoteService;
-import org.pyneo.maps.track.ITrackWriterCallback;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
@@ -84,7 +79,7 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 				}
 			}
 			try {
-				Message.obtain(mOsmv.getHandler(), Ut.MAPTILEFSLOADER_SUCCESS_ID).sendToTarget();
+				Message.obtain(mOsmv.getHandler(), Ut.TILEPROVIDER_SUCCESS_ID).sendToTarget();
 			}
 			catch (Exception e) {
 				Ut.e(e.toString(), e);

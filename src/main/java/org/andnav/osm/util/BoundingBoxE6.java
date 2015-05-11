@@ -6,15 +6,12 @@ import static org.andnav.osm.util.MyMath.gudermannInverse;
 
 import java.util.ArrayList;
 
-import org.andnav.osm.util.constants.OpenStreetMapConstants;
-import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
-
 /**
  * 
  * @author Nicolas Gramlich
  *
  */
-public class BoundingBoxE6 implements OpenStreetMapViewConstants, OpenStreetMapConstants {
+public class BoundingBoxE6 implements Constants {
 	// ===========================================================
 	// Constants
 	// ===========================================================

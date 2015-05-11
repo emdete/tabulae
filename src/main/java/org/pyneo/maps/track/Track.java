@@ -5,13 +5,12 @@ import android.location.Location;
 import org.andnav.osm.util.GeoPoint;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.pyneo.maps.poi.PoiConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Track implements PoiConstants {
+public class Track implements Constants {
 	public static final String COLOR = "color";
 	public static final String COLORSHADOW = "color_shadow";
 	public static final String WIDTH = "width";

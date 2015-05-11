@@ -7,7 +7,7 @@ import android.preference.PreferenceActivity;
 import org.pyneo.maps.R;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.map.PredefMapsParser;
-import org.pyneo.maps.poi.PoiConstants;
+import org.pyneo.maps.poi.Constants;
 import org.pyneo.maps.utils.Ut;
 
 import java.io.InputStream;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class MMPreferenceActivity extends PreferenceActivity implements PoiConstants {
+public class MMPreferenceActivity extends PreferenceActivity implements Constants {
 	public static final String MAPID = "mapid";
 	public static final String MAPPROJECTION = "mapprojection";
 	public static final String OVERLAYID = "overlayid";

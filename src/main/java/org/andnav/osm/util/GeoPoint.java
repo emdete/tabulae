@@ -3,15 +3,12 @@ package org.andnav.osm.util;
 
 import java.util.Locale;
 
-import org.andnav.osm.util.constants.GeoConstants;
-import org.andnav.osm.views.util.constants.MathConstants;
-
 /**
  * 
  * @author Nicolas Gramlich
  * 
  */
-public class GeoPoint implements MathConstants, GeoConstants {
+public class GeoPoint {
 	// ===========================================================
 	// Constants
 	// ===========================================================

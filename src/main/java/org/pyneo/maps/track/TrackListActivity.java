@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.TimeZone;
 
-public class TrackListActivity extends ListActivity {
+public class TrackListActivity extends ListActivity implements Constants {
 	private PoiManager mPoiManager;
 
 	private ProgressDialog dlgWait;
@@ -432,8 +432,8 @@ public class TrackListActivity extends ListActivity {
 				SimpleXML trkpt = null;
 				for (TrackPoint tp : track.getPoints()) {
 					trkpt = trkseg.createChild("trkpt");
-					trkpt.setAttr("lat", Double.toString(tp.lat));
-					trkpt.setAttr("lon", Double.toString(tp.lon));
+					trkpt.setAttr(LAT, Double.toString(tp.lat));
+					trkpt.setAttr(LON, Double.toString(tp.lon));
 					trkpt.createChild("ele").setText(Double.toString(tp.alt));
 					trkpt.createChild("time").setText(formatter.format(tp.date));
 				}

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.poi.PoiConstants;
+import org.pyneo.maps.poi.Constants;
 import org.pyneo.maps.utils.RSQLiteOpenHelper;
 import org.pyneo.maps.utils.Ut;
 
@@ -16,7 +16,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class GeoDatabase implements PoiConstants {
+public class GeoDatabase implements Constants {
 	protected final Context mCtx;
 	@SuppressLint("SimpleDateFormat")
 	protected final SimpleDateFormat DATE_FORMAT_ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -234,7 +234,7 @@ public class GeoDatabase implements PoiConstants {
 
 	public void DeleteAllPoi() {
 		if (isDatabaseReady()) {
-			mDatabase.execSQL(STAT_DeleteAllPoi);
+			mDatabase.execSQL(org.andnav.osm.util.Constants.STAT_DeleteAllPoi);
 		}
 	}
 

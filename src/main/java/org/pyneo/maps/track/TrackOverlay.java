@@ -12,7 +12,6 @@ import org.pyneo.maps.MainActivity;
 import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
 import org.pyneo.maps.poi.PoiManager;
-import org.pyneo.maps.track.Track;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
@@ -129,7 +128,7 @@ public class TrackOverlay extends TileViewOverlay {
 							mPaints[i].setStrokeWidth(mTracks[i].Width);
 							mPaints[i].setAlpha(Color.alpha(mTracks[i].ColorShadow));
 							mPaints[i].setShadowLayer((float)mTracks[i].ShadowRadius, 0, 0, mTracks[i].ColorShadow);
-							Message.obtain(mMainMapActivityCallbackHandler, Ut.MAPTILEFSLOADER_SUCCESS_ID).sendToTarget();
+							Message.obtain(mMainMapActivityCallbackHandler, Ut.TILEPROVIDER_SUCCESS_ID).sendToTarget();
 						}
 						catch (Exception e) {
 							mPaths[i] = null;

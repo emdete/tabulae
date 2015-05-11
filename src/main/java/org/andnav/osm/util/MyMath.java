@@ -1,14 +1,12 @@
 // Created by plusminus on 20:36:01 - 26.09.2008
 package org.andnav.osm.util;
 
-import org.andnav.osm.views.util.constants.MathConstants;
-
 /**
  * 
  * @author Nicolas Gramlich
  *
  */
-public class MyMath implements MathConstants {
+public class MyMath {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -35,11 +33,11 @@ public class MyMath implements MathConstants {
 	
 	
 	public static double gudermannInverse(double aLatitude){
-		return Math.log(Math.tan(PI_4 + (DEG2RAD * aLatitude / 2)));
+		return Math.log(Math.tan(Constants.PI_4 + (Constants.DEG2RAD * aLatitude / 2)));
 	}
 	
 	public static double gudermann(double y){
-		return RAD2DEG * Math.atan(Math.sinh(y));
+		return Constants.RAD2DEG * Math.atan(Math.sinh(y));
 	}
 	
 	

@@ -9,7 +9,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.Date;
 
-public class GpxTrackParser extends DefaultHandler {
+public class GpxTrackParser extends DefaultHandler implements Constants {
 	private static final String TRK = "trk";
 	private static final String LAT = "lat";
 	private static final String LON = "lon";

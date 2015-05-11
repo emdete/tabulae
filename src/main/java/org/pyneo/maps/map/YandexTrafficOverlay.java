@@ -9,17 +9,16 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
 
-import org.pyneo.maps.tileprovider.MessageHandlerConstants;
+import org.pyneo.maps.tileprovider.Constants;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.utils.Ut;
-import org.pyneo.maps.utils.Constants;
 
 import org.andnav.osm.util.BoundingBoxE6;
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.MyMath;
-import org.andnav.osm.views.util.Util;
+import org.andnav.osm.util.Util;
 
-public class YandexTrafficOverlay extends TileViewOverlay implements Constants {
+public class YandexTrafficOverlay extends TileViewOverlay implements org.pyneo.maps.utils.Constants {
 	private static final int LATITUDE = 0;
 	private static final int LONGITUDE = 1;
 	private final Paint mPaint = new Paint();
@@ -169,8 +168,8 @@ public class YandexTrafficOverlay extends TileViewOverlay implements Constants {
 		@Override
 		public void handleMessage(final Message msg) {
 			switch (msg.what) {
-				case MessageHandlerConstants.MAPTILEFSLOADER_SUCCESS_ID:
-				case Ut.MAPTILEFSLOADER_SUCCESS_ID:
+				case Constants.MAPTILEFSLOADER_SUCCESS_ID:
+				case Ut.TILEPROVIDER_SUCCESS_ID:
 					mMapView.invalidate();
 					break;
 			}

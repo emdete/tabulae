@@ -5,7 +5,7 @@ import android.os.Message;
 
 import org.pyneo.maps.utils.SimpleThreadFactory;
 
-import org.andnav.osm.views.util.StreamUtils;
+import org.andnav.osm.util.StreamUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -98,7 +98,7 @@ public class TileURLGeneratorYANDEXTRAFFIC extends TileURLGeneratorBase {
 					}
 
 					if (mCallbackHandler != null)
-						Message.obtain(mCallbackHandler, MessageHandlerConstants.MAPTILEFSLOADER_SUCCESS_ID).sendToTarget();
+						Message.obtain(mCallbackHandler, Constants.MAPTILEFSLOADER_SUCCESS_ID).sendToTarget();
 				}
 			});
 		}

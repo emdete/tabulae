@@ -10,7 +10,7 @@ import org.pyneo.maps.utils.Ut;
 
 import java.io.File;
 
-public class GeoData implements PoiConstants {
+public class GeoData implements Constants {
 	private static GeoData mInstance = null;
 
 	private Context mContext;

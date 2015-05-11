@@ -11,7 +11,7 @@ import org.pyneo.maps.R;
 
 import org.andnav.osm.util.GeoPoint;
 
-public class OffsetPreference extends DialogPreference {
+public class OffsetPreference extends DialogPreference implements Constants {
 	private EditText mEditTextLat;
 	private EditText mEditTextLon;
 	private String mMapID;
@@ -39,8 +39,8 @@ public class OffsetPreference extends DialogPreference {
 		mEditTextLat = (EditText)view.findViewById(R.id.Lat);
 		mEditTextLon = (EditText)view.findViewById(R.id.Lon);
 
-		final float offsetLat = getSharedPreferences().getFloat(getKey() + "lat", 0f);
-		final float offsetLon = getSharedPreferences().getFloat(getKey() + "lon", 0f);
+		final float offsetLat = getSharedPreferences().getFloat(getKey() + LAT, 0f);
+		final float offsetLon = getSharedPreferences().getFloat(getKey() + LON, 0f);
 		final GeoPoint geoPoint0 = new GeoPoint(0, 0);
 		final int lat = (offsetLat < 0? -1: 1) * geoPoint0.distanceTo(new GeoPoint((int)(1E6 * offsetLat), 0));
 		final int lon = (offsetLon < 0? -1: 1) * geoPoint0.distanceTo(new GeoPoint(0, (int)(1E6 * offsetLon)));
@@ -62,19 +62,19 @@ public class OffsetPreference extends DialogPreference {
 			try {
 				final int lat = Integer.parseInt(mEditTextLat.getText().toString());
 				final GeoPoint geolat = geoPoint0.calculateEndingGlobalCoordinates(geoPoint0, 0, lat);
-				editor.putFloat(getKey() + "lat", (float)geolat.getLatitude());
+				editor.putFloat(getKey() + LAT, (float)geolat.getLatitude());
 			}
 			catch (NumberFormatException e1) {
-				editor.putFloat(getKey() + "lat", 0f);
+				editor.putFloat(getKey() + LAT, 0f);
 			}
 
 			try {
 				final int lon = Integer.parseInt(mEditTextLon.getText().toString());
 				final GeoPoint geolat = geoPoint0.calculateEndingGlobalCoordinates(geoPoint0, 90, lon);
-				editor.putFloat(getKey() + "lon", (float)geolat.getLongitude());
+				editor.putFloat(getKey() + LON, (float)geolat.getLongitude());
 			}
 			catch (NumberFormatException e1) {
-				editor.putFloat(getKey() + "lon", 0f);
+				editor.putFloat(getKey() + LON, 0f);
 			}
 
 			editor.commit();

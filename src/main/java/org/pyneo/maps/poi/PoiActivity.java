@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
@@ -21,7 +20,7 @@ import org.andnav.osm.util.GeoPoint;
 
 import java.util.Locale;
 
-public class PoiActivity extends Activity {
+public class PoiActivity extends Activity implements Constants {
 	EditText mTitle, mLat, mLon, mDescr, mAlt;
 	Spinner mSpinner;
 	CheckBox mHidden;
@@ -82,17 +81,18 @@ public class PoiActivity extends Activity {
 		mSpinner.setAdapter(adapter);
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt("pointid", PoiConstants.EMPTY_ID);
+		int id = extras.getInt("pointid", Constants.EMPTY_ID);
 		if (id < 0) {
 			mPoiPoint = new PoiPoint();
 			mTitle.setText(extras.getString("title"));
 			mSpinner.setSelection(0);
-			mLat.setText(mCf.convertLat(extras.getDouble("lat")));
-			mLon.setText(mCf.convertLon(extras.getDouble("lon")));
+			mLat.setText(mCf.convertLat(extras.getDouble(LAT)));
+			mLon.setText(mCf.convertLon(extras.getDouble(LON)));
 			mAlt.setText(String.format(Locale.UK, "%.1f", extras.getDouble("alt", 0.0)));
 			mDescr.setText(extras.getString("descr"));
 			mHidden.setChecked(false);
-		} else {
+		}
+		else {
 			mPoiPoint = mPoiManager.getPoiPoint(id);
 			if (mPoiPoint == null)
 				finish();

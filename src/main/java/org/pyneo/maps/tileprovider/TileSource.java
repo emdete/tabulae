@@ -11,11 +11,10 @@ import android.preference.PreferenceManager;
 import org.pyneo.maps.MainPreferences;
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.RException;
-import org.pyneo.maps.utils.Ut;
 
 import org.andnav.osm.util.BoundingBoxE6;
 import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.views.util.Util;
+import org.andnav.osm.util.Util;
 
 public class TileSource extends TileSourceBase {
 	private TileProviderBase mTileProvider;

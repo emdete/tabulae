@@ -22,8 +22,7 @@ import net.margaritov.preference.colorpicker.ColorPickerView;
 
 import org.andnav.osm.util.GeoPoint;
 
-public class TrackStylePickerDialog extends Dialog implements ColorPickerView.OnColorChangedListener,
-	View.OnClickListener, OnSeekBarChangeListener, ColorPickerDialog.OnColorChangedListener {
+public class TrackStylePickerDialog extends Dialog implements Constants, ColorPickerView.OnColorChangedListener, View.OnClickListener, OnSeekBarChangeListener, ColorPickerDialog.OnColorChangedListener {
 
 	ColorPickerDialog.OnColorChangedListener mColorShadowListiner = new ColorPickerDialog.OnColorChangedListener() {
 
@@ -97,7 +96,7 @@ public class TrackStylePickerDialog extends Dialog implements ColorPickerView.On
 		mTrackStyleOverlay = new TrackStyleOverlay();
 		mTrackStyleOverlay.setPaint(mPaint);
 		mMap.getOverlays().add(mTrackStyleOverlay);
-		final SharedPreferences pref = getContext().getSharedPreferences("MapName", Activity.MODE_PRIVATE);
+		final SharedPreferences pref = getContext().getSharedPreferences(MAPNAME, Activity.MODE_PRIVATE);
 
 		if (mTileSource != null)
 			mTileSource.Free();

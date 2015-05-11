@@ -32,26 +32,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class Ut implements Constants {
-	static public final int MAPTILEFSLOADER_SUCCESS_ID = 1000;
-	static public final int MAPTILEFSLOADER_FAIL_ID = MAPTILEFSLOADER_SUCCESS_ID + 1;
-	static public final int INDEXIND_SUCCESS_ID = MAPTILEFSLOADER_SUCCESS_ID + 2;
-	static public final int INDEXIND_FAIL_ID = MAPTILEFSLOADER_SUCCESS_ID + 3;
-	static public final int ERROR_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 4;
-	static public final int SEARCH_OK_MESSAGE = MAPTILEFSLOADER_SUCCESS_ID + 5;
-	static public boolean LOGDEBUG = false;
-	static { LOGDEBUG = Log.isLoggable(LOGTAG, Log.DEBUG); }
-
-	public static final int IO_BUFFER_SIZE = 8 * 1024;
-	final static String[] formats = new String[]{
-		"yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-		"yyyy-MM-dd'T'HH:mm:ssZ",
-		"yyyy-MM-dd'T'HH:mmZ",
-		"yyyy-MM-dd'T'HH:mm:ss'Z'",
-		"yyyy-MM-dd HH:mm:ss.SSSZ",
-		"yyyy-MM-dd HH:mmZ",
-		"yyyy-MM-dd HH:mm",
-		"yyyy-MM-dd",
-	};
 	static private final String EXTERNAL_SD = "/storage/extSdCard";
 	static private final String SIGNAL_FILE_NAME = "/TabulaeOnSDCard";
 

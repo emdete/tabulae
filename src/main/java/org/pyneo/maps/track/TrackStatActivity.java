@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.poi.PoiConstants;
+import org.pyneo.maps.poi.Constants;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.utils.Units;
@@ -28,7 +28,7 @@ public class TrackStatActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		final int id = extras.getInt("id", PoiConstants.EMPTY_ID);
+		final int id = extras.getInt("id", Constants.EMPTY_ID);
 
 		if (id >= 0) {
 			final PoiManager mPoiManager = new PoiManager(this);

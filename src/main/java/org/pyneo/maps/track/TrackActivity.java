@@ -15,9 +15,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.poi.PoiConstants;
+import org.pyneo.maps.poi.Constants;
 import org.pyneo.maps.poi.PoiManager;
-import org.pyneo.maps.poi.PoiPoint;
 import org.pyneo.maps.utils.TrackStyleDrawable;
 import org.pyneo.maps.utils.TrackStylePickerDialog;
 import org.pyneo.maps.utils.TrackStylePickerDialog.OnTrackStyleChangedListener;
@@ -52,7 +51,7 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt("id", PoiConstants.EMPTY_ID);
+		int id = extras.getInt("id", Constants.EMPTY_ID);
 
 		if (id < 0) {
 			mTrack = new Track();

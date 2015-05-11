@@ -48,12 +48,12 @@ public class TileProviderBase {
 
 	protected void SendMessageSuccess() {
 		if (mCallbackHandler != null)
-			Message.obtain(mCallbackHandler, MessageHandlerConstants.MAPTILEFSLOADER_SUCCESS_ID).sendToTarget();
+			Message.obtain(mCallbackHandler, Constants.MAPTILEFSLOADER_SUCCESS_ID).sendToTarget();
 	}
 
 	protected void SendMessageFail() {
 		if (mCallbackHandler != null)
-			Message.obtain(mCallbackHandler, MessageHandlerConstants.MAPTILEFSLOADER_FAIL_ID).sendToTarget();
+			Message.obtain(mCallbackHandler, Constants.MAPTILEFSLOADER_FAIL_ID).sendToTarget();
 	}
 
 	public void setHandler(Handler mTileMapHandler) {

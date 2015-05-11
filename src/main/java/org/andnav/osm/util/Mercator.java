@@ -1,15 +1,14 @@
 // Created by plusminus on 18:58:15 - 25.09.2008
-package org.andnav.osm.views.util;
+package org.andnav.osm.util;
 
-import org.andnav.osm.views.util.constants.MathConstants;
-
+import org.andnav.osm.util.Constants;
 
 /**
  * http://wiki.openstreetmap.org/index.php/Mercator
  * @author Nicolas Gramlich
  * This class provides a way to convert from latitude and longitude to a simple Mercator projection.
  */
-public class Mercator implements MathConstants {
+public class Mercator {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -42,12 +41,12 @@ public class Mercator implements MathConstants {
 	/**
 	 * Converts a Mercator-projected x-coordinate (projected longitude) to the real longitude. This is only a approximation. 
 	 */
-	public static double x2lon(final double x){ return x * RAD2DEG; }
+	public static double x2lon(final double x){ return x * Constants.RAD2DEG; }
 	
 	/**
 	 * Converts a real longitude to the Mercator-projected x-coordinate (projected longitude). This is only a approximation. 
 	 */
-	public static double lon2x(final double lon) { return DEG2RAD * lon; }
+	public static double lon2x(final double lon) { return Constants.DEG2RAD * lon; }
 	
 //	public static double[] fromMercatorProjection(final int x, final int y){
 //		return new double[] {projectedToRealLat(y / 1E6), projectedToRealLon(x / 1E6)};

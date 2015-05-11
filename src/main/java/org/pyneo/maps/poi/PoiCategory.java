@@ -2,7 +2,7 @@ package org.pyneo.maps.poi;
 
 import org.pyneo.maps.R;
 
-public class PoiCategory implements PoiConstants {
+public class PoiCategory implements Constants {
 	private final int Id;
 	public String Title;
 	public boolean Hidden;
@@ -19,11 +19,11 @@ public class PoiCategory implements PoiConstants {
 	}
 
 	public PoiCategory() {
-		this(PoiConstants.EMPTY_ID, "", false, R.drawable.poi_red, 14);
+		this(Constants.EMPTY_ID, "", false, R.drawable.poi_red, 14);
 	}
 
 	public PoiCategory(String title) {
-		this(PoiConstants.EMPTY_ID, title, false, R.drawable.poi_red, 14);
+		this(Constants.EMPTY_ID, title, false, R.drawable.poi_red, 14);
 	}
 
 	public int getId() {

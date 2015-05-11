@@ -22,12 +22,7 @@ import org.andnav.osm.util.GeoPoint;
 
 import java.util.List;
 
-public class MapView extends RelativeLayout {
-	public static final int ZOOM_CONTROL_HIDE = 0;
-	public static final int ZOOM_CONTROL_TOP = 1;
-	public static final int ZOOM_CONTROL_BOTTOM = 2;
-	public static final String MAPNAME = "MapName";
-
+public class MapView extends RelativeLayout implements Constants {
 	private final TileView mTileView;
 	private IMoveListener mMoveListener;
 	private boolean mStopBearing = false;

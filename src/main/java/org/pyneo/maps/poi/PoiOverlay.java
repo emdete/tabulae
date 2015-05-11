@@ -3,7 +3,6 @@ package org.pyneo.maps.poi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -22,7 +21,6 @@ import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
 
 import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
 
 public class PoiOverlay extends TileViewOverlay {
 	public static int NO_TAP = -9999;

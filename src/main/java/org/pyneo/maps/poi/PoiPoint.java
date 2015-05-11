@@ -4,7 +4,7 @@ import org.pyneo.maps.R;
 
 import org.andnav.osm.util.GeoPoint;
 
-public class PoiPoint implements PoiConstants {
+public class PoiPoint implements Constants {
 
 	private final int mId;
 	public String mTitle;

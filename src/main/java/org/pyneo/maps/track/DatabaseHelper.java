@@ -3,7 +3,7 @@ package org.pyneo.maps.track;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.pyneo.maps.poi.PoiConstants;
+import org.pyneo.maps.poi.Constants;
 import org.pyneo.maps.utils.RSQLiteOpenHelper;
 
 public class DatabaseHelper extends RSQLiteOpenHelper {
@@ -14,7 +14,7 @@ public class DatabaseHelper extends RSQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(PoiConstants.SQL_CREATE_trackpoints);
+		db.execSQL(Constants.SQL_CREATE_trackpoints);
 	}
 
 	@Override

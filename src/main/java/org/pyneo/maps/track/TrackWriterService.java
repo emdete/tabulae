@@ -249,8 +249,8 @@ public class TrackWriterService extends Service implements Constants {
 	public void addPoint(double latitude, double longitude, double altitude, float speed, long currentTimeMillis) {
 		final ContentValues cv = new ContentValues();
 		cv.put("trackid", 0);
-		cv.put("lat", latitude);
-		cv.put("lon", longitude);
+		cv.put(LAT, latitude);
+		cv.put(LON, longitude);
 		cv.put("alt", altitude);
 		cv.put("speed", speed);
 		cv.put("date", currentTimeMillis / 1000);

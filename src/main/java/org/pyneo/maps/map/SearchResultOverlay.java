@@ -23,7 +23,7 @@ import org.pyneo.maps.utils.Ut;
 
 import org.andnav.osm.util.GeoPoint;
 import org.andnav.osm.util.TypeConverter;
-import org.andnav.osm.views.util.StreamUtils;
+import org.andnav.osm.util.StreamUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 

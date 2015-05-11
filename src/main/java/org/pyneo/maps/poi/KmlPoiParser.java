@@ -58,11 +58,11 @@ public class KmlPoiParser extends DefaultHandler {
 			mPoiPoint.mCategoryId = mCategoryId;
 			mItIsPoint = false;
 		} else if (localName.equalsIgnoreCase("categoryid") && mPoiPoint != null) {
-			final String attrName = attributes.getValue(PoiConstants.NAME);
+			final String attrName = attributes.getValue(Constants.NAME);
 			if (mCategoryMap.containsKey(attrName)) {
 				mPoiPoint.mCategoryId = mCategoryMap.get(attrName);
 			} else {
-				mPoiPoint.mCategoryId = (int)mPoiManager.getGeoDatabase().addPoiCategory(attrName, 0, Integer.parseInt(attributes.getValue(PoiConstants.ICONID)));
+				mPoiPoint.mCategoryId = (int)mPoiManager.getGeoDatabase().addPoiCategory(attrName, 0, Integer.parseInt(attributes.getValue(Constants.ICONID)));
 				mCategoryMap.put(attrName, mPoiPoint.mCategoryId);
 			}
 		}

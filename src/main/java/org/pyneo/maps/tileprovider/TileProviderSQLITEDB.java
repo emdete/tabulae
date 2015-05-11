@@ -164,7 +164,7 @@ public class TileProviderSQLITEDB extends TileProviderFileBase {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result && mCallbackHandler != null)
-				Message.obtain(mCallbackHandler, MessageHandlerConstants.MAPTILEFSLOADER_INDEXIND_SUCCESS_ID).sendToTarget();
+				Message.obtain(mCallbackHandler, Constants.MAPTILEFSLOADER_INDEXIND_SUCCESS_ID).sendToTarget();
 			try {
 				if (mProgressDialog != null)
 					mProgressDialog.dismiss();

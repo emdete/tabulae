@@ -30,7 +30,7 @@ import org.andnav.osm.util.GeoPoint;
 
 import java.io.File;
 
-public class DownloaderActivity extends Activity {
+public class DownloaderActivity extends Activity implements Constants {
 	private static final String CNT = "cnt";
 	private static final String ERRCNT = "errcnt";
 	private static final String TIME = "time";
@@ -232,8 +232,8 @@ public class DownloaderActivity extends Activity {
 	protected void doOpenMap() {
 		final String name = Ut.FileName2ID(mFileName + ".sqlitedb");
 		startActivity(new Intent(this, MainActivity.class)
-				.setAction("SHOW_MAP_ID")
-				.putExtra("MapName", mLoadToOnlineCache? mTileSource.ID: "usermap_" + name)
+				.setAction(ACTION_SHOW_MAP_ID)
+				.putExtra(MAPNAME, mLoadToOnlineCache? mTileSource.ID: "usermap_" + name)
 				.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
 		);
 		finish();

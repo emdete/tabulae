@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import org.pyneo.maps.utils.RSQLiteOpenHelper;
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.views.util.constants.OpenStreetMapViewConstants;
+import org.andnav.osm.util.Constants;
 
 import java.io.File;
 
@@ -43,7 +43,7 @@ public class TileProviderFileBase extends TileProviderBase {
 				Ut.d("In table ListCashTables " + cur.getCount() + " records");
 				cur.close();
 
-				if (OpenStreetMapViewConstants.DEBUGMODE) {
+				if (Constants.DEBUGMODE) {
 					Ut.d("ListCashTables:");
 					cur = this.mIndexDatabase.rawQuery("SELECT name, minzoom, maxzoom, size, lastmodified FROM ListCashTables", null);
 					if (cur != null) {

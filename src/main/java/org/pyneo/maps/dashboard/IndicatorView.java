@@ -56,21 +56,21 @@ public class IndicatorView extends RelativeLayout implements OnCreateContextMenu
 
 	public void updateIndicator(IndicatorManager indicatorManager) {
 		if (indicatorManager.getIndicators().containsKey(mIndicatorTag)) {
-			if (mIndicatorTag.equalsIgnoreCase(IndicatorConst.GPSELEV)
-				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.GPSACCURACY)
-				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.GPSSPEED)
-				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRDIST)
-				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRMAXSPEED)
-				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRAVGSPEED)
-				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TRAVGMOVESPEED)
-				|| mIndicatorTag.equalsIgnoreCase(IndicatorConst.TARGETDISTANCE)
+			if (mIndicatorTag.equalsIgnoreCase(Constants.GPSELEV)
+				|| mIndicatorTag.equalsIgnoreCase(Constants.GPSACCURACY)
+				|| mIndicatorTag.equalsIgnoreCase(Constants.GPSSPEED)
+				|| mIndicatorTag.equalsIgnoreCase(Constants.TRDIST)
+				|| mIndicatorTag.equalsIgnoreCase(Constants.TRMAXSPEED)
+				|| mIndicatorTag.equalsIgnoreCase(Constants.TRAVGSPEED)
+				|| mIndicatorTag.equalsIgnoreCase(Constants.TRAVGMOVESPEED)
+				|| mIndicatorTag.equalsIgnoreCase(Constants.TARGETDISTANCE)
 				) {
 				final String[] val = (String[])indicatorManager.getIndicators().get(mIndicatorTag);
 				((TextView)findViewById(R.id.data_value)).setText(val[0]);
 				((TextView)findViewById(R.id.data_unit)).setText(val[1]);
 			} else {
 				((TextView)findViewById(R.id.data_value)).setText(indicatorManager.getIndicators().get(mIndicatorTag).toString());
-				((TextView)findViewById(R.id.data_unit)).setText(IndicatorConst.EMPTY);
+				((TextView)findViewById(R.id.data_unit)).setText(Constants.EMPTY);
 			}
 		}
 	}

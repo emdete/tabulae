@@ -29,8 +29,7 @@ import org.pyneo.maps.map.MapView;
 
 import org.andnav.osm.util.GeoPoint;
 
-public class OffsetActivity extends Activity {
-	private static final String OFFSET_TEXT = "%s: %d m, %d m";
+public class OffsetActivity extends Activity implements Constants {
 	private MapView mMap;
 	private TileSource mTileSource;
 	private MyLocationOverlay mMyLocationOverlay;
@@ -94,7 +93,7 @@ public class OffsetActivity extends Activity {
 			}
 			mMap.setTileSource(mTileSource);
 
-			SharedPreferences uiState = getSharedPreferences("MapName", Activity.MODE_PRIVATE);
+			SharedPreferences uiState = getSharedPreferences(MAPNAME, Activity.MODE_PRIVATE);
 			mMap.setZoom(uiState.getInt("ZoomLevel", 0));
 			mMap.setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
 			setTitle();
@@ -183,13 +182,13 @@ public class OffsetActivity extends Activity {
 		@Override
 		public void handleMessage(final Message msg) {
 			final int what = msg.what;
-			if (what == Ut.MAPTILEFSLOADER_SUCCESS_ID) {
+			if (what == Ut.TILEPROVIDER_SUCCESS_ID) {
 				mMap.invalidate(); //postInvalidate();
 			} else if (what == R.id.user_moved_map) {
 				// setAutoFollow(false);
 			} else if (what == R.id.set_title) {
 				setTitle();
-			} else if (what == Ut.ERROR_MESSAGE) {
+			} else if (what == Ut.TILEPROVIDER_ERROR_MESSAGE) {
 				if (msg.obj != null)
 					Toast.makeText(OffsetActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
 			}

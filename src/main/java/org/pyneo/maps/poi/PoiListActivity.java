@@ -36,7 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-public class PoiListActivity extends ListActivity {
+public class PoiListActivity extends ListActivity implements Constants {
 	private PoiManager mPoiManager;
 	private ProgressDialog dlgWait;
 	private String mSortOrder;
@@ -106,7 +106,7 @@ public class PoiListActivity extends ListActivity {
 			final Intent PoiIntent = new Intent(this, PoiActivity.class);
 			Bundle extras = getIntent().getExtras();
 			if (extras != null) {
-				PoiIntent.putExtra("lat", extras.getDouble("lat")).putExtra("lon", extras.getDouble("lon")).putExtra("title", extras.getString("title"));
+				PoiIntent.putExtra(LAT, extras.getDouble(LAT)).putExtra(LON, extras.getDouble(LON)).putExtra("title", extras.getString("title"));
 			}
 			startActivity(PoiIntent);
 			return true;
@@ -148,7 +148,7 @@ public class PoiListActivity extends ListActivity {
 			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getGeoDatabase().getPoiListCursor(mSortOrder));
 
 		} else if (item.getItemId() == R.id.menu_sort_coord) {
-			if (mSortOrder.contains("lat")) {
+			if (mSortOrder.contains(LAT)) {
 				if (mSortOrder.contains("asc"))
 					mSortOrder = "lat desc, lon desc";
 				else
@@ -271,9 +271,9 @@ public class PoiListActivity extends ListActivity {
 			try {
 				Intent i = new Intent("com.google.android.radar.SHOW_RADAR");
 				i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				i.putExtra("name", poi.mTitle);
-				i.putExtra("latitude", poi.mGeoPoint.getLatitudeE6() / 1000000f);
-				i.putExtra("longitude", poi.mGeoPoint.getLongitudeE6() / 1000000f);
+				i.putExtra(NAME, poi.mTitle);
+				i.putExtra(LATITUDE, poi.mGeoPoint.getLatitudeE6() / 1000000f);
+				i.putExtra(LONGITUDE, poi.mGeoPoint.getLongitudeE6() / 1000000f);
 				startActivity(i);
 			}
 			catch (Exception e) {
@@ -291,8 +291,6 @@ public class PoiListActivity extends ListActivity {
 
 	private class PoiViewBinder implements SimpleCursorAdapter.ViewBinder {
 		private static final String CATNAME = "catname";
-		private static final String LAT = "lat";
-		private static final String LON = "lon";
 		private CoordFormatter mCf = new CoordFormatter(PoiListActivity.this.getApplicationContext());
 
 		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
@@ -326,16 +324,16 @@ public class PoiListActivity extends ListActivity {
 						poi = mPoiManager.getPoiPoint(c.getInt(4));
 
 						SimpleXML wpt = fold.createChild("Placemark");
-						wpt.createChild(PoiConstants.NAME).setText(poi.mTitle);
-						wpt.createChild(PoiConstants.DESCRIPTION).setText(poi.mDescr);
+						wpt.createChild(Constants.NAME).setText(poi.mTitle);
+						wpt.createChild(Constants.DESCRIPTION).setText(poi.mDescr);
 						SimpleXML point = wpt.createChild("Point");
 						point.createChild("coordinates").setText(new StringBuilder().append(poi.mGeoPoint.getLongitude()).append(",").append(poi.mGeoPoint.getLatitude()).toString());
 						SimpleXML ext = wpt.createChild("ExtendedData");
-						SimpleXML category = ext.createChild(PoiConstants.CATEGORYID);
+						SimpleXML category = ext.createChild(Constants.CATEGORYID);
 						final PoiCategory poiCat = mPoiManager.getPoiCategory(poi.mCategoryId);
-						category.setAttr(PoiConstants.CATEGORYID, Integer.toString(poiCat.getId()));
-						category.setAttr(PoiConstants.NAME, poiCat.Title);
-						category.setAttr(PoiConstants.ICONID, Integer.toString(poiCat.IconId));
+						category.setAttr(Constants.CATEGORYID, Integer.toString(poiCat.getId()));
+						category.setAttr(Constants.NAME, poiCat.Title);
+						category.setAttr(Constants.ICONID, Integer.toString(poiCat.IconId));
 
 					} while (c.moveToNext());
 				}
@@ -395,18 +393,18 @@ public class PoiListActivity extends ListActivity {
 						poi = mPoiManager.getPoiPoint(c.getInt(4));
 
 						SimpleXML wpt = xml.createChild("wpt");
-						wpt.setAttr(PoiConstants.LAT, Double.toString(poi.mGeoPoint.getLatitude()));
-						wpt.setAttr(PoiConstants.LON, Double.toString(poi.mGeoPoint.getLongitude()));
-						wpt.createChild(PoiConstants.ELE).setText(Double.toString(poi.mAlt));
-						wpt.createChild(PoiConstants.NAME).setText(poi.mTitle);
-						wpt.createChild(PoiConstants.DESC).setText(poi.mDescr);
-						wpt.createChild(PoiConstants.TYPE).setText(mPoiManager.getPoiCategory(poi.mCategoryId).Title);
+						wpt.setAttr(Constants.LAT, Double.toString(poi.mGeoPoint.getLatitude()));
+						wpt.setAttr(Constants.LON, Double.toString(poi.mGeoPoint.getLongitude()));
+						wpt.createChild(Constants.ELE).setText(Double.toString(poi.mAlt));
+						wpt.createChild(Constants.NAME).setText(poi.mTitle);
+						wpt.createChild(Constants.DESC).setText(poi.mDescr);
+						wpt.createChild(Constants.TYPE).setText(mPoiManager.getPoiCategory(poi.mCategoryId).Title);
 						SimpleXML ext = wpt.createChild("extensions");
-						SimpleXML category = ext.createChild(PoiConstants.CATEGORYID);
+						SimpleXML category = ext.createChild(Constants.CATEGORYID);
 						final PoiCategory poiCat = mPoiManager.getPoiCategory(poi.mCategoryId);
-						category.setAttr(PoiConstants.CATEGORYID, Integer.toString(poiCat.getId()));
-						category.setAttr(PoiConstants.NAME, poiCat.Title);
-						category.setAttr(PoiConstants.ICONID, Integer.toString(poiCat.IconId));
+						category.setAttr(Constants.CATEGORYID, Integer.toString(poiCat.getId()));
+						category.setAttr(Constants.NAME, poiCat.Title);
+						category.setAttr(Constants.ICONID, Integer.toString(poiCat.IconId));
 
 					} while (c.moveToNext());
 				}

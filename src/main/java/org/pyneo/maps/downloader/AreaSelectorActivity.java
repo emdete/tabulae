@@ -24,7 +24,6 @@ import android.widget.Toast;
 import org.pyneo.maps.R;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.map.PredefMapsParser;
-import org.pyneo.maps.tileprovider.TileProviderInet;
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.tileprovider.TileSourceBase;
 import org.pyneo.maps.utils.RException;
@@ -34,7 +33,7 @@ import org.pyneo.maps.map.MapView;
 import org.pyneo.maps.map.TileViewOverlay;
 
 import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.views.util.Util;
+import org.andnav.osm.util.Util;
 
 import java.io.File;
 import java.io.InputStream;
@@ -42,10 +41,7 @@ import java.io.InputStream;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class AreaSelectorActivity extends Activity {
-	private static final String MAPNAME = "MapName";
-	private static final String MAPNAMEAREASELECTOR = "MapNameAreaSelector";
-
+public class AreaSelectorActivity extends Activity implements Constants {
 	private MapView mMap;
 	private AreaSelectorOverlay mAreaSelectorOverlay;
 	private TileSource mTileSource;

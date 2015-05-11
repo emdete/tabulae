@@ -9,13 +9,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.HashMap;
 
-public class GpxPoiParser extends DefaultHandler {
+public class GpxPoiParser extends DefaultHandler implements Constants {
 	private static final String WPT = "wpt";
-	private static final String LAT = "lat";
-	private static final String LON = "lon";
-	private static final String NAME = "name";
 	private static final String CMT = "cmt";
-	private static final String DESC = "desc";
 	private StringBuilder builder;
 	private PoiManager mPoiManager;
 	private PoiPoint mPoiPoint;
@@ -35,7 +31,8 @@ public class GpxPoiParser extends DefaultHandler {
 			if (c.moveToFirst()) {
 				do {
 					mCategoryMap.put(c.getString(0), c.getInt(2));
-				} while (c.moveToNext());
+				}
+				while (c.moveToNext());
 			}
 			c.close();
 		}
@@ -55,12 +52,14 @@ public class GpxPoiParser extends DefaultHandler {
 			mPoiPoint = new PoiPoint();
 			mPoiPoint.mCategoryId = mCategoryId;
 			mPoiPoint.mGeoPoint = GeoPoint.from2DoubleString(attributes.getValue(LAT), attributes.getValue(LON));
-		} else if (localName.equalsIgnoreCase("categoryid") && mPoiPoint != null) {
-			final String attrName = attributes.getValue(PoiConstants.NAME);
+		}
+		else if (localName.equalsIgnoreCase("categoryid") && mPoiPoint != null) {
+			final String attrName = attributes.getValue(Constants.NAME);
 			if (mCategoryMap.containsKey(attrName)) {
 				mPoiPoint.mCategoryId = mCategoryMap.get(attrName);
-			} else {
-				mPoiPoint.mCategoryId = (int)mPoiManager.getGeoDatabase().addPoiCategory(attrName, 0, Integer.parseInt(attributes.getValue(PoiConstants.ICONID)));
+			}
+			else {
+				mPoiPoint.mCategoryId = (int)mPoiManager.getGeoDatabase().addPoiCategory(attrName, 0, Integer.parseInt(attributes.getValue(Constants.ICONID)));
 				mCategoryMap.put(attrName, mPoiPoint.mCategoryId);
 			}
 		}
@@ -70,15 +69,19 @@ public class GpxPoiParser extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String name) throws SAXException {
 		if (localName.equalsIgnoreCase(WPT)) {
-			if (mPoiPoint.mTitle.equalsIgnoreCase("")) mPoiPoint.mTitle = "POI";
+			if (mPoiPoint.mTitle.equalsIgnoreCase(""))
+				mPoiPoint.mTitle = "POI";
 			mPoiManager.updatePoi(mPoiPoint);
-		} else if (localName.equalsIgnoreCase(NAME)) {
+		}
+		else if (localName.equalsIgnoreCase(NAME)) {
 			if (mPoiPoint != null)
 				mPoiPoint.mTitle = builder.toString().trim();
-		} else if (localName.equalsIgnoreCase(CMT)) {
+		}
+		else if (localName.equalsIgnoreCase(CMT)) {
 			if (mPoiPoint != null)
 				mPoiPoint.mDescr = builder.toString().trim();
-		} else if (localName.equalsIgnoreCase(DESC)) {
+		}
+		else if (localName.equalsIgnoreCase(DESC)) {
 			if (mPoiPoint != null)
 				if (mPoiPoint.mDescr.equals(""))
 					mPoiPoint.mDescr = builder.toString().trim();

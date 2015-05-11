@@ -12,7 +12,7 @@ import org.pyneo.maps.utils.SQLiteMapDatabase;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.views.util.StreamUtils;
+import org.andnav.osm.util.StreamUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
