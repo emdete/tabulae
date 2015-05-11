@@ -984,9 +984,9 @@ public class MainActivity extends Activity {
 			case R.id.gpsstatus: {
 				try {
 					startActivity(new Intent(Intent.ACTION_MAIN) // act
-					.addCategory(Intent.CATEGORY_LAUNCHER) // cat
-					.setComponent(new ComponentName("com.vonglasow.michael.satstat", "com.vonglasow.michael.satstat.MainActivity")) // cmp
-					);
+						.addCategory(Intent.CATEGORY_LAUNCHER) // cat
+						.setComponent(new ComponentName("com.vonglasow.michael.satstat", "com.vonglasow.michael.satstat.MainActivity")) // cmp
+						);
 				}
 				catch (ActivityNotFoundException e) {
 					Toast.makeText(this,
