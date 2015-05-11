@@ -122,7 +122,26 @@ public class MainActivity extends Activity {
 	private ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new SimpleThreadFactory("MainActivity.Search"));
 	private float mLastBearing;
 	private float mLastSpeed;
-	private Handler mCallbackHandler = new MainActivityCallbackHandler();
+	private Handler mCallbackHandler = new Handler() {
+		@Override
+		public void handleMessage(final Message msg) {
+			switch (msg.what) {
+				case Ut.MAPTILEFSLOADER_SUCCESS_ID: {
+					mMap.invalidate(); //postInvalidate();
+				}
+				case R.id.user_moved_map: {
+					// setAutoFollow(false);
+				}
+				case R.id.set_title: {
+					setTitle();
+				}
+				case Ut.ERROR_MESSAGE: {
+					if (msg.obj != null)
+						Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
+				}
+			}
+		}
+	};
 	private ImageView ivAutoFollow;
 	private ImageView mOverlayView;
 	private IndicatorManager mIndicatorManager;
@@ -133,7 +152,24 @@ public class MainActivity extends Activity {
 	private int mPrefOverlayButtonVisibility;
 	private MapView mMap;
 	private MeasureOverlay mMeasureOverlay;
-	private MoveListener mMoveListener = new MoveListener();
+	private IMoveListener mMoveListener = new IMoveListener() {
+		@Override
+		public void onMoveDetected() {
+			if (mIndicatorManager != null)
+				mIndicatorManager.setCenter(mMap.getMapCenter());
+			if (mAutoFollow)
+				setAutoFollow(false);
+		}
+		@Override
+		public void onZoomDetected() {
+			setTitle();
+		}
+		@Override
+		public void onCenterDetected() {
+			if (mIndicatorManager != null)
+				mIndicatorManager.setCenter(mMap.getMapCenter());
+		}
+	};
 	private MyLocationOverlay mMyLocationOverlay;
 	private PoiManager mPoiManager;
 	private PoiOverlay mPoiOverlay;
@@ -176,12 +212,160 @@ public class MainActivity extends Activity {
 		if (!OpenStreetMapViewConstants.DEBUGMODE) {
 			CrashReportHandler.attach(this);
 		}
-		createContentView();
+		setContentView(R.layout.main);
+		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		final RelativeLayout rl = (RelativeLayout)findViewById(R.id.map_area);
+		final int pref_zoomctrl = Integer.parseInt(pref.getString("pref_zoomctrl", "1"));
+		final boolean pref_showtitle = pref.getBoolean("pref_showtitle", true);
+		final boolean pref_show_autofollow_button = pref.getBoolean("pref_show_autofollow_button", true);
+		final boolean pref_showscalebar = pref.getBoolean("pref_showscalebar", true);
+		if (!pref_showtitle)
+			findViewById(R.id.screen).setVisibility(View.GONE);
+		mMap = new MapView(this, pref_zoomctrl, pref_showscalebar? 1: 0);
+		mMap.setId(R.id.main);
+		final RelativeLayout.LayoutParams pMap = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		rl.addView(mMap, pMap);
+		mCompassView = new CompassView(this, pref_zoomctrl != 2);
+		mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
+		final RelativeLayout.LayoutParams compassParams = new RelativeLayout.LayoutParams(
+			RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		compassParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		if (pref_zoomctrl == 2) {
+			compassParams.addRule(RelativeLayout.ABOVE, R.id.scale_bar);
+		}
+		else {
+			compassParams.addRule(RelativeLayout.BELOW, R.id.dashboard_area);
+		}
+		mMap.addView(mCompassView, compassParams);
+		if (pref_show_autofollow_button) {
+			ivAutoFollow = new ImageView(this);
+			ivAutoFollow.setImageResource(R.drawable.autofollow);
+			ivAutoFollow.setVisibility(ImageView.INVISIBLE);
+			final RelativeLayout.LayoutParams followParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+			followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			if (pref_zoomctrl == 2) {
+				followParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			}
+			else {
+				followParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			}
+			((RelativeLayout)findViewById(R.id.right_area)).addView(ivAutoFollow, followParams);
+			ivAutoFollow.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					setAutoFollow(true);
+					mSearchResultOverlay.Clear();
+					setLastKnownLocation();
+				}
+			});
+		}
+		mOverlayView = new ImageView(this);
+		mOverlayView.setImageResource(R.drawable.b_overlays);
+		final int pad = getResources().getDimensionPixelSize(R.dimen.zoom_ctrl_padding);
+		mOverlayView.setPadding(0, pad, 0, pad);
+		((LinearLayout)mMap.findViewById(R.id.right_panel)).addView(mOverlayView);
+		mOverlayView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mTileSource.YANDEX_TRAFFIC_ON == 1) {
+					mShowOverlay = !mShowOverlay;
+					fillOverlays();
+				}
+				else {
+					if (mPrefOverlayButtonBehavior == 1) {
+						v.showContextMenu();
+					}
+					else if (mPrefOverlayButtonBehavior == 2) {
+						setTileSource(mTileSource.ID, mOverlayId, !mShowOverlay);
+					}
+					else if (mOverlayId.equalsIgnoreCase("") && mTileSource.MAP_TYPE != TileSourceBase.MIXMAP_PAIR) {
+						v.showContextMenu();
+					}
+					else {
+						setTileSource(mTileSource.ID, mOverlayId, !mShowOverlay);
+					}
+				}
+				mMap.invalidate(); //postInvalidate();
+			}
+		});
+		mOverlayView.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				if (mTileSource.YANDEX_TRAFFIC_ON != 1 && mPrefOverlayButtonBehavior == 0) {
+					mMap.getTileView().mPoiMenuInfo.EventGeoPoint = null;
+					v.showContextMenu();
+				}
+				return true;
+			}
+		});
+		mOverlayView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+			@Override
+			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+				mMap.getTileView().mPoiMenuInfo.EventGeoPoint = null;
+				menu.setHeaderTitle(R.string.menu_title_overlays);
+				menu.add(Menu.NONE, R.id.hide_overlay, Menu.NONE, R.string.menu_hide_overlay);
+				//SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+				File folder = Ut.getAppMapsDir(MainActivity.this);
+				if (folder.exists()) {
+					File[] files = folder.listFiles();
+					if (files != null) {
+						for (File file: files) {
+							if (
+								file.getName().toLowerCase().endsWith(".mnm") ||
+								file.getName().toLowerCase().endsWith(".tar") ||
+								file.getName().toLowerCase().endsWith(".sqlitedb")
+							) {
+								String name = Ut.FileName2ID(file.getName());
+								if (
+									pref.getBoolean("pref_usermaps_" + name + "_enabled", false) &&
+									// (mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == Integer.parseInt(pref.getString("pref_usermaps_" + name + "_projection", "1"))) &&
+									pref.getBoolean("pref_usermaps_" + name + "_isoverlay", false)
+								) {
+									MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE,
+										pref.getString("pref_usermaps_" + name + "_name", file.getName()));
+									item.setTitleCondensed("usermap_" + name);
+								}
+							}
+						}
+					}
+				}
+				Cursor c = mPoiManager.getGeoDatabase().getMixedMaps();
+				if (c != null) {
+					if (c.moveToFirst()) {
+						do {
+							if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", false) && c.getInt(2) == 3) {
+								final JSONObject json = MixedMapsPreference.getMapCustomParams(c.getString(3));
+								//if(mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == json.optInt(MixedMapsPreference.MAPPROJECTION)) {
+								MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE, c.getString(1));
+								item.setTitleCondensed("mixmap_" + c.getInt(0));
+								//}
+							}
+						}
+						while (c.moveToNext());
+					}
+					c.close();
+				}
+				final SAXParserFactory fac = SAXParserFactory.newInstance();
+				SAXParser parser = null;
+				try {
+					parser = fac.newSAXParser();
+					if (parser != null) {
+						final InputStream in = getResources().openRawResource(R.raw.predefmaps);
+						parser.parse(in, new PredefMapsParser(menu, pref, true, mTileSource.PROJECTION));
+					}
+				}
+				catch (Exception e) {
+					Ut.e(e.toString(), e);
+				}
+
+			}
+		});
+		registerForContextMenu(mMap);
 		mPoiManager = new PoiManager(this);
 		mLocationListener = new SampleLocationListener();
 		mMap.setMoveListener(mMoveListener);
 		mOrientationSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 		mPrefOverlayButtonBehavior = Integer.parseInt(pref.getString("pref_overlay_button_behavior", "0"));
 		mPrefOverlayButtonVisibility = Integer.parseInt(pref.getString("pref_overlay_button_visibility", "0"));
@@ -302,7 +486,7 @@ public class MainActivity extends Activity {
 				location.setLongitude(longitude);
 				GeoPoint point = GeoPoint.fromDoubleString("" + latitude + ',' + longitude); // TODO
 				mPoiOverlay.clearPoiList();
-				mPoiOverlay.setGpsStatusGeoPoint(0, point, name, "");
+				mPoiOverlay.setGpsStatusGeoPoint(0, point, name, name);
 				setAutoFollow(false);
 				mMap.setCenter(point);
 				Ut.i("onCreate location received");
@@ -423,160 +607,6 @@ public class MainActivity extends Activity {
 		catch (Exception e) {
 			Ut.e(e.toString(), e);
 		}
-	}
-
-	private View createContentView() {
-		setContentView(R.layout.main);
-		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		final RelativeLayout rl = (RelativeLayout)findViewById(R.id.map_area);
-		final int pref_zoomctrl = Integer.parseInt(pref.getString("pref_zoomctrl", "1"));
-		final boolean pref_showtitle = pref.getBoolean("pref_showtitle", true);
-		final boolean pref_show_autofollow_button = pref.getBoolean("pref_show_autofollow_button", true);
-		final boolean pref_showscalebar = pref.getBoolean("pref_showscalebar", true);
-		if (!pref_showtitle)
-			findViewById(R.id.screen).setVisibility(View.GONE);
-		mMap = new MapView(this, pref_zoomctrl, pref_showscalebar? 1: 0);
-		mMap.setId(R.id.main);
-		final RelativeLayout.LayoutParams pMap = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-		rl.addView(mMap, pMap);
-		mCompassView = new CompassView(this, pref_zoomctrl != 2);
-		mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
-		final RelativeLayout.LayoutParams compassParams = new RelativeLayout.LayoutParams(
-			RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		compassParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		if (pref_zoomctrl == 2) {
-			compassParams.addRule(RelativeLayout.ABOVE, R.id.scale_bar);
-		}
-		else {
-			compassParams.addRule(RelativeLayout.BELOW, R.id.dashboard_area);
-		}
-		mMap.addView(mCompassView, compassParams);
-		if (pref_show_autofollow_button) {
-			ivAutoFollow = new ImageView(this);
-			ivAutoFollow.setImageResource(R.drawable.autofollow);
-			ivAutoFollow.setVisibility(ImageView.INVISIBLE);
-			final RelativeLayout.LayoutParams followParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-			followParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			if (pref_zoomctrl == 2) {
-				followParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-			}
-			else {
-				followParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			}
-			((RelativeLayout)findViewById(R.id.right_area)).addView(ivAutoFollow, followParams);
-			ivAutoFollow.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					setAutoFollow(true);
-					mSearchResultOverlay.Clear();
-					setLastKnownLocation();
-				}
-			});
-		}
-		mOverlayView = new ImageView(this);
-		mOverlayView.setImageResource(R.drawable.r_overlays);
-		final int pad = getResources().getDimensionPixelSize(R.dimen.zoom_ctrl_padding);
-		mOverlayView.setPadding(0, pad, 0, pad);
-		((LinearLayout)mMap.findViewById(R.id.right_panel)).addView(mOverlayView);
-		mOverlayView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (mTileSource.YANDEX_TRAFFIC_ON == 1) {
-					mShowOverlay = !mShowOverlay;
-					fillOverlays();
-				}
-				else {
-					if (mPrefOverlayButtonBehavior == 1) {
-						v.showContextMenu();
-					}
-					else if (mPrefOverlayButtonBehavior == 2) {
-						setTileSource(mTileSource.ID, mOverlayId, !mShowOverlay);
-					}
-					else if (mOverlayId.equalsIgnoreCase("") && mTileSource.MAP_TYPE != TileSourceBase.MIXMAP_PAIR) {
-						v.showContextMenu();
-					}
-					else {
-						setTileSource(mTileSource.ID, mOverlayId, !mShowOverlay);
-					}
-				}
-				mMap.invalidate(); //postInvalidate();
-			}
-		});
-		mOverlayView.setOnLongClickListener(new View.OnLongClickListener() {
-
-			public boolean onLongClick(View v) {
-				if (mTileSource.YANDEX_TRAFFIC_ON != 1 && mPrefOverlayButtonBehavior == 0) {
-					mMap.getTileView().mPoiMenuInfo.EventGeoPoint = null;
-					v.showContextMenu();
-				}
-				return true;
-			}
-		});
-		mOverlayView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-			@Override
-			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-				mMap.getTileView().mPoiMenuInfo.EventGeoPoint = null;
-				menu.setHeaderTitle(R.string.menu_title_overlays);
-				menu.add(Menu.NONE, R.id.hide_overlay, Menu.NONE, R.string.menu_hide_overlay);
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-				File folder = Ut.getAppMapsDir(MainActivity.this);
-				if (folder.exists()) {
-					File[] files = folder.listFiles();
-					if (files != null) {
-						for (File file: files) {
-							if (
-								file.getName().toLowerCase().endsWith(".mnm") ||
-								file.getName().toLowerCase().endsWith(".tar") ||
-								file.getName().toLowerCase().endsWith(".sqlitedb")
-							) {
-								String name = Ut.FileName2ID(file.getName());
-								if (
-									pref.getBoolean("pref_usermaps_" + name + "_enabled", false) &&
-									// (mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == Integer.parseInt(pref.getString("pref_usermaps_" + name + "_projection", "1"))) &&
-									pref.getBoolean("pref_usermaps_" + name + "_isoverlay", false)
-								) {
-									MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE,
-										pref.getString("pref_usermaps_" + name + "_name", file.getName()));
-									item.setTitleCondensed("usermap_" + name);
-								}
-							}
-						}
-					}
-				}
-				Cursor c = mPoiManager.getGeoDatabase().getMixedMaps();
-				if (c != null) {
-					if (c.moveToFirst()) {
-						do {
-							if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", false) && c.getInt(2) == 3) {
-								final JSONObject json = MixedMapsPreference.getMapCustomParams(c.getString(3));
-								//if(mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == json.optInt(MixedMapsPreference.MAPPROJECTION)) {
-								MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE, c.getString(1));
-								item.setTitleCondensed("mixmap_" + c.getInt(0));
-								//}
-							}
-						}
-						while (c.moveToNext());
-					}
-					c.close();
-				}
-				final SAXParserFactory fac = SAXParserFactory.newInstance();
-				SAXParser parser = null;
-				try {
-					parser = fac.newSAXParser();
-					if (parser != null) {
-						final InputStream in = getResources().openRawResource(R.raw.predefmaps);
-						parser.parse(in, new PredefMapsParser(menu, pref, true, mTileSource.PROJECTION));
-					}
-				}
-				catch (Exception e) {
-					Ut.e(e.toString(), e);
-				}
-
-			}
-		});
-		registerForContextMenu(mMap);
-		return rl;
 	}
 
 	private void fillOverlays() {
@@ -1261,7 +1291,6 @@ public class MainActivity extends Activity {
 						final IndicatorView iv = info.IndicatorView;
 						mIndicatorManager.removeIndicatorView(this, iv);
 						mMap.invalidate(); //postInvalidate();
-
 						break;
 					}
 					case R.id.menu_add_target_point: {
@@ -1340,7 +1369,6 @@ public class MainActivity extends Activity {
 						if (mIndicatorManager != null)
 							mIndicatorManager.setLocation(loc);
 						mMap.invalidate(); //postInvalidate();
-
 						break;
 					}
 					case R.id.menu_addpoi: {
@@ -1610,27 +1638,6 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private class MainActivityCallbackHandler extends Handler {
-		@Override
-		public void handleMessage(final Message msg) {
-			switch (msg.what) {
-				case Ut.MAPTILEFSLOADER_SUCCESS_ID: {
-					mMap.invalidate(); //postInvalidate();
-				}
-				case R.id.user_moved_map: {
-					// setAutoFollow(false);
-				}
-				case R.id.set_title: {
-					setTitle();
-				}
-				case Ut.ERROR_MESSAGE: {
-					if (msg.obj != null)
-						Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
-				}
-			}
-		}
-	}
-
 	private class SampleLocationListener implements LocationListener {
 		public static final String OFF = "off";
 
@@ -1737,25 +1744,6 @@ public class MainActivity extends Activity {
 				Ut.d("NO Provider Enabled");
 			}
 			setTitle();
-		}
-	}
-
-	private class MoveListener implements IMoveListener {
-		public void onMoveDetected() {
-			if (mIndicatorManager != null)
-				mIndicatorManager.setCenter(mMap.getMapCenter());
-			if (mAutoFollow)
-				setAutoFollow(false);
-		}
-
-		public void onZoomDetected() {
-			setTitle();
-		}
-
-		@Override
-		public void onCenterDetected() {
-			if (mIndicatorManager != null)
-				mIndicatorManager.setCenter(mMap.getMapCenter());
 		}
 	}
 }

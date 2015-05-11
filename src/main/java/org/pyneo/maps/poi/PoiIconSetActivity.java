@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import org.pyneo.maps.R;
 
 public class PoiIconSetActivity extends Activity {
-	private int indx[] = {R.drawable.poi_red, R.drawable.poiblue, R.drawable.poigreen, R.drawable.poiwhite, R.drawable.poiyellow};
+	private int indx[] = {R.drawable.poi_red, R.drawable.poi_blue, R.drawable.poi_green, R.drawable.poi_white, R.drawable.poi_yellow};
 	private GridView mGridInt;
 
 	@Override

@@ -43,7 +43,7 @@ public interface PoiConstants {
 	String TRACKPOINTS = "trackpoints";
 	String TRACKS = "tracks";
 	String TYPE = "type";
-	String SQL_ADD_category = "INSERT INTO 'category' (categoryid, name, hidden, iconid) VALUES (0, 'My POI', 0, " + R.drawable.poiblue + ");";
+	String SQL_ADD_category = "INSERT INTO 'category' (categoryid, name, hidden, iconid) VALUES (0, 'My POI', 0, " + R.drawable.poi_blue + ");";
 	String SQL_CREATE_activity = "CREATE TABLE 'activity' (activityid INTEGER NOT NULL PRIMARY KEY UNIQUE, name VARCHAR);";
 	String SQL_CREATE_category = "CREATE TABLE 'category' (categoryid INTEGER NOT NULL PRIMARY KEY UNIQUE, name VARCHAR, hidden INTEGER DEFAULT '0', iconid INTEGER DEFAULT NULL, minzoom INTEGER DEFAULT '14');";
 	String SQL_CREATE_drop_activity = "DROP TABLE IF EXISTS 'activity';";

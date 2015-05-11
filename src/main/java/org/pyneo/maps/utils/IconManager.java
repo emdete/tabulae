@@ -85,13 +85,13 @@ public class IconManager {
 		if (id == poi) {
 			return R.drawable.poi_red;
 		} else if (id == poiblue) {
-			return R.drawable.poiblue;
+			return R.drawable.poi_blue;
 		} else if (id == poigreen) {
-			return R.drawable.poigreen;
+			return R.drawable.poi_green;
 		} else if (id == poiwhite) {
-			return R.drawable.poiwhite;
+			return R.drawable.poi_white;
 		} else if (id == poiyellow) {
-			return R.drawable.poiyellow;
+			return R.drawable.poi_yellow;
 		} else {
 			return 0;
 		}
