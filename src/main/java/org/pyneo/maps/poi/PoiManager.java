@@ -184,16 +184,13 @@ public class PoiManager implements Constants {
 		if (c != null) {
 			tracks = new Track[c.getCount()];
 			final String defStyle = PreferenceManager.getDefaultSharedPreferences(mCtx).getString("pref_track_style", "");
-
 			if (c.moveToFirst())
 				do {
 					final int pos = c.getPosition();
 					String style = c.getString(10);
 					if (style == null || style.equalsIgnoreCase(""))
-						style = "";
-
+						style = ""; // TODO ?!?
 					tracks[pos] = new Track(c.getInt(3), c.getString(0), c.getString(1), c.getInt(2) == ONE, c.getInt(4), c.getDouble(5), c.getDouble(6), c.getInt(7), c.getInt(8), new Date(c.getLong(9) * 1000), style, defStyle);
-
 					if (aNeedPoints) {
 						Cursor cpoints = mGeoDatabase.getTrackPoints(tracks[pos].getId());
 						if (cpoints != null) {

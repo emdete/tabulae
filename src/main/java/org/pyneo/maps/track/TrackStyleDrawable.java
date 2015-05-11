@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.pyneo.maps.utils;
+package org.pyneo.maps.track;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

@@ -17,9 +17,7 @@ import android.widget.Toast;
 import org.pyneo.maps.R;
 import org.pyneo.maps.poi.Constants;
 import org.pyneo.maps.poi.PoiManager;
-import org.pyneo.maps.utils.TrackStyleDrawable;
-import org.pyneo.maps.utils.TrackStylePickerDialog;
-import org.pyneo.maps.utils.TrackStylePickerDialog.OnTrackStyleChangedListener;
+import org.pyneo.maps.track.TrackStylePickerDialog.OnTrackStyleChangedListener;
 
 public class TrackActivity extends Activity implements OnTrackStyleChangedListener {
 	EditText mName, mDescr;

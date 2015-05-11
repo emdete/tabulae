@@ -23,7 +23,6 @@ public interface Constants extends org.pyneo.maps.Constants {
 	public static final String GEODATA_FILENAME = "/geodata.db";
 	public static final String HIDDEN = "hidden";
 	public static final String ICONID = "iconid";
-	public static final String LATLON = "lat,lon";
 	public static final String MAPID = "mapid";
 	public static final String MAPS = "maps";
 	public static final String MAXZOOM = "maxzoom";

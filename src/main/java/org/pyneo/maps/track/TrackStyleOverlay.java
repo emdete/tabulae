@@ -1,4 +1,4 @@
-package org.pyneo.maps.utils;
+package org.pyneo.maps.track;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

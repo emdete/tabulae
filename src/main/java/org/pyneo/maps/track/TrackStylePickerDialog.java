@@ -1,4 +1,4 @@
-package org.pyneo.maps.utils;
+package org.pyneo.maps.track;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -21,8 +20,9 @@ import net.margaritov.preference.colorpicker.ColorPickerPanelView;
 import net.margaritov.preference.colorpicker.ColorPickerView;
 
 import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.*;
 
-public class TrackStylePickerDialog extends Dialog implements Constants, ColorPickerView.OnColorChangedListener, View.OnClickListener, OnSeekBarChangeListener, ColorPickerDialog.OnColorChangedListener {
+public class TrackStylePickerDialog extends Dialog implements org.pyneo.maps.utils.Constants, ColorPickerView.OnColorChangedListener, View.OnClickListener, OnSeekBarChangeListener, ColorPickerDialog.OnColorChangedListener {
 
 	ColorPickerDialog.OnColorChangedListener mColorShadowListiner = new ColorPickerDialog.OnColorChangedListener() {
 
