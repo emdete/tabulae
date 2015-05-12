@@ -172,19 +172,17 @@ public class GeoDatabase implements Constants {
 
 	protected SQLiteDatabase getDatabase() {
 		File folder = Ut.getAppMainDir(mCtx, DATA);
-		if (!folder.exists()) // no sdcard
-			return null;
-
-		SQLiteDatabase db;
-		try {
-			db = new GeoDatabaseHelper(mCtx, folder.getAbsolutePath() + GEODATA_FILENAME).getWritableDatabase();
+		if (folder.exists()) {
+			folder = new File(folder, GEODATA_FILENAME);
+			try {
+				Ut.i("getDatabase folder=" + folder.getAbsolutePath());
+				return new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()).getWritableDatabase();
+			}
+			catch (Exception e) {
+				Ut.e(e.toString(), e);
+			}
 		}
-		catch (Exception e) {
-			Ut.e(e.toString(), e);
-			return null;
-		}
-
-		return db;
+		return null;
 	}
 
 	public Cursor getPoiCategory(final int id) {
@@ -193,7 +191,6 @@ public class GeoDatabase implements Constants {
 			final String[] args = {Integer.toString(id)};
 			return mDatabase.rawQuery(STAT_getPoiCategory, args);
 		}
-
 		return null;
 	}
 

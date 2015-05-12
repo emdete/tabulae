@@ -165,7 +165,7 @@ public class PoiOverlay extends TileViewOverlay {
 			final TextView title = (TextView)mT.findViewById(R.id.poi_title);
 			final TextView descr = (TextView)mT.findViewById(R.id.descr);
 			final TextView coord = (TextView)mT.findViewById(R.id.coord);
-			pic.setImageResource(focusedItem.mIconId);
+			//pic.setImageResource(focusedItem.mIconId);
 			title.setText(focusedItem.mTitle);
 			descr.setText(focusedItem.mDescr);
 			coord.setText(Ut.formatGeoPoint(focusedItem.mGeoPoint, mCtx));

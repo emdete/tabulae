@@ -96,4 +96,5 @@ public interface Constants extends org.pyneo.maps.Constants {
 	String UPDATE_POINTS = "pointid = @1";
 	String UPDATE_TRACKS = "trackid = @1";
 	//(trackid INTEGER NOT NULL PRIMARY KEY UNIQUE, name VARCHAR, descr VARCHAR, date DATETIME, show INTEGER, cnt INTEGER, duration INTEGER, distance INTEGER, categoryid INTEGER, activity INTEGER);";
+	public static final int POI_ICON_RESOURCE_IDS[] = {R.drawable.poi_red, R.drawable.poi_blue, R.drawable.poi_green, R.drawable.poi_white, R.drawable.poi_yellow};
 }

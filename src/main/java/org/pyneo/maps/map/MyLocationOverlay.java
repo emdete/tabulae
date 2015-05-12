@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.DistanceFormatter;
-import org.pyneo.maps.utils.IconManager;
 import org.pyneo.maps.map.TileView.OpenStreetMapViewProjection;
 import org.pyneo.maps.utils.Ut;
 

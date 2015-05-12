@@ -21,10 +21,15 @@ import android.widget.TextView;
 import com.commonsware.cwac.loaderex.acl.SQLiteCursorLoader;
 import com.manuelpeinado.multichoiceadapter.extras.actionbarcompat.MultiChoiceSimpleCursorAdapter;
 import org.pyneo.maps.R;
+import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.CoordFormatter;
-import org.pyneo.maps.utils.IconManager;
 
 public class PoiListFragment extends ListFragment implements Constants, LoaderManager.LoaderCallbacks<Cursor> {
+	private final static int poi_red = 0x7f02000a;
+	private final static int poi_blue = 0x7f02000c;
+	private final static int poi_green = 0x7f02000d;
+	private final static int poi_white = 0x7f02000e;
+	private final static int poi_yellow = 0x7f02000f;
 	private static final int URL_LOADER = 0;
 	private SQLiteCursorLoader mLoader;
 	private PoiListSimpleCursorAdapter mAdapter;
@@ -77,6 +82,23 @@ public class PoiListFragment extends ListFragment implements Constants, LoaderMa
 		mAdapter.changeCursor(null);
 	}
 
+	static int getPoiIconResId(int id) {
+		Ut.i("getPoiIconResId find id=" + id);
+		if (id == poi_red) {
+			return R.drawable.poi_red;
+		} else if (id == poi_blue) {
+			return R.drawable.poi_blue;
+		} else if (id == poi_green) {
+			return R.drawable.poi_green;
+		} else if (id == poi_white) {
+			return R.drawable.poi_white;
+		} else if (id == poi_yellow) {
+			return R.drawable.poi_yellow;
+		} else {
+			return R.drawable.poi_red;
+		}
+	}
+
 	private static class PoiViewBinder implements PoiListSimpleCursorAdapter.ViewBinder {
 		private static final String CATNAME = "catname";
 		private static final String ICONID = "iconid";
@@ -87,6 +109,7 @@ public class PoiListFragment extends ListFragment implements Constants, LoaderMa
 			ctx = context;
 		}
 
+		@Override
 		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 			if (cursor.getColumnName(columnIndex).equalsIgnoreCase(CATNAME)) {
 				CoordFormatter mCf = new CoordFormatter(ctx);
@@ -95,19 +118,19 @@ public class PoiListFragment extends ListFragment implements Constants, LoaderMa
 						+ ", " + mCf.convertLon(cursor.getDouble(cursor.getColumnIndex(LON)))
 				);
 				return true;
-			} else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
-				((ImageView)view.findViewById(R.id.pic)).setImageResource(IconManager.getInstance(ctx).getPoiIconResId(cursor.getInt(columnIndex)));
+			}
+			else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
+				int id = cursor.getInt(columnIndex);
+				Ut.i("setViewValue find id=" + id);
+				((ImageView)view.findViewById(R.id.pic)).setImageResource(getPoiIconResId(id));
 				return true;
 			}
 			return false;
 		}
-
 	}
 
 	private static class PoiListSimpleCursorAdapter extends MultiChoiceSimpleCursorAdapter {
-
-		public PoiListSimpleCursorAdapter(Bundle savedInstanceState, Context
-				context, int layout, Cursor cursor, String[] from, int[] to) {
+		public PoiListSimpleCursorAdapter(Bundle savedInstanceState, Context context, int layout, Cursor cursor, String[] from, int[] to) {
 			super(savedInstanceState, context, layout, cursor, from, to, 0);
 		}
 

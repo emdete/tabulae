@@ -1,4 +1,4 @@
-package org.pyneo.maps.utils;
+package org.pyneo.maps.map;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,15 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 
 import org.pyneo.maps.R;
+import org.pyneo.maps.utils.Ut;
 
 import java.io.File;
 
-public class IconManager {
-	public static int poi = 0x7f02000a;
-	public static int poiblue = 0x7f02000c;
-	public static int poigreen = 0x7f02000d;
-	public static int poiwhite = 0x7f02000e;
-	public static int poiyellow = 0x7f02000f;
+class IconManager {
 	private static IconManager mIconManager = null;
 	private Context mAppContext;
 
@@ -79,22 +75,6 @@ public class IconManager {
 			}
 		}
 		return null;
-	}
-
-	public int getPoiIconResId(int id) {
-		if (id == poi) {
-			return R.drawable.poi_red;
-		} else if (id == poiblue) {
-			return R.drawable.poi_blue;
-		} else if (id == poigreen) {
-			return R.drawable.poi_green;
-		} else if (id == poiwhite) {
-			return R.drawable.poi_white;
-		} else if (id == poiyellow) {
-			return R.drawable.poi_yellow;
-		} else {
-			return 0;
-		}
 	}
 
 	private Drawable getDrawable(int resId) {

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -79,13 +80,13 @@ public class PoiListActivity extends ListActivity implements Constants {
 	private void FillData() {
 		Cursor c = mPoiManager.getGeoDatabase().getPoiListCursor(mSortOrder);
 		startManagingCursor(c);
-
-		ListAdapter adapter = new SimpleCursorAdapter(this,
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 			R.layout.poi_list_item, c,
 			new String[]{"name", "iconid", "catname", "descr"},
 			new int[]{R.id.title1, R.id.pic, R.id.title2, R.id.descr});
-		((SimpleCursorAdapter)adapter).setViewBinder(mViewBinder);
+		adapter.setViewBinder(mViewBinder);
 		setListAdapter(adapter);
+		Ut.i("filled data");
 	}
 
 	@Override
@@ -289,8 +290,16 @@ public class PoiListActivity extends ListActivity implements Constants {
 		super.onListItemClick(l, v, position, id);
 	}
 
+	public static int resourceFromPoiIconId(int id) {
+		Ut.i("resourceFromPoiIconId find id=" + id);
+		if (id < 0 || id >= POI_ICON_RESOURCE_IDS.length)
+			return POI_ICON_RESOURCE_IDS[0];
+		return POI_ICON_RESOURCE_IDS[id];
+	}
+
 	private class PoiViewBinder implements SimpleCursorAdapter.ViewBinder {
 		private static final String CATNAME = "catname";
+		private static final String ICONID = "iconid";
 		private CoordFormatter mCf = new CoordFormatter(PoiListActivity.this.getApplicationContext());
 
 		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
@@ -299,6 +308,12 @@ public class PoiListActivity extends ListActivity implements Constants {
 						+ ", " + mCf.convertLat(cursor.getDouble(cursor.getColumnIndex(LAT)))
 						+ ", " + mCf.convertLon(cursor.getDouble(cursor.getColumnIndex(LON)))
 				);
+				return true;
+			}
+			else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
+				int id = cursor.getInt(columnIndex);
+				Ut.i("setViewValue find id=" + id);
+				((ImageView)view.findViewById(R.id.pic)).setImageResource(resourceFromPoiIconId(id));
 				return true;
 			}
 			return false;

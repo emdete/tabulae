@@ -13,25 +13,19 @@ import android.widget.ImageView;
 
 import org.pyneo.maps.R;
 
-public class PoiIconSetActivity extends Activity {
-	private int indx[] = {R.drawable.poi_red, R.drawable.poi_blue, R.drawable.poi_green, R.drawable.poi_white, R.drawable.poi_yellow};
+public class PoiIconSetActivity extends Activity implements Constants {
 	private GridView mGridInt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		this.setContentView(R.layout.poi_iconset);
-
 		mGridInt = (GridView)findViewById(R.id.GridInt);
 		mGridInt.setAdapter(new AppsAdapter());
-
 		mGridInt.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-									long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				//Toast.makeText(PoiIconSetActivity.this, "sel="+arg3, Toast.LENGTH_SHORT).show();
-				setResult(RESULT_OK, (new Intent()).putExtra("iconid", indx[arg2]));
+				setResult(RESULT_OK, (new Intent()).putExtra("iconid", POI_ICON_RESOURCE_IDS[arg2]));
 				finish();
 			}
 		});
@@ -52,7 +46,7 @@ public class PoiIconSetActivity extends Activity {
 				i = (ImageView)convertView;
 			}
 
-			i.setImageResource(indx[position]);
+			i.setImageResource(POI_ICON_RESOURCE_IDS[position]);
 
 			return i;
 		}
@@ -66,8 +60,7 @@ public class PoiIconSetActivity extends Activity {
 		}
 
 		public final long getItemId(int position) {
-			return indx[position];
+			return POI_ICON_RESOURCE_IDS[position];
 		}
 	}
-
 }
