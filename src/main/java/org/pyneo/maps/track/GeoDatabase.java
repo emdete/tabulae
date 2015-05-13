@@ -28,8 +28,7 @@ public class GeoDatabase implements Constants {
 		mDatabase = getDatabase();
 	}
 
-	public void addPoi(final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId,
-					   final int aPointSourceId, final int hidden, final int iconid) {
+	public void addPoi(final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int aPointSourceId, final int hidden, final int iconid) {
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
 			cv.put(NAME, aName);
@@ -40,13 +39,17 @@ public class GeoDatabase implements Constants {
 			cv.put(CATEGORYID, aCategoryId);
 			cv.put(POINTSOURCEID, aPointSourceId);
 			cv.put(HIDDEN, hidden);
-			cv.put(ICONID, iconid);
+			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
+				Ut.e("iconid="+iconid, new Exception());
+				cv.put(ICONID, 0);
+			}
+			else
+				cv.put(ICONID, iconid);
 			this.mDatabase.insert(POINTS, null, cv);
 		}
 	}
 
-	public void updatePoi(final int id, final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId,
-						  final int aPointSourceId, final int hidden, final int iconid) {
+	public void updatePoi(final int id, final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int aPointSourceId, final int hidden, final int iconid) {
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
 			cv.put(NAME, aName);
@@ -57,7 +60,12 @@ public class GeoDatabase implements Constants {
 			cv.put(CATEGORYID, aCategoryId);
 			cv.put(POINTSOURCEID, aPointSourceId);
 			cv.put(HIDDEN, hidden);
-			cv.put(ICONID, iconid);
+			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
+				Ut.e("iconid="+iconid, new Exception());
+				cv.put(ICONID, 0);
+			}
+			else
+				cv.put(ICONID, iconid);
 			final String[] args = {Integer.toString(id)};
 			this.mDatabase.update(POINTS, cv, UPDATE_POINTS, args);
 		}
@@ -210,7 +218,12 @@ public class GeoDatabase implements Constants {
 			final ContentValues cv = new ContentValues();
 			cv.put(NAME, title);
 			cv.put(HIDDEN, hidden);
-			cv.put(ICONID, iconid);
+			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
+				Ut.e("iconid="+iconid, new Exception());
+				cv.put(ICONID, 0);
+			}
+			else
+				cv.put(ICONID, iconid);
 			newId = this.mDatabase.insert(CATEGORY, null, cv);
 		}
 
@@ -222,7 +235,12 @@ public class GeoDatabase implements Constants {
 			final ContentValues cv = new ContentValues();
 			cv.put(NAME, title);
 			cv.put(HIDDEN, hidden);
-			cv.put(ICONID, iconid);
+			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
+				Ut.e("iconid="+iconid, new Exception());
+				cv.put(ICONID, 0);
+			}
+			else
+				cv.put(ICONID, iconid);
 			cv.put(MINZOOM, minzoom);
 			final String[] args = {Integer.toString(id)};
 			this.mDatabase.update(CATEGORY, cv, UPDATE_CATEGORY, args);
