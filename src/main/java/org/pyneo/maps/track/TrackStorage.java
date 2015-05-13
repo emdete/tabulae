@@ -1,5 +1,6 @@
 package org.pyneo.maps.track;
 
+import com.commonsware.cwac.loaderex.acl.SQLiteCursorLoader;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TrackStorage extends Storage implements Constants {
+	private final static int mCurrentVersion = 22;
 	protected final Context mCtx;
 	@SuppressLint("SimpleDateFormat")
 	protected final SimpleDateFormat DATE_FORMAT_ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -72,15 +74,15 @@ public class TrackStorage extends Storage implements Constants {
 		}
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		if (mDatabase != null) {
-			if (mDatabase.isOpen()) {
-				mDatabase.close();
-				mDatabase = null;
-			}
-		}
-		super.finalize();
+	public SQLiteCursorLoader getPoiListCursorLoader() {
+		return getPoiListCursorLoader(LAT + ',' + LON);
+	}
+
+	public SQLiteCursorLoader getPoiListCursorLoader(String sortColNames) {
+		// Not change the order of the fields
+		File folder = Ut.getAppMainDir(mCtx, DATA);
+		folder = new File(folder, GEODATA_FILENAME);
+		return new SQLiteCursorLoader(mCtx, new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()), STAT_GET_POI_LIST + sortColNames, null);
 	}
 
 	public Cursor getPoiListCursor() {
@@ -520,8 +522,6 @@ public class TrackStorage extends Storage implements Constants {
 	}
 
 	protected class GeoDatabaseHelper extends SQLiteOpenHelper {
-		private final static int mCurrentVersion = 22;
-
 		public GeoDatabaseHelper(final Context context, final String name) {
 			super(context, name, null, mCurrentVersion);
 		}
@@ -595,7 +595,16 @@ public class TrackStorage extends Storage implements Constants {
 				db.execSQL(SQL_CREATE_routes);
 			}
 		}
-
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		if (mDatabase != null) {
+			if (mDatabase.isOpen()) {
+				mDatabase.close();
+				mDatabase = null;
+			}
+		}
+		super.finalize();
+	}
 }

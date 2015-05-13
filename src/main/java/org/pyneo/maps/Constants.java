@@ -5,7 +5,7 @@ public interface Constants extends org.pyneo.Constants {
 	public static final int EMPTY_ID = -777;
 	public static final int NO_TAP = -9999;
 	public static final int ONE = 1;
-	public static final int POI_ICON_RESOURCE_IDS[] = {R.drawable.poi_red, R.drawable.poi_blue, R.drawable.poi_green, R.drawable.poi_white, R.drawable.poi_yellow};
+	public static final int POI_ICON_RESOURCE_IDS[] = {R.drawable.poi_blue, R.drawable.poi_yellow, R.drawable.poi_green, R.drawable.poi_white, R.drawable.poi_red};
 	public static final int ZERO = 0;
 	public static final int ZOOM_CONTROL_BOTTOM = 2;
 	public static final int ZOOM_CONTROL_HIDE = 0;

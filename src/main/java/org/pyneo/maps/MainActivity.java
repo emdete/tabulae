@@ -407,19 +407,19 @@ public class MainActivity extends Activity implements Constants {
 			showDialog(R.id.whatsnew);
 		}
 		final Intent queryIntent = getIntent();
-		Ut.i("onCreate process intent=" + queryIntent);
+		Ut.d("onCreate process intent=" + queryIntent);
 		final String queryAction = queryIntent.getAction();
-		Ut.i("onCreate process action=" + queryAction);
+		Ut.d("onCreate process action=" + queryAction);
 		if (Intent.ACTION_MAIN.equals(queryAction)) {
 			;
 		}
 		else if (Intent.ACTION_SEARCH.equals(queryAction)) {
 			doSearchQuery(queryIntent);
-			Ut.i("onCreate doSearchQuery");
+			Ut.d("onCreate doSearchQuery");
 		}
 		else if (ACTION_SHOW_POINTS.equalsIgnoreCase(queryAction)) {
 			doShowPoints(queryIntent);
-			Ut.i("onCreate doShowPoints");
+			Ut.d("onCreate doShowPoints");
 		}
 		else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
 			Uri uri = queryIntent.getData();
@@ -439,7 +439,7 @@ public class MainActivity extends Activity implements Constants {
 					mMap.setCenter(point);
 				}
 			}
-			Ut.i("onCreate setGpsStatusGeoPoint");
+			Ut.d("onCreate setGpsStatusGeoPoint");
 		}
 		else if (ACTION_SHOW_MAP_ID.equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = queryIntent.getExtras();
@@ -466,7 +466,7 @@ public class MainActivity extends Activity implements Constants {
 				}
 			}
 			queryIntent.setAction("");
-			Ut.i("onCreate SharedPreferences");
+			Ut.d("onCreate SharedPreferences");
 		}
 		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
 			if (queryIntent.hasExtra(LONGITUDE) && queryIntent.hasExtra(LATITUDE)) {
@@ -483,7 +483,7 @@ public class MainActivity extends Activity implements Constants {
 				mPoiOverlay.setGpsStatusGeoPoint(0, point, name, name);
 				setAutoFollow(false);
 				mMap.setCenter(point);
-				Ut.i("onCreate location received");
+				Ut.d("onCreate location received");
 			}
 			else
 				Ut.w("onCreate conversations intent recceived with no latitude/longitude");
@@ -496,7 +496,7 @@ public class MainActivity extends Activity implements Constants {
 				result.putExtra(LONGITUDE, location.getLongitude());
 				result.putExtra(ALTITUDE, location.getAltitude());
 				result.putExtra(ACCURACY, (int)location.getAccuracy());
-				Ut.i("onCreate location sent");
+				Ut.d("onCreate location sent");
 			}
 			else {
 				// TODO defere location determination
@@ -510,8 +510,8 @@ public class MainActivity extends Activity implements Constants {
 			finish();
 		}
 		else
-			Ut.i("onCreate no fit");
-		Ut.i("onCreate done");
+			Ut.w("onCreate no fit");
+		Ut.d("onCreate done");
 	}
 
 	@Override

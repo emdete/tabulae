@@ -108,7 +108,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 				mThread.run();
 			}
 		}
-		Ut.i("onDraw mItemList=" + mItemList);
+		Ut.d("onDraw mItemList=" + mItemList);
 		if (this.mItemList != null) {
 			// Draw in backward cycle, so the items with the least index are on the front:
 			for (int i = this.mItemList.size() - 1; i >= 0; i--) {
@@ -138,7 +138,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 	protected void onDrawItem(Canvas c, int id, Point screenCoords) {
 		final PoiPoint paintItem = mItemList.get(id);
 		if (id == mTapId) { // focussed?
-			Ut.i("onDrawItem screenCoords=" + screenCoords);
+			Ut.d("onDrawItem screenCoords=" + screenCoords);
 			final ImageView pic = (ImageView)mT.findViewById(R.id.pic);
 			pic.setImageResource(PoiActivity.resourceFromPoiIconId(paintItem.mIconId));
 			((TextView)mT.findViewById(R.id.poi_title)).setText(paintItem.mTitle);
@@ -156,7 +156,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 			final int right = left + this.mMarkerWidth;
 			final int top = screenCoords.y - this.mMarkerHotSpot.y;
 			final int bottom = top + this.mMarkerHeight;
-			Ut.i("onDrawItem left=" + left + ", right=" + right + ", top=" + top + ", bottom=" + bottom);
+			Ut.d("onDrawItem left=" + left + ", right=" + right + ", top=" + top + ", bottom=" + bottom);
 			Drawable marker = null;
 			if (mBtnMap.indexOfKey(PoiActivity.resourceFromPoiIconId(paintItem.mIconId)) < 0) {
 				marker = mCtx.getResources().getDrawable(PoiActivity.resourceFromPoiIconId(paintItem.mIconId));

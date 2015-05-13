@@ -26,6 +26,7 @@ import org.pyneo.maps.utils.CoordFormatter;
 
 public class PoiListFragment extends ListFragment implements Constants, LoaderManager.LoaderCallbacks<Cursor> {
 	private static final int URL_LOADER = 0;
+	private PoiStorage mPoiStorage;
 	private SQLiteCursorLoader mLoader;
 	private PoiListSimpleCursorAdapter mAdapter;
 
@@ -59,7 +60,7 @@ public class PoiListFragment extends ListFragment implements Constants, LoaderMa
 	public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle) {
 		switch (loaderID) {
 			case URL_LOADER:
-				mLoader = PoiStorage.getInstance(getActivity().getApplicationContext()).getPoiListCursorLoader();
+				mLoader = mPoiStorage.getPoiListCursorLoader();
 				return mLoader;
 			default:
 				// An invalid id was passed in

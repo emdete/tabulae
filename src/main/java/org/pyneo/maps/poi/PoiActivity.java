@@ -29,10 +29,10 @@ public class PoiActivity extends Activity implements Constants {
 	private CoordFormatter mCf;
 
 	public static int resourceFromPoiIconId(int id) {
-		Ut.i("resourceFromPoiIconId find id=" + id);
-		if (id < 0 || id >= POI_ICON_RESOURCE_IDS.length)
-			return POI_ICON_RESOURCE_IDS[0];
-		return POI_ICON_RESOURCE_IDS[id];
+		if (id >= 0 && id < POI_ICON_RESOURCE_IDS.length)
+			return POI_ICON_RESOURCE_IDS[id];
+		Ut.e("resourceFromPoiIconId find id=" + id, new Exception());
+		return POI_ICON_RESOURCE_IDS[0];
 	}
 
 	@Override

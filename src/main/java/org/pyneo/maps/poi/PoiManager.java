@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.SparseArray;
 
-import org.pyneo.maps.track.TrackStorage;
 import org.pyneo.maps.track.Track;
 import org.pyneo.maps.track.Track.TrackPoint;
 import org.pyneo.maps.utils.Ut;
@@ -17,21 +16,21 @@ import java.util.Date;
 
 public class PoiManager implements Constants {
 	protected final Context mCtx;
-	private TrackStorage mTrackStorage;
+	private PoiStorage mPoiStorage;
 	private boolean mStopProcessing;
 
 	public PoiManager(Context ctx) {
 		super();
 		mCtx = ctx;
-		mTrackStorage = new TrackStorage(ctx);
+		mPoiStorage = new PoiStorage(ctx);
 	}
 
-	public TrackStorage getGeoDatabase() {
-		return mTrackStorage;
+	public PoiStorage getGeoDatabase() {
+		return mPoiStorage;
 	}
 
 	public void FreeDatabases() {
-		mTrackStorage.FreeDatabases();
+		mPoiStorage.FreeDatabases();
 	}
 
 	public void StopProcessing() {
@@ -47,14 +46,14 @@ public class PoiManager implements Constants {
 	}
 
 	public void addPoi(final String title, final String descr, GeoPoint point) {
-		mTrackStorage.addPoi(title, descr, point.getLatitude(), point.getLongitude(), ZERO, ZERO, ZERO, ZERO, 0);
+		mPoiStorage.addPoi(title, descr, point.getLatitude(), point.getLongitude(), ZERO, ZERO, ZERO, ZERO, 0);
 	}
 
 	public void updatePoi(final PoiPoint point) {
 		if (point.getId() < 0)
-			mTrackStorage.addPoi(point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mPointSourceId, point.mHidden? ONE: ZERO, point.mIconId);
+			mPoiStorage.addPoi(point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mPointSourceId, point.mHidden? ONE: ZERO, point.mIconId);
 		else
-			mTrackStorage.updatePoi(point.getId(), point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mPointSourceId, point.mHidden? ONE: ZERO, point.mIconId);
+			mPoiStorage.updatePoi(point.getId(), point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mPointSourceId, point.mHidden? ONE: ZERO, point.mIconId);
 	}
 
 	private SparseArray<PoiPoint> doCreatePoiListFromCursor(Cursor c) {
@@ -81,13 +80,13 @@ public class PoiManager implements Constants {
 	}
 
 	public SparseArray<PoiPoint> getPoiList() {
-		return doCreatePoiListFromCursor(mTrackStorage.getPoiListCursor());
+		return doCreatePoiListFromCursor(mPoiStorage.getPoiListCursor());
 	}
 
 	public SparseArray<PoiPoint> getPoiListNotHidden(int zoom, GeoPoint center, double deltaX, double deltaY) {
 		Ut.i("getPoiListNotHidden:");
 		return doCreatePoiListFromCursor(
-			mTrackStorage.getPoiListNotHiddenCursor(
+			mPoiStorage.getPoiListNotHiddenCursor(
 				zoom,
 				center.getLongitude() - deltaX, center.getLongitude() + deltaX,
 				center.getLatitude() + deltaY, center.getLatitude() - deltaY
@@ -102,7 +101,7 @@ public class PoiManager implements Constants {
 
 	public PoiPoint getPoiPoint(int id) {
 		PoiPoint point = null;
-		final Cursor c = mTrackStorage.getPoi(id);
+		final Cursor c = mPoiStorage.getPoi(id);
 		if (c != null) {
 			if (c.moveToFirst())
 				point = new PoiPoint(c.getInt(4), c.getString(2), c
@@ -117,16 +116,16 @@ public class PoiManager implements Constants {
 	}
 
 	public void deletePoi(final int id) {
-		mTrackStorage.deletePoi(id);
+		mPoiStorage.deletePoi(id);
 	}
 
 	public void deletePoiCategory(final int id) {
-		mTrackStorage.deletePoiCategory(id);
+		mPoiStorage.deletePoiCategory(id);
 	}
 
 	public PoiCategory getPoiCategory(int id) {
 		PoiCategory category = null;
-		final Cursor c = mTrackStorage.getPoiCategory(id);
+		final Cursor c = mPoiStorage.getPoiCategory(id);
 		if (c != null) {
 			if (c.moveToFirst())
 				category = new PoiCategory(id, c.getString(0), c.getInt(2) == ONE, c.getInt(3), c.getInt(4));
@@ -138,41 +137,41 @@ public class PoiManager implements Constants {
 
 	public void updatePoiCategory(PoiCategory poiCategory) {
 		if (poiCategory.getId() < ZERO)
-			mTrackStorage.addPoiCategory(poiCategory.Title, poiCategory.Hidden? ONE: ZERO, poiCategory.IconId);
+			mPoiStorage.addPoiCategory(poiCategory.Title, poiCategory.Hidden? ONE: ZERO, poiCategory.IconId);
 		else
-			mTrackStorage.updatePoiCategory(poiCategory.getId(), poiCategory.Title, poiCategory.Hidden? ONE: ZERO, poiCategory.IconId, poiCategory.MinZoom);
+			mPoiStorage.updatePoiCategory(poiCategory.getId(), poiCategory.Title, poiCategory.Hidden? ONE: ZERO, poiCategory.IconId, poiCategory.MinZoom);
 	}
 
 	public void DeleteAllPoi() {
-		mTrackStorage.DeleteAllPoi();
+		mPoiStorage.DeleteAllPoi();
 	}
 
 	public void beginTransaction() {
-		mTrackStorage.beginTransaction();
+		mPoiStorage.beginTransaction();
 	}
 
 	public void rollbackTransaction() {
-		mTrackStorage.rollbackTransaction();
+		mPoiStorage.rollbackTransaction();
 	}
 
 	public void commitTransaction() {
-		mTrackStorage.commitTransaction();
+		mPoiStorage.commitTransaction();
 	}
 
 	public void updateTrack(Track track) {
 		if (track.getId() < 0) {
-			long newId = mTrackStorage.addTrack(track.Name, track.Descr, track.Show? ONE: ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
+			long newId = mPoiStorage.addTrack(track.Name, track.Descr, track.Show? ONE: ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
 
 			for (TrackPoint trackpoint : track.getPoints()) {
-				mTrackStorage.addTrackPoint(newId, trackpoint.lat, trackpoint.lon, trackpoint.alt, trackpoint.speed, trackpoint.date);
+				mPoiStorage.addTrackPoint(newId, trackpoint.lat, trackpoint.lon, trackpoint.alt, trackpoint.speed, trackpoint.date);
 			}
 		} else
-			mTrackStorage.updateTrack(track.getId(), track.Name, track.Descr, track.Show? ONE: ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
+			mPoiStorage.updateTrack(track.getId(), track.Name, track.Descr, track.Show? ONE: ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
 	}
 
 	public boolean haveTrackChecked() {
 		boolean ret = false;
-		Cursor c = mTrackStorage.getTrackChecked();
+		Cursor c = mPoiStorage.getTrackChecked();
 		if (c != null) {
 			if (c.moveToFirst())
 				ret = true;
@@ -187,13 +186,13 @@ public class PoiManager implements Constants {
 	}
 
 	public void setTrackChecked(int id) {
-		mTrackStorage.setTrackChecked(id);
+		mPoiStorage.setTrackChecked(id);
 	}
 
 	public Track[] getTrackChecked(final boolean aNeedPoints) {
 		mStopProcessing = false;
 		Track tracks[] = null;
-		Cursor c = mTrackStorage.getTrackChecked();
+		Cursor c = mPoiStorage.getTrackChecked();
 		if (c != null) {
 			tracks = new Track[c.getCount()];
 			final String defStyle = PreferenceManager.getDefaultSharedPreferences(mCtx).getString("pref_track_style", "");
@@ -205,7 +204,7 @@ public class PoiManager implements Constants {
 						style = ""; // TODO ?!?
 					tracks[pos] = new Track(c.getInt(3), c.getString(0), c.getString(1), c.getInt(2) == ONE, c.getInt(4), c.getDouble(5), c.getDouble(6), c.getInt(7), c.getInt(8), new Date(c.getLong(9) * 1000), style, defStyle);
 					if (aNeedPoints) {
-						Cursor cpoints = mTrackStorage.getTrackPoints(tracks[pos].getId());
+						Cursor cpoints = mPoiStorage.getTrackPoints(tracks[pos].getId());
 						if (cpoints != null) {
 							if (cpoints.moveToFirst()) {
 								do {
@@ -237,7 +236,7 @@ public class PoiManager implements Constants {
 
 	public Track getTrack(int id) {
 		Track track = null;
-		Cursor c = mTrackStorage.getTrack(id);
+		Cursor c = mPoiStorage.getTrack(id);
 		if (c != null) {
 			if (c.moveToFirst()) {
 				final String defStyle = PreferenceManager.getDefaultSharedPreferences(mCtx).getString("pref_track_style", "");
@@ -250,7 +249,7 @@ public class PoiManager implements Constants {
 			c.close();
 			c = null;
 
-			c = mTrackStorage.getTrackPoints(id);
+			c = mPoiStorage.getTrackPoints(id);
 			if (c != null) {
 				if (c.moveToFirst()) {
 					do {
@@ -271,12 +270,12 @@ public class PoiManager implements Constants {
 	}
 
 	public void deleteTrack(int id) {
-		mTrackStorage.deleteTrack(id);
+		mPoiStorage.deleteTrack(id);
 
 	}
 
 	public long addMap(int type, String params) {
-		return mTrackStorage.addMap(type, params);
+		return mPoiStorage.addMap(type, params);
 	}
 
 }
