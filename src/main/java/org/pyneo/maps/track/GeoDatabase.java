@@ -6,10 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.poi.Constants;
-import org.pyneo.maps.utils.RSQLiteOpenHelper;
 import org.pyneo.maps.utils.Ut;
 
 import java.io.File;
@@ -500,7 +500,7 @@ public class GeoDatabase implements Constants {
 		}
 	}
 
-	protected class GeoDatabaseHelper extends RSQLiteOpenHelper {
+	protected class GeoDatabaseHelper extends SQLiteOpenHelper {
 		private final static int mCurrentVersion = 22;
 
 		public GeoDatabaseHelper(final Context context, final String name) {

@@ -4,9 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.pyneo.maps.utils.RSQLiteOpenHelper;
 import org.pyneo.maps.utils.Ut;
 
 import org.andnav.osm.util.Constants;
@@ -157,7 +157,7 @@ public class TileProviderFileBase extends TileProviderBase {
 		return new IndexDatabaseHelper(ctx, folder.getAbsolutePath() + INDEX_DB).getWritableDatabase();
 	}
 
-	protected class IndexDatabaseHelper extends RSQLiteOpenHelper {
+	protected class IndexDatabaseHelper extends SQLiteOpenHelper {
 		public IndexDatabaseHelper(final Context context, final String name) {
 			super(context, name, null, 3);
 		}

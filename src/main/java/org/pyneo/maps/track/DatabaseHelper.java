@@ -2,11 +2,11 @@ package org.pyneo.maps.track;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import org.pyneo.maps.poi.Constants;
-import org.pyneo.maps.utils.RSQLiteOpenHelper;
 
-public class DatabaseHelper extends RSQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public DatabaseHelper(Context context, String name) {
 		super(context, name, null, 1);

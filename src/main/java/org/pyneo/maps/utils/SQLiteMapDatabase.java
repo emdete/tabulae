@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.utils.Ut;
@@ -411,7 +412,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 		return coord;
 	}
 
-	protected class CacheDatabaseHelper extends RSQLiteOpenHelper {
+	protected class CacheDatabaseHelper extends SQLiteOpenHelper {
 		public CacheDatabaseHelper(final Context context, final String name) {
 			super(context, name, null, 3);
 		}
