@@ -8,7 +8,7 @@ import android.os.Handler;
 
 import org.pyneo.maps.utils.ICacheProvider;
 import org.pyneo.maps.utils.RException;
-import org.pyneo.maps.utils.SQLiteMapDatabase;
+import org.pyneo.maps.map.SQLiteMapDatabase;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
@@ -42,7 +42,7 @@ public class TileProviderInet extends TileProviderBase {
 		else
 			mTileCache = aTileCache;
 		if (cacheDatabaseName != null) {
-			final SQLiteMapDatabase cacheDatabase = new SQLiteMapDatabase();
+			final SQLiteMapDatabase cacheDatabase = new SQLiteMapDatabase(ctx);
 			final File folder = Ut.getAppMainDir(ctx, "cache");
 			cacheDatabase.setFile(folder.getAbsolutePath() + "/" + cacheDatabaseName + ".sqlitedb");
 			mCacheProvider = cacheDatabase;

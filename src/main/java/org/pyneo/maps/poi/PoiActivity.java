@@ -28,6 +28,13 @@ public class PoiActivity extends Activity implements Constants {
 	private PoiManager mPoiManager;
 	private CoordFormatter mCf;
 
+	public static int resourceFromPoiIconId(int id) {
+		Ut.i("resourceFromPoiIconId find id=" + id);
+		if (id < 0 || id >= POI_ICON_RESOURCE_IDS.length)
+			return POI_ICON_RESOURCE_IDS[0];
+		return POI_ICON_RESOURCE_IDS[id];
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

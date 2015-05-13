@@ -3,6 +3,7 @@ package org.pyneo.maps;
 public interface Constants extends org.pyneo.Constants {
 	public static final boolean LOGDEBUG = false;
 	public static final int EMPTY_ID = -777;
+	public static final int NO_TAP = -9999;
 	public static final int ONE = 1;
 	public static final int POI_ICON_RESOURCE_IDS[] = {R.drawable.poi_red, R.drawable.poi_blue, R.drawable.poi_green, R.drawable.poi_white, R.drawable.poi_yellow};
 	public static final int ZERO = 0;
@@ -106,7 +107,7 @@ public interface Constants extends org.pyneo.Constants {
 	String STAT_getTrackPoints = "SELECT lat, lon, alt, speed, date FROM trackpoints WHERE trackid = @1 ORDER BY id";
 	String STAT_getTrack = "SELECT name, descr, show, cnt, distance, duration, categoryid, activity, date, style FROM tracks WHERE trackid = @1";
 	String STAT_PoiCategoryList = "SELECT name, iconid, categoryid _id, hidden FROM category ORDER BY name";
-	String STAT_PoiListNotHidden = "SELECT poi.lat, poi.lon, poi.name, poi.descr, poi.pointid, poi.pointid _id, poi.pointid ID, poi.categoryid, cat.iconid FROM points poi LEFT JOIN category cat ON cat.categoryid = poi.categoryid WHERE poi.hidden = 0 AND cat.hidden = 0 " + "AND cat.minzoom <= @1" + " AND poi.lon BETWEEN @2 AND @3" + " AND poi.lat BETWEEN @4 AND @5" + " ORDER BY lat, lon";
+	String STAT_PoiListNotHidden = "SELECT poi.lat, poi.lon, poi.name, poi.descr, poi.pointid, poi.pointid _id, poi.pointid ID, poi.categoryid, cat.iconid FROM points poi LEFT JOIN category cat ON cat.categoryid = poi.categoryid WHERE poi.hidden = 0 AND cat.hidden = 0 AND cat.minzoom <= @1 AND poi.lon BETWEEN @2 AND @3 AND poi.lat BETWEEN @4 AND @5 ORDER BY lat, lon";
 	String STAT_saveTrackFromWriter = "SELECT lat, lon, alt, speed, date FROM trackpoints ORDER BY id;";
 	String STAT_setCategoryHidden = "UPDATE category SET hidden = 1 - hidden * 1 WHERE categoryid = @1";
 	String STAT_setTrackChecked_1 = "UPDATE tracks SET show = 1 - show * 1 WHERE trackid = @1";

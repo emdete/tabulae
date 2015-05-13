@@ -5,7 +5,6 @@ import org.pyneo.maps.R;
 import org.andnav.osm.util.GeoPoint;
 
 public class PoiPoint implements Constants {
-
 	private final int mId;
 	public String mTitle;
 	public String mDescr;
@@ -16,8 +15,7 @@ public class PoiPoint implements Constants {
 	public int mPointSourceId;
 	public boolean mHidden;
 
-	public PoiPoint(int id, String mTitle, String mDescr, GeoPoint mGeoPoint,
-					int iconid, int categoryid, double alt, int sourseid, int hidden) {
+	public PoiPoint(int id, String mTitle, String mDescr, GeoPoint mGeoPoint, int iconid, int categoryid, double alt, int sourseid, int hidden) {
 		this.mId = id;
 		this.mTitle = mTitle;
 		this.mDescr = mDescr;
@@ -30,7 +28,7 @@ public class PoiPoint implements Constants {
 	}
 
 	public PoiPoint() {
-		this(EMPTY_ID, "", "", null, R.drawable.poi_red, 0, 0, 0, 0);
+		this(EMPTY_ID, "", "", null, 0, 0, 0, 0, 0);
 	}
 
 	public PoiPoint(int id, String mTitle, String mDescr, GeoPoint mGeoPoint, int categoryid, int iconid) {

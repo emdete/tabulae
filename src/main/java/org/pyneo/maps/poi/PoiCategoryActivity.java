@@ -113,7 +113,7 @@ public class PoiCategoryActivity extends Activity implements Constants {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if (resultCode == RESULT_OK) {
-			mPoiCategory.IconId = data.getIntExtra("iconid", R.drawable.poi_red);
+			mPoiCategory.IconId = data.getIntExtra("iconid", 0);
 			mIcon.setImageResource(mPoiCategory.IconId);
 		}
 

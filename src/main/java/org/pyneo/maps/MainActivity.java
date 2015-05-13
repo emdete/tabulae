@@ -375,7 +375,7 @@ public class MainActivity extends Activity implements Constants {
 		mTrackOverlay = new TrackOverlay(this, mPoiManager, mCallbackHandler);
 		mCurrentTrackOverlay = new CurrentTrackOverlay(this, mPoiManager);
 		mPoiOverlay = new PoiOverlay(this, mPoiManager, null, pref.getBoolean("pref_hidepoi", false));
-		mPoiOverlay.setTapIndex(uiState.getInt("curShowPoiId", PoiOverlay.NO_TAP));
+		mPoiOverlay.setTapIndex(uiState.getInt("curShowPoiId", NO_TAP));
 		mMyLocationOverlay = new MyLocationOverlay(this);
 		mSearchResultOverlay = new SearchResultOverlay(this, mMap);
 		mSearchResultOverlay.fromPref(uiState);
@@ -1238,7 +1238,7 @@ public class MainActivity extends Activity implements Constants {
 		if (menuInfo instanceof TileView.PoiMenuInfo) {
 			final TileView.PoiMenuInfo info = (TileView.PoiMenuInfo)menuInfo;
 			if (info.EventGeoPoint != null) {
-				if (info.MarkerIndex > PoiOverlay.NO_TAP) {
+				if (info.MarkerIndex > NO_TAP) {
 					mMarkerIndex = info.MarkerIndex;
 					if (info.MarkerIndex >= 0) {
 						menu.add(0, R.id.menu_editpoi, 0, getText(R.string.menu_edit));

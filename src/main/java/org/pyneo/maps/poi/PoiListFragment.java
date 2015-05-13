@@ -25,11 +25,6 @@ import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.CoordFormatter;
 
 public class PoiListFragment extends ListFragment implements Constants, LoaderManager.LoaderCallbacks<Cursor> {
-	private final static int poi_red = 0x7f02000a;
-	private final static int poi_blue = 0x7f02000c;
-	private final static int poi_green = 0x7f02000d;
-	private final static int poi_white = 0x7f02000e;
-	private final static int poi_yellow = 0x7f02000f;
 	private static final int URL_LOADER = 0;
 	private SQLiteCursorLoader mLoader;
 	private PoiListSimpleCursorAdapter mAdapter;
@@ -64,7 +59,7 @@ public class PoiListFragment extends ListFragment implements Constants, LoaderMa
 	public Loader<Cursor> onCreateLoader(int loaderID, Bundle bundle) {
 		switch (loaderID) {
 			case URL_LOADER:
-				mLoader = GeoData.getInstance(getActivity().getApplicationContext()).getPoiListCursorLoader();
+				mLoader = PoiStorage.getInstance(getActivity().getApplicationContext()).getPoiListCursorLoader();
 				return mLoader;
 			default:
 				// An invalid id was passed in
@@ -80,23 +75,6 @@ public class PoiListFragment extends ListFragment implements Constants, LoaderMa
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		mAdapter.changeCursor(null);
-	}
-
-	static int getPoiIconResId(int id) {
-		Ut.i("getPoiIconResId find id=" + id);
-		if (id == poi_red) {
-			return R.drawable.poi_red;
-		} else if (id == poi_blue) {
-			return R.drawable.poi_blue;
-		} else if (id == poi_green) {
-			return R.drawable.poi_green;
-		} else if (id == poi_white) {
-			return R.drawable.poi_white;
-		} else if (id == poi_yellow) {
-			return R.drawable.poi_yellow;
-		} else {
-			return R.drawable.poi_red;
-		}
 	}
 
 	private static class PoiViewBinder implements PoiListSimpleCursorAdapter.ViewBinder {
@@ -122,7 +100,7 @@ public class PoiListFragment extends ListFragment implements Constants, LoaderMa
 			else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
 				int id = cursor.getInt(columnIndex);
 				Ut.i("setViewValue find id=" + id);
-				((ImageView)view.findViewById(R.id.pic)).setImageResource(getPoiIconResId(id));
+				((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));
 				return true;
 			}
 			return false;

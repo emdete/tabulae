@@ -290,13 +290,6 @@ public class PoiListActivity extends ListActivity implements Constants {
 		super.onListItemClick(l, v, position, id);
 	}
 
-	public static int resourceFromPoiIconId(int id) {
-		Ut.i("resourceFromPoiIconId find id=" + id);
-		if (id < 0 || id >= POI_ICON_RESOURCE_IDS.length)
-			return POI_ICON_RESOURCE_IDS[0];
-		return POI_ICON_RESOURCE_IDS[id];
-	}
-
 	private class PoiViewBinder implements SimpleCursorAdapter.ViewBinder {
 		private static final String CATNAME = "catname";
 		private static final String ICONID = "iconid";
@@ -313,7 +306,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 			else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
 				int id = cursor.getInt(columnIndex);
 				Ut.i("setViewValue find id=" + id);
-				((ImageView)view.findViewById(R.id.pic)).setImageResource(resourceFromPoiIconId(id));
+				((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));
 				return true;
 			}
 			return false;

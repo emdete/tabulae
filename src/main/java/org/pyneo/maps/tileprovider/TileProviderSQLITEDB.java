@@ -10,7 +10,7 @@ import android.os.Message;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.RException;
-import org.pyneo.maps.utils.SQLiteMapDatabase;
+import org.pyneo.maps.map.SQLiteMapDatabase;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
@@ -32,7 +32,7 @@ public class TileProviderSQLITEDB extends TileProviderFileBase {
 		super(ctx);
 		mTileURLGenerator = new TileURLGeneratorBase(filename);
 		mTileCache = aTileCache == null? new MapTileMemCache(): aTileCache;
-		mUserMapDatabase = new SQLiteMapDatabase();
+		mUserMapDatabase = new SQLiteMapDatabase(ctx);
 		mUserMapDatabase.setFile(filename);
 		mMapID = mapid;
 

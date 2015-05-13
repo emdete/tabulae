@@ -11,18 +11,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 import org.pyneo.maps.R;
 import org.pyneo.maps.poi.Constants;
 import org.pyneo.maps.utils.Ut;
+import org.pyneo.maps.utils.Storage;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class GeoDatabase implements Constants {
+public class TrackStorage extends Storage implements Constants {
 	protected final Context mCtx;
 	@SuppressLint("SimpleDateFormat")
 	protected final SimpleDateFormat DATE_FORMAT_ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	private SQLiteDatabase mDatabase;
 
-	public GeoDatabase(Context ctx) {
+	public TrackStorage(Context ctx) {
 		super();
 		mCtx = ctx;
 		mDatabase = getDatabase();
@@ -101,7 +102,7 @@ public class GeoDatabase implements Constants {
 			// Not change the order of the fields
 			return mDatabase.rawQuery(STAT_PoiListNotHidden, args);
 		}
-
+		Ut.i("db is not ready?");
 		return null;
 	}
 

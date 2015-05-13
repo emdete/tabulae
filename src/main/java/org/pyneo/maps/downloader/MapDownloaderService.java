@@ -17,7 +17,7 @@ import android.widget.Toast;
 import org.pyneo.maps.R;
 import org.pyneo.maps.tileprovider.TileProviderFileBase;
 import org.pyneo.maps.tileprovider.TileSource;
-import org.pyneo.maps.utils.SQLiteMapDatabase;
+import org.pyneo.maps.map.SQLiteMapDatabase;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
@@ -39,16 +39,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class MapDownloaderService extends Service {
-	private static final Class<?>[] mSetForegroundSignature = new Class[]{
-		boolean.class};
-	private static final Class<?>[] mStartForegroundSignature = new Class[]{
-		int.class, Notification.class};
-	private static final Class<?>[] mStopForegroundSignature = new Class[]{
-		boolean.class};
+	private static final Class<?>[] mSetForegroundSignature = new Class[]{ boolean.class};
+	private static final Class<?>[] mStartForegroundSignature = new Class[]{ int.class, Notification.class};
+	private static final Class<?>[] mStopForegroundSignature = new Class[]{ boolean.class};
 	final RemoteCallbackList<IDownloaderCallback> mCallbacks = new RemoteCallbackList<IDownloaderCallback>();
 	private final int THREADCOUNT = 1;
-	private ExecutorService mThreadPool = Executors.newFixedThreadPool(THREADCOUNT, new SimpleThreadFactory(
-		"MapDownloaderService"));
+	private ExecutorService mThreadPool = Executors.newFixedThreadPool(THREADCOUNT, new SimpleThreadFactory( "MapDownloaderService"));
 	private NotificationManager mNM;
 	private Notification mNotification;
 	private PendingIntent mContentIntent = null;
@@ -176,7 +172,7 @@ public class MapDownloaderService extends Service {
 			return;
 		}
 
-		final SQLiteMapDatabase cacheDatabase = new SQLiteMapDatabase();
+		final SQLiteMapDatabase cacheDatabase = new SQLiteMapDatabase(null);
 
 		if (mLoadToOnlineCache) {
 			if (mTileSource.CACHE.trim().equalsIgnoreCase(""))

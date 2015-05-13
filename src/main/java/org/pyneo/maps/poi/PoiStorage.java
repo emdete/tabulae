@@ -1,22 +1,24 @@
 package org.pyneo.maps.poi;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import com.commonsware.cwac.loaderex.acl.SQLiteCursorLoader;
 import org.pyneo.maps.R;
-import org.pyneo.maps.utils.SQLiteSDOpenHelper;
 import org.pyneo.maps.utils.Ut;
+import org.pyneo.maps.utils.Storage;
 
 import java.io.File;
 
-class GeoData implements Constants {
+class PoiStorage extends Storage implements Constants {
 	private final static int mCurrentVersion = 22;
-	private static GeoData mInstance = null;
+	private static PoiStorage mInstance = null;
 	private Context mContext;
 	private SQLiteSDOpenHelper mSQLiteOpenHelper;
 
-	public GeoData(Context context) {
+	private PoiStorage(Context context) {
 		mContext = context;
 		File folder = Ut.getAppMainDir(context, DATA);
 		mSQLiteOpenHelper = new SQLiteSDOpenHelper(context, folder.getAbsolutePath() + GEODATA_FILENAME, null, mCurrentVersion) {
@@ -96,9 +98,9 @@ class GeoData implements Constants {
 		};
 	}
 
-	public static GeoData getInstance(Context context) {
+	public static PoiStorage getInstance(Context context) {
 		if (mInstance == null) {
-			mInstance = new GeoData(context);
+			mInstance = new PoiStorage(context);
 		}
 		return mInstance;
 	}
@@ -110,5 +112,16 @@ class GeoData implements Constants {
 	public SQLiteCursorLoader getPoiListCursorLoader(String sortColNames) {
 		// Not change the order of the fields
 		return new SQLiteCursorLoader(mContext, mSQLiteOpenHelper, STAT_GET_POI_LIST + sortColNames, null);
+	}
+
+	public abstract static class SQLiteSDOpenHelper extends SQLiteOpenHelper {
+		public SQLiteSDOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+			super(new ContextWrapper(context) {
+				@Override
+				public SQLiteDatabase openOrCreateDatabase(String name, int mode, SQLiteDatabase.CursorFactory factory) {
+					return SQLiteDatabase.openDatabase(name, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+				}
+			}, name, factory, version);
+		}
 	}
 }

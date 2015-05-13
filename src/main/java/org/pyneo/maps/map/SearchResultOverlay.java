@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SearchResultOverlay extends TileViewOverlay {
+public class SearchResultOverlay extends TileViewOverlay implements Constants {
 
 	protected final Paint mPaint = new Paint();
 	protected final Paint mPaintLine;
@@ -155,7 +155,7 @@ public class SearchResultOverlay extends TileViewOverlay {
 
 			if (rect.contains((int)e.getX(), (int)e.getY())) {
 				mapView.mPoiMenuInfo.EventGeoPoint = mLocation;
-				mapView.mPoiMenuInfo.MarkerIndex = PoiOverlay.NO_TAP;
+				mapView.mPoiMenuInfo.MarkerIndex = NO_TAP;
 				mapView.mPoiMenuInfo.Elevation = mElevation;
 				mapView.showContextMenu();
 			}

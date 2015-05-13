@@ -1,4 +1,4 @@
-package org.pyneo.maps.utils;
+package org.pyneo.maps.map;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import org.pyneo.maps.tileprovider.TileSource;
+import org.pyneo.maps.utils.ICacheProvider;
+import org.pyneo.maps.utils.RException;
 import org.pyneo.maps.utils.Ut;
 
 import org.json.JSONArray;
@@ -45,12 +47,17 @@ public class SQLiteMapDatabase implements ICacheProvider {
 	private static final String SQL_DELTILE_WHERE = "x = ? AND y = ? AND z = ?";
 	private static final String TILES = "tiles";
 	private static final String PARAMS = "params";
+	private Context mContext;
 	private SQLiteDatabase[] mDatabase = new SQLiteDatabase[0];
 	private SQLiteDatabase mDatabaseWritable;
 	private int mCurrentIndex = 0;
 	private File mBaseFile = null;
 	private int mBaseFileIndex = 0;
 	private int[] mMinMaxZoom = null;
+
+	public SQLiteMapDatabase(Context context) {
+		mContext = context;
+	}
 
 	public String getID(String pref) {
 		return Ut.FileName2ID(pref + mBaseFile.getName());
@@ -97,7 +104,7 @@ public class SQLiteMapDatabase implements ICacheProvider {
 				for (int i = 0; i < files.length; i++) {
 					if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
 						try {
-							mDatabase[j] = new CacheDatabaseHelper(null, files[i].getAbsolutePath()).getWritableDatabase();
+							mDatabase[j] = new CacheDatabaseHelper(mContext, files[i].getAbsolutePath()).getWritableDatabase();
 							mDatabase[j].setMaximumSize(MAX_DATABASE_SIZE);
 							if (mDatabaseWritable == null) {
 								mDatabaseWritable = mDatabase[j];

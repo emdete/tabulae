@@ -19,11 +19,11 @@ public class PoiCategory implements Constants {
 	}
 
 	public PoiCategory() {
-		this(Constants.EMPTY_ID, "", false, R.drawable.poi_red, 14);
+		this(Constants.EMPTY_ID, "", false, 0, 14);
 	}
 
 	public PoiCategory(String title) {
-		this(Constants.EMPTY_ID, title, false, R.drawable.poi_red, 14);
+		this(Constants.EMPTY_ID, title, false, 0, 14);
 	}
 
 	public int getId() {

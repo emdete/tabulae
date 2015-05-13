@@ -22,21 +22,20 @@ import org.pyneo.maps.map.TileViewOverlay;
 
 import org.andnav.osm.util.GeoPoint;
 
-public class PoiOverlay extends TileViewOverlay {
-	public static int NO_TAP = -9999;
-	protected final Point mMarkerHotSpot;
-	protected final int mMarkerWidth;
-	protected final int mMarkerHeight;
-	protected OnItemTapListener<PoiPoint> mOnItemTapListener;
-	protected OnItemLongPressListener<PoiPoint> mOnItemLongPressListener;
-	protected SparseArray<PoiPoint> mItemList;
-	protected SparseArray<Drawable> mBtnMap;
+public class PoiOverlay extends TileViewOverlay implements Constants {
+	private final Point mMarkerHotSpot;
+	private final int mMarkerWidth;
+	private final int mMarkerHeight;
+	private OnItemTapListener<PoiPoint> mOnItemTapListener;
+	private OnItemLongPressListener<PoiPoint> mOnItemLongPressListener;
+	private SparseArray<PoiPoint> mItemList = new SparseArray<PoiPoint>();
+	private final SparseArray<Drawable> mBtnMap = new SparseArray<Drawable>();
 	private Context mCtx;
 	private PoiManager mPoiManager;
 	private int mTapId;
 	private GeoPoint mLastMapCenter;
 	private int mLastZoom;
-	private PoiListThread mThread;
+	private final PoiListThread mThread = new PoiListThread();
 	private RelativeLayout mT;
 	private float mDensity;
 	private boolean mNeedUpdateList = false;
@@ -47,16 +46,13 @@ public class PoiOverlay extends TileViewOverlay {
 		mPoiManager = poiManager;
 		mCanUpdateList = !hidepoi;
 		mTapId = NO_TAP;
-		Drawable marker = ctx.getResources().getDrawable(R.drawable.poi_red);
+		Drawable marker = ctx.getResources().getDrawable(PoiActivity.resourceFromPoiIconId(0));
 		this.mMarkerWidth = marker.getIntrinsicWidth();
 		this.mMarkerHeight = marker.getIntrinsicHeight();
-		mBtnMap = new SparseArray<Drawable>();
-		mBtnMap.put(Integer.valueOf(R.drawable.poi_red), marker);
 		this.mMarkerHotSpot = new Point(mMarkerWidth/2, mMarkerHeight);
 		this.mOnItemTapListener = onItemTapListener;
 		mLastMapCenter = null;
 		mLastZoom = -1;
-		mThread = new PoiListThread();
 		this.mT = (RelativeLayout)LayoutInflater.from(ctx).inflate(R.layout.poi_descr, null);
 		this.mT.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -77,17 +73,11 @@ public class PoiOverlay extends TileViewOverlay {
 	}
 
 	public void clearPoiList() {
-		if (mItemList == null)
-			mItemList = new SparseArray<PoiPoint>();
-		else
-			mItemList.clear();
+		mItemList.clear();
 	}
 
 	public void setGpsStatusGeoPoint(final int id, final GeoPoint geopoint, final String title, final String descr) {
-		PoiPoint poi = new PoiPoint(id, title, descr, geopoint, 0, R.drawable.poi_blue);
-		if (mItemList == null)
-			mItemList = new SparseArray<PoiPoint>();
-		mItemList.put(poi.getId(), poi);
+		mItemList.put(id, new PoiPoint(id, title, descr, geopoint, 0, 0));
 		mCanUpdateList = false;
 		mTapId = NO_TAP;
 	}
@@ -96,61 +86,49 @@ public class PoiOverlay extends TileViewOverlay {
 	public void onDraw(Canvas c, TileView mapView) {
 		final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = mapView.getProjection();
 		final Point curScreenCoords = new Point();
-
 		if (mCanUpdateList) {
 			boolean looseCenter = false;
 			GeoPoint center = mapView.getMapCenter();
 			GeoPoint lefttop = pj.fromPixels(0, 0);
 			double deltaX = Math.abs(center.getLongitude() - lefttop.getLongitude());
 			double deltaY = Math.abs(center.getLatitude() - lefttop.getLatitude());
-
-			if (mLastMapCenter == null || mLastZoom != mapView.getZoomLevel())
+			if (mLastMapCenter == null
+			|| mLastZoom != mapView.getZoomLevel()) {
 				looseCenter = true;
-			else if (0.7 * deltaX < Math.abs(center.getLongitude() - mLastMapCenter.getLongitude()) || 0.7 * deltaY < Math.abs(center.getLatitude() - mLastMapCenter.getLatitude()))
+			}
+			else if (0.7 * deltaX < Math.abs(center.getLongitude() - mLastMapCenter.getLongitude())
+			|| 0.7 * deltaY < Math.abs(center.getLatitude() - mLastMapCenter.getLatitude())) {
 				looseCenter = true;
-
+			}
 			if (looseCenter || mNeedUpdateList) {
 				mLastMapCenter = center;
 				mLastZoom = mapView.getZoomLevel();
 				mNeedUpdateList = false;
-
 				mThread.setParams(1.5 * deltaX, 1.5 * deltaY);
 				mThread.run();
 			}
 		}
-
+		Ut.i("onDraw mItemList=" + mItemList);
 		if (this.mItemList != null) {
-
-			/*
-			 * Draw in backward cycle, so the items with the least index are on
-			 * the front.
-			 */
+			// Draw in backward cycle, so the items with the least index are on the front:
 			for (int i = this.mItemList.size() - 1; i >= 0; i--) {
 				if (i != mTapId) {
 					PoiPoint item = this.mItemList.valueAt(i);
 					pj.toPixels(item.mGeoPoint, curScreenCoords);
-
 					c.save();
-					c.rotate(mapView.getBearing(), curScreenCoords.x,
-						curScreenCoords.y);
-
+					c.rotate(mapView.getBearing(), curScreenCoords.x, curScreenCoords.y);
 					onDrawItem(c, item.getId(), curScreenCoords);
-
 					c.restore();
 				}
 			}
-
-			if (mTapId > NO_TAP) {
+			// paint tapped item last:
+			if (mTapId != NO_TAP) {
 				PoiPoint item = this.mItemList.get(mTapId);
 				if (item != null) {
 					pj.toPixels(item.mGeoPoint, curScreenCoords);
-
 					c.save();
-					c.rotate(mapView.getBearing(), curScreenCoords.x,
-						curScreenCoords.y);
-
+					c.rotate(mapView.getBearing(), curScreenCoords.x, curScreenCoords.y);
 					onDrawItem(c, mTapId, curScreenCoords);
-
 					c.restore();
 				}
 			}
@@ -158,17 +136,14 @@ public class PoiOverlay extends TileViewOverlay {
 	}
 
 	protected void onDrawItem(Canvas c, int id, Point screenCoords) {
-		final PoiPoint focusedItem = mItemList.get(id);
-
-		if (id == mTapId) {
+		final PoiPoint paintItem = mItemList.get(id);
+		if (id == mTapId) { // focussed?
+			Ut.i("onDrawItem screenCoords=" + screenCoords);
 			final ImageView pic = (ImageView)mT.findViewById(R.id.pic);
-			final TextView title = (TextView)mT.findViewById(R.id.poi_title);
-			final TextView descr = (TextView)mT.findViewById(R.id.descr);
-			final TextView coord = (TextView)mT.findViewById(R.id.coord);
-			//pic.setImageResource(focusedItem.mIconId);
-			title.setText(focusedItem.mTitle);
-			descr.setText(focusedItem.mDescr);
-			coord.setText(Ut.formatGeoPoint(focusedItem.mGeoPoint, mCtx));
+			pic.setImageResource(PoiActivity.resourceFromPoiIconId(paintItem.mIconId));
+			((TextView)mT.findViewById(R.id.poi_title)).setText(paintItem.mTitle);
+			((TextView)mT.findViewById(R.id.descr)).setText(paintItem.mDescr);
+			((TextView)mT.findViewById(R.id.coord)).setText(Ut.formatGeoPoint(paintItem.mGeoPoint, mCtx));
 			mT.measure(0, 0);
 			mT.layout(0, 0, mT.getMeasuredWidth(), mT.getMeasuredHeight());
 			c.save();
@@ -181,31 +156,28 @@ public class PoiOverlay extends TileViewOverlay {
 			final int right = left + this.mMarkerWidth;
 			final int top = screenCoords.y - this.mMarkerHotSpot.y;
 			final int bottom = top + this.mMarkerHeight;
+			Ut.i("onDrawItem left=" + left + ", right=" + right + ", top=" + top + ", bottom=" + bottom);
 			Drawable marker = null;
-			if (mBtnMap.indexOfKey(focusedItem.mIconId) > 0)
-				marker = mBtnMap.get(focusedItem.mIconId);
+			if (mBtnMap.indexOfKey(PoiActivity.resourceFromPoiIconId(paintItem.mIconId)) < 0) {
+				marker = mCtx.getResources().getDrawable(PoiActivity.resourceFromPoiIconId(paintItem.mIconId));
+				mBtnMap.put(PoiActivity.resourceFromPoiIconId(paintItem.mIconId), marker);
+			}
 			else {
-				try {
-					marker = mCtx.getResources().getDrawable(focusedItem.mIconId);
-				}
-				catch (Exception e) {
-					marker = mCtx.getResources().getDrawable(R.drawable.poi_red);
-				}
-				mBtnMap.put(focusedItem.mIconId, marker);
+				marker = mBtnMap.get(PoiActivity.resourceFromPoiIconId(paintItem.mIconId));
 			}
 			marker.setBounds(left, top, right, bottom);
 			marker.draw(c);
 			/*
-				final int pxUp = 2;
-				final int left2 = (int)(screenCoords.x + mDensity * (5 - pxUp));
-				final int right2 = (int)(screenCoords.x + mDensity * (38 + pxUp));
-				final int top2 = (int)(screenCoords.y - this.mMarkerHotSpot.y - mDensity * (pxUp));
-				final int bottom2 = (int)(top2 + mDensity * (33 + pxUp));
-				Paint p = new Paint();
-				c.drawLine(left2, top2, right2, bottom2, p);
-				c.drawLine(right2, top2, left2, bottom2, p);
-				c.drawLine(screenCoords.x - 5, screenCoords.y - 5, screenCoords.x + 5, screenCoords.y + 5, p);
-				c.drawLine(screenCoords.x - 5, screenCoords.y + 5, screenCoords.x + 5, screenCoords.y - 5, p);
+			final int pxUp = 2;
+			final int left2 = (int)(screenCoords.x + mDensity * (5 - pxUp));
+			final int right2 = (int)(screenCoords.x + mDensity * (38 + pxUp));
+			final int top2 = (int)(screenCoords.y - this.mMarkerHotSpot.y - mDensity * (pxUp));
+			final int bottom2 = (int)(top2 + mDensity * (33 + pxUp));
+			Paint p = new Paint();
+			c.drawLine(left2, top2, right2, bottom2, p);
+			c.drawLine(right2, top2, left2, bottom2, p);
+			c.drawLine(screenCoords.x - 5, screenCoords.y - 5, screenCoords.x + 5, screenCoords.y + 5, p);
+			c.drawLine(screenCoords.x - 5, screenCoords.y + 5, screenCoords.x + 5, screenCoords.y - 5, p);
 			*/
 		}
 	}
@@ -217,23 +189,20 @@ public class PoiOverlay extends TileViewOverlay {
 	public int getMarkerAtPoint(final int eventX, final int eventY, TileView mapView) {
 		if (this.mItemList != null) {
 			final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = mapView.getProjection();
-
 			final Rect curMarkerBounds = new Rect();
 			final Point mCurScreenCoords = new Point();
-
 			for (int i = 0; i < this.mItemList.size(); i++) {
 				final PoiPoint mItem = this.mItemList.valueAt(i);
 				pj.toPixels(mItem.mGeoPoint, mapView.getBearing(), mCurScreenCoords);
-
 				final int pxUp = 2;
 				final int left = (int)(mCurScreenCoords.x + mDensity * (5 - pxUp));
 				final int right = (int)(mCurScreenCoords.x + mDensity * (38 + pxUp));
 				final int top = (int)(mCurScreenCoords.y - this.mMarkerHotSpot.y - mDensity * (pxUp));
 				final int bottom = (int)(top + mDensity * (33 + pxUp));
-
 				curMarkerBounds.set(left, top, right, bottom);
-				if (curMarkerBounds.contains(eventX, eventY))
+				if (curMarkerBounds.contains(eventX, eventY)) {
 					return mItem.getId();
+				}
 			}
 		}
 		return NO_TAP;
@@ -242,7 +211,7 @@ public class PoiOverlay extends TileViewOverlay {
 	@Override
 	public boolean onSingleTapUp(MotionEvent event, TileView mapView) {
 		final int id = getMarkerAtPoint((int)event.getX(), (int)event.getY(), mapView);
-		if (id > NO_TAP)
+		if (id != NO_TAP)
 			if (onTap(id))
 				return true;
 		return super.onSingleTapUp(event, mapView);
@@ -253,7 +222,7 @@ public class PoiOverlay extends TileViewOverlay {
 		final int id = getMarkerAtPoint((int)event.getX(), (int)event.getY(), mapView);
 		mapView.mPoiMenuInfo.MarkerIndex = id;
 		mapView.mPoiMenuInfo.EventGeoPoint = mapView.getProjection().fromPixels((int)event.getX(), (int)event.getY(), mapView.getBearing());
-		if (id > NO_TAP)
+		if (id != NO_TAP)
 			return 1;
 		//if (onLongLongPress(id))
 		return super.onLongPress(event, mapView);
