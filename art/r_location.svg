@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: fig2dev Version 3.2 Patchlevel 5e -->
+<!-- CreationDate: Mon May 11 10:31:57 2015 -->
+<!-- Magnification: 1.050 -->
+<svg	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="4.5in" height="4.5in"
+	viewBox="3058 1310 5458 5411">
+<g style="stroke-width:.025in; fill:none">
+<!-- Circle -->
+<circle cx="5786" cy="4015" r="2244"
+ style="stroke:#000000;stroke-width:8;"/>
+<!-- Circle -->
+<circle cx="5786" cy="4015" r="2008"
+ style="stroke:#000000;stroke-width:8;"/>
+<!-- Circle -->
+<circle cx="5786" cy="4015" r="1063"
+ style="stroke:#000000;stroke-width:8;"/>
+<!-- Line: box -->
+<rect x="8031" y="3874" width="472" height="236" rx="0" 
+style="stroke:#000000;stroke-width:8;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="5669" y="6236" width="236" height="472" rx="0" 
+style="stroke:#000000;stroke-width:8;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="5669" y="1322" width="236" height="472" rx="0" 
+style="stroke:#000000;stroke-width:8;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+<!-- Line: box -->
+<rect x="3070" y="3874" width="472" height="236" rx="0" 
+style="stroke:#000000;stroke-width:8;
+stroke-linejoin:miter; stroke-linecap:butt;
+"/>
+</g>
+</svg>
