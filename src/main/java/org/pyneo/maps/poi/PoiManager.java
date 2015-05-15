@@ -110,7 +110,7 @@ public class PoiManager implements Constants {
 		if (c != null) {
 			if (c.moveToFirst()) {
 				do {
-					Ut.i("doCreatePoiListFromCursor c=" + c);
+					Ut.d("doCreatePoiListFromCursor c=" + c);
 					// poi.lat, poi.lon, poi.name, poi.descr, poi.pointid, poi.pointid _id, poi.pointid ID, poi.categoryid, cat.iconid
 					items.put(
 						c.getInt(4), new PoiPoint(
@@ -133,7 +133,7 @@ public class PoiManager implements Constants {
 	}
 
 	public SparseArray<PoiPoint> getPoiListNotHidden(int zoom, GeoPoint center, double deltaX, double deltaY) {
-		Ut.i("getPoiListNotHidden:");
+		Ut.d("getPoiListNotHidden:");
 		return doCreatePoiListFromCursor(
 			mPoiStorage.getPoiListNotHiddenCursor(
 				zoom,

@@ -37,7 +37,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 	private int mLastZoom;
 	private RelativeLayout mT;
 	private float mDensity;
-	private boolean mNeedUpdateList = false;
+	private boolean mListUpdateNeeded = false;
 	private boolean mCanUpdateList = true;
 
 	public PoiOverlay(Context ctx, PoiManager poiManager, OnItemTapListener<PoiPoint> onItemTapListener, boolean hidepoi) {
@@ -68,7 +68,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 	}
 
 	public void UpdateList() {
-		mNeedUpdateList = true;
+		mListUpdateNeeded = true;
 	}
 
 	public void clearPoiList() {
@@ -86,29 +86,34 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 		final OpenStreetMapViewProjection pj = mapView.getProjection();
 		final Point curScreenCoords = new Point();
 		if (mCanUpdateList) {
-			boolean looseCenter = false;
+			boolean listUpdateNeeded = mListUpdateNeeded;
 			GeoPoint center = mapView.getMapCenter();
 			GeoPoint lefttop = pj.fromPixels(0, 0);
 			double deltaX = Math.abs(center.getLongitude() - lefttop.getLongitude());
 			double deltaY = Math.abs(center.getLatitude() - lefttop.getLatitude());
-			if (mLastMapCenter == null || mLastZoom != mapView.getZoomLevel()) {
-				looseCenter = true;
+			if (!listUpdateNeeded) {
+				if (mLastMapCenter == null || mLastZoom != mapView.getZoomLevel()) {
+					listUpdateNeeded = true;
+				}
+				else if (0.7 * deltaX < Math.abs(center.getLongitude() - mLastMapCenter.getLongitude())
+				|| 0.7 * deltaY < Math.abs(center.getLatitude() - mLastMapCenter.getLatitude())) {
+					listUpdateNeeded = true;
+				}
 			}
-			else if (0.7 * deltaX < Math.abs(center.getLongitude() - mLastMapCenter.getLongitude())
-			|| 0.7 * deltaY < Math.abs(center.getLatitude() - mLastMapCenter.getLatitude())) {
-				looseCenter = true;
-			}
-			if (looseCenter || mNeedUpdateList) {
+			if (listUpdateNeeded) {
+				mListUpdateNeeded = false;
 				mLastMapCenter = center;
 				mLastZoom = mapView.getZoomLevel();
-				mNeedUpdateList = false;
+				Ut.i("updating list");
 				mItemList = mPoiManager.getPoiListNotHidden(mLastZoom, mLastMapCenter, 1.5 * deltaX, 1.5 * deltaY); // TODO thread!
+				Ut.i("updated list count=" + mItemList.size());
 			}
 		}
 		Ut.d("onDraw mItemList=" + mItemList);
 		if (mItemList != null) {
 			// Draw in backward cycle, so the items with the least index are on the front:
 			for (int i = mItemList.size() - 1; i >= 0; i--) {
+				Ut.i("draw item i=" + i);
 				PoiPoint item = mItemList.valueAt(i);
 				pj.toPixels(item.mGeoPoint, curScreenCoords);
 				c.save();
@@ -120,6 +125,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 			if (mTapId != NO_TAP) {
 				PoiPoint item = mItemList.get(mTapId);
 				if (item != null) {
+					Ut.i("draw item id=" + mTapId);
 					pj.toPixels(item.mGeoPoint, curScreenCoords);
 					c.save();
 					c.rotate(mapView.getBearing(), curScreenCoords.x, curScreenCoords.y);
@@ -127,6 +133,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 					c.restore();
 				}
 				else {
+					Ut.w("item disapeared");
 					mTapId = NO_TAP; // oups...
 				}
 			}
@@ -135,7 +142,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 
 	protected void drawPoi(Canvas c, int id, Point screenCoords) {
 		final PoiPoint paintItem = mItemList.get(id);
-		if (paintItem.getId() != NO_TAP) { // we draw not tapped items only
+		if (paintItem.getId() == mTapId) { // we draw not tapped items only
 			return;
 		}
 		Ut.d("drawPoi screenCoords=" + screenCoords);
@@ -215,7 +222,6 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 		mapView.mPoiMenuInfo.EventGeoPoint = mapView.getProjection().fromPixels((int)event.getX(), (int)event.getY(), mapView.getBearing());
 		if (id != NO_TAP)
 			return 1;
-		//if (onLongLongPress(id))
 		return super.onLongPress(event, mapView);
 	}
 
