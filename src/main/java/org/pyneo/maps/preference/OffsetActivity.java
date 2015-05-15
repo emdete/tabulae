@@ -55,7 +55,7 @@ public class OffsetActivity extends Activity implements Constants {
 		mMap.getTileView().setOffsetMode(true);
 		this.mTrackOverlay = new TrackOverlay(null, mPoiManager, mCallbackHandler);
 		this.mMap.getOverlays().add(mTrackOverlay);
-		this.mPoiOverlay = new PoiOverlay(this, mPoiManager, null, false);
+		this.mPoiOverlay = new PoiOverlay(this, mPoiManager, false);
 		this.mMap.getOverlays().add(mPoiOverlay);
 		mMyLocationOverlay = new MyLocationOverlay(this);
 		mMap.getOverlays().add(mMyLocationOverlay);

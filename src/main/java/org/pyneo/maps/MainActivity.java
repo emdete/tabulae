@@ -374,7 +374,7 @@ public class MainActivity extends Activity implements Constants {
 		setAutoFollow(mAutoFollow, true);
 		mTrackOverlay = new TrackOverlay(this, mPoiManager, mCallbackHandler);
 		mCurrentTrackOverlay = new CurrentTrackOverlay(this, mPoiManager);
-		mPoiOverlay = new PoiOverlay(this, mPoiManager, null, pref.getBoolean("pref_hidepoi", false));
+		mPoiOverlay = new PoiOverlay(this, mPoiManager, pref.getBoolean("pref_hidepoi", false));
 		mPoiOverlay.setTapIndex(uiState.getInt("curShowPoiId", NO_TAP));
 		mMyLocationOverlay = new MyLocationOverlay(this);
 		mSearchResultOverlay = new SearchResultOverlay(this, mMap);
@@ -434,12 +434,12 @@ public class MainActivity extends Activity implements Constants {
 				else {
 					GeoPoint point = GeoPoint.fromDoubleString(latlon);
 					mPoiOverlay.clearPoiList();
-					mPoiOverlay.setGpsStatusGeoPoint(0, point, "GEO", "");
+					mPoiOverlay.showTemporaryPoi(0, point, "GEO", "");
 					setAutoFollow(false);
 					mMap.setCenter(point);
 				}
 			}
-			Ut.d("onCreate setGpsStatusGeoPoint");
+			Ut.d("onCreate showTemporaryPoi");
 		}
 		else if (ACTION_SHOW_MAP_ID.equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = queryIntent.getExtras();
@@ -480,7 +480,7 @@ public class MainActivity extends Activity implements Constants {
 				location.setLongitude(longitude);
 				GeoPoint point = GeoPoint.fromDoubleString("" + latitude + ',' + longitude); // TODO
 				mPoiOverlay.clearPoiList();
-				mPoiOverlay.setGpsStatusGeoPoint(0, point, name, name);
+				mPoiOverlay.showTemporaryPoi(0, point, name, name);
 				setAutoFollow(false);
 				mMap.setCenter(point);
 				Ut.d("onCreate location received");
@@ -1628,7 +1628,7 @@ public class MainActivity extends Activity implements Constants {
 				if (fields.length > 2) descr = fields[2];
 
 				point = GeoPoint.fromDoubleString(locns);
-				mPoiOverlay.setGpsStatusGeoPoint(id--, point, title, descr);
+				mPoiOverlay.showTemporaryPoi(id--, point, title, descr);
 			}
 			setAutoFollow(false);
 			if (point != null)

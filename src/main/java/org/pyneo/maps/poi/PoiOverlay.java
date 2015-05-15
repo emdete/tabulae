@@ -27,7 +27,6 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 	private final Point mMarkerHotSpot;
 	private final int mMarkerWidth;
 	private final int mMarkerHeight;
-	private OnItemTapListener<PoiPoint> mOnItemTapListener;
 	private SparseArray<PoiPoint> mItemList = new SparseArray<PoiPoint>();
 	private final SparseArray<Drawable> mMarkerCache = new SparseArray<Drawable>();
 	private Context mCtx;
@@ -40,7 +39,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 	private boolean mListUpdateNeeded = false;
 	private boolean mCanUpdateList = true;
 
-	public PoiOverlay(Context ctx, PoiManager poiManager, OnItemTapListener<PoiPoint> onItemTapListener, boolean hidepoi) {
+	public PoiOverlay(Context ctx, PoiManager poiManager, boolean hidepoi) {
 		mCtx = ctx;
 		mPoiManager = poiManager;
 		mCanUpdateList = !hidepoi;
@@ -49,7 +48,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 		mMarkerWidth = marker.getIntrinsicWidth();
 		mMarkerHeight = marker.getIntrinsicHeight();
 		mMarkerHotSpot = new Point(mMarkerWidth/2, mMarkerHeight);
-		mOnItemTapListener = onItemTapListener;
+		//mOnItemTapListener = onItemTapListener;
 		mLastMapCenter = null;
 		mLastZoom = -1;
 		mT = (RelativeLayout)LayoutInflater.from(ctx).inflate(R.layout.poi_descr, null);
@@ -75,10 +74,10 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 		mItemList.clear();
 	}
 
-	public void setGpsStatusGeoPoint(final int id, final GeoPoint geopoint, final String title, final String descr) {
+	public void showTemporaryPoi(final int id, final GeoPoint geopoint, final String title, final String descr) {
 		mItemList.put(id, new PoiPoint(id, title, descr, geopoint, 0, 0));
 		mCanUpdateList = false;
-		mTapId = NO_TAP;
+		mTapId = id;
 	}
 
 	@Override
@@ -140,11 +139,8 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 		}
 	}
 
-	protected void drawPoi(Canvas c, int id, Point screenCoords) {
+	private void drawPoiDescr(Canvas c, int id, Point screenCoords) {
 		final PoiPoint paintItem = mItemList.get(id);
-		if (paintItem.getId() == mTapId) { // we draw not tapped items only
-			return;
-		}
 		Ut.d("drawPoi screenCoords=" + screenCoords);
 		final ImageView pic = (ImageView)mT.findViewById(R.id.pic);
 		pic.setImageResource(PoiActivity.resourceFromPoiIconId(paintItem.mIconId));
@@ -159,8 +155,11 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 		c.restore();
 	}
 
-	protected void drawPoiDescr(Canvas c, int id, Point screenCoords) {
+	private void drawPoi(Canvas c, int id, Point screenCoords) {
 		final PoiPoint paintItem = mItemList.get(id);
+		if (paintItem.getId() == mTapId) { // we draw not tapped items only
+			return;
+		}
 		final int left = screenCoords.x - mMarkerHotSpot.x;
 		final int right = left + mMarkerWidth;
 		final int top = screenCoords.y - mMarkerHotSpot.y;
@@ -190,12 +189,12 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 			for (int i = 0; i < mItemList.size(); i++) {
 				final PoiPoint mItem = mItemList.valueAt(i);
 				pj.toPixels(mItem.mGeoPoint, mapView.getBearing(), mCurScreenCoords);
-				final int pxUp = 2;
-				final int left = (int)(mCurScreenCoords.x + mDensity * (5 - pxUp));
-				final int right = (int)(mCurScreenCoords.x + mDensity * (38 + pxUp));
-				final int top = (int)(mCurScreenCoords.y - mMarkerHotSpot.y - mDensity * (pxUp));
-				final int bottom = (int)(top + mDensity * (33 + pxUp));
-				curMarkerBounds.set(left, top, right, bottom);
+				final int delta = 50;
+				curMarkerBounds.set(
+					mCurScreenCoords.x - delta,
+					mCurScreenCoords.y - delta,
+					mCurScreenCoords.x + delta,
+					mCurScreenCoords.y + delta);
 				if (curMarkerBounds.contains(eventX, eventY)) {
 					Ut.i("poi found id=" + mItem.getId());
 					return mItem.getId();
@@ -208,16 +207,18 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent event, TileView mapView) {
-		final int id = getMarkerAtPoint((int)event.getX(), (int)event.getY(), mapView);
-		if (id != NO_TAP)
-			if (onTap(id))
-				return true;
-		return super.onSingleTapUp(event, mapView);
+		int id = getMarkerAtPoint((int)event.getX(), (int)event.getY(), mapView);
+		if (mTapId == id) // same poi tapped again: toggle
+			id = NO_TAP;
+		mTapId = id;
+		Ut.i("poi tapped id=" + mTapId);
+		return mTapId != NO_TAP || super.onSingleTapUp(event, mapView);
 	}
 
 	@Override
 	public int onLongPress(MotionEvent event, TileView mapView) {
 		final int id = getMarkerAtPoint((int)event.getX(), (int)event.getY(), mapView);
+		// TODO: fix the following global nightmare!
 		mapView.mPoiMenuInfo.MarkerIndex = id;
 		mapView.mPoiMenuInfo.EventGeoPoint = mapView.getProjection().fromPixels((int)event.getX(), (int)event.getY(), mapView.getBearing());
 		if (id != NO_TAP)
@@ -227,21 +228,5 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 
 	private boolean onLongLongPress(int id) {
 		return false;
-	}
-
-	protected boolean onTap(int id) {
-		if (mOnItemTapListener != null) {
-			if (mTapId == id)
-				mTapId = NO_TAP;
-			else
-				mTapId = id;
-			return mOnItemTapListener.onItemTap(id, mItemList.get(id));
-		}
-		return false;
-	}
-
-	@SuppressWarnings("hiding")
-	public interface OnItemTapListener<PoiPoint> {
-		boolean onItemTap(final int aIndex, final PoiPoint aItem);
 	}
 }
