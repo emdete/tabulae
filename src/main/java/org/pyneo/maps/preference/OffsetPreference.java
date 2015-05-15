@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import org.pyneo.maps.R;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 public class OffsetPreference extends DialogPreference implements Constants {
 	private EditText mEditTextLat;

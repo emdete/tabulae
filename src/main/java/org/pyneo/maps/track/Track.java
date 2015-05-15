@@ -2,7 +2,7 @@ package org.pyneo.maps.track;
 
 import android.location.Location;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 import org.json.JSONException;
 import org.json.JSONObject;
 

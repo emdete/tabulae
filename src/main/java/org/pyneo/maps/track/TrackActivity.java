@@ -89,7 +89,7 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 			});
 
 		final Drawable dr = new TrackStyleDrawable(mTrack.Color, mTrack.Width, mTrack.ColorShadow, mTrack.ShadowRadius);
-		final Drawable[] d = {getResources().getDrawable(R.drawable.r_home_other1), dr};
+		final Drawable[] d = {getResources().getDrawable(R.drawable.ic_track_background), dr};
 		LayerDrawable ld = new LayerDrawable(d);
 		((Button)findViewById(R.id.trackstyle)).setCompoundDrawablesWithIntrinsicBounds(null, null, ld, null);
 	}
@@ -115,10 +115,8 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 		mTrack.Name = mName.getText().toString();
 		mTrack.Descr = mDescr.getText().toString();
 		mTrack.Activity = mActivity.getSelectedItemPosition();
-
 		mPoiManager.updateTrack(mTrack);
 		finish();
-
 		Toast.makeText(TrackActivity.this, R.string.message_saved, Toast.LENGTH_SHORT).show();
 	}
 
@@ -128,11 +126,9 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 		mTrack.ColorShadow = colorshadow;
 		mTrack.ShadowRadius = shadowradius;
 		mTrack.Style = mTrack.getStyle();
-
 		final Drawable dr = new TrackStyleDrawable(mTrack.Color, mTrack.Width, mTrack.ColorShadow, mTrack.ShadowRadius);
-		final Drawable[] d = {getResources().getDrawable(R.drawable.r_home_other1), dr};
+		final Drawable[] d = {getResources().getDrawable(R.drawable.ic_track_background), dr};
 		LayerDrawable ld = new LayerDrawable(d);
 		((Button)findViewById(R.id.trackstyle)).setCompoundDrawablesWithIntrinsicBounds(null, null, ld, null);
 	}
-
 }

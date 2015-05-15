@@ -36,7 +36,7 @@ import org.pyneo.maps.utils.CoordFormatter;
 import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

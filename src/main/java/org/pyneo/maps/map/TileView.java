@@ -22,9 +22,9 @@ import org.pyneo.maps.utils.VerGestureDetector;
 import org.pyneo.maps.utils.VerScaleGestureDetector;
 import org.pyneo.maps.tileprovider.TileSource;
 
-import org.andnav.osm.util.BoundingBoxE6;
-import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.util.Util;
+import org.pyneo.maps.utils.BoundingBoxE6;
+import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.utils.Util;
 import org.pyneo.maps.utils.IMoveListener;
 
 import java.util.ArrayList;
@@ -60,10 +60,10 @@ public class TileView extends View {
 //		@Override
 //		public void handleMessage(final Message msg) {
 //			switch (msg.what) {
-//			case Constants.TILEPROVIDER_SUCCESS_ID:
+//			case TILEPROVIDER_SUCCESS_ID:
 //				invalidate();
 //				break;
-//			case Constants.MAPTILEFSLOADER_INDEXIND_SUCCESS_ID:
+//			case MAPTILEFSLOADER_INDEXIND_SUCCESS_ID:
 //				mTileSource.postIndex();
 //				setZoomLevel(getZoomLevel());
 //				if(mMoveListener != null)

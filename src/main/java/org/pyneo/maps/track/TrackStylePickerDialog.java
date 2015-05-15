@@ -19,7 +19,7 @@ import net.margaritov.preference.colorpicker.ColorPickerDialog;
 import net.margaritov.preference.colorpicker.ColorPickerPanelView;
 import net.margaritov.preference.colorpicker.ColorPickerView;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 import org.pyneo.maps.utils.*;
 
 public class TrackStylePickerDialog extends Dialog implements org.pyneo.maps.utils.Constants, ColorPickerView.OnColorChangedListener, View.OnClickListener, OnSeekBarChangeListener, ColorPickerDialog.OnColorChangedListener {

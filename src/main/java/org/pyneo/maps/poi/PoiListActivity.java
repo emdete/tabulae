@@ -18,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -29,7 +28,7 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.utils.SimpleXML;
 import org.pyneo.maps.utils.CoordFormatter;
 import org.pyneo.maps.utils.Ut;
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 import java.io.File;
 import java.io.FileNotFoundException;

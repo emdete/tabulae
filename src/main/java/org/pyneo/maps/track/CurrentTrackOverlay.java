@@ -23,7 +23,7 @@ import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;

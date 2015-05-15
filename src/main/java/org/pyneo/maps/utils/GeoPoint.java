@@ -1,5 +1,5 @@
 // Created by plusminus on 21:28:12 - 25.09.2008
-package org.andnav.osm.util;
+package org.pyneo.maps.utils;
 
 import java.util.Locale;
 
@@ -9,20 +9,8 @@ import java.util.Locale;
  * 
  */
 public class GeoPoint {
-	// ===========================================================
-	// Constants
-	// ===========================================================
-
-	// ===========================================================
-	// Fields
-	// ===========================================================
-
 	private int mLongitudeE6;
 	private int mLatitudeE6;
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
 
 	public GeoPoint(final int aLatitudeE6, final int aLongitudeE6) {
 		this.mLatitudeE6 = aLatitudeE6;
@@ -81,10 +69,6 @@ public class GeoPoint {
 		return new GeoPoint(lat, lon);
 	}
 
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
-
 	public int getLongitudeE6() {
 		return this.mLongitudeE6;
 	}
@@ -114,10 +98,6 @@ public class GeoPoint {
 		this.mLongitudeE6 = aLongitudeE6;
 	}
 
-	// ===========================================================
-	// Methods from SuperClass/Interfaces
-	// ===========================================================
-
 	@Override
 	public String toString() {
 		return new StringBuilder().append(this.mLatitudeE6).append(",").append(this.mLongitudeE6).toString();
@@ -136,10 +116,6 @@ public class GeoPoint {
 		GeoPoint g = (GeoPoint) obj;
 		return g.mLatitudeE6 == this.mLatitudeE6 && g.mLongitudeE6 == this.mLongitudeE6;
 	}
-
-	// ===========================================================
-	// Methods
-	// ===========================================================
 
 	/**
 	 * @see Source@ http://www.geocities.com/DrChengalva/GPSDistance.html
@@ -274,10 +250,6 @@ public class GeoPoint {
 		}
 	}
 
-	// ===========================================================
-	// Inner and Anonymous Classes
-	// ===========================================================
-
 	static private final double PiOver180 = Math.PI / 180.0;
 
 	static public double toRadians(double degrees) {
@@ -408,5 +380,4 @@ public class GeoPoint {
 
 		return new GeoPoint((int) (1E6 * latitude), (int) (1E6 * longitude));
 	}
-
 }

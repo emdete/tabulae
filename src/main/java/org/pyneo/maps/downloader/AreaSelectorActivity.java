@@ -32,8 +32,8 @@ import org.pyneo.maps.utils.IMoveListener;
 import org.pyneo.maps.map.MapView;
 import org.pyneo.maps.map.TileViewOverlay;
 
-import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.util.Util;
+import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.utils.Util;
 
 import java.io.File;
 import java.io.InputStream;

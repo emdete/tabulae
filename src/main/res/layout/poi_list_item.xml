@@ -42,4 +42,13 @@
 		android:text="Large Text"
 		android:textAppearance="@style/descr_gray"
 		/>
+	<CheckBox
+		android:id="@+id/checkbox"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:button="@drawable/checkbox"
+		android:clickable="false"
+		android:focusable="false"
+		/>
 </RelativeLayout>

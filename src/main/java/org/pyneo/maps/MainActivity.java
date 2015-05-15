@@ -83,9 +83,9 @@ import org.pyneo.maps.map.MapView;
 import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
 
-import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.util.TypeConverter;
-import org.andnav.osm.util.StreamUtils;
+import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.utils.TypeConverter;
+import org.pyneo.maps.utils.StreamUtils;
 import org.json.JSONObject;
 
 import java.io.File;

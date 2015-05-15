@@ -52,7 +52,7 @@ class IconManager {
 		final Bitmap bmp = getBitmapFileFromProp("pref_target_icon", "icons/cursors");
 		if (bmp != null)
 			return bmp;
-		return getBitmap(R.drawable.r_mark);
+		return getBitmap(R.drawable.r_location);
 	}
 
 	private Bitmap getBitmapFileFromProp(String propName, String folderName) {

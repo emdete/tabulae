@@ -25,7 +25,7 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.utils.CoordFormatter;
 import org.pyneo.maps.utils.DistanceFormatter;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -98,7 +98,7 @@ public class MeasureOverlay extends TileViewOverlay {
 
 	private Bitmap getPic(TileView tileView) {
 		if (mCornerMarker == null)
-			mCornerMarker = BitmapFactory.decodeResource(tileView.getContext().getResources(), R.drawable.r_mark);
+			mCornerMarker = BitmapFactory.decodeResource(tileView.getContext().getResources(), R.drawable.r_location);
 
 		return mCornerMarker;
 	}

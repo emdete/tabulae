@@ -12,9 +12,9 @@ import org.pyneo.maps.MainPreferences;
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.RException;
 
-import org.andnav.osm.util.BoundingBoxE6;
-import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.util.Util;
+import org.pyneo.maps.utils.BoundingBoxE6;
+import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.utils.Util;
 
 public class TileSource extends TileSourceBase {
 	private TileProviderBase mTileProvider;
@@ -150,7 +150,7 @@ public class TileSource extends TileSourceBase {
 				break;
 			case 6:
 				provider = new TileProviderBase(ctx);
-				provider.setLoadingMapTile(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.r_blank));
+				provider.setLoadingMapTile(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.blank_tile));
 				break;
 			default:
 				provider = new TileProviderBase(ctx);

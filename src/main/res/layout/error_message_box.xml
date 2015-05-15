@@ -39,6 +39,6 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_vertical"
 		android:clickable="true"
-		android:src="@drawable/r_close" />
+		android:src="@drawable/ic_close" />
 
 </LinearLayout>

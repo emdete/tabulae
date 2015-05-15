@@ -16,7 +16,7 @@ import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 public class AreaSelectorOverlay extends TileViewOverlay {
 	private Rect mRect = new Rect();
@@ -49,7 +49,7 @@ public class AreaSelectorOverlay extends TileViewOverlay {
 
 	private Bitmap getPic(TileView tileView) {
 		if (mCornerMarker == null)
-			mCornerMarker = BitmapFactory.decodeResource(tileView.getContext().getResources(), R.drawable.r_mark);
+			mCornerMarker = BitmapFactory.decodeResource(tileView.getContext().getResources(), R.drawable.r_location);
 
 		return mCornerMarker;
 	}

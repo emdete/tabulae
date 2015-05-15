@@ -18,7 +18,7 @@ import org.pyneo.maps.tileprovider.TileSource;
 import org.pyneo.maps.utils.IMoveListener;
 import org.pyneo.maps.utils.ScaleBarDrawable;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 import java.util.List;
 

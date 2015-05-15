@@ -16,8 +16,6 @@ import android.util.Log;
 
 import org.pyneo.maps.R;
 
-import org.andnav.osm.util.GeoPoint;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

@@ -9,11 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.util.Constants;
-
 import java.io.File;
 
-public class TileProviderFileBase extends TileProviderBase {
+public class TileProviderFileBase extends TileProviderBase implements Constants {
 	private static final String DELETE_FROM_ListCashTables = "DELETE FROM 'ListCashTables' WHERE name LIKE ('%sqlitedb')";
 	private static final String INDEX_DB = "/index.db";
 	protected final SQLiteDatabase mIndexDatabase;
@@ -33,17 +31,14 @@ public class TileProviderFileBase extends TileProviderBase {
 	public boolean needIndex(final String aCashTableName, final long aSizeFile, final long aLastModifiedFile, final boolean aBlockIndexing) {
 		if (this.mIndexDatabase == null)
 			return false;
-
 		this.mIndexDatabase.execSQL("CREATE TABLE IF NOT EXISTS ListCashTables (name VARCHAR(100), lastmodified LONG NOT NULL, size LONG NOT NULL, minzoom INTEGER NOT NULL, maxzoom INTEGER NOT NULL, PRIMARY KEY(name) );");
-
 		Cursor cur = null;
 		cur = this.mIndexDatabase.rawQuery("SELECT COUNT(*) FROM ListCashTables", null);
 		if (cur != null) {
 			if (cur.getCount() > 0) {
 				Ut.d("In table ListCashTables " + cur.getCount() + " records");
 				cur.close();
-
-				if (Constants.DEBUGMODE) {
+				/*
 					Ut.d("ListCashTables:");
 					cur = this.mIndexDatabase.rawQuery("SELECT name, minzoom, maxzoom, size, lastmodified FROM ListCashTables", null);
 					if (cur != null) {
@@ -59,8 +54,7 @@ public class TileProviderFileBase extends TileProviderBase {
 						}
 						cur.close();
 					}
-				}
-
+				*/
 				Ut.d("Check for aCashTableName = " + aCashTableName);
 				cur = this.mIndexDatabase.rawQuery("SELECT size, lastmodified FROM ListCashTables WHERE lower(name) = lower('"
 					+ aCashTableName + "') OR lower(name) = lower('" + aCashTableName.replace("usermap_", "cahs_") + "')", null);

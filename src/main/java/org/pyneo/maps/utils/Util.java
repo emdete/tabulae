@@ -1,10 +1,5 @@
 // Created by plusminus on 17:53:07 - 25.09.2008
-package org.andnav.osm.util;
-
-import org.andnav.osm.util.BoundingBoxE6;
-import org.andnav.osm.util.Constants;
-
-import org.pyneo.maps.utils.OSGB36;
+package org.pyneo.maps.utils;
 
 /**
  *

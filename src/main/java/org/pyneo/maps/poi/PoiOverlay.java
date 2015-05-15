@@ -21,7 +21,7 @@ import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
 import org.pyneo.maps.map.TileView.OpenStreetMapViewProjection;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 public class PoiOverlay extends TileViewOverlay implements Constants {
 	private final Point mMarkerHotSpot;

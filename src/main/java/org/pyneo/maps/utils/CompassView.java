@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.utils.Ut;
 
 public class CompassView extends View {
 	private Drawable mCompass;
@@ -24,7 +23,7 @@ public class CompassView extends View {
 
 	private boolean getCompassImg() {
 		if (mCompass == null) {
-			this.mCompass = mCtx.getResources().getDrawable(R.drawable.arrow_n);
+			this.mCompass = mCtx.getResources().getDrawable(R.drawable.needle_compass);
 			return true;
 		}
 		else {

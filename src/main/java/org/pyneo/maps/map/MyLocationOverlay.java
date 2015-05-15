@@ -18,8 +18,8 @@ import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.map.TileView.OpenStreetMapViewProjection;
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.util.TypeConverter;
+import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.utils.TypeConverter;
 
 import java.util.Locale;
 

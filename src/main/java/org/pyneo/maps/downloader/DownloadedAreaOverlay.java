@@ -11,9 +11,9 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
 
-import org.andnav.osm.util.BoundingBoxE6;
-import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.util.Util;
+import org.pyneo.maps.utils.BoundingBoxE6;
+import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.utils.Util;
 
 public class DownloadedAreaOverlay extends TileViewOverlay {
 	private GeoPoint mPoint[];

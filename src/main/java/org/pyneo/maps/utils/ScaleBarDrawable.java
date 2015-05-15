@@ -12,8 +12,6 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.map.MapView;
 import org.pyneo.maps.map.TileView.OpenStreetMapViewProjection;
 
-import org.andnav.osm.util.GeoPoint;
-
 public class ScaleBarDrawable extends Drawable {
 
 	private static final int SCALE[][] = {{25000000, 15000000, 8000000, 4000000, 2000000, 1000000, 500000, 250000, 100000, 50000, 25000, 15000, 8000, 4000, 2000, 1000, 500, 250, 100, 50, 25, 10, 5}

@@ -5,6 +5,6 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="#ff444444"
-	android:divider="@drawable/r_divider"
+	android:divider="@drawable/list_divider"
 	>
 </ListView>

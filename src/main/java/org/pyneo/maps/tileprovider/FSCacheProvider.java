@@ -6,7 +6,7 @@ import android.os.Message;
 import org.pyneo.maps.utils.ICacheProvider;
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.util.StreamUtils;
+import org.pyneo.maps.utils.StreamUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

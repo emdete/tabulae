@@ -27,7 +27,7 @@ import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.IMoveListener;
 import org.pyneo.maps.map.MapView;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 public class OffsetActivity extends Activity implements Constants {
 	private MapView mMap;

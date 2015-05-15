@@ -26,7 +26,7 @@ import org.pyneo.maps.tileprovider.TileSourceBase;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.map.MapView;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 import java.io.File;
 

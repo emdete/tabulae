@@ -1,8 +1,6 @@
 package org.pyneo.maps.poi;
 
-import org.pyneo.maps.R;
-
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 public class PoiPoint implements Constants {
 	private final int mId;

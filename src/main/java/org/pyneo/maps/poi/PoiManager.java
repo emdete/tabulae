@@ -11,7 +11,7 @@ import org.pyneo.maps.track.Track;
 import org.pyneo.maps.track.Track.TrackPoint;
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 import java.util.Date;
 

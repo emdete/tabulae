@@ -16,7 +16,7 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.CoordFormatter;
 
-import org.andnav.osm.util.GeoPoint;
+import org.pyneo.maps.utils.GeoPoint;
 
 import java.util.Locale;
 

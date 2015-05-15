@@ -15,15 +15,14 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import org.pyneo.maps.R;
-import org.pyneo.maps.poi.PoiOverlay;
 import org.pyneo.maps.utils.CoordFormatter;
 import org.pyneo.maps.utils.DistanceFormatter;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
-import org.andnav.osm.util.GeoPoint;
-import org.andnav.osm.util.TypeConverter;
-import org.andnav.osm.util.StreamUtils;
+import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.utils.TypeConverter;
+import org.pyneo.maps.utils.StreamUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
