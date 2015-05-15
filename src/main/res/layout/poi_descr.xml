@@ -3,7 +3,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
-	android:background="@color/primary"
+	android:background="@color/enlighten"
 	android:orientation="vertical"
 	>
 	<LinearLayout
@@ -11,9 +11,10 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
-		android:layout_alignParentTop="true"
-		android:layout_marginLeft="1dp"
-		android:layout_marginTop="1dp"
+		android:layout_alignParentTop="false"
+		android:layout_marginLeft="3dp"
+		android:layout_marginRight="3dp"
+		android:layout_marginTop="3dp"
 		android:orientation="vertical"
 		android:paddingLeft="43dp"
 		>
@@ -24,7 +25,7 @@
 			android:maxLines="1"
 			android:maxWidth="185dp"
 			android:text="POI Description"
-			android:textColor="@color/poi_descr_text"
+			android:textColor="@color/primary"
 			android:textSize="14dp"
 			android:textStyle="bold"
 			/>
@@ -35,7 +36,7 @@
 			android:maxLines="3"
 			android:maxWidth="185dp"
 			android:text="Descr"
-			android:textColor="@color/poi_descr_text"
+			android:textColor="@color/secondary"
 			android:textSize="12dp"
 			/>
 		<TextView
@@ -43,9 +44,9 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:maxWidth="185dp"
-			android:text="0, 0"
+			android:text="0.00000, 0.00000"
 			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:textColor="@color/poi_descr_text"
+			android:textColor="@color/secondary"
 			android:textSize="9dp"
 			/>
 	</LinearLayout>
@@ -55,7 +56,9 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentTop="true"
-		android:layout_marginTop="7dp"
-		android:src="@drawable/poi_red"
+		android:layout_marginLeft="3dp"
+		android:layout_marginRight="3dp"
+		android:layout_marginTop="3dp"
+		android:src="@drawable/poi_blue"
 		/>
 </RelativeLayout>

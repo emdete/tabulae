@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="primary" type="color">#ffee9900</color>
-	<color name="track" type="color">#ffA565FE</color>
-	<color name="currenttrack" type="color">#A565FE</color>
-	<color name="poi_descr_text" type="color">#ffffff</color>
-	<color name="chart_border" type="color">#424542</color>
+	<color name="secondary" type="color">#ff999999</color>
+	<color name="chart_border" type="color">#ff424542</color>
 	<color name="chart_graph_0" type="color">#ffff7200</color>
 	<color name="chart_graph_1" type="color">#ffffffff</color>
 	<color name="download_area" type="color">#ff333333</color>
-	<color name="error_message_backgr" type="color">#FF3333</color>
-	<color name="line_to_gps" type="color">#FF3333</color>
-	<color name="map_label_back" type="color">#000000</color>
-	<color name="map_label_text" type="color">#FFFFFF</color>
+	<color name="error_message_backgr" type="color">#ffff3333</color>
+	<color name="line_to_gps" type="color">#ffff3333</color>
+	<color name="enlighten" type="color">#77ffffff</color>
+	<color name="darken" type="color">#77000000</color>
 </resources>

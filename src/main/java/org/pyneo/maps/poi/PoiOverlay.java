@@ -202,10 +202,12 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 				final int bottom = (int)(top + mDensity * (33 + pxUp));
 				curMarkerBounds.set(left, top, right, bottom);
 				if (curMarkerBounds.contains(eventX, eventY)) {
+					Ut.i("poi found id=" + mItem.getId());
 					return mItem.getId();
 				}
 			}
 		}
+		Ut.i("poi not found");
 		return NO_TAP;
 	}
 
