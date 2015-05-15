@@ -184,7 +184,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 				.setPositiveButton(android.R.string.yes,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
-							mPoiManager.DeleteAllPoi();
+							mPoiManager.deleteAllPoi();
 							((SimpleCursorAdapter)getListAdapter()).getCursor().requery();
 						}
 					}).setNegativeButton(android.R.string.no,

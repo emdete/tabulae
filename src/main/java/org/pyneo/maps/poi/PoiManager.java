@@ -142,8 +142,8 @@ public class PoiManager implements Constants {
 			mPoiStorage.updatePoiCategory(poiCategory.getId(), poiCategory.Title, poiCategory.Hidden? ONE: ZERO, poiCategory.IconId, poiCategory.MinZoom);
 	}
 
-	public void DeleteAllPoi() {
-		mPoiStorage.DeleteAllPoi();
+	public void deleteAllPoi() {
+		mPoiStorage.deleteAllPoi();
 	}
 
 	public void beginTransaction() {

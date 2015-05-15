@@ -19,102 +19,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TrackStorage extends Storage implements Constants {
-	private final static int mCurrentVersion = 22;
-	protected final Context mCtx;
-	@SuppressLint("SimpleDateFormat")
-	protected final SimpleDateFormat DATE_FORMAT_ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-	private SQLiteDatabase mDatabase;
-
 	public TrackStorage(Context ctx) {
-		super();
-		mCtx = ctx;
-		mDatabase = getDatabase();
+		super(ctx);
 	}
 
-	public void addPoi(final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int aPointSourceId, final int hidden, final int iconid) {
+	public void addTrackPoint(final long trackid, final double lat, final double lon, final double alt, final double speed, final Date date) {
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
-			cv.put(NAME, aName);
-			cv.put(DESCR, aDescr);
-			cv.put(LAT, aLat);
-			cv.put(LON, aLon);
-			cv.put(ALT, aAlt);
-			cv.put(CATEGORYID, aCategoryId);
-			cv.put(POINTSOURCEID, aPointSourceId);
-			cv.put(HIDDEN, hidden);
-			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
-				Ut.e("iconid="+iconid, new Exception());
-				cv.put(ICONID, 0);
-			}
-			else
-				cv.put(ICONID, iconid);
-			this.mDatabase.insert(POINTS, null, cv);
+			cv.put(TRACKID, trackid);
+			cv.put(LAT, lat);
+			cv.put(LON, lon);
+			cv.put(ALT, alt);
+			cv.put(SPEED, speed);
+			cv.put(DATE, date.getTime() / 1000);
+			this.mDatabase.insert(TRACKPOINTS, null, cv);
 		}
-	}
-
-	public void updatePoi(final int id, final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int aPointSourceId, final int hidden, final int iconid) {
-		if (isDatabaseReady()) {
-			final ContentValues cv = new ContentValues();
-			cv.put(NAME, aName);
-			cv.put(DESCR, aDescr);
-			cv.put(LAT, aLat);
-			cv.put(LON, aLon);
-			cv.put(ALT, aAlt);
-			cv.put(CATEGORYID, aCategoryId);
-			cv.put(POINTSOURCEID, aPointSourceId);
-			cv.put(HIDDEN, hidden);
-			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
-				Ut.e("iconid="+iconid, new Exception());
-				cv.put(ICONID, 0);
-			}
-			else
-				cv.put(ICONID, iconid);
-			final String[] args = {Integer.toString(id)};
-			this.mDatabase.update(POINTS, cv, UPDATE_POINTS, args);
-		}
-	}
-
-	public SQLiteCursorLoader getPoiListCursorLoader() {
-		return getPoiListCursorLoader(LAT + ',' + LON);
-	}
-
-	public SQLiteCursorLoader getPoiListCursorLoader(String sortColNames) {
-		// Not change the order of the fields
-		File folder = Ut.getAppMainDir(mCtx, DATA);
-		folder = new File(folder, GEODATA_FILENAME);
-		return new SQLiteCursorLoader(mCtx, new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()), STAT_GET_POI_LIST + sortColNames, null);
-	}
-
-	public Cursor getPoiListCursor() {
-		return getPoiListCursor("lat, lon");
-	}
-
-	public Cursor getPoiListCursor(String sortColNames) {
-		if (isDatabaseReady()) {
-			// Not change the order of the fields
-			return mDatabase.rawQuery(STAT_GET_POI_LIST + sortColNames, null);
-		}
-
-		return null;
-	}
-
-	public Cursor getPoiListNotHiddenCursor(final int zoom, final double left, final double right, final double top, final double bottom) {
-		if (isDatabaseReady()) {
-			final String[] args = {Integer.toString(zoom + 1), Double.toString(left), Double.toString(right), Double.toString(bottom), Double.toString(top)};
-			// Not change the order of the fields
-			return mDatabase.rawQuery(STAT_PoiListNotHidden, args);
-		}
-		Ut.i("db is not ready?");
-		return null;
-	}
-
-	public Cursor getPoiCategoryListCursor() {
-		if (isDatabaseReady()) {
-			// Not change the order of the fields
-			return mDatabase.rawQuery(STAT_PoiCategoryList, null);
-		}
-
-		return null;
 	}
 
 	public Cursor getActivityListCursor() {
@@ -124,149 +43,6 @@ public class TrackStorage extends Storage implements Constants {
 		}
 
 		return null;
-	}
-
-	public Cursor getPoi(final int id) {
-		if (isDatabaseReady()) {
-			final String[] args = {Integer.toString(id)};
-			// Not change the order of the fields
-			return mDatabase.rawQuery(STAT_getPoi, args);
-		}
-
-		return null;
-	}
-
-	public void deletePoi(final int id) {
-		if (isDatabaseReady()) {
-			final Double[] args = {Double.valueOf(id)};
-			mDatabase.execSQL(STAT_deletePoi, args);
-		}
-	}
-
-	public void deletePoiCategory(final int id) {
-		if (isDatabaseReady() && id != ZERO) { // predef category My POI never delete
-			final Double[] args = {Double.valueOf(id)};
-			mDatabase.execSQL(STAT_deletePoiCategory, args);
-		}
-	}
-
-	private boolean isDatabaseReady() {
-		boolean ret = true;
-
-		if (mDatabase == null)
-			mDatabase = getDatabase();
-
-		if (mDatabase == null)
-			ret = false;
-		else if (!mDatabase.isOpen())
-			mDatabase = getDatabase();
-
-		if (!ret)
-			try {
-				Toast.makeText(mCtx, mCtx.getText(R.string.message_geodata_notavailable), Toast.LENGTH_LONG).show();
-			}
-			catch (Exception e) {
-				Ut.e(e.toString(), e);
-			}
-
-		return ret;
-	}
-
-	public void FreeDatabases() {
-		if (mDatabase != null) {
-			if (mDatabase.isOpen()) {
-				mDatabase.close();
-			}
-			mDatabase = null;
-		}
-	}
-
-	protected SQLiteDatabase getDatabase() {
-		File folder = Ut.getAppMainDir(mCtx, DATA);
-		if (folder.exists()) {
-			folder = new File(folder, GEODATA_FILENAME);
-			try {
-				Ut.i("getDatabase folder=" + folder.getAbsolutePath());
-				return new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()).getWritableDatabase();
-			}
-			catch (Exception e) {
-				Ut.e(e.toString(), e);
-			}
-		}
-		return null;
-	}
-
-	public Cursor getPoiCategory(final int id) {
-		if (isDatabaseReady()) {
-			// Not change the order of the fields
-			final String[] args = {Integer.toString(id)};
-			return mDatabase.rawQuery(STAT_getPoiCategory, args);
-		}
-		return null;
-	}
-
-	public void LoadActivityListFromResource(final SQLiteDatabase db) {
-		db.execSQL(SQL_CREATE_drop_activity);
-		db.execSQL(SQL_CREATE_activity);
-		String[] act = mCtx.getResources().getStringArray(R.array.track_activity);
-		for (int i = 0; i < act.length; i++) {
-			db.execSQL(String.format(SQL_CREATE_insert_activity, i, act[i]));
-		}
-	}
-
-	public long addPoiCategory(final String title, final int hidden, final int iconid) {
-		long newId = -1;
-
-		if (isDatabaseReady()) {
-			final ContentValues cv = new ContentValues();
-			cv.put(NAME, title);
-			cv.put(HIDDEN, hidden);
-			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
-				Ut.e("iconid="+iconid, new Exception());
-				cv.put(ICONID, 0);
-			}
-			else
-				cv.put(ICONID, iconid);
-			newId = this.mDatabase.insert(CATEGORY, null, cv);
-		}
-
-		return newId;
-	}
-
-	public void updatePoiCategory(final int id, final String title, final int hidden, final int iconid, final int minzoom) {
-		if (isDatabaseReady()) {
-			final ContentValues cv = new ContentValues();
-			cv.put(NAME, title);
-			cv.put(HIDDEN, hidden);
-			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
-				Ut.e("iconid="+iconid, new Exception());
-				cv.put(ICONID, 0);
-			}
-			else
-				cv.put(ICONID, iconid);
-			cv.put(MINZOOM, minzoom);
-			final String[] args = {Integer.toString(id)};
-			this.mDatabase.update(CATEGORY, cv, UPDATE_CATEGORY, args);
-		}
-	}
-
-	public void DeleteAllPoi() {
-		if (isDatabaseReady()) {
-			mDatabase.execSQL(org.andnav.osm.util.Constants.STAT_DeleteAllPoi);
-		}
-	}
-
-	public void beginTransaction() {
-		mDatabase.beginTransaction();
-	}
-
-	public void rollbackTransaction() {
-		mDatabase.endTransaction();
-	}
-
-	public void commitTransaction() {
-		mDatabase.setTransactionSuccessful();
-		mDatabase.endTransaction();
 	}
 
 	public Cursor getTrackListCursor(final String units) {
@@ -319,21 +95,6 @@ public class TrackStorage extends Storage implements Constants {
 			cv.put(STYLE, style);
 			final String[] args = {Integer.toString(id)};
 			this.mDatabase.update(TRACKS, cv, UPDATE_TRACKS, args);
-		}
-	}
-
-	public void addTrackPoint(final long trackid, final double lat,
-							  final double lon, final double alt, final double speed,
-							  final Date date) {
-		if (isDatabaseReady()) {
-			final ContentValues cv = new ContentValues();
-			cv.put(TRACKID, trackid);
-			cv.put(LAT, lat);
-			cv.put(LON, lon);
-			cv.put(ALT, alt);
-			cv.put(SPEED, speed);
-			cv.put(DATE, date.getTime() / 1000);
-			this.mDatabase.insert(TRACKPOINTS, null, cv);
 		}
 	}
 
@@ -519,92 +280,5 @@ public class TrackStorage extends Storage implements Constants {
 			final String[] args = {Long.toString(id)};
 			mDatabase.delete(MAPS, UPDATE_MAPS, args);
 		}
-	}
-
-	protected class GeoDatabaseHelper extends SQLiteOpenHelper {
-		public GeoDatabaseHelper(final Context context, final String name) {
-			super(context, name, null, mCurrentVersion);
-		}
-
-		@Override
-		public void onCreate(final SQLiteDatabase db) {
-			db.execSQL(SQL_CREATE_points);
-			db.execSQL(SQL_CREATE_pointsource);
-			db.execSQL(SQL_CREATE_category);
-			db.execSQL(SQL_ADD_category);
-			db.execSQL(SQL_CREATE_tracks);
-			db.execSQL(SQL_CREATE_trackpoints);
-			db.execSQL(SQL_CREATE_maps);
-			db.execSQL(SQL_CREATE_routes);
-			LoadActivityListFromResource(db);
-		}
-
-		@Override
-		public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
-//			Ut.dd("Upgrade data.db from ver." + oldVersion + " to ver."
-//					+ newVersion);
-
-			if (oldVersion < 2) {
-				db.execSQL(SQL_UPDATE_1_1);
-				db.execSQL(SQL_UPDATE_1_2);
-				db.execSQL(SQL_UPDATE_1_3);
-				db.execSQL(SQL_CREATE_points);
-				db.execSQL(SQL_UPDATE_1_5);
-				db.execSQL(SQL_UPDATE_1_6);
-				db.execSQL(SQL_UPDATE_1_7);
-				db.execSQL(SQL_UPDATE_1_8);
-				db.execSQL(SQL_UPDATE_1_9);
-				db.execSQL(SQL_CREATE_category);
-				db.execSQL(SQL_ADD_category);
-				//db.execSQL(SQL_UPDATE_1_11);
-				//db.execSQL(SQL_UPDATE_1_12);
-			}
-			if (oldVersion < 3) {
-				db.execSQL(SQL_UPDATE_2_7);
-				db.execSQL(SQL_UPDATE_2_8);
-				db.execSQL(SQL_UPDATE_2_9);
-				db.execSQL(SQL_CREATE_category);
-				db.execSQL(SQL_UPDATE_2_11);
-				db.execSQL(SQL_UPDATE_2_12);
-			}
-			if (oldVersion < 5) {
-				db.execSQL(SQL_CREATE_tracks);
-				db.execSQL(SQL_CREATE_trackpoints);
-			}
-			if (oldVersion < 18) {
-				db.execSQL(SQL_UPDATE_6_1);
-				db.execSQL(SQL_UPDATE_6_2);
-				db.execSQL(SQL_UPDATE_6_3);
-				db.execSQL(SQL_CREATE_tracks);
-				db.execSQL(SQL_UPDATE_6_4);
-				db.execSQL(SQL_UPDATE_6_5);
-				LoadActivityListFromResource(db);
-			}
-			if (oldVersion < 20) {
-				db.execSQL(SQL_UPDATE_6_1);
-				db.execSQL(SQL_UPDATE_6_2);
-				db.execSQL(SQL_UPDATE_6_3);
-				db.execSQL(SQL_CREATE_tracks);
-				db.execSQL(SQL_UPDATE_20_1);
-				db.execSQL(SQL_UPDATE_6_5);
-			}
-			if (oldVersion < 21) {
-				db.execSQL(SQL_CREATE_maps);
-			}
-			if (oldVersion < 22) {
-				db.execSQL(SQL_CREATE_routes);
-			}
-		}
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		if (mDatabase != null) {
-			if (mDatabase.isOpen()) {
-				mDatabase.close();
-				mDatabase = null;
-			}
-		}
-		super.finalize();
 	}
 }
