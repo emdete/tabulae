@@ -55,7 +55,7 @@ public class ImportPoiActivity extends Activity {
 		mFileName.setText(settings.getString("IMPORT_POI_FILENAME", Ut.getAppImportDir(this).getAbsolutePath()));
 
 		mSpinner = (Spinner)findViewById(R.id.spinnerCategory);
-		Cursor c = mPoiManager.getGeoDatabase().getPoiCategoryListCursor();
+		Cursor c = mPoiManager.getPoiCategoryListCursor();
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c,
 			new String[]{"name"}, new int[]{android.R.id.text1});

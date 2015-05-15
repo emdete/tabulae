@@ -96,7 +96,7 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 		PreferenceGroup prefGroup = (PreferenceGroup)findPreference("pref_mixmaps_group");
 		prefGroup.removeAll();
 
-		final Cursor c = mPoiManager.getGeoDatabase().getMixedMaps();
+		final Cursor c = mPoiManager.getMixedMaps();
 		if (c != null) {
 			final int idMapid = c.getColumnIndex(MAPID);
 			final int idName = c.getColumnIndex(NAME);
@@ -178,7 +178,7 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 			PreferenceGroup prefGroup = (PreferenceGroup)findPreference("pref_mixmaps_group");
 			final String key = prefGroup.getPreference(((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position - 2).getKey();
 			final String params[] = key.split("_");
-			mPoiManager.getGeoDatabase().deleteMap(Long.parseLong(params[2]));
+			mPoiManager.deleteMap(Long.parseLong(params[2]));
 
 			final SharedPreferences aPref = PreferenceManager.getDefaultSharedPreferences(this);
 			final Editor editor = aPref.edit();

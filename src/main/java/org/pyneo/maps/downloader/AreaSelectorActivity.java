@@ -386,7 +386,7 @@ public class AreaSelectorActivity extends Activity implements Constants {
 			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
 			final PoiManager poiManager = new PoiManager(this);
-			Cursor c = poiManager.getGeoDatabase().getMixedMaps();
+			Cursor c = poiManager.getMixedMaps();
 			if (c != null) {
 				if (c.moveToFirst()) {
 					do {

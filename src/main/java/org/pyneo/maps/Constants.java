@@ -102,7 +102,6 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String STAT_getTrackPoints = "SELECT lat, lon, alt, speed, date FROM trackpoints WHERE trackid = @1 ORDER BY id";
 	public static final String STAT_getTrack = "SELECT name, descr, show, cnt, distance, duration, categoryid, activity, date, style FROM tracks WHERE trackid = @1";
 	public static final String STAT_saveTrackFromWriter = "SELECT lat, lon, alt, speed, date FROM trackpoints ORDER BY id;";
-	public static final String STAT_setCategoryHidden = "UPDATE category SET hidden = 1 - hidden * 1 WHERE categoryid = @1";
 	public static final String STAT_setTrackChecked_1 = "UPDATE tracks SET show = 1 - show * 1 WHERE trackid = @1";
 	public static final String STAT_setTrackChecked_2 = "UPDATE tracks SET show = 0 WHERE trackid <> @1";
 	public static final String UPDATE_MAPS = "mapid = @1";

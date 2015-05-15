@@ -3,6 +3,7 @@ package org.pyneo.maps.poi;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.SparseArray;
 
@@ -25,8 +26,56 @@ public class PoiManager implements Constants {
 		mPoiStorage = new PoiStorage(ctx);
 	}
 
-	public PoiStorage getGeoDatabase() {
-		return mPoiStorage;
+	public void deleteMap(long id) {
+		mPoiStorage.deleteMap(id);
+	}
+
+	public void updateMap(long id, String name, int type, String params) {
+		mPoiStorage.updateMap(id, name, type, params);
+	}
+
+	public Cursor getTrackListCursor(final String units, final String sortColNames) {
+		return mPoiStorage.getTrackListCursor(units, sortColNames);
+	}
+
+	public long JoinTracks() {
+		return mPoiStorage.JoinTracks();
+	}
+
+	public int saveTrackFromWriter(final SQLiteDatabase db) {
+		return mPoiStorage.saveTrackFromWriter(db);
+	}
+
+	public Cursor getActivityListCursor() {
+		return mPoiStorage.getActivityListCursor();
+	}
+
+	public long addPoiCategory(final String title, final int hidden, final int iconid) {
+		return mPoiStorage.addPoiCategory(title, hidden, iconid);
+	}
+
+	public void setCategoryHidden(final int id) {
+		mPoiStorage.setCategoryHidden(id);
+	}
+
+	public Cursor getMixedMaps() {
+		return mPoiStorage.getMixedMaps();
+	}
+
+	public Cursor getMap(long id) {
+		return mPoiStorage.getMap(id);
+	}
+
+	public Cursor getTrackPoints(final long id) {
+		return mPoiStorage.getTrackPoints(id);
+	}
+
+	public Cursor getPoiCategoryListCursor() {
+		return mPoiStorage.getPoiCategoryListCursor();
+	}
+
+	public Cursor getPoiListCursor(String sortColNames) {
+		return mPoiStorage.getPoiListCursor(sortColNames);
 	}
 
 	public void FreeDatabases() {

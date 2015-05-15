@@ -131,20 +131,18 @@ public class TrackListActivity extends ListActivity implements Constants {
 				int res = 0;
 				if (db != null) {
 					try {
-						res = mPoiManager.getGeoDatabase().saveTrackFromWriter(db);
+						res = mPoiManager.saveTrackFromWriter(db);
 					}
 					catch (Exception e) {
 						Ut.e(e.toString(), e);
 					}
 					db.close();
-
 					if (res > 0) {
 						Track tr = mPoiManager.getTrack(res);
 						tr.CalculateStat();
 						mPoiManager.updateTrack(tr);
 					}
 				}
-
 				dlgWait.dismiss();
 				Message.obtain(mHandler, R.id.tracks, res, 0).sendToTarget();
 			}
@@ -160,7 +158,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 			public void run() {
 				int res = -1;
 				try {
-					res = (int)mPoiManager.getGeoDatabase().JoinTracks();
+					res = (int)mPoiManager.JoinTracks();
 				}
 				catch (Exception e) {
 					Ut.e(e.toString(), e);
@@ -196,7 +194,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 	}
 
 	private void FillData() {
-		Cursor c = mPoiManager.getGeoDatabase().getTrackListCursor(mUnits == 0? getResources().getString(R.string.km): getResources().getString(R.string.ml), mSortOrder);
+		Cursor c = mPoiManager.getTrackListCursor(mUnits == 0? getResources().getString(R.string.km): getResources().getString(R.string.ml), mSortOrder);
 		if (mNeedTracksStatUpdate) {
 			mNeedTracksStatUpdate = false;
 			if (c != null) {
@@ -226,7 +224,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 		mThreadExecutor.execute(new Runnable() {
 
 			public void run() {
-				Cursor c = mPoiManager.getGeoDatabase().getTrackListCursor("");
+				Cursor c = mPoiManager.getTrackListCursor("", "trackid DESC");
 				if (c != null) {
 					if (c.moveToFirst()) {
 						Track tr = null;
@@ -279,7 +277,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 			} else {
 				mSortOrder = "tracks.name asc";
 			}
-			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getGeoDatabase().getTrackListCursor(mUnits == 0? getResources().getString(R.string.km): getResources().getString(R.string.ml), mSortOrder));
+			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getTrackListCursor(mUnits == 0? getResources().getString(R.string.km): getResources().getString(R.string.ml), mSortOrder));
 		} else if (item.getItemId() == R.id.menu_sort_category) {
 			if (mSortOrder.contains("activity.name")) {
 				if (mSortOrder.contains("asc"))
@@ -289,7 +287,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 			} else {
 				mSortOrder = "activity.name asc";
 			}
-			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getGeoDatabase().getTrackListCursor(mUnits == 0? getResources().getString(R.string.km): getResources().getString(R.string.ml), mSortOrder));
+			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getTrackListCursor(mUnits == 0? getResources().getString(R.string.km): getResources().getString(R.string.ml), mSortOrder));
 		} else if (item.getItemId() == R.id.menu_sort_date) {
 			if (mSortOrder.contains("date")) {
 				if (mSortOrder.contains("asc"))
@@ -299,7 +297,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 			} else {
 				mSortOrder = "date asc";
 			}
-			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getGeoDatabase().getTrackListCursor(mUnits == 0? getResources().getString(R.string.km): getResources().getString(R.string.ml), mSortOrder));
+			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getTrackListCursor(mUnits == 0? getResources().getString(R.string.km): getResources().getString(R.string.ml), mSortOrder));
 		} else if (item.getItemId() == R.id.menu_join) {
 			doJoinTracks();
 		}

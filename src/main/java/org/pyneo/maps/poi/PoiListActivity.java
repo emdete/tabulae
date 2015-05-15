@@ -78,7 +78,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 	}
 
 	private void FillData() {
-		Cursor c = mPoiManager.getGeoDatabase().getPoiListCursor(mSortOrder);
+		Cursor c = mPoiManager.getPoiListCursor(mSortOrder);
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 			R.layout.poi_list_item, c,
@@ -135,7 +135,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 			} else {
 				mSortOrder = "points.name asc";
 			}
-			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getGeoDatabase().getPoiListCursor(mSortOrder));
+			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getPoiListCursor(mSortOrder));
 
 		} else if (item.getItemId() == R.id.menu_sort_category) {
 			if (mSortOrder.contains("category.name")) {
@@ -146,7 +146,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 			} else {
 				mSortOrder = "category.name asc";
 			}
-			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getGeoDatabase().getPoiListCursor(mSortOrder));
+			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getPoiListCursor(mSortOrder));
 
 		} else if (item.getItemId() == R.id.menu_sort_coord) {
 			if (mSortOrder.contains(LAT)) {
@@ -157,7 +157,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 			} else {
 				mSortOrder = "lat, lon asc";
 			}
-			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getGeoDatabase().getPoiListCursor(mSortOrder));
+			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getPoiListCursor(mSortOrder));
 		}
 
 		return true;
@@ -323,7 +323,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 			xml.setAttr("xmlns", "http://www.opengis.net/kml/2.2");
 			SimpleXML fold = xml.createChild("Folder");
 
-			Cursor c = mPoiManager.getGeoDatabase().getPoiListCursor();
+			Cursor c = mPoiManager.getPoiListCursor(LAT + ',' + LON);
 			PoiPoint poi = null;
 
 			if (c != null) {
@@ -392,7 +392,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 			xml.setAttr("creator", "Tabulae - https://github.com/emdete/Tabulae");
 			xml.setAttr("version", "1.0");
 
-			Cursor c = mPoiManager.getGeoDatabase().getPoiListCursor();
+			Cursor c = mPoiManager.getPoiListCursor(LAT + ',' + LON);
 			PoiPoint poi = null;
 
 			if (c != null) {

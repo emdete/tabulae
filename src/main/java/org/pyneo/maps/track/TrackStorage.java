@@ -135,13 +135,6 @@ public class TrackStorage extends Storage implements Constants {
 		return null;
 	}
 
-	public void setCategoryHidden(final int id) {
-		if (isDatabaseReady()) {
-			final String[] args = {Long.toString(id)};
-			mDatabase.execSQL(STAT_setCategoryHidden, args);
-		}
-	}
-
 	public void deleteTrack(final int id) {
 		if (isDatabaseReady()) {
 			beginTransaction();

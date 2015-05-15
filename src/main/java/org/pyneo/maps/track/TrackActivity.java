@@ -38,7 +38,7 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 		mName = (EditText)findViewById(R.id.Name);
 		mDescr = (EditText)findViewById(R.id.Descr);
 		mActivity = (Spinner)findViewById(R.id.Activity);
-		Cursor c = mPoiManager.getGeoDatabase().getActivityListCursor();
+		Cursor c = mPoiManager.getActivityListCursor();
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 			android.R.layout.simple_spinner_item, c,

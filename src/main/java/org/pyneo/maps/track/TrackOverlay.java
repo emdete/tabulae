@@ -119,7 +119,7 @@ public class TrackOverlay extends TileViewOverlay {
 				for (int i = 0; i < mTracks.length; i++) {
 					if (mTracks[i] != null) {
 						try {
-							mPaths[i] = mProjection.toPixelsTrackPoints(mPoiManager.getGeoDatabase().getTrackPoints(mTracks[i].getId()), mBaseCoords, mBaseLocation);
+							mPaths[i] = mProjection.toPixelsTrackPoints(mPoiManager.getTrackPoints(mTracks[i].getId()), mBaseCoords, mBaseLocation);
 							mPaints[i] = new Paint();
 							mPaints[i].setAntiAlias(true);
 							mPaints[i].setStyle(Paint.Style.STROKE);

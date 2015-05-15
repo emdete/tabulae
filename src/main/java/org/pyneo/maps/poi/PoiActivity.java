@@ -77,7 +77,7 @@ public class PoiActivity extends Activity implements Constants {
 			}
 		});
 		mSpinner = (Spinner)findViewById(R.id.spinnerCategory);
-		Cursor c = mPoiManager.getGeoDatabase().getPoiCategoryListCursor();
+		Cursor c = mPoiManager.getPoiCategoryListCursor();
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 			R.layout.poi_category_spinner, //android.R.layout.simple_spinner_item,

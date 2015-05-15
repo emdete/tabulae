@@ -176,6 +176,14 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 		return null;
 	}
 
+	public static final String STAT_setCategoryHidden = "UPDATE category SET hidden = 1 - hidden * 1 WHERE categoryid = @1";
+	public void setCategoryHidden(final int id) {
+		if (isDatabaseReady()) {
+			final String[] args = {Long.toString(id)};
+			mDatabase.execSQL(STAT_setCategoryHidden, args);
+		}
+	}
+
 	public static final String UPDATE_CATEGORY = "categoryid = @1";
 	public void updatePoiCategory(final int id, final String title, final int hidden, final int iconid, final int minzoom) {
 		if (isDatabaseReady()) {

@@ -324,7 +324,7 @@ public class MainActivity extends Activity implements Constants {
 						}
 					}
 				}
-				Cursor c = mPoiManager.getGeoDatabase().getMixedMaps();
+				Cursor c = mPoiManager.getMixedMaps();
 				if (c != null) {
 					if (c.moveToFirst()) {
 						do {
@@ -897,7 +897,7 @@ public class MainActivity extends Activity implements Constants {
 				}
 			}
 		}
-		Cursor c = mPoiManager.getGeoDatabase().getMixedMaps();
+		Cursor c = mPoiManager.getMixedMaps();
 		if (c != null) {
 			if (c.moveToFirst()) {
 				do {

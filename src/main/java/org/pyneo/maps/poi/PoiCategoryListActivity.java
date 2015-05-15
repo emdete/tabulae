@@ -43,7 +43,7 @@ public class PoiCategoryListActivity extends ListActivity {
 	}
 
 	private void FillData() {
-		Cursor c = mPoiManager.getGeoDatabase().getPoiCategoryListCursor();
+		Cursor c = mPoiManager.getPoiCategoryListCursor();
 		startManagingCursor(c);
 
 		ListAdapter adapter = new SimpleCursorAdapter(this,
@@ -58,7 +58,7 @@ public class PoiCategoryListActivity extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
-		mPoiManager.getGeoDatabase().setCategoryHidden((int)id);
+		mPoiManager.setCategoryHidden((int)id);
 
 //		final CheckBox ch = (CheckBox) v.findViewById(R.id.checkbox);
 //		ch.setChecked(!ch.isChecked());

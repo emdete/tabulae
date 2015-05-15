@@ -95,7 +95,7 @@ public class TileSourceBase {
 			mixMapId = aId;
 			aId = MAPNIK;
 			MAP_TYPE = PREDEF_ONLINE;
-			Cursor c = poiman.getGeoDatabase().getMap(Long.parseLong(params[1]));
+			Cursor c = poiman.getMap(Long.parseLong(params[1]));
 			if (c != null) {
 				if (c.moveToFirst()) {
 					mixMapName = c.getString(1);

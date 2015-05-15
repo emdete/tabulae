@@ -66,7 +66,6 @@ public class MMPreferenceActivity extends PreferenceActivity implements Constant
 		catch (Exception e) {
 			Ut.e(e.toString(), e);
 		}
-
 		return null;
 	}
 
@@ -82,7 +81,7 @@ public class MMPreferenceActivity extends PreferenceActivity implements Constant
 			TYPE = 0;
 			PARAMS = "";
 
-			Cursor c = MMPreferenceActivity.this.mPoiManager.getGeoDatabase().getMap(id);
+			Cursor c = MMPreferenceActivity.this.mPoiManager.getMap(id);
 			if (c != null) {
 				if (c.moveToFirst()) {
 					ID = id;
@@ -95,8 +94,7 @@ public class MMPreferenceActivity extends PreferenceActivity implements Constant
 		}
 
 		public void updateMap() {
-			MMPreferenceActivity.this.mPoiManager.getGeoDatabase().updateMap(ID, NAME, TYPE, PARAMS);
+			MMPreferenceActivity.this.mPoiManager.updateMap(ID, NAME, TYPE, PARAMS);
 		}
 	}
-
 }

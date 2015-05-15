@@ -32,7 +32,7 @@ public class KmlPoiParser extends DefaultHandler {
 		mItIsPoint = false;
 
 		mCategoryMap = new HashMap<String, Integer>();
-		Cursor c = mPoiManager.getGeoDatabase().getPoiCategoryListCursor();
+		Cursor c = mPoiManager.getPoiCategoryListCursor();
 		if (c != null) {
 			if (c.moveToFirst()) {
 				do {
@@ -62,7 +62,7 @@ public class KmlPoiParser extends DefaultHandler {
 			if (mCategoryMap.containsKey(attrName)) {
 				mPoiPoint.mCategoryId = mCategoryMap.get(attrName);
 			} else {
-				mPoiPoint.mCategoryId = (int)mPoiManager.getGeoDatabase().addPoiCategory(attrName, 0, Integer.parseInt(attributes.getValue(Constants.ICONID)));
+				mPoiPoint.mCategoryId = (int)mPoiManager.addPoiCategory(attrName, 0, Integer.parseInt(attributes.getValue(Constants.ICONID)));
 				mCategoryMap.put(attrName, mPoiPoint.mCategoryId);
 			}
 		}
