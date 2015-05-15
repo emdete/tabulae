@@ -12,21 +12,21 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentTop="false"
-		android:layout_marginLeft="3dp"
-		android:layout_marginRight="3dp"
-		android:layout_marginTop="3dp"
+		android:layout_marginLeft="3sp"
+		android:layout_marginRight="3sp"
+		android:layout_marginTop="3sp"
 		android:orientation="vertical"
-		android:paddingLeft="43dp"
+		android:paddingLeft="43sp"
 		>
 		<TextView
 			android:id="@+id/poi_title"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:maxLines="1"
-			android:maxWidth="185dp"
+			android:maxWidth="185sp"
 			android:text="POI Description"
 			android:textColor="@color/primary"
-			android:textSize="14dp"
+			android:textSize="14sp"
 			android:textStyle="bold"
 			/>
 		<TextView
@@ -34,20 +34,20 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:maxLines="3"
-			android:maxWidth="185dp"
+			android:maxWidth="185sp"
 			android:text="Descr"
 			android:textColor="@color/secondary"
-			android:textSize="12dp"
+			android:textSize="12sp"
 			/>
 		<TextView
 			android:id="@+id/coord"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:maxWidth="185dp"
+			android:maxWidth="185sp"
 			android:text="0.00000, 0.00000"
 			android:textAppearance="?android:attr/textAppearanceSmall"
 			android:textColor="@color/secondary"
-			android:textSize="9dp"
+			android:textSize="9sp"
 			/>
 	</LinearLayout>
 	<ImageView
@@ -56,9 +56,9 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentTop="true"
-		android:layout_marginLeft="3dp"
-		android:layout_marginRight="3dp"
-		android:layout_marginTop="3dp"
+		android:layout_marginLeft="3sp"
+		android:layout_marginRight="3sp"
+		android:layout_marginTop="3sp"
 		android:src="@drawable/poi_blue"
 		/>
 </RelativeLayout>

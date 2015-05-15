@@ -133,11 +133,6 @@ public class MyLocationOverlay extends TileViewOverlay {
 	}
 
 	@Override
-	protected void onDrawFinished(Canvas c, TileView osmv) {
-		return;
-	}
-
-	@Override
 	public void onDraw(final Canvas c, final TileView osmv) {
 		Ut.d("onDraw");
 		if (mLastGeoPoint != null) {

@@ -34,8 +34,4 @@ public class TrackStyleOverlay extends TileViewOverlay {
 		}
 		c.drawPath(mPath, mPaint);
 	}
-
-	@Override
-	protected void onDrawFinished(Canvas c, TileView tileView) {
-	}
 }

@@ -140,10 +140,6 @@ public class TileOverlay extends TileViewOverlay implements org.pyneo.maps.utils
 		}
 	}
 
-	@Override
-	protected void onDrawFinished(Canvas c, TileView tileView) {
-	}
-
 	public Point getUpperLeftCornerOfCenterMapTileInScreen(TileView tileView, final int[] centerMapTileCoords, final int tileSizePx, final Point reuse) {
 		return getUpperLeftCornerOfCenterMapTileInScreen(tileView, centerMapTileCoords, tileSizePx, 0, 0, reuse);
 	}

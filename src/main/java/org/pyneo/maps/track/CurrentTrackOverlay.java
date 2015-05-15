@@ -177,10 +177,6 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 		c.restore();
 	}
 
-	@Override
-	protected void onDrawFinished(Canvas c, TileView osmv) {
-	}
-
 	public void onResume() {
 		mTrack = null;
 		if (!(mIsBound = mContext.bindService(new Intent(mContext, TrackWriterService.class), mConnection, 0 /*Context.BIND_AUTO_CREATE*/))) {

@@ -90,10 +90,6 @@ public class TrackOverlay extends TileViewOverlay {
 		c.restore();
 	}
 
-	@Override
-	protected void onDrawFinished(Canvas c, TileView osmv) {
-	}
-
 	public void clearTrack() {
 		mTracks = null;
 	}

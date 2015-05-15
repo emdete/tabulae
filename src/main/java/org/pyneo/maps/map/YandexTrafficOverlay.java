@@ -129,10 +129,6 @@ public class YandexTrafficOverlay extends TileViewOverlay implements org.pyneo.m
 		mTileSource.getTileProvider().CommitCashe();
 	}
 
-	@Override
-	protected void onDrawFinished(Canvas c, TileView osmv) {
-	}
-
 	private Point getUpperLeftCornerOfCenterMapTileInScreen(final int[] centerMapTileCoords, final int tileSizePx,
 															final Point reuse) {
 		final GeoPoint centerGeoPoint = mMapView.getMapCenter();

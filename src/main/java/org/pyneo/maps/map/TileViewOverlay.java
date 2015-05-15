@@ -17,7 +17,8 @@ public abstract class TileViewOverlay {
 
 	protected abstract void onDraw(final Canvas c, final TileView tileView);
 
-	protected abstract void onDrawFinished(final Canvas c, final TileView tileView);
+	protected void onDrawFinished(final Canvas c, final TileView tileView) {
+	}
 
 	/**
 	 * By default does nothing (<code>return false</code>). If you handled the

@@ -168,10 +168,6 @@ public class MeasureOverlay extends TileViewOverlay {
 	}
 
 	@Override
-	protected void onDrawFinished(Canvas c, TileView tileView) {
-	}
-
-	@Override
 	public boolean onSingleTapUp(MotionEvent e, TileView tileView) {
 		final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = tileView.getProjection();
 

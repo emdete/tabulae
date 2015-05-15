@@ -109,14 +109,7 @@ public class DownloadedAreaOverlay extends TileViewOverlay {
 		c.drawPath(path, mPaint);
 	}
 
-	@Override
-	protected void onDrawFinished(Canvas c, TileView tileView) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void downloadDone() {
 		mPoint = null;
 	}
-
 }

@@ -228,11 +228,6 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 				.toString();
 	}
 
-	@Override
-	protected void onDrawFinished(Canvas c, TileView osmv) {
-
-	}
-
 	public void fromPref(SharedPreferences settings) {
 		final String strlocation = settings.getString("SearchResultLocation", "");
 		if (strlocation.length() > 0) {

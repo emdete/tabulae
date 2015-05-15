@@ -79,12 +79,6 @@ public class AreaSelectorOverlay extends TileViewOverlay {
 	}
 
 	@Override
-	protected void onDrawFinished(Canvas c, TileView tileView) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY, TileView tileView) {
 		if (mPointHolded >= 0) {
 			final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = tileView.getProjection();
