@@ -150,7 +150,7 @@ public class TileSource extends TileSourceBase {
 				break;
 			case 6:
 				provider = new TileProviderBase(ctx);
-				provider.setLoadingMapTile(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.blank_tile));
+				provider.setLoadingMapTile(BitmapFactory.decodeResource(ctx.getResources(), R.drawable.maptile_blank));
 				break;
 			default:
 				provider = new TileProviderBase(ctx);
