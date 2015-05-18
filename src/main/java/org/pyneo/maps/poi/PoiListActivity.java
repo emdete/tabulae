@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.net.Uri;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.SimpleXML;
@@ -212,7 +213,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 			menu.add(0, R.id.menu_hide, 0, getText(R.string.menu_hide));
 		menu.add(0, R.id.menu_deletepoi, 0, getText(R.string.menu_delete));
 		menu.add(0, R.id.menu_share, 0, getText(R.string.menu_share));
-		menu.add(0, R.id.menu_toradar, 0, getText(R.string.menu_toradar));
+		//menu.add(0, R.id.menu_toradar, 0, getText(R.string.menu_toradar));
 
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
@@ -250,19 +251,30 @@ public class PoiListActivity extends ListActivity implements Constants {
 		} else if (item.getItemId() == R.id.menu_share) {
 			try {
 				final GeoPoint point = poi.mGeoPoint;
-				Intent intent1 = new Intent(Intent.ACTION_SEND);
-				intent1.setType("text/plain");
-				intent1.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
-					.append(poi.mTitle)
-					.append('\n')
-					.append("http://www.openstreetmap.org/#map=")
-					.append(16) // zoom
-					.append('/')
-					.append(point.getLatitude())
-					.append('/')
-					.append(point.getLongitude())
-					.toString());
-				startActivity(intent1);
+				final String label = poi.mTitle;
+				final int zoom = 16;
+				double latitude = point.getLatitude();
+				double longitude = point.getLongitude();
+				Intent intent;
+				if (false) {
+					intent = new Intent(Intent.ACTION_SEND);
+					intent.setType("text/plain");
+					intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
+						.append(label)
+						.append('\n')
+						.append("http://www.openstreetmap.org/#map=")
+						.append(zoom)
+						.append('/')
+						.append(latitude)
+						.append('/')
+						.append(longitude)
+						.toString());
+				}
+				else {
+					intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse("geo:" + latitude + ',' + longitude + "?q=" + latitude + ',' + longitude + '(' + label + ')'));
+				}
+				startActivity(intent);
 			}
 			catch (Exception e) {
 				Ut.e(e.toString(), e);

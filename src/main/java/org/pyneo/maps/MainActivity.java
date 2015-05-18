@@ -79,6 +79,7 @@ import org.pyneo.maps.utils.SearchSuggestionsProvider;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.IMoveListener;
+import org.pyneo.maps.utils.CursorI;
 import org.pyneo.maps.map.MapView;
 import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
@@ -324,21 +325,14 @@ public class MainActivity extends Activity implements Constants {
 						}
 					}
 				}
-				Cursor c = mPoiManager.getMixedMaps();
-				if (c != null) {
-					if (c.moveToFirst()) {
-						do {
-							if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", false) && c.getInt(2) == 3) {
-								final JSONObject json = MixedMapsPreference.getMapCustomParams(c.getString(3));
-								//if(mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == json.optInt(MixedMapsPreference.MAPPROJECTION)) {
-								MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE, c.getString(1));
-								item.setTitleCondensed("mixmap_" + c.getInt(0));
-								//}
-							}
-						}
-						while (c.moveToNext());
+				for (Cursor c: new CursorI(mPoiManager.getMixedMaps())) {
+					if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", false) && c.getInt(2) == 3) {
+						final JSONObject json = MixedMapsPreference.getMapCustomParams(c.getString(3));
+						//if(mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == json.optInt(MixedMapsPreference.MAPPROJECTION)) {
+						MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE, c.getString(1));
+						item.setTitleCondensed("mixmap_" + c.getInt(0));
+						//}
 					}
-					c.close();
 				}
 				final SAXParserFactory fac = SAXParserFactory.newInstance();
 				SAXParser parser = null;
@@ -434,7 +428,7 @@ public class MainActivity extends Activity implements Constants {
 				else {
 					GeoPoint point = GeoPoint.fromDoubleString(latlon);
 					mPoiOverlay.clearPoiList();
-					mPoiOverlay.showTemporaryPoi(0, point, "GEO", "");
+					mPoiOverlay.showTemporaryPoi(-1, point, "GEO", "");
 					setAutoFollow(false);
 					mMap.setCenter(point);
 				}
@@ -480,7 +474,7 @@ public class MainActivity extends Activity implements Constants {
 				location.setLongitude(longitude);
 				GeoPoint point = GeoPoint.fromDoubleString("" + latitude + ',' + longitude); // TODO
 				mPoiOverlay.clearPoiList();
-				mPoiOverlay.showTemporaryPoi(0, point, name, name);
+				mPoiOverlay.showTemporaryPoi(-1, point, name, name);
 				setAutoFollow(false);
 				mMap.setCenter(point);
 				Ut.d("onCreate location received");
@@ -897,17 +891,11 @@ public class MainActivity extends Activity implements Constants {
 				}
 			}
 		}
-		Cursor c = mPoiManager.getMixedMaps();
-		if (c != null) {
-			if (c.moveToFirst()) {
-				do {
-					if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", true) && c.getInt(2) < 3) {
-						MenuItem item = submenu.add(c.getString(1));
-						item.setTitleCondensed("mixmap_" + c.getInt(0));
-					}
-				} while (c.moveToNext());
+		for (Cursor c: new CursorI(mPoiManager.getMixedMaps())) {
+			if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", true) && c.getInt(2) < 3) {
+				MenuItem item = submenu.add(c.getString(1));
+				item.setTitleCondensed("mixmap_" + c.getInt(0));
 			}
-			c.close();
 		}
 		final SAXParserFactory fac = SAXParserFactory.newInstance();
 		SAXParser parser = null;
@@ -1028,23 +1016,29 @@ public class MainActivity extends Activity implements Constants {
 				return true;
 			}
 			case R.id.menu_share: {
-				Intent intent = new Intent(Intent.ACTION_SEND);
-				intent.setType("text/plain");
-				intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
-					.append("")
-					.append('\n')
-					.append("http://www.openstreetmap.org/?mlat=")
-					.append(point.getLatitude())
-					.append("&mlon=")
-					.append(point.getLongitude())
-					.append("#map=")
-					.append(mMap.getZoomLevel())
-					.append('/')
-					.append(point.getLatitude())
-					.append('/')
-					.append(point.getLongitude())
-					.append("&layers=T")
-					.toString());
+				final String label = "";
+				final int zoom = mMap.getZoomLevel();
+				final double latitude = point.getLatitude();
+				final double longitude = point.getLongitude();
+				Intent intent;
+				if (false) {
+					intent = new Intent(Intent.ACTION_SEND);
+					intent.setType("text/plain");
+					intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
+						.append(label)
+						.append('\n')
+						.append("http://www.openstreetmap.org/#map=")
+						.append(zoom)
+						.append('/')
+						.append(latitude)
+						.append('/')
+						.append(longitude)
+						.toString());
+				}
+				else {
+					intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse("geo:" + latitude + ',' + longitude + "?q=" + latitude + ',' + longitude + '(' + label + ')'));
+				}
 				startActivity(intent);
 				return true;
 			}
@@ -1246,7 +1240,7 @@ public class MainActivity extends Activity implements Constants {
 						menu.add(0, R.id.menu_deletepoi, 0, getText(R.string.menu_delete));
 					}
 					menu.add(0, R.id.menu_share, 0, getText(R.string.menu_share));
-					menu.add(0, R.id.menu_toradar, 0, getText(R.string.menu_toradar));
+					//menu.add(0, R.id.menu_toradar, 0, getText(R.string.menu_toradar));
 				}
 				else {
 					menu.add(0, R.id.menu_addpoi, 0, getText(R.string.menu_addpoi));
@@ -1622,11 +1616,12 @@ public class MainActivity extends Activity implements Constants {
 			int id = -1;
 			for (String location : locations) {
 				final String[] fields = location.split(";");
-				String locns = "", title = "", descr = "";
+				String locns = "";
+				String title = "";
+				String descr = "";
 				if (fields.length > 0) locns = fields[0];
 				if (fields.length > 1) title = fields[1];
 				if (fields.length > 2) descr = fields[2];
-
 				point = GeoPoint.fromDoubleString(locns);
 				mPoiOverlay.showTemporaryPoi(id--, point, title, descr);
 			}
