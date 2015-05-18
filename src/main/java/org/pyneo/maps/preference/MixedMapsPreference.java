@@ -96,58 +96,47 @@ public class MixedMapsPreference extends MMPreferenceActivity implements OnShare
 		PreferenceGroup prefGroup = (PreferenceGroup)findPreference("pref_mixmaps_group");
 		prefGroup.removeAll();
 
-		final Cursor c = mPoiManager.getMixedMaps();
-		if (c != null) {
+		for (Cursor c: mPoiManager.getMixedMaps()) {
 			final int idMapid = c.getColumnIndex(MAPID);
 			final int idName = c.getColumnIndex(NAME);
 			final int idType = c.getColumnIndex(TYPE);
 			final int idParams = c.getColumnIndex(PARAMS);
-
-			if (c.moveToFirst()) {
-				do {
-					switch (c.getInt(idType)) {
-						case 3:
-						case 2: {
-							final JSONObject json = getMapCustomParams(c.getString(idParams));
-
-							final CheckBoxPreferenceExt pref = new CheckBoxPreferenceExt(this, PREF_MIXMAPS_ + c.getInt(idMapid) + "_enabled", true);
-							pref.setKey(PREF_MIXMAPS_ + c.getInt(idMapid));
-							pref.setTitle(PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_MIXMAPS_ + c.getInt(idMapid) + "_name", c.getString(idName)));
-							pref.setSummary(R.string.menu_add_ownsourcemap);
-							pref.setIntent(new Intent(this, CustomMapsPrefActivity.class)
-									.putExtra("Key", PREF_MIXMAPS_ + c.getInt(idMapid))
-									.putExtra(MAPID, "mixmap_" + c.getInt(idMapid))
-									.putExtra(NAME, c.getString(idName))
-									.putExtra(BASEURL, json.optString(BASEURL))
-									.putExtra(MAPPROJECTION, json.optString(MAPPROJECTION))
-									.putExtra(MINZOOM, json.optString(MINZOOM))
-									.putExtra(MAXZOOM, json.optString(MAXZOOM))
-							);
-							prefGroup.addPreference(pref);
-
-						}
-						break;
-						case 1: {
-							final JSONObject json = getMapPairParams(c.getString(idParams));
-
-							final CheckBoxPreferenceExt pref = new CheckBoxPreferenceExt(this, PREF_MIXMAPS_ + c.getInt(idMapid) + "_enabled", true);
-							pref.setKey(PREF_MIXMAPS_ + c.getInt(idMapid));
-							pref.setTitle(PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_MIXMAPS_ + c.getInt(idMapid) + "_name", c.getString(idName)));
-							pref.setSummary(R.string.menu_add_dualmap);
-							pref.setIntent(new Intent(this, PairMapsPrefActivity.class)
-									.putExtra("Key", PREF_MIXMAPS_ + c.getInt(idMapid))
-									.putExtra(MAPID, c.getString(idMapid))
-									.putExtra(NAME, c.getString(idName))
-									.putExtra(OVERLAYID, json.optString(OVERLAYID))
-							);
-							prefGroup.addPreference(pref);
-
-						}
-						break;
-					}
-				} while (c.moveToNext());
+			switch (c.getInt(idType)) {
+				case 3:
+				case 2: {
+					final JSONObject json = getMapCustomParams(c.getString(idParams));
+					final CheckBoxPreferenceExt pref = new CheckBoxPreferenceExt(this, PREF_MIXMAPS_ + c.getInt(idMapid) + "_enabled", true);
+					pref.setKey(PREF_MIXMAPS_ + c.getInt(idMapid));
+					pref.setTitle(PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_MIXMAPS_ + c.getInt(idMapid) + "_name", c.getString(idName)));
+					pref.setSummary(R.string.menu_add_ownsourcemap);
+					pref.setIntent(new Intent(this, CustomMapsPrefActivity.class)
+							.putExtra("Key", PREF_MIXMAPS_ + c.getInt(idMapid))
+							.putExtra(MAPID, "mixmap_" + c.getInt(idMapid))
+							.putExtra(NAME, c.getString(idName))
+							.putExtra(BASEURL, json.optString(BASEURL))
+							.putExtra(MAPPROJECTION, json.optString(MAPPROJECTION))
+							.putExtra(MINZOOM, json.optString(MINZOOM))
+							.putExtra(MAXZOOM, json.optString(MAXZOOM))
+					);
+					prefGroup.addPreference(pref);
+				}
+				break;
+				case 1: {
+					final JSONObject json = getMapPairParams(c.getString(idParams));
+					final CheckBoxPreferenceExt pref = new CheckBoxPreferenceExt(this, PREF_MIXMAPS_ + c.getInt(idMapid) + "_enabled", true);
+					pref.setKey(PREF_MIXMAPS_ + c.getInt(idMapid));
+					pref.setTitle(PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_MIXMAPS_ + c.getInt(idMapid) + "_name", c.getString(idName)));
+					pref.setSummary(R.string.menu_add_dualmap);
+					pref.setIntent(new Intent(this, PairMapsPrefActivity.class)
+							.putExtra("Key", PREF_MIXMAPS_ + c.getInt(idMapid))
+							.putExtra(MAPID, c.getString(idMapid))
+							.putExtra(NAME, c.getString(idName))
+							.putExtra(OVERLAYID, json.optString(OVERLAYID))
+					);
+					prefGroup.addPreference(pref);
+				}
+				break;
 			}
-			c.close();
 		}
 	}
 

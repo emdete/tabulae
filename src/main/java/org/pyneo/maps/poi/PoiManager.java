@@ -10,6 +10,7 @@ import android.util.SparseArray;
 import org.pyneo.maps.track.Track;
 import org.pyneo.maps.track.Track.TrackPoint;
 import org.pyneo.maps.utils.Ut;
+import org.pyneo.maps.utils.CursorI;
 
 import org.pyneo.maps.utils.GeoPoint;
 
@@ -58,7 +59,7 @@ public class PoiManager implements Constants {
 		mPoiStorage.setCategoryHidden(id);
 	}
 
-	public Cursor getMixedMaps() {
+	public CursorI getMixedMaps() {
 		return mPoiStorage.getMixedMaps();
 	}
 
@@ -116,11 +117,11 @@ public class PoiManager implements Constants {
 						c.getInt(4), new PoiPoint(
 							c.getInt(4),
 							c.getString(2),
-							c.getString(3), new GeoPoint(
-								(int)(1E6 * c.getDouble(0)),
-								(int)(1E6 * c.getDouble(1))),
-								c.getInt(7),
-								c.getInt(8)));
+							c.getString(3),
+							new GeoPoint((int)(1E6 * c.getDouble(0)), (int)(1E6 * c.getDouble(1))),
+							c.getInt(7),
+							c.getInt(8))
+						);
 				} while (c.moveToNext());
 			}
 			c.close();
@@ -153,11 +154,16 @@ public class PoiManager implements Constants {
 		final Cursor c = mPoiStorage.getPoi(id);
 		if (c != null) {
 			if (c.moveToFirst())
-				point = new PoiPoint(c.getInt(4), c.getString(2), c
-					.getString(3), new GeoPoint(
-					(int)(1E6 * c.getDouble(0)), (int)(1E6 * c
-					.getDouble(1))), c.getInt(9), c.getInt(7), c
-					.getDouble(5), c.getInt(8), c.getInt(6));
+				point = new PoiPoint(
+					c.getInt(4),
+					c.getString(2),
+					c.getString(3),
+					new GeoPoint((int)(1E6 * c.getDouble(0)), (int)(1E6 * c.getDouble(1))),
+					c.getInt(9),
+					c.getInt(7),
+					c.getDouble(5),
+					c.getInt(8),
+					c.getInt(6));
 			c.close();
 		}
 

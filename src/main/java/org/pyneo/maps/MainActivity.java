@@ -79,7 +79,6 @@ import org.pyneo.maps.utils.SearchSuggestionsProvider;
 import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.IMoveListener;
-import org.pyneo.maps.utils.CursorI;
 import org.pyneo.maps.map.MapView;
 import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
@@ -325,7 +324,7 @@ public class MainActivity extends Activity implements Constants {
 						}
 					}
 				}
-				for (Cursor c: new CursorI(mPoiManager.getMixedMaps())) {
+				for (Cursor c: mPoiManager.getMixedMaps()) {
 					if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", false) && c.getInt(2) == 3) {
 						final JSONObject json = MixedMapsPreference.getMapCustomParams(c.getString(3));
 						//if(mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == json.optInt(MixedMapsPreference.MAPPROJECTION)) {
@@ -891,7 +890,7 @@ public class MainActivity extends Activity implements Constants {
 				}
 			}
 		}
-		for (Cursor c: new CursorI(mPoiManager.getMixedMaps())) {
+		for (Cursor c: mPoiManager.getMixedMaps()) {
 			if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", true) && c.getInt(2) < 3) {
 				MenuItem item = submenu.add(c.getString(1));
 				item.setTitleCondensed("mixmap_" + c.getInt(0));

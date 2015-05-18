@@ -71,6 +71,8 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 	}
 
 	public void clearPoiList() {
+		mCanUpdateList = true;
+		mListUpdateNeeded = true;
 		mItemList.clear();
 	}
 

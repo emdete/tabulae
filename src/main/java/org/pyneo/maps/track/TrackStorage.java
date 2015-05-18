@@ -13,6 +13,7 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.poi.Constants;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.Storage;
+import org.pyneo.maps.utils.CursorI;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -228,10 +229,11 @@ public class TrackStorage extends Storage implements Constants {
 		return res;
 	}
 
-	public Cursor getMixedMaps() {
+	public CursorI getMixedMaps() {
+		Cursor ret = null;
 		if (isDatabaseReady())
-			return mDatabase.rawQuery(STAT_get_maps, null);
-		return null;
+			ret = mDatabase.rawQuery(STAT_get_maps, null);
+		return new CursorI(ret);
 	}
 
 	public long addMap(int type, String params) {
