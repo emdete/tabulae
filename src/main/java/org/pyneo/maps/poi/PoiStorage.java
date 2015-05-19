@@ -115,7 +115,10 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 		return getPoiListCursor(LAT + ',' + LON);
 	}
 
-	public static final String STAT_GET_POI_LIST = "SELECT lat, lon, points.name, descr, pointid, pointid _id, pointid ID, category.iconid, category.name as catname FROM points LEFT JOIN category ON category.categoryid = points.categoryid ORDER BY ";
+	public static final String STAT_GET_POI_LIST =
+		"SELECT p.lat, p.lon, p.name, p.descr, p.pointid, p.pointid _id, p.pointid ID, c.iconid, c.name as catname " +
+		"FROM points p LEFT JOIN category c ON c.categoryid = p.categoryid " +
+		"ORDER BY ";
 	public Cursor getPoiListCursor(String sortColNames) {
 		if (isDatabaseReady()) {
 			return mDatabase.rawQuery(STAT_GET_POI_LIST + sortColNames, null);
@@ -123,7 +126,11 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 		return null;
 	}
 
-	public static final String STAT_PoiListNotHidden = "SELECT poi.lat, poi.lon, poi.name, poi.descr, poi.pointid, poi.pointid _id, poi.pointid ID, poi.categoryid, cat.iconid FROM points poi LEFT JOIN category cat ON cat.categoryid = poi.categoryid WHERE poi.hidden = 0 AND cat.hidden = 0 AND cat.minzoom <= @1 AND poi.lon BETWEEN @2 AND @3 AND poi.lat BETWEEN @4 AND @5 ORDER BY lat, lon";
+	public static final String STAT_PoiListNotHidden =
+		"SELECT p.lat, p.lon, p.name, p.descr, p.pointid, p.pointid _id, p.pointid ID, p.categoryid, c.iconid " +
+		"FROM points p LEFT JOIN category c ON c.categoryid = p.categoryid " +
+		"WHERE p.hidden = 0 AND c.hidden = 0 AND c.minzoom <= @1 AND p.lon BETWEEN @2 AND @3 AND p.lat BETWEEN @4 AND @5 " +
+		"ORDER BY lat, lon";
 	public Cursor getPoiListNotHiddenCursor(final int zoom, final double left, final double right, final double top, final double bottom) {
 		if (isDatabaseReady()) {
 			final String[] args = {Integer.toString(zoom + 1), Double.toString(left), Double.toString(right), Double.toString(bottom), Double.toString(top)};

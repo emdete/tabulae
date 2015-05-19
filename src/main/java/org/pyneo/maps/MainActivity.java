@@ -718,6 +718,7 @@ public class MainActivity extends Activity implements Constants {
 
 	@Override
 	protected void onResume() {
+		org.pyneo.maps.utils.TableE.test(null);
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		final SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 		if (mMapId == null)

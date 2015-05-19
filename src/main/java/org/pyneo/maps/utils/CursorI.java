@@ -15,11 +15,12 @@ public class CursorI implements Iterable<Cursor> {
 			if (cursor == null)
 				return false;
 			boolean ret = cursor.moveToNext();
-			if (!ret)
+			if (!ret) {
 				cursor.close();
+				cursor = null;
+			}
 			return ret;
-			// getCount()
-			// moveToPosition(offset)
+			// getCount() moveToPosition(offset)
 		}
 		public Cursor next() {
 			return cursor;
@@ -39,10 +40,13 @@ public class CursorI implements Iterable<Cursor> {
 		return ret;
 	}
 
-	static void test() {
-		CursorI cursorI = new CursorI(null);
-		for (Cursor o: cursorI) {
-			;
+	/**
+	* short sample on how to use the above code. the foreach will work, if a
+	* cursor is wrapped into a CursorI as shown below.
+	*/
+	static void test(Cursor cursor) {
+		for (Cursor o: new CursorI(cursor)) {
+			; // do something with the row
 		}
 	}
 }

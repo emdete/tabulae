@@ -63,7 +63,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 	protected void onPause() {
 		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = uiState.edit();
-		editor.putString("sortOrder", mSortOrder);
+		editor.putString("sort_order", mSortOrder);
 		editor.commit();
 		super.onPause();
 	}
@@ -71,7 +71,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 	@Override
 	protected void onResume() {
 		final SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
-		mSortOrder = uiState.getString("sortOrder", mSortOrder);
+		mSortOrder = uiState.getString("sort_order", mSortOrder);
 
 		FillData();
 		super.onResume();
@@ -127,24 +127,24 @@ public class PoiListActivity extends ListActivity implements Constants {
 			DoExportKml();
 
 		} else if (item.getItemId() == R.id.menu_sort_name) {
-			if (mSortOrder.contains("points.name")) {
+			if (mSortOrder.contains("p.name")) {
 				if (mSortOrder.contains("asc"))
-					mSortOrder = "points.name desc";
+					mSortOrder = "p.name desc";
 				else
-					mSortOrder = "points.name asc";
+					mSortOrder = "p.name asc";
 			} else {
-				mSortOrder = "points.name asc";
+				mSortOrder = "p.name asc";
 			}
 			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getPoiListCursor(mSortOrder));
 
 		} else if (item.getItemId() == R.id.menu_sort_category) {
-			if (mSortOrder.contains("category.name")) {
+			if (mSortOrder.contains("c.name")) {
 				if (mSortOrder.contains("asc"))
-					mSortOrder = "category.name desc";
+					mSortOrder = "c.name desc";
 				else
-					mSortOrder = "category.name asc";
+					mSortOrder = "c.name asc";
 			} else {
-				mSortOrder = "category.name asc";
+				mSortOrder = "c.name asc";
 			}
 			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getPoiListCursor(mSortOrder));
 
@@ -309,8 +309,8 @@ public class PoiListActivity extends ListActivity implements Constants {
 		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 			if (cursor.getColumnName(columnIndex).equalsIgnoreCase(CATNAME)) {
 				((TextView)view.findViewById(R.id.title2)).setText(cursor.getString(cursor.getColumnIndex(CATNAME))
-						+ ", " + mCf.convertLat(cursor.getDouble(cursor.getColumnIndex(LAT)))
-						+ ", " + mCf.convertLon(cursor.getDouble(cursor.getColumnIndex(LON)))
+					+ ", " + mCf.convertLat(cursor.getDouble(cursor.getColumnIndex(LAT)))
+					+ ", " + mCf.convertLon(cursor.getDouble(cursor.getColumnIndex(LON)))
 				);
 				return true;
 			}
