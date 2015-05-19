@@ -41,7 +41,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 	private PoiManager mPoiManager;
 	private ProgressDialog dlgWait;
 	private String mSortOrder;
-	private SimpleCursorAdapter.ViewBinder mViewBinder;
+	private CoordFormatter mCf;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 		registerForContextMenu(getListView());
 		mPoiManager = new PoiManager(this);
 		mSortOrder = "lat asc, lon asc";
-		mViewBinder = new PoiViewBinder();
+		mCf = new CoordFormatter(getApplicationContext());
 	}
 
 	@Override
@@ -84,7 +84,25 @@ public class PoiListActivity extends ListActivity implements Constants {
 			R.layout.poi_list_item, c,
 			new String[]{"name", "iconid", "catname", "descr"},
 			new int[]{R.id.title1, R.id.pic, R.id.title2, R.id.descr});
-		adapter.setViewBinder(mViewBinder);
+		adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder(){
+			@Override
+			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+				if (cursor.getColumnName(columnIndex).equalsIgnoreCase(CATNAME)) {
+					((TextView)view.findViewById(R.id.title2)).setText(cursor.getString(cursor.getColumnIndex(CATNAME))
+						+ ", " + mCf.convertLat(cursor.getDouble(cursor.getColumnIndex(LAT)))
+						+ ", " + mCf.convertLon(cursor.getDouble(cursor.getColumnIndex(LON)))
+					);
+					return true;
+				}
+				else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
+					int id = cursor.getInt(columnIndex);
+					Ut.i("setViewValue find id=" + id);
+					((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));
+					return true;
+				}
+				return false;
+			}
+		});
 		setListAdapter(adapter);
 		Ut.i("filled data");
 	}
@@ -301,29 +319,6 @@ public class PoiListActivity extends ListActivity implements Constants {
 		super.onListItemClick(l, v, position, id);
 	}
 
-	private class PoiViewBinder implements SimpleCursorAdapter.ViewBinder {
-		private static final String CATNAME = "catname";
-		private static final String ICONID = "iconid";
-		private CoordFormatter mCf = new CoordFormatter(PoiListActivity.this.getApplicationContext());
-
-		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-			if (cursor.getColumnName(columnIndex).equalsIgnoreCase(CATNAME)) {
-				((TextView)view.findViewById(R.id.title2)).setText(cursor.getString(cursor.getColumnIndex(CATNAME))
-					+ ", " + mCf.convertLat(cursor.getDouble(cursor.getColumnIndex(LAT)))
-					+ ", " + mCf.convertLon(cursor.getDouble(cursor.getColumnIndex(LON)))
-				);
-				return true;
-			}
-			else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
-				int id = cursor.getInt(columnIndex);
-				Ut.i("setViewValue find id=" + id);
-				((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));
-				return true;
-			}
-			return false;
-		}
-
-	}
 
 	class ExportKmlTask extends AsyncTask<Void, Void, String> {
 

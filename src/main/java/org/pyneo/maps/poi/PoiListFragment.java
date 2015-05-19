@@ -78,9 +78,7 @@ public class PoiListFragment extends ListFragment implements Constants, LoaderMa
 		mAdapter.changeCursor(null);
 	}
 
-	private static class PoiViewBinder implements PoiListSimpleCursorAdapter.ViewBinder {
-		private static final String CATNAME = "catname";
-		private static final String ICONID = "iconid";
+	private static class PoiViewBinder implements MultiChoiceSimpleCursorAdapter.ViewBinder {
 		private Context ctx;
 
 		public PoiViewBinder(Context context) {

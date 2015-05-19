@@ -83,7 +83,7 @@ public class TableE {
 	}
 
 	/*
-	* here the sample code start. the columns of a table are defined as a java
+	* here the sample code starts. the columns of a table are defined as a java
 	* enum. from that you can create the statements and use the ordinal for the
 	* cursor getters. this method does not support col types (a dd) because
 	* sqlite doesn't have one. sqlite has types of cols per row.

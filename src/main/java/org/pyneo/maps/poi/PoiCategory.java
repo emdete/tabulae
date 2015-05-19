@@ -1,6 +1,7 @@
 package org.pyneo.maps.poi;
 
 import org.pyneo.maps.R;
+import org.pyneo.maps.utils.Ut;
 
 public class PoiCategory implements Constants {
 	private final int Id;

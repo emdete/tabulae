@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -84,6 +85,18 @@ public class PoiActivity extends Activity implements Constants {
 			c,
 			new String[]{"name", "iconid"},
 			new int[]{android.R.id.text1, R.id.pic});
+		adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+			@Override
+			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+				if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
+					int id = cursor.getInt(columnIndex);
+					Ut.i("setViewValue find id=" + id);
+					((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));
+					return true;
+				}
+				return false;
+			}
+		});
 		adapter.setDropDownViewResource(R.layout.poi_category_spinner_dropdown);
 		mSpinner.setAdapter(adapter);
 		Bundle extras = getIntent().getExtras();

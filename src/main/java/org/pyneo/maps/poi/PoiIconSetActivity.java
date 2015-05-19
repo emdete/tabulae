@@ -25,7 +25,7 @@ public class PoiIconSetActivity extends Activity implements Constants {
 		mGridInt.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				//Toast.makeText(PoiIconSetActivity.this, "sel="+arg3, Toast.LENGTH_SHORT).show();
-				setResult(RESULT_OK, (new Intent()).putExtra("iconid", POI_ICON_RESOURCE_IDS[arg2]));
+				setResult(RESULT_OK, (new Intent()).putExtra("iconid", arg2));
 				finish();
 			}
 		});
@@ -37,22 +37,20 @@ public class PoiIconSetActivity extends Activity implements Constants {
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ImageView i;
-
 			if (convertView == null) {
 				i = new ImageView(PoiIconSetActivity.this);
 				i.setScaleType(ImageView.ScaleType.FIT_CENTER);
 				i.setLayoutParams(new GridView.LayoutParams(50, 50));
-			} else {
+			}
+			else {
 				i = (ImageView)convertView;
 			}
-
-			i.setImageResource(POI_ICON_RESOURCE_IDS[position]);
-
+			i.setImageResource(PoiActivity.resourceFromPoiIconId(position));
 			return i;
 		}
 
 		public final int getCount() {
-			return 5;
+			return POI_ICON_RESOURCE_IDS.length;
 		}
 
 		public final Object getItem(int position) {
@@ -60,7 +58,7 @@ public class PoiIconSetActivity extends Activity implements Constants {
 		}
 
 		public final long getItemId(int position) {
-			return POI_ICON_RESOURCE_IDS[position];
+			return position;
 		}
 	}
 }

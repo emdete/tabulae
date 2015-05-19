@@ -12,6 +12,7 @@ public interface Constants extends org.pyneo.Constants {
 	public static final int ZOOM_CONTROL_TOP = 1;
 	public static final String ACCURACY = "accuracy";
 	public static final String ACTION_CONVERSATIONS_REQUEST = "eu.siacs.conversations.location.request";
+	public static final String CATNAME = "catname";
 	public static final String ACTION_CONVERSATIONS_SHOW = "eu.siacs.conversations.location.show";
 	public static final String ACTION_SHOW_MAP_ID = "SHOW_MAP_ID";
 	public static final String ACTION_SHOW_POINTS = "org.pyneo.maps.action.SHOW_POINTS";
@@ -49,7 +50,6 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String NETWORK = "network";
 	public static final String ONE_SPACE = " ";
 	public static final String PARAMS = "params";
-	public static final String POINTSOURCEID = "pointsourceid";
 	public static final String POINTS = "points";
 	public static final String SHOW = "show";
 	public static final String SPEED = "speed";
@@ -65,8 +65,7 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String SQL_CREATE_drop_activity = "DROP TABLE IF EXISTS 'activity';";
 	public static final String SQL_CREATE_insert_activity = "INSERT INTO 'activity' (activityid, name) VALUES (%d, '%s');";
 	public static final String SQL_CREATE_maps = "CREATE TABLE IF NOT EXISTS 'maps' (mapid INTEGER NOT NULL PRIMARY KEY UNIQUE, name VARCHAR, type INTEGER, params VARCHAR)";
-	public static final String SQL_CREATE_points = "CREATE TABLE 'points' (pointid INTEGER NOT NULL PRIMARY KEY UNIQUE,name VARCHAR,descr VARCHAR,lat FLOAT DEFAULT '0',lon FLOAT DEFAULT '0',alt FLOAT DEFAULT '0',hidden INTEGER DEFAULT '0',categoryid INTEGER,pointsourceid INTEGER,iconid INTEGER DEFAULT NULL);";
-	public static final String SQL_CREATE_pointsource = "CREATE TABLE IF NOT EXISTS 'pointsource' (pointsourceid INTEGER NOT NULL PRIMARY KEY UNIQUE, name VARCHAR);";
+	public static final String SQL_CREATE_points = "CREATE TABLE 'points' (pointid INTEGER NOT NULL PRIMARY KEY UNIQUE,name VARCHAR,descr VARCHAR,lat FLOAT DEFAULT '0',lon FLOAT DEFAULT '0',alt FLOAT DEFAULT '0',hidden INTEGER DEFAULT '0',categoryid INTEGER,iconid INTEGER DEFAULT NULL);";
 	public static final String SQL_CREATE_routes = "CREATE TABLE IF NOT EXISTS 'routes' (routeid INTEGER NOT NULL PRIMARY KEY UNIQUE, name VARCHAR, descr VARCHAR, date DATETIME, show INTEGER, duration INTEGER, distance INTEGER, categoryid INTEGER, style VARCHAR);";
 	public static final String SQL_CREATE_trackpoints = "CREATE TABLE IF NOT EXISTS 'trackpoints' (trackid INTEGER NOT NULL, id INTEGER NOT NULL PRIMARY KEY UNIQUE, lat FLOAT, lon FLOAT, alt FLOAT, speed FLOAT, date DATETIME);";
 	public static final String SQL_CREATE_tracks = "CREATE TABLE IF NOT EXISTS 'tracks' (trackid INTEGER NOT NULL PRIMARY KEY UNIQUE, name VARCHAR, descr VARCHAR, date DATETIME, show INTEGER, cnt INTEGER, duration INTEGER, distance INTEGER, categoryid INTEGER, activity INTEGER, style VARCHAR);";
@@ -75,7 +74,7 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String SQL_UPDATE_1_1 = "DROP TABLE IF EXISTS 'points_45392250'; ";
 	public static final String SQL_UPDATE_1_2 = "CREATE TABLE 'points_45392250' AS SELECT * FROM 'points';";
 	public static final String SQL_UPDATE_1_3 = "DROP TABLE 'points';";
-	public static final String SQL_UPDATE_1_5 = "INSERT INTO 'points' (pointid, name, descr, lat, lon, alt, hidden, categoryid, pointsourceid, iconid) SELECT pointid, name, descr, lat, lon, alt, hidden, categoryid, pointsourceid, 0 FROM 'points_45392250';";
+	public static final String SQL_UPDATE_1_5 = "INSERT INTO 'points' (pointid, name, descr, lat, lon, alt, hidden, categoryid, iconid) SELECT pointid, name, descr, lat, lon, alt, hidden, categoryid, 0 FROM 'points_45392250';";
 	public static final String SQL_UPDATE_1_6 = "DROP TABLE 'points_45392250';";
 	public static final String SQL_UPDATE_1_7 = "DROP TABLE IF EXISTS 'category_46134312'; ";
 	public static final String SQL_UPDATE_1_8 = "CREATE TABLE 'category_46134312' AS SELECT * FROM 'category';";

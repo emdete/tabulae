@@ -13,14 +13,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.R;
 
-public class PoiCategoryListActivity extends ListActivity {
+public class PoiCategoryListActivity extends ListActivity implements Constants {
 	private PoiManager mPoiManager;
-	private SimpleCursorAdapter.ViewBinder mViewBinder = new CheckBoxViewBinder();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,23 @@ public class PoiCategoryListActivity extends ListActivity {
 			R.layout.poi_category_list_item, c,
 			new String[]{"name", "iconid", "hidden"},
 			new int[]{R.id.title1, R.id.pic, R.id.checkbox});
-		((SimpleCursorAdapter)adapter).setViewBinder(mViewBinder);
+		((SimpleCursorAdapter)adapter).setViewBinder(new SimpleCursorAdapter.ViewBinder(){
+			@Override
+			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+				if (cursor.getColumnName(columnIndex).equalsIgnoreCase(HIDDEN)) {
+					((CheckBox)view.findViewById(R.id.checkbox)).setChecked(cursor.getInt(columnIndex) == 1);
+					return true;
+				}
+				else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
+					int id = cursor.getInt(columnIndex);
+					Ut.i("setViewValue find id=" + id);
+					((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));
+					return true;
+				}
+				return false;
+			}
+
+		});
 		setListAdapter(adapter);
 	}
 
@@ -107,7 +124,6 @@ public class PoiCategoryListActivity extends ListActivity {
 	public boolean onContextItemSelected(MenuItem item) {
 		int id = (int)((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).id;
 		PoiCategory category = mPoiManager.getPoiCategory(id);
-
 		if (item.getItemId() == R.id.menu_editpoi) {
 			startActivity((new Intent(this, PoiCategoryActivity.class)).putExtra("id", id));
 		} else if (item.getItemId() == R.id.menu_deletepoi) {
@@ -122,21 +138,6 @@ public class PoiCategoryListActivity extends ListActivity {
 			mPoiManager.updatePoiCategory(category);
 			FillData();
 		}
-
 		return super.onContextItemSelected(item);
 	}
-
-	private class CheckBoxViewBinder implements SimpleCursorAdapter.ViewBinder {
-		private static final String HIDDEN = "hidden";
-
-		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-			if (cursor.getColumnName(columnIndex).equalsIgnoreCase(HIDDEN)) {
-				((CheckBox)view.findViewById(R.id.checkbox)).setChecked(cursor.getInt(columnIndex) == 1);
-				return true;
-			}
-			return false;
-		}
-
-	}
-
 }

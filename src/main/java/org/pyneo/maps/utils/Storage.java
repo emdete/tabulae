@@ -98,7 +98,6 @@ public class Storage implements Constants {
 		@Override
 		public void onCreate(final SQLiteDatabase db) {
 			db.execSQL(SQL_CREATE_points);
-			db.execSQL(SQL_CREATE_pointsource);
 			db.execSQL(SQL_CREATE_category);
 			db.execSQL(SQL_ADD_category);
 			db.execSQL(SQL_CREATE_tracks);

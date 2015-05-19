@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.R;
 
 public class PoiCategoryActivity extends Activity implements Constants {
@@ -24,26 +25,21 @@ public class PoiCategoryActivity extends Activity implements Constants {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		this.setContentView(R.layout.poi_category);
-
 		if (mPoiManager == null)
 			mPoiManager = new PoiManager(this);
-
 		mTitle = (EditText)findViewById(R.id.Title);
 		mHidden = (CheckBox)findViewById(R.id.Hidden);
 		mIcon = (ImageView)findViewById(R.id.ImageIcon);
 		mMinZoom = (EditText)findViewById(R.id.MinZoom);
-
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
 		int id = extras.getInt("id", Constants.EMPTY_ID);
-
 		if (id < 0) {
 			mPoiCategory = new PoiCategory();
 			mTitle.setText(extras.getString("title"));
 			mHidden.setChecked(false);
-			mIcon.setImageResource(mPoiCategory.IconId);
+			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.IconId));
 			mMinZoom.setText("14");
 		} else {
 			mPoiCategory = mPoiManager.getPoiCategory(id);
@@ -53,10 +49,9 @@ public class PoiCategoryActivity extends Activity implements Constants {
 
 			mTitle.setText(mPoiCategory.Title);
 			mHidden.setChecked(mPoiCategory.Hidden);
-			mIcon.setImageResource(mPoiCategory.IconId);
+			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.IconId));
 			mMinZoom.setText(Integer.toString(mPoiCategory.MinZoom));
 		}
-
 		findViewById(R.id.saveButton)
 			.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
@@ -70,7 +65,6 @@ public class PoiCategoryActivity extends Activity implements Constants {
 				}
 			});
 		mIcon.setOnClickListener(new OnClickListener() {
-
 			public void onClick(View v) {
 				doSelectIcon();
 			}
@@ -102,22 +96,18 @@ public class PoiCategoryActivity extends Activity implements Constants {
 		mPoiCategory.Title = mTitle.getText().toString();
 		mPoiCategory.Hidden = mHidden.isChecked();
 		mPoiCategory.MinZoom = Integer.parseInt(mMinZoom.getText().toString());
-
 		mPoiManager.updatePoiCategory(mPoiCategory);
 		finish();
-
 		Toast.makeText(this, R.string.message_saved, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
 		if (resultCode == RESULT_OK) {
 			mPoiCategory.IconId = data.getIntExtra("iconid", 0);
-			mIcon.setImageResource(mPoiCategory.IconId);
+			Ut.i("onActivityResult: IconId=" + mPoiCategory.IconId);
+			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.IconId));
 		}
-
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-
 }

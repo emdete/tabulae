@@ -96,14 +96,14 @@ public class PoiManager implements Constants {
 	}
 
 	public void addPoi(final String title, final String descr, GeoPoint point) {
-		mPoiStorage.addPoi(title, descr, point.getLatitude(), point.getLongitude(), ZERO, ZERO, ZERO, ZERO, 0);
+		mPoiStorage.addPoi(title, descr, point.getLatitude(), point.getLongitude(), ZERO, ZERO, ZERO, 0);
 	}
 
 	public void updatePoi(final PoiPoint point) {
 		if (point.getId() < 0)
-			mPoiStorage.addPoi(point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mPointSourceId, point.mHidden? ONE: ZERO, point.mIconId);
+			mPoiStorage.addPoi(point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mHidden? ONE: ZERO, point.mIconId);
 		else
-			mPoiStorage.updatePoi(point.getId(), point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mPointSourceId, point.mHidden? ONE: ZERO, point.mIconId);
+			mPoiStorage.updatePoi(point.getId(), point.mTitle, point.mDescr, point.mGeoPoint.getLatitude(), point.mGeoPoint.getLongitude(), point.mAlt, point.mCategoryId, point.mHidden? ONE: ZERO, point.mIconId);
 	}
 
 	private SparseArray<PoiPoint> doCreatePoiListFromCursor(Cursor c) {
@@ -112,7 +112,7 @@ public class PoiManager implements Constants {
 			if (c.moveToFirst()) {
 				do {
 					Ut.d("doCreatePoiListFromCursor c=" + c);
-					// poi.lat, poi.lon, poi.name, poi.descr, poi.pointid, poi.pointid _id, poi.pointid ID, poi.categoryid, cat.iconid
+					// lat, lon, name, descr, pointid, pointid _id, pointid ID, categoryid, cat.iconid
 					items.put(
 						c.getInt(4), new PoiPoint(
 							c.getInt(4),
@@ -154,19 +154,18 @@ public class PoiManager implements Constants {
 		final Cursor c = mPoiStorage.getPoi(id);
 		if (c != null) {
 			if (c.moveToFirst())
+					// lat, lon, name, descr, pointid, pointid _id, pointid ID, categoryid, cat.iconid
 				point = new PoiPoint(
 					c.getInt(4),
 					c.getString(2),
 					c.getString(3),
 					new GeoPoint((int)(1E6 * c.getDouble(0)), (int)(1E6 * c.getDouble(1))),
-					c.getInt(9),
+					c.getInt(8),
 					c.getInt(7),
 					c.getDouble(5),
-					c.getInt(8),
 					c.getInt(6));
 			c.close();
 		}
-
 		return point;
 	}
 

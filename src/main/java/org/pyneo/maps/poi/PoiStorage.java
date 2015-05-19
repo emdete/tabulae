@@ -23,7 +23,6 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.track.TrackStorage;
 import org.pyneo.maps.utils.Storage;
 import org.pyneo.maps.utils.Ut;
-import org.pyneo.maps.utils.Ut;
 
 public class PoiStorage extends TrackStorage implements Constants { // TODO extend Storage from util
 	public PoiStorage(Context ctx) {
@@ -32,7 +31,7 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 
 	// POI ----------------------------------------------------------------------------
 
-	public long addPoi(final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int aPointSourceId, final int hidden, final int iconid) {
+	public long addPoi(final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int hidden, final int iconid) {
 		long newId = -1;
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
@@ -42,7 +41,6 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 			cv.put(LON, aLon);
 			cv.put(ALT, aAlt);
 			cv.put(CATEGORYID, aCategoryId);
-			cv.put(POINTSOURCEID, aPointSourceId);
 			cv.put(HIDDEN, hidden);
 			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
 				Ut.e("iconid="+iconid, new Exception());
@@ -55,7 +53,7 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 		return newId;
 	}
 
-	public void updatePoi(final int id, final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int aPointSourceId, final int hidden, final int iconid) {
+	public void updatePoi(final int id, final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int hidden, final int iconid) {
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
 			cv.put(NAME, aName);
@@ -64,7 +62,6 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 			cv.put(LON, aLon);
 			cv.put(ALT, aAlt);
 			cv.put(CATEGORYID, aCategoryId);
-			cv.put(POINTSOURCEID, aPointSourceId);
 			cv.put(HIDDEN, hidden);
 			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
 				Ut.e("iconid="+iconid, new Exception());
@@ -92,7 +89,7 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 		}
 	}
 
-	public static final String STAT_getPoi = "SELECT lat, lon, name, descr, pointid, alt, hidden, categoryid, pointsourceid, iconid FROM points WHERE pointid = @1";
+	public static final String STAT_getPoi = "SELECT lat, lon, name, descr, pointid, alt, hidden, categoryid, iconid FROM points WHERE pointid = @1";
 	public Cursor getPoi(final int id) {
 		if (isDatabaseReady()) {
 			final String[] args = {Integer.toString(id)};
