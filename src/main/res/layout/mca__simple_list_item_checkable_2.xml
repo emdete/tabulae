@@ -4,9 +4,8 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:paddingBottom="2dip"
-	android:background="@color/primary"
+	android:background="@color/secondary"
     android:paddingTop="2dip" >
-
     <TextView
         android:id="@android:id/text1"
         android:layout_width="match_parent"
@@ -14,7 +13,6 @@
         android:layout_marginTop="6dip"
         android:paddingLeft="@dimen/mca__listPreferredItemPaddingLeft"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <TextView
         android:id="@android:id/text2"
         android:layout_width="match_parent"
@@ -23,5 +21,4 @@
         android:layout_below="@android:id/text1"
         android:paddingLeft="@dimen/mca__listPreferredItemPaddingLeft"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
 </com.manuelpeinado.multichoiceadapter.CheckableTwoLineListItem>

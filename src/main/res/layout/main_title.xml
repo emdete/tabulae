@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
 	android:background="@color/primary"
     android:orientation="vertical" >
-
 	<TextView
 	    android:id="@+id/left_text"
 	    android:layout_width="wrap_content"
@@ -17,13 +16,11 @@
 	    android:text="@string/app_user_label"
 	    android:textColor="@android:color/white"
 	    android:textStyle="bold" />
-
 	<LinearLayout
 	    android:id="@+id/right"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentRight="true" >
-
 		<TextView
 		    android:id="@+id/gps_text"
 		    android:layout_width="wrap_content"
@@ -32,7 +29,6 @@
 		    android:text="@string/app_name"
 		    android:textColor="@android:color/white"
 		    android:textStyle="bold" />
-
 		<TextView
 		    android:id="@+id/right_text"
 		    android:layout_width="wrap_content"
@@ -41,7 +37,5 @@
 		    android:text="@string/app_name"
 		    android:textColor="@android:color/white"
 		    android:textStyle="bold" />
-
 	</LinearLayout>
-
 </RelativeLayout>

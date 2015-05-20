@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:background="@color/primary"
 	android:orientation="horizontal"
 	>
 	<ImageView
@@ -23,6 +22,5 @@
 		android:ellipsize="marquee"
 		android:gravity="center_vertical"
 		android:singleLine="true"
-		android:text="HELLO"
 		/>
 </LinearLayout>

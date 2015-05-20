@@ -32,15 +32,12 @@ public class PoiIconSetActivity extends Activity implements Constants {
 	}
 
 	public class AppsAdapter extends BaseAdapter {
-		public AppsAdapter() {
-		}
-
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ImageView i;
 			if (convertView == null) {
 				i = new ImageView(PoiIconSetActivity.this);
-				i.setScaleType(ImageView.ScaleType.FIT_CENTER);
-				i.setLayoutParams(new GridView.LayoutParams(50, 50));
+				//i.setScaleType(ImageView.ScaleType.FIT_CENTER);
+				//i.setLayoutParams(new GridView.LayoutParams(50, 50));
 			}
 			else {
 				i = (ImageView)convertView;

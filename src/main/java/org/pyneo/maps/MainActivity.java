@@ -233,7 +233,7 @@ public class MainActivity extends Activity implements Constants {
 		mMap.addView(mCompassView, compassParams);
 		if (pref_show_autofollow_button) {
 			ivAutoFollow = new ImageView(this);
-			ivAutoFollow.setImageResource(R.drawable.autofollow);
+			ivAutoFollow.setImageResource(R.drawable.b_autofollow);
 			ivAutoFollow.setVisibility(ImageView.INVISIBLE);
 			final RelativeLayout.LayoutParams followParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);

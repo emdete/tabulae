@@ -305,7 +305,7 @@ public class MapDownloaderService extends Service {
 		CharSequence text = getText(R.string.downloader_notif_ticket);
 
 		// Set the icon, scrolling text and timestamp
-		mNotification = new Notification(R.drawable.r_download, text, System.currentTimeMillis());
+		mNotification = new Notification(R.drawable.ic_action_download, text, System.currentTimeMillis());
 		mNotification.flags = mNotification.flags | Notification.FLAG_NO_CLEAR;
 
 		// The PendingIntent to launch our activity if the user selects this

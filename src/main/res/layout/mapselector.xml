@@ -2,13 +2,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ScrollView1"
     android:layout_width="fill_parent"
-	android:background="@color/primary"
+	android:background="@color/secondary"
     android:layout_height="fill_parent" >
-
     <ExpandableListView
         android:id="@+id/expandableListView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </ExpandableListView>
-
+        android:layout_height="match_parent"
+        />
 </ScrollView>
