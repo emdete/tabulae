@@ -14,7 +14,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:id="@id/pic"
-			android:src="@drawable/ic_track_background"
+			android:src="@drawable/track_background"
 			android:layout_marginTop="9dp"
 			android:layout_marginLeft="8dp"
 			/>

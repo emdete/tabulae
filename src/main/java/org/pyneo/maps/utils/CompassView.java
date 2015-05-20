@@ -23,7 +23,7 @@ public class CompassView extends View {
 
 	private boolean getCompassImg() {
 		if (mCompass == null) {
-			this.mCompass = mCtx.getResources().getDrawable(R.drawable.needle_compass);
+			this.mCompass = mCtx.getResources().getDrawable(R.drawable.ic_compass);
 			return true;
 		}
 		else {

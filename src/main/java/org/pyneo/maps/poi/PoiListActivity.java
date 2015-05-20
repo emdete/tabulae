@@ -345,8 +345,8 @@ public class PoiListActivity extends ListActivity implements Constants {
 						SimpleXML category = ext.createChild(Constants.CATEGORYID);
 						final PoiCategory poiCat = mPoiManager.getPoiCategory(poi.mCategoryId);
 						category.setAttr(Constants.CATEGORYID, Integer.toString(poiCat.getId()));
-						category.setAttr(Constants.NAME, poiCat.Title);
-						category.setAttr(Constants.ICONID, Integer.toString(poiCat.IconId));
+						category.setAttr(Constants.NAME, poiCat.mTitle);
+						category.setAttr(Constants.ICONID, Integer.toString(poiCat.mIconId));
 
 					} while (c.moveToNext());
 				}
@@ -411,13 +411,13 @@ public class PoiListActivity extends ListActivity implements Constants {
 						wpt.createChild(Constants.ELE).setText(Double.toString(poi.mAlt));
 						wpt.createChild(Constants.NAME).setText(poi.mTitle);
 						wpt.createChild(Constants.DESC).setText(poi.mDescr);
-						wpt.createChild(Constants.TYPE).setText(mPoiManager.getPoiCategory(poi.mCategoryId).Title);
+						wpt.createChild(Constants.TYPE).setText(mPoiManager.getPoiCategory(poi.mCategoryId).mTitle);
 						SimpleXML ext = wpt.createChild("extensions");
 						SimpleXML category = ext.createChild(Constants.CATEGORYID);
 						final PoiCategory poiCat = mPoiManager.getPoiCategory(poi.mCategoryId);
 						category.setAttr(Constants.CATEGORYID, Integer.toString(poiCat.getId()));
-						category.setAttr(Constants.NAME, poiCat.Title);
-						category.setAttr(Constants.ICONID, Integer.toString(poiCat.IconId));
+						category.setAttr(Constants.NAME, poiCat.mTitle);
+						category.setAttr(Constants.ICONID, Integer.toString(poiCat.mIconId));
 
 					} while (c.moveToNext());
 				}

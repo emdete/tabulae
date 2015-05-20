@@ -28,6 +28,6 @@
 		android:title="@string/menu_categorylist" />
 	<item
 		android:id="@+id/menu_importpoi"
-		android:icon="@drawable/ric_menu_attachment"
+		android:icon="@drawable/ic_action_attachment"
 		android:title="@string/menu_import" />
 </menu>

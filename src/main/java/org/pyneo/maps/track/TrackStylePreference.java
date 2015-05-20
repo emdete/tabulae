@@ -89,7 +89,7 @@ public class TrackStylePreference extends Preference implements Preference.OnPre
 		widgetFrameView.setMinimumWidth(0);
 
 		final Drawable dr = new TrackStyleDrawable(Color, Width, ColorShadow, ShadowRadius);
-		final Drawable[] d = {getContext().getResources().getDrawable(R.drawable.ic_track_background), dr};
+		final Drawable[] d = {getContext().getResources().getDrawable(R.drawable.track_background), dr};
 		LayerDrawable ld = new LayerDrawable(d);
 		iView.setBackgroundDrawable(ld);
 	}

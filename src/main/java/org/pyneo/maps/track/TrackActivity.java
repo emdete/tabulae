@@ -89,7 +89,7 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 			});
 
 		final Drawable dr = new TrackStyleDrawable(mTrack.Color, mTrack.Width, mTrack.ColorShadow, mTrack.ShadowRadius);
-		final Drawable[] d = {getResources().getDrawable(R.drawable.ic_track_background), dr};
+		final Drawable[] d = {getResources().getDrawable(R.drawable.track_background), dr};
 		LayerDrawable ld = new LayerDrawable(d);
 		((Button)findViewById(R.id.trackstyle)).setCompoundDrawablesWithIntrinsicBounds(null, null, ld, null);
 	}
@@ -127,7 +127,7 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 		mTrack.ShadowRadius = shadowradius;
 		mTrack.Style = mTrack.getStyle();
 		final Drawable dr = new TrackStyleDrawable(mTrack.Color, mTrack.Width, mTrack.ColorShadow, mTrack.ShadowRadius);
-		final Drawable[] d = {getResources().getDrawable(R.drawable.ic_track_background), dr};
+		final Drawable[] d = {getResources().getDrawable(R.drawable.track_background), dr};
 		LayerDrawable ld = new LayerDrawable(d);
 		((Button)findViewById(R.id.trackstyle)).setCompoundDrawablesWithIntrinsicBounds(null, null, ld, null);
 	}

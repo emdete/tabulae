@@ -191,9 +191,9 @@ public class PoiManager implements Constants {
 
 	public void updatePoiCategory(PoiCategory poiCategory) {
 		if (poiCategory.getId() < ZERO)
-			mPoiStorage.addPoiCategory(poiCategory.Title, poiCategory.Hidden? ONE: ZERO, poiCategory.IconId);
+			mPoiStorage.addPoiCategory(poiCategory.mTitle, poiCategory.mHidden? ONE: ZERO, poiCategory.mIconId);
 		else
-			mPoiStorage.updatePoiCategory(poiCategory.getId(), poiCategory.Title, poiCategory.Hidden? ONE: ZERO, poiCategory.IconId, poiCategory.MinZoom);
+			mPoiStorage.updatePoiCategory(poiCategory.getId(), poiCategory.mTitle, poiCategory.mHidden? ONE: ZERO, poiCategory.mIconId, poiCategory.mMinZoom);
 	}
 
 	public void deleteAllPoi() {

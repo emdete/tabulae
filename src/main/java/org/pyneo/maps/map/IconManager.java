@@ -31,28 +31,28 @@ class IconManager {
 		final Bitmap bmp = getBitmapFileFromProp("pref_icon", "icons/cursors");
 		if (bmp != null)
 			return bmp;
-		return getBitmap(R.drawable.needle_off);
+		return getBitmap(R.drawable.map_needle_off);
 	}
 
 	public Bitmap getLocationIcon() {
 		final Bitmap bmp = getBitmapFileFromProp("pref_person_icon", "icons/cursors");
 		if (bmp != null)
 			return bmp;
-		return getBitmap(R.drawable.needle_pinned);
+		return getBitmap(R.drawable.map_needle_pinned);
 	}
 
 	public Bitmap getArrowIcon() {
 		final Bitmap bmp = getBitmapFileFromProp("pref_arrow_icon", "icons/cursors");
 		if (bmp != null)
 			return bmp;
-		return getBitmap(R.drawable.needle);
+		return getBitmap(R.drawable.map_needle);
 	}
 
 	public Bitmap getTargetIcon() {
 		final Bitmap bmp = getBitmapFileFromProp("pref_target_icon", "icons/cursors");
 		if (bmp != null)
 			return bmp;
-		return getBitmap(R.drawable.r_location);
+		return getBitmap(R.drawable.map_location);
 	}
 
 	private Bitmap getBitmapFileFromProp(String propName, String folderName) {

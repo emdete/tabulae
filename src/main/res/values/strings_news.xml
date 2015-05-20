@@ -2,6 +2,7 @@
 <resources>
 <string name='whats_new_dialog_text' translatable='false'>
 v.1.0.4\n
+- fix icon issues\n
 + introduce common database layer\n
 \n
 v.1.0.3\n

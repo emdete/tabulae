@@ -39,7 +39,7 @@ public class PoiCategoryActivity extends Activity implements Constants {
 			mPoiCategory = new PoiCategory();
 			mTitle.setText(extras.getString("title"));
 			mHidden.setChecked(false);
-			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.IconId));
+			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.mIconId));
 			mMinZoom.setText("14");
 		} else {
 			mPoiCategory = mPoiManager.getPoiCategory(id);
@@ -47,10 +47,10 @@ public class PoiCategoryActivity extends Activity implements Constants {
 			if (mPoiCategory == null)
 				finish();
 
-			mTitle.setText(mPoiCategory.Title);
-			mHidden.setChecked(mPoiCategory.Hidden);
-			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.IconId));
-			mMinZoom.setText(Integer.toString(mPoiCategory.MinZoom));
+			mTitle.setText(mPoiCategory.mTitle);
+			mHidden.setChecked(mPoiCategory.mHidden);
+			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.mIconId));
+			mMinZoom.setText(Integer.toString(mPoiCategory.mMinZoom));
 		}
 		findViewById(R.id.saveButton)
 			.setOnClickListener(new OnClickListener() {
@@ -93,9 +93,9 @@ public class PoiCategoryActivity extends Activity implements Constants {
 	}
 
 	private void doSaveAction() {
-		mPoiCategory.Title = mTitle.getText().toString();
-		mPoiCategory.Hidden = mHidden.isChecked();
-		mPoiCategory.MinZoom = Integer.parseInt(mMinZoom.getText().toString());
+		mPoiCategory.mTitle = mTitle.getText().toString();
+		mPoiCategory.mHidden = mHidden.isChecked();
+		mPoiCategory.mMinZoom = Integer.parseInt(mMinZoom.getText().toString());
 		mPoiManager.updatePoiCategory(mPoiCategory);
 		finish();
 		Toast.makeText(this, R.string.message_saved, Toast.LENGTH_SHORT).show();
@@ -104,9 +104,9 @@ public class PoiCategoryActivity extends Activity implements Constants {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
-			mPoiCategory.IconId = data.getIntExtra("iconid", 0);
-			Ut.d("onActivityResult: IconId=" + mPoiCategory.IconId);
-			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.IconId));
+			mPoiCategory.mIconId = data.getIntExtra("iconid", 0);
+			Ut.d("onActivityResult: IconId=" + mPoiCategory.mIconId);
+			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.mIconId));
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

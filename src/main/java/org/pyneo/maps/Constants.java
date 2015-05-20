@@ -49,6 +49,7 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String MINZOOM = "minzoom";
 	public static final String NAME = "name";
 	public static final String NETWORK = "network";
+	public static final String OFF = "off";
 	public static final String ONE_SPACE = " ";
 	public static final String PARAMS = "params";
 	public static final String POINTS = "points";

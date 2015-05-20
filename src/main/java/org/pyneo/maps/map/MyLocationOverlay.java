@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+import android.graphics.drawable.Drawable;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.DistanceFormatter;
@@ -28,7 +29,7 @@ import java.util.Locale;
 * direction of movement, centered circles to show distances (if enabled).
 */
 public class MyLocationOverlay extends TileViewOverlay {
-	private final static int CROSS_SIZE = 7;
+	private final static int CROSS_SIZE = 32; // TODO make dpi depending
 	private final static int METER_IN_PIXEL = 156412;
 	private final static int SCALE[][] = {{
 		25000000, 15000000, 8000000, 4000000, 2000000, 1000000, 500000, 250000, 100000, 50000, 25000, 15000, 8000, 4000, 2000, 1000, 500, 250, 100, 50, 25, 10, 5, }, {
@@ -58,6 +59,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 	private boolean mLineToGPS;
 	private int mUnits;
 	private TextView mLabelVw;
+	private Drawable mCenterCross;
 	private int mZoomLevel;
 	private int mScaleCorretion;
 	private double mTouchScale;
@@ -85,6 +87,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 		mUnits = Integer.parseInt(pref.getString("pref_units", "0"));
 		mDf = new DistanceFormatter(ctx);
 		mScaleCorretion = 0;
+		mCenterCross = mCtx.getResources().getDrawable(R.drawable.map_center_cross);
 		if (mLineToGPS) {
 			mLabelVw = (TextView)LayoutInflater.from(ctx).inflate(R.layout.label_map, null);
 			mLabelVw.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -219,8 +222,20 @@ public class MyLocationOverlay extends TileViewOverlay {
 		final int x = osmv.getWidth() / 2;
 		final int y = osmv.getHeight() / 2;
 		if (mNeedCrosshair) {
-			c.drawLine(x - CROSS_SIZE, y, x + CROSS_SIZE, y, mPaintCross);
-			c.drawLine(x, y - CROSS_SIZE, x, y + CROSS_SIZE, mPaintCross);
+			if (false) { // line cross?
+				c.drawLine(x - CROSS_SIZE, y, x + CROSS_SIZE, y, mPaintCross);
+				c.drawLine(x, y - CROSS_SIZE, x, y + CROSS_SIZE, mPaintCross);
+			}
+			else {
+				final int dx = mCenterCross.getIntrinsicWidth();
+				final int dy = mCenterCross.getIntrinsicHeight();
+				final int left = x - dx/2;
+				final int right = left + dx;
+				final int top = y - dy/2;
+				final int bottom = top + dy;
+				mCenterCross.setBounds(left, top, right, bottom);
+				mCenterCross.draw(c);
+			}
 		}
 	}
 }

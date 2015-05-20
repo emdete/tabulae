@@ -4,19 +4,19 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.utils.Ut;
 
 public class PoiCategory implements Constants {
-	private final int Id;
-	public String Title;
-	public boolean Hidden;
-	public int IconId;
-	public int MinZoom;
+	private final int mId;
+	String mTitle;
+	boolean mHidden;
+	int mIconId;
+	int mMinZoom;
 
 	public PoiCategory(int id, String title, boolean hidden, int iconid, int minzoom) {
 		super();
-		Id = id;
-		Title = title;
-		Hidden = hidden;
-		IconId = iconid;
-		MinZoom = minzoom;
+		mId = id;
+		mTitle = title;
+		mHidden = hidden;
+		mIconId = iconid;
+		mMinZoom = minzoom;
 	}
 
 	public PoiCategory() {
@@ -28,7 +28,7 @@ public class PoiCategory implements Constants {
 	}
 
 	public int getId() {
-		return Id;
+		return mId;
 	}
 
 }

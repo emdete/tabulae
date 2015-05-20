@@ -111,7 +111,7 @@ public class PoiCategoryListActivity extends ListActivity implements Constants {
 		PoiCategory category = mPoiManager.getPoiCategory(id);
 
 		menu.add(0, R.id.menu_editpoi, 0, getText(R.string.menu_edit));
-		if (category.Hidden)
+		if (category.mHidden)
 			menu.add(0, R.id.menu_show, 0, getText(R.string.menu_show));
 		else
 			menu.add(0, R.id.menu_hide, 0, getText(R.string.menu_hide));
@@ -130,11 +130,11 @@ public class PoiCategoryListActivity extends ListActivity implements Constants {
 			mPoiManager.deletePoiCategory(id);
 			FillData();
 		} else if (item.getItemId() == R.id.menu_hide) {
-			category.Hidden = true;
+			category.mHidden = true;
 			mPoiManager.updatePoiCategory(category);
 			FillData();
 		} else if (item.getItemId() == R.id.menu_show) {
-			category.Hidden = false;
+			category.mHidden = false;
 			mPoiManager.updatePoiCategory(category);
 			FillData();
 		}

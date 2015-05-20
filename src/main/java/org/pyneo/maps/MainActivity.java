@@ -233,7 +233,7 @@ public class MainActivity extends Activity implements Constants {
 		mMap.addView(mCompassView, compassParams);
 		if (pref_show_autofollow_button) {
 			ivAutoFollow = new ImageView(this);
-			ivAutoFollow.setImageResource(R.drawable.b_autofollow);
+			ivAutoFollow.setImageResource(R.drawable.ic_action_autofollow);
 			ivAutoFollow.setVisibility(ImageView.INVISIBLE);
 			final RelativeLayout.LayoutParams followParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -255,7 +255,7 @@ public class MainActivity extends Activity implements Constants {
 			});
 		}
 		mOverlayView = new ImageView(this);
-		mOverlayView.setImageResource(R.drawable.b_overlays);
+		mOverlayView.setImageResource(R.drawable.ic_action_overlays);
 		final int pad = getResources().getDimensionPixelSize(R.dimen.zoom_ctrl_padding);
 		mOverlayView.setPadding(0, pad, 0, pad);
 		((LinearLayout)mMap.findViewById(R.id.right_panel)).addView(mOverlayView);
@@ -499,11 +499,11 @@ public class MainActivity extends Activity implements Constants {
 				Ut.d("onCreate location sent");
 			}
 			else {
-				// TODO defere location determination
-				result.putExtra(LATITUDE, 52.0);
-				result.putExtra(LONGITUDE, 7.0);
-				result.putExtra(ALTITUDE, 90.0);
-				result.putExtra(ACCURACY, 300);
+				final GeoPoint point = mMap.getMapCenter(); // TODO defere location determination
+				result.putExtra(LATITUDE, point.getLatitude());
+				result.putExtra(LONGITUDE, point.getLongitude());
+				result.putExtra(ALTITUDE, 0.0);
+				result.putExtra(ACCURACY, 0);
 				Ut.w("onCreate cannot send latitude/longitude to conversations, dummy sent");
 			}
 			setResult(RESULT_OK, result);
@@ -1638,8 +1638,6 @@ public class MainActivity extends Activity implements Constants {
 	}
 
 	private class SampleLocationListener implements LocationListener {
-		public static final String OFF = "off";
-
 		public void onLocationChanged(Location loc) {
 			Ut.d("onLocationChanged loc=" + loc);
 			mMyLocationOverlay.setLocation(loc);
