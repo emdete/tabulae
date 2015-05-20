@@ -4,6 +4,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
+	android:background="@color/secondary"
 	>
 	<LinearLayout
 		style="@android:style/ButtonBar"
@@ -37,7 +38,6 @@
 	<FrameLayout
 		android:layout_width="fill_parent"
 		android:layout_height="0dip"
-		android:background="#ff444444"
 		android:layout_weight="1"
 		>
 		<!--
