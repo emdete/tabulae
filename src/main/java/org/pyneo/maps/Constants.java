@@ -36,6 +36,7 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String GPS = "gps";
 	public static final String HIDDEN = "hidden";
 	public static final String ICONID = "iconid";
+	public static final String JID = "jid";
 	public static final String LATITUDE = "latitude";
 	public static final String LAT = "lat";
 	public static final String LOGTAG = "org.pyneo.maps";

@@ -96,7 +96,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 				}
 				else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
 					int id = cursor.getInt(columnIndex);
-					Ut.i("setViewValue find id=" + id);
+					Ut.d("setViewValue find id=" + id);
 					((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));
 					return true;
 				}
@@ -104,7 +104,6 @@ public class PoiListActivity extends ListActivity implements Constants {
 			}
 		});
 		setListAdapter(adapter);
-		Ut.i("filled data");
 	}
 
 	@Override
@@ -274,7 +273,7 @@ public class PoiListActivity extends ListActivity implements Constants {
 				double latitude = point.getLatitude();
 				double longitude = point.getLongitude();
 				Intent intent;
-				if (false) {
+				if (true) {
 					intent = new Intent(Intent.ACTION_SEND);
 					intent.setType("text/plain");
 					intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()

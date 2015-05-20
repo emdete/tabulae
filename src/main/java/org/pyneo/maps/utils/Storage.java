@@ -67,7 +67,7 @@ public class Storage implements Constants {
 		if (folder.exists()) {
 			folder = new File(folder, GEODATA_FILENAME);
 			try {
-				Ut.i("getDatabase folder=" + folder.getAbsolutePath());
+				Ut.d("getDatabase folder=" + folder.getAbsolutePath());
 				return new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()).getWritableDatabase();
 			}
 			catch (Exception e) {

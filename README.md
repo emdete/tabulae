@@ -1,7 +1,7 @@
 Tabulae
 =======
 
-![screenshots](https://raw.githubusercontent.com/pyneo/Tabulae/master/screenshot.png)
+![screenshots](https://raw.githubusercontent.com/emdete/tabulae/master/screenshot.png)
 
 Overview
 --------

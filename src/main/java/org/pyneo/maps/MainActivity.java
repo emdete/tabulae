@@ -463,20 +463,27 @@ public class MainActivity extends Activity implements Constants {
 		}
 		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
 			if (queryIntent.hasExtra(LONGITUDE) && queryIntent.hasExtra(LATITUDE)) {
+				String jid = queryIntent.getStringExtra(JID);
 				String name = queryIntent.getStringExtra(NAME);
-				double longitude = queryIntent.getDoubleExtra(LONGITUDE, 0);
+				if (name == null || name.length() == 0) {
+					if (jid != null || jid.length() == 0) {
+						name = jid.split("@")[0]; // TODO avoid regex
+					}
+					else {
+						name = "Jabber";
+						jid = "@xmpp";
+					}
+				}
 				double latitude = queryIntent.getDoubleExtra(LATITUDE, 0);
-				// altitude?
-				// accuracy?
-				Location location = new Location(name);
-				location.setLatitude(latitude);
-				location.setLongitude(longitude);
-				GeoPoint point = GeoPoint.fromDoubleString("" + latitude + ',' + longitude); // TODO
+				double longitude = queryIntent.getDoubleExtra(LONGITUDE, 0);
+				double altitude = 0;
+				double accuracy = 0;
+				Ut.i("onCreate location received longitude=" + longitude + ", latitude=" + latitude + ", jid=" + jid + ", name=" + name);
+				GeoPoint point = GeoPoint.fromDouble(latitude, longitude);
 				mPoiOverlay.clearPoiList();
-				mPoiOverlay.showTemporaryPoi(-1, point, name, name);
+				mPoiOverlay.showTemporaryPoi(-1, point, name, jid);
 				setAutoFollow(false);
 				mMap.setCenter(point);
-				Ut.d("onCreate location received");
 			}
 			else
 				Ut.w("onCreate conversations intent recceived with no latitude/longitude");
@@ -1020,7 +1027,7 @@ public class MainActivity extends Activity implements Constants {
 				final double latitude = point.getLatitude();
 				final double longitude = point.getLongitude();
 				Intent intent;
-				if (false) {
+				if (true) {
 					intent = new Intent(Intent.ACTION_SEND);
 					intent.setType("text/plain");
 					intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()

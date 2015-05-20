@@ -117,7 +117,7 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 	public CurrentTrackOverlay(MainActivity mainMapActivity, PoiManager poiManager) {
 		mConnection = new ServiceConnection() {
 			public void onServiceConnected(ComponentName className, IBinder service) {
-				Ut.i("onServiceConnected: registerCallback");
+				Ut.d("onServiceConnected: registerCallback");
 				mService = IRemoteService.Stub.asInterface(service);
 				try {
 					mService.registerCallback(mCallback);

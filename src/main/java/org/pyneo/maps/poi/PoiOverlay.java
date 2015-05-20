@@ -105,16 +105,15 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 				mListUpdateNeeded = false;
 				mLastMapCenter = center;
 				mLastZoom = mapView.getZoomLevel();
-				Ut.i("updating list");
 				mItemList = mPoiManager.getPoiListNotHidden(mLastZoom, mLastMapCenter, 1.5 * deltaX, 1.5 * deltaY); // TODO thread!
-				Ut.i("updated list count=" + mItemList.size());
+				Ut.d("updated list count=" + mItemList.size());
 			}
 		}
 		Ut.d("onDraw mItemList=" + mItemList);
 		if (mItemList != null) {
 			// Draw in backward cycle, so the items with the least index are on the front:
 			for (int i = mItemList.size() - 1; i >= 0; i--) {
-				Ut.i("draw item i=" + i);
+				Ut.d("draw item i=" + i);
 				PoiPoint item = mItemList.valueAt(i);
 				pj.toPixels(item.mGeoPoint, curScreenCoords);
 				c.save();
@@ -126,7 +125,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 			if (mTapId != NO_TAP) {
 				PoiPoint item = mItemList.get(mTapId);
 				if (item != null) {
-					Ut.i("draw item id=" + mTapId);
+					Ut.d("draw item id=" + mTapId);
 					pj.toPixels(item.mGeoPoint, curScreenCoords);
 					c.save();
 					c.rotate(mapView.getBearing(), curScreenCoords.x, curScreenCoords.y);
@@ -198,12 +197,12 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 					mCurScreenCoords.x + delta,
 					mCurScreenCoords.y + delta);
 				if (curMarkerBounds.contains(eventX, eventY)) {
-					Ut.i("poi found id=" + mItem.getId());
+					Ut.d("poi found id=" + mItem.getId());
 					return mItem.getId();
 				}
 			}
 		}
-		Ut.i("poi not found");
+		Ut.d("poi not found");
 		return NO_TAP;
 	}
 
@@ -213,7 +212,7 @@ public class PoiOverlay extends TileViewOverlay implements Constants {
 		if (mTapId == id) // same poi tapped again: toggle
 			id = NO_TAP;
 		mTapId = id;
-		Ut.i("poi tapped id=" + mTapId);
+		Ut.d("poi tapped id=" + mTapId);
 		return mTapId != NO_TAP || super.onSingleTapUp(event, mapView);
 	}
 

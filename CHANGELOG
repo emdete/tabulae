@@ -1,5 +1,8 @@
+v.1.0.4
++ introduce common database layer
 
 v.1.0.3
+- fix various poi bugs
 - fix bug on display track while moving
 - fix bug with display of needle (three states, move/center)
 + improve map selection (category and name in menu and settings)

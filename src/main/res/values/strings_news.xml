@@ -1,8 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
 <string name='whats_new_dialog_text' translatable='false'>
+v.1.0.4\n
++ introduce common database layer\n
 \n
 v.1.0.3\n
+- fix various poi bugs\n
 - fix bug on display track while moving\n
 - fix bug with display of needle (three states, move/center)\n
 + improve map selection (category and name in menu and settings)\n

@@ -60,7 +60,7 @@ public class PoiCategoryListActivity extends ListActivity implements Constants {
 				}
 				else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
 					int id = cursor.getInt(columnIndex);
-					Ut.i("setViewValue find id=" + id);
+					Ut.d("setViewValue find id=" + id);
 					((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));
 					return true;
 				}
