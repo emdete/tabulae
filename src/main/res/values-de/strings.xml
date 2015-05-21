@@ -6,9 +6,9 @@
 	<string name="add_shadow_box">Füge Schatten hinzu</string>
 	<string name="auto_follow_disabled">Zentrieren deaktiviert</string>
 	<string name="auto_follow_enabled">Zentrieren aktiviert</string>
-	<string name="avg_moving_speed">Durchschnittsgeschwindigkeit in Bewegungs</string>
-	<string name="avg_pace">Durchschnittstempo</string>
-	<string name="avg_speed">Durchschnittsgeschwindigkeit</string>
+	<string name="avg_moving_speed">Ø Geschwindigkeit in Bewegungs</string>
+	<string name="avg_pace">Ø Tempo</string>
+	<string name="avg_speed">Ø Geschwindigkeit</string>
 	<string name="azimuth">Kurs</string>
 	<string name="back">Zurück</string>
 	<string name="btn_clear_cache_title">Zwischenspeicher löschen</string>
