@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 	<style name="stat_title">
-		<item name="android:textSize">12.7sp</item>
+		<item name="android:textSize">12sp</item>
 		<item name="android:typeface">sans</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">#ffb4b4b4</item>
@@ -23,16 +23,16 @@
 		<item name="android:textSize">18sp</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:typeface">sans</item>
-		<item name="android:textColor">@android:color/white</item>
+		<item name="android:textColor">@color/primary</item>
 		<item name="android:includeFontPadding">false</item>
 	</style>
 	<style name="title_white_2">
-		<item name="android:textSize">13.3sp</item>
+		<item name="android:textSize">13sp</item>
 		<item name="android:textColor">@android:color/white</item>
 		<item name="android:typeface">sans</item>
 	</style>
 	<style name="data_header">
-		<item name="android:textSize">10.6sp</item>
+		<item name="android:textSize">10sp</item>
 		<item name="android:typeface">sans</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">#ff555555</item>
@@ -44,7 +44,7 @@
 		<item name="android:textColor">@android:color/white</item>
 	</style>
 	<style name="data_unit">
-		<item name="android:textSize">10.6sp</item>
+		<item name="android:textSize">10sp</item>
 		<item name="android:typeface">sans</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">@android:color/white</item>
@@ -52,7 +52,7 @@
 	<style name="descr_gray">
 		<item name="android:textSize">14sp</item>
 		<item name="android:typeface">sans</item>
-		<item name="android:textColor">#ffaaaaaa</item>
+		<item name="android:textColor">#ff555555</item>
 		<item name="android:includeFontPadding">false</item>
 	</style>
 	<style name="label_white">
