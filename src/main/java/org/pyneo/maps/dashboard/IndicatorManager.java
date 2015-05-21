@@ -342,7 +342,7 @@ public class IndicatorManager implements Constants {
 
 							for (int j = 0; j < jarr.length(); j++) {
 								final JSONObject jiv = jarr.getJSONObject(j);
-								ll.addView(addIndicatorView(context, R.layout.indicator_simple, jiv.getString(JTAG), EMPTY, EMPTY), jiv.getInt(JINDEX), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+								ll.addView(addIndicatorView(context, R.layout.dashboard_item, jiv.getString(JTAG), EMPTY, EMPTY), jiv.getInt(JINDEX), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 							}
 						}
 					}
@@ -367,8 +367,8 @@ public class IndicatorManager implements Constants {
 		ll.setOrientation(LinearLayout.HORIZONTAL);
 		ll.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-		ll.addView(addIndicatorView(context, R.layout.indicator_simple, GPSLAT, EMPTY, EMPTY), 0, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
-		ll.addView(addIndicatorView(context, R.layout.indicator_simple, GPSLON, EMPTY, EMPTY), 1, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		ll.addView(addIndicatorView(context, R.layout.dashboard_item, GPSLAT, EMPTY, EMPTY), 0, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		ll.addView(addIndicatorView(context, R.layout.dashboard_item, GPSLON, EMPTY, EMPTY), 1, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 
 		viewGroup.addView(ll);
 
@@ -376,9 +376,9 @@ public class IndicatorManager implements Constants {
 		ll.setOrientation(LinearLayout.HORIZONTAL);
 		ll.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-		ll.addView(addIndicatorView(context, R.layout.indicator_simple, GPSSPEED, EMPTY, EMPTY), 0, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
-		ll.addView(addIndicatorView(context, R.layout.indicator_simple, GPSELEV, EMPTY, EMPTY), 1, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
-		ll.addView(addIndicatorView(context, R.layout.indicator_simple, GPSBEARING, EMPTY, EMPTY), 2, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		ll.addView(addIndicatorView(context, R.layout.dashboard_item, GPSSPEED, EMPTY, EMPTY), 0, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		ll.addView(addIndicatorView(context, R.layout.dashboard_item, GPSELEV, EMPTY, EMPTY), 1, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		ll.addView(addIndicatorView(context, R.layout.dashboard_item, GPSBEARING, EMPTY, EMPTY), 2, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 
 		viewGroup.addView(ll);
 	}
@@ -406,7 +406,7 @@ public class IndicatorManager implements Constants {
 			llv.addView(ll);
 		}
 
-		ll.addView(addIndicatorView(ctx, R.layout.indicator_simple, tag, EMPTY, EMPTY), ll.getChildCount(), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		ll.addView(addIndicatorView(ctx, R.layout.dashboard_item, tag, EMPTY, EMPTY), ll.getChildCount(), new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 	}
 
 	private void updateTargetIndicators() {

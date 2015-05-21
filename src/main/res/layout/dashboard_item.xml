@@ -15,7 +15,6 @@
 		android:layout_height="wrap_content"
 		android:includeFontPadding="false"
 		android:maxLines="1"
-		android:text="@string/points_cnt"
 		android:textAppearance="@style/data_header"
 		/>
 	<TextView
@@ -25,7 +24,6 @@
 		android:layout_below="@+id/data_header"
 		android:includeFontPadding="false"
 		android:maxLines="1"
-		android:text="452"
 		android:textAppearance="@style/data_value"
 		/>
 	<TextView
@@ -36,8 +34,7 @@
 		android:layout_toRightOf="@+id/data_value"
 		android:includeFontPadding="false"
 		android:maxLines="1"
-		android:paddingLeft="5.0px"
-		android:text="km"
+		android:paddingLeft="1sp"
 		android:textAppearance="@style/data_unit"
 		/>
 </org.pyneo.maps.dashboard.IndicatorView>
