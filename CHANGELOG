@@ -1,5 +1,8 @@
 v.1.0.4
-- fix icon issues
+- fix drawable issues for different dpi
+- fix chartview
+- fix layout color and fontsize issues
++ use scaleable sizes everywhere to make design cleaner
 + introduce common database layer
 
 v.1.0.3

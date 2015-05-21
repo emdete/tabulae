@@ -19,7 +19,7 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String ACTIVITY = "activity";
 	public static final String ALT = "alt";
 	public static final String ALTITUDE = "altitude";
-	public static final String CATEGORY = "category";
+	//public static final String CATEGORY = "category";
 	public static final String CATEGORYID = "categoryid";
 	public static final String CNT = "cnt";
 	public static final String DATA = "data";

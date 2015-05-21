@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import org.pyneo.maps.utils.TableE;
 import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.R;
 
@@ -49,16 +50,18 @@ public class PoiCategoryListActivity extends ListActivity implements Constants {
 
 		ListAdapter adapter = new SimpleCursorAdapter(this,
 			R.layout.poi_category_list_item, c,
-			new String[]{"name", "iconid", "hidden"},
+			TableE.toString(new Object[]{category.name, category.iconid, category.hidden}),
 			new int[]{R.id.title1, R.id.pic, R.id.checkbox});
 		((SimpleCursorAdapter)adapter).setViewBinder(new SimpleCursorAdapter.ViewBinder(){
 			@Override
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-				if (cursor.getColumnName(columnIndex).equalsIgnoreCase(HIDDEN)) {
+				if (cursor.getColumnName(columnIndex).equalsIgnoreCase(category.hidden.name())) {
+				//if (columnIndex == category.hidden.ordinal()) { TODO:CATEGORY
 					((CheckBox)view.findViewById(R.id.checkbox)).setChecked(cursor.getInt(columnIndex) == 1);
 					return true;
 				}
-				else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
+				else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(category.iconid.name())) {
+				//else if (columnIndex == category.iconid.ordinal()) {
 					int id = cursor.getInt(columnIndex);
 					Ut.d("setViewValue find id=" + id);
 					((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));

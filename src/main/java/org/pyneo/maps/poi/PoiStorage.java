@@ -22,6 +22,7 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.R;
 import org.pyneo.maps.track.TrackStorage;
 import org.pyneo.maps.utils.Storage;
+import org.pyneo.maps.utils.TableE;
 import org.pyneo.maps.utils.Ut;
 
 public class PoiStorage extends TrackStorage implements Constants { // TODO extend Storage from util
@@ -137,20 +138,27 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 	}
 
 	// POI CATEGORY -------------------------------------------------------------------------------
+	private static final String CATEGORY_ = category.class.getSimpleName();
+	private static final String CATEGORY_CATEGORYID = category.categoryid.name();
+	private static final String CATEGORY_NAME = category.name.name();
+	private static final String CATEGORY_HIDDEN = category.hidden.name();
+	private static final String CATEGORY_ICONID = category.iconid.name();
+	private static final String CATEGORY_MINZOOM = category.minzoom.name();
+	private static final String CATEGORY__SELECT = TableE.selectStatement(category.class, category.values(), null, null);
 
 	public long addPoiCategory(final String title, final int hidden, final int iconid) {
 		long newId = -1;
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
-			cv.put(NAME, title);
-			cv.put(HIDDEN, hidden);
+			cv.put(CATEGORY_NAME, title);
+			cv.put(CATEGORY_HIDDEN, hidden);
 			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
 				Ut.e("iconid="+iconid, new Exception());
-				cv.put(ICONID, 0);
+				cv.put(CATEGORY_ICONID, 0);
 			}
 			else
-				cv.put(ICONID, iconid);
-			newId = mDatabase.insert(CATEGORY, null, cv);
+				cv.put(CATEGORY_ICONID, iconid);
+			newId = mDatabase.insert(CATEGORY_, null, cv);
 		}
 		return newId;
 	}
@@ -161,14 +169,6 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 			return mDatabase.rawQuery(STAT_PoiCategoryList, null);
 		}
 		return null;
-	}
-
-	public static final String STAT_deletePoiCategory = "DELETE FROM category WHERE categoryid = @1";
-	public void deletePoiCategory(final int id) {
-		if (isDatabaseReady() && id != ZERO) { // predef category My POI never delete
-			final Double[] args = {Double.valueOf(id)};
-			mDatabase.execSQL(STAT_deletePoiCategory, args);
-		}
 	}
 
 	public static final String STAT_getPoiCategory = "SELECT name, categoryid, hidden, iconid, minzoom FROM category WHERE categoryid = @1";
@@ -192,17 +192,25 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 	public void updatePoiCategory(final int id, final String title, final int hidden, final int iconid, final int minzoom) {
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
-			cv.put(NAME, title);
-			cv.put(HIDDEN, hidden);
+			cv.put(CATEGORY_NAME, title);
+			cv.put(CATEGORY_HIDDEN, hidden);
 			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
 				Ut.e("iconid="+iconid, new Exception());
-				cv.put(ICONID, 0);
+				cv.put(CATEGORY_ICONID, 0);
 			}
 			else
-				cv.put(ICONID, iconid);
-			cv.put(MINZOOM, minzoom);
+				cv.put(CATEGORY_ICONID, iconid);
+			cv.put(CATEGORY_MINZOOM, minzoom);
 			final String[] args = {Integer.toString(id)};
-			mDatabase.update(CATEGORY, cv, UPDATE_CATEGORY, args);
+			mDatabase.update(CATEGORY_, cv, UPDATE_CATEGORY, args);
+		}
+	}
+
+	public static final String STAT_deletePoiCategory = "DELETE FROM category WHERE categoryid = @1";
+	public void deletePoiCategory(final int id) {
+		if (isDatabaseReady() && id != ZERO) { // predef category My POI never delete
+			final Double[] args = {Double.valueOf(id)};
+			mDatabase.execSQL(STAT_deletePoiCategory, args);
 		}
 	}
 }

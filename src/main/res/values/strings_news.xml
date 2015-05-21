@@ -2,7 +2,10 @@
 <resources>
 <string name='whats_new_dialog_text' translatable='false'>
 v.1.0.4\n
-- fix icon issues\n
+- fix drawable issues for different dpi\n
+- fix chartview\n
+- fix layout color and fontsize issues\n
++ use scaleable sizes everywhere to make design cleaner\n
 + introduce common database layer\n
 \n
 v.1.0.3\n
