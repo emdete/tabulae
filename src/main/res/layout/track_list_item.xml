@@ -73,7 +73,6 @@
 				android:layout_width="wrap_content"
 				android:textAppearance="@style/data_header"
 				android:layout_height="wrap_content"
-				android:includeFontPadding="false"
 				android:id="@id/data_header1"
 				android:text="@string/points_cnt"
 				/>
@@ -83,7 +82,6 @@
 				android:layout_width="wrap_content"
 				android:textAppearance="@style/data_value"
 				android:layout_height="wrap_content"
-				android:includeFontPadding="false"
 				android:text="452"
 				/>
 			<TextView
@@ -93,7 +91,6 @@
 				android:layout_width="wrap_content"
 				android:textAppearance="@style/data_unit"
 				android:layout_height="wrap_content"
-				android:includeFontPadding="false"
 				android:paddingLeft="1sp"
 				/>
 		</RelativeLayout>
@@ -107,7 +104,6 @@
 				android:layout_width="wrap_content"
 				android:textAppearance="@style/data_header"
 				android:layout_height="wrap_content"
-				android:includeFontPadding="false"
 				android:text="@string/distance"
 				/>
 			<TextView
@@ -116,7 +112,6 @@
 				android:layout_width="wrap_content"
 				android:textAppearance="@style/data_value"
 				android:layout_height="wrap_content"
-				android:includeFontPadding="false"
 				android:text="452"
 				/>
 			<TextView
@@ -126,7 +121,6 @@
 				android:layout_width="wrap_content"
 				android:textAppearance="@style/data_unit"
 				android:layout_height="wrap_content"
-				android:includeFontPadding="false"
 				android:paddingLeft="1sp"
 				android:text="@string/km"
 				/>
@@ -141,7 +135,6 @@
 				android:layout_width="wrap_content"
 				android:textAppearance="@style/data_header"
 				android:layout_height="wrap_content"
-				android:includeFontPadding="false"
 				android:text="@string/duration"
 				/>
 			<TextView
@@ -150,7 +143,6 @@
 				android:layout_width="wrap_content"
 				android:textAppearance="@style/data_value"
 				android:layout_height="wrap_content"
-				android:includeFontPadding="false"
 				android:text="452"
 				/>
 			<TextView
@@ -160,7 +152,6 @@
 				android:layout_width="wrap_content"
 				android:textAppearance="@style/data_unit"
 				android:layout_height="wrap_content"
-				android:includeFontPadding="false"
 				android:paddingLeft="1sp"
 				/>
 		</RelativeLayout>

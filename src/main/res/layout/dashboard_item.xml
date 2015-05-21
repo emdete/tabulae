@@ -13,7 +13,6 @@
 		android:id="@+id/data_header"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:includeFontPadding="false"
 		android:maxLines="1"
 		android:textAppearance="@style/data_header"
 		/>
@@ -22,7 +21,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/data_header"
-		android:includeFontPadding="false"
 		android:maxLines="1"
 		android:textAppearance="@style/data_value"
 		/>
@@ -32,7 +30,6 @@
 		android:layout_height="wrap_content"
 		android:layout_alignBaseline="@+id/data_value"
 		android:layout_toRightOf="@+id/data_value"
-		android:includeFontPadding="false"
 		android:maxLines="1"
 		android:paddingLeft="1sp"
 		android:textAppearance="@style/data_unit"
