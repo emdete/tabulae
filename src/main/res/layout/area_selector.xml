@@ -27,9 +27,9 @@
 			android:id="@+id/cmdbar"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="2dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginTop="6dp" >
+			android:layout_marginBottom="2sp"
+			android:layout_marginLeft="4sp"
+			android:layout_marginTop="6sp" >
 			<Button
 				android:id="@+id/clear"
 				style="buttonStyle"
@@ -130,9 +130,9 @@
 			android:id="@+id/LinearLayout1"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="2dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginTop="6dp" >
+			android:layout_marginBottom="2sp"
+			android:layout_marginLeft="4sp"
+			android:layout_marginTop="6sp" >
 			<Button
 				android:id="@+id/back"
 				style="buttonStyle"

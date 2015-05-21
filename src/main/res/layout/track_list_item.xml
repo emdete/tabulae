@@ -15,8 +15,8 @@
 			android:layout_height="wrap_content"
 			android:id="@id/pic"
 			android:src="@drawable/track_background"
-			android:layout_marginTop="9dp"
-			android:layout_marginLeft="8dp"
+			android:layout_marginTop="9sp"
+			android:layout_marginLeft="8sp"
 			/>
 		<LinearLayout
 			android:id="@+id/LinearLayout02"
@@ -59,10 +59,10 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/linearLayoutData"
-		android:layout_marginTop="3dp"
-		android:layout_marginBottom="2dp"
-		android:layout_marginLeft="6dp"
-		android:layout_marginRight="15dp"
+		android:layout_marginTop="3sp"
+		android:layout_marginBottom="2sp"
+		android:layout_marginLeft="6sp"
+		android:layout_marginRight="15sp"
 		>
 		<RelativeLayout
 			android:layout_width="0dip"
@@ -94,7 +94,7 @@
 				android:textAppearance="@style/data_unit"
 				android:layout_height="wrap_content"
 				android:includeFontPadding="false"
-				android:paddingLeft="5.0px"
+				android:paddingLeft="1sp"
 				/>
 		</RelativeLayout>
 		<RelativeLayout
@@ -127,7 +127,7 @@
 				android:textAppearance="@style/data_unit"
 				android:layout_height="wrap_content"
 				android:includeFontPadding="false"
-				android:paddingLeft="5.0px"
+				android:paddingLeft="1sp"
 				android:text="@string/km"
 				/>
 		</RelativeLayout>
@@ -161,7 +161,7 @@
 				android:textAppearance="@style/data_unit"
 				android:layout_height="wrap_content"
 				android:includeFontPadding="false"
-				android:paddingLeft="5.0px"
+				android:paddingLeft="1sp"
 				/>
 		</RelativeLayout>
 	</LinearLayout>

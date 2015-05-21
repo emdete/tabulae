@@ -8,9 +8,9 @@
 		android:id="@+id/pic"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="2dp"
-		android:layout_marginRight="8dp"
-		android:layout_marginTop="2dp"
+		android:layout_marginBottom="2sp"
+		android:layout_marginRight="8sp"
+		android:layout_marginTop="2sp"
 		android:src="@drawable/poi_red"
 		/>
 	<TextView

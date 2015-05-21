@@ -4,12 +4,12 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:background="@color/secondary"
-	android:padding="5dp" >
+	android:padding="5sp" >
 	<TextView
 		android:id="@+id/TextLat"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:paddingLeft="5dp"
+		android:paddingLeft="5sp"
 		android:text="@string/offsetNS"
 		android:textAppearance="?android:attr/textAppearance" />
 	<EditText
@@ -25,7 +25,7 @@
 		android:id="@+id/TextLon"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:paddingLeft="5dp"
+		android:paddingLeft="5sp"
 		android:text="@string/offsetEW"
 		android:textAppearance="?android:attr/textAppearance" />
 	<EditText
@@ -40,9 +40,9 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
-		android:layout_marginBottom="10dp"
-		android:layout_marginTop="10dp"
-		android:paddingLeft="30dp"
-		android:paddingRight="30dp"
+		android:layout_marginBottom="10sp"
+		android:layout_marginTop="10sp"
+		android:paddingLeft="30sp"
+		android:paddingRight="30sp"
 		android:text="@string/offset_button_open_map" />
 </LinearLayout>

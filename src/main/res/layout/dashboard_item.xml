@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <org.pyneo.maps.dashboard.IndicatorView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/RelativeLayout1"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	android:paddingBottom="4dp"
-	android:paddingLeft="4dp"
-	android:paddingRight="4dp"
 	android:background="@color/secondary"
-	android:paddingTop="4dp"
+	android:id="@+id/RelativeLayout1"
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent"
+	android:paddingBottom="3sp"
+	android:paddingLeft="3sp"
+	android:paddingRight="3sp"
+	android:paddingTop="3sp"
 	>
 	<TextView
 		android:id="@+id/data_header"

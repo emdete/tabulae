@@ -10,10 +10,10 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
-		android:layout_marginBottom="4dp"
-		android:layout_marginLeft="4dp"
-		android:layout_marginRight="8dp"
-		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4sp"
+		android:layout_marginLeft="4sp"
+		android:layout_marginRight="8sp"
+		android:layout_marginTop="4sp"
 		android:src="@drawable/poi_blue"
 		/>
 	<TextView
@@ -21,8 +21,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_centerVertical="false"
-		android:layout_marginRight="45dp"
-		android:layout_marginTop="7dp"
+		android:layout_marginRight="45sp"
+		android:layout_marginTop="7sp"
 		android:layout_toRightOf="@id/pic"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		/>
