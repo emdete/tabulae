@@ -9,6 +9,8 @@ buildscript {
 
 apply plugin: 'android'
 
+//apply from: "../pyneo.org.gradle"
+
 dependencies {
 	compile 'com.android.support:support-v4:18.0.+'
 	compile 'com.android.support:appcompat-v7:19.+'

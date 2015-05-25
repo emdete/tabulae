@@ -43,11 +43,9 @@ public class PoiCategoryActivity extends Activity implements Constants {
 			mMinZoom.setText("14");
 		} else {
 			mPoiCategory = mPoiManager.getPoiCategory(id);
-
 			if (mPoiCategory == null)
 				finish();
-
-			mTitle.setText(mPoiCategory.mTitle);
+			mTitle.setText(mPoiCategory.mName);
 			mHidden.setChecked(mPoiCategory.mHidden);
 			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.mIconId));
 			mMinZoom.setText(Integer.toString(mPoiCategory.mMinZoom));
@@ -93,7 +91,7 @@ public class PoiCategoryActivity extends Activity implements Constants {
 	}
 
 	private void doSaveAction() {
-		mPoiCategory.mTitle = mTitle.getText().toString();
+		mPoiCategory.mName = mTitle.getText().toString();
 		mPoiCategory.mHidden = mHidden.isChecked();
 		mPoiCategory.mMinZoom = Integer.parseInt(mMinZoom.getText().toString());
 		mPoiManager.updatePoiCategory(mPoiCategory);

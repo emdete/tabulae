@@ -157,11 +157,11 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 	private static final String CATEGORY_ICONID = category.iconid.name();
 	private static final String CATEGORY_MINZOOM = category.minzoom.name();
 
-	public long addPoiCategory(final String title, final int hidden, final int iconid) {
+	public long addPoiCategory(final String name, final int hidden, final int iconid) {
 		long newId = -1;
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
-			cv.put(CATEGORY_NAME, title);
+			cv.put(CATEGORY_NAME, name);
 			cv.put(CATEGORY_HIDDEN, hidden);
 			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
 				Ut.e("iconid="+iconid, new Exception());
@@ -202,10 +202,11 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 
 	private static final String CATEGORY__UPDATE_CATEGORY = TableE.equalsList(
 		new Object[]{category.categoryid});
-	public void updatePoiCategory(final int id, final String title, final int hidden, final int iconid, final int minzoom) {
+	public void updatePoiCategory(final int id, final String name, final int hidden, final int iconid, final int minzoom) {
 		if (isDatabaseReady()) {
+			Ut.i("updatePoiCategory id=" + id + ", CATEGORY_=" + CATEGORY_ + ", CATEGORY__UPDATE_CATEGORY=" + CATEGORY__UPDATE_CATEGORY);
 			final ContentValues cv = new ContentValues();
-			cv.put(CATEGORY_NAME, title);
+			cv.put(CATEGORY_NAME, name);
 			cv.put(CATEGORY_HIDDEN, hidden);
 			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
 				Ut.e("iconid="+iconid, new Exception());

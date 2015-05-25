@@ -178,22 +178,25 @@ public class PoiManager implements Constants {
 	}
 
 	public PoiCategory getPoiCategory(int id) {
-		PoiCategory category = null;
+		PoiCategory cat = null;
 		final Cursor c = mPoiStorage.getPoiCategory(id);
 		if (c != null) {
 			if (c.moveToFirst())
-				category = new PoiCategory(id, c.getString(0), c.getInt(2) == ONE, c.getInt(3), c.getInt(4));
+				cat = new PoiCategory(id,
+					c.getString(category.name.ordinal()),
+					c.getInt(category.hidden.ordinal()) != 0,
+					c.getInt(category.iconid.ordinal()),
+					c.getInt(category.minzoom.ordinal()));
 			c.close();
 		}
-
-		return category;
+		return cat;
 	}
 
 	public void updatePoiCategory(PoiCategory poiCategory) {
 		if (poiCategory.getId() < ZERO)
-			mPoiStorage.addPoiCategory(poiCategory.mTitle, poiCategory.mHidden? ONE: ZERO, poiCategory.mIconId);
+			mPoiStorage.addPoiCategory(poiCategory.mName, poiCategory.mHidden? ONE: ZERO, poiCategory.mIconId);
 		else
-			mPoiStorage.updatePoiCategory(poiCategory.getId(), poiCategory.mTitle, poiCategory.mHidden? ONE: ZERO, poiCategory.mIconId, poiCategory.mMinZoom);
+			mPoiStorage.updatePoiCategory(poiCategory.getId(), poiCategory.mName, poiCategory.mHidden? ONE: ZERO, poiCategory.mIconId, poiCategory.mMinZoom);
 	}
 
 	public void deleteAllPoi() {
