@@ -84,6 +84,10 @@
 		android:icon="@android:drawable/ic_menu_share"
 		/>
 	<item
+		android:id="@+id/menu_view"
+		android:title="@string/menu_view"
+		/>
+	<item
 		android:id="@+id/mylocation"
 		android:icon="@android:drawable/ic_menu_mylocation"
 		android:title="@string/menu_mylocation"

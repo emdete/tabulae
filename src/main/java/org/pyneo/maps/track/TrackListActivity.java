@@ -343,7 +343,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 				}).setNegativeButton(R.string.no, null).create().show();
 
 		} else if (item.getItemId() == R.id.menu_share) {
-			File file = new File(Ut.getAppExportDir(TrackListActivity.this).getAbsolutePath() + "/track" + id + ".gpx");
+			File file = getTrackExportFileName(id, ".gpx");
 			if (file.exists()) {
 				Intent intent = new Intent(Intent.ACTION_SEND);
 				intent.setType("application/gpx+xml");
@@ -383,9 +383,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 					builder.append(tp.lon).append(",").append(tp.lat).append(",").append(tp.alt).append(" ");
 				}
 				coordinates.setText(builder.toString().trim());
-				File folder = Ut.getAppExportDir(TrackListActivity.this);
-				String filename = folder.getAbsolutePath() + "/track" + trackid + ".kml";
-				File file = new File(filename);
+				File file = getTrackExportFileName(trackid, ".kml");
 				FileOutputStream out;
 				try {
 					file.createNewFile();
@@ -393,7 +391,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 					OutputStreamWriter wr = new OutputStreamWriter(out);
 					wr.write(SimpleXML.saveXml(xml));
 					wr.close();
-					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 1, 0, filename).sendToTarget();
+					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 1, 0, file.toString()).sendToTarget();
 				}
 				catch (FileNotFoundException e) {
 					Ut.e(e.toString(), e);
@@ -435,9 +433,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 					trkpt.createChild("ele").setText(Double.toString(tp.alt));
 					trkpt.createChild("time").setText(formatter.format(tp.date));
 				}
-				File folder = Ut.getAppExportDir(TrackListActivity.this);
-				String filename = folder.getAbsolutePath() + "/track" + trackid + ".gpx";
-				File file = new File(filename);
+				File file = getTrackExportFileName(trackid, ".gpx");
 				FileOutputStream out;
 				try {
 					file.createNewFile();
@@ -445,7 +441,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 					OutputStreamWriter wr = new OutputStreamWriter(out);
 					wr.write(SimpleXML.saveXml(xml));
 					wr.close();
-					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 1, 0, filename).sendToTarget();
+					Message.obtain(mHandler, R.id.menu_exporttogpxpoi, 1, 0, file.toString()).sendToTarget();
 				}
 				catch (FileNotFoundException e) {
 					Ut.e(e.toString(), e);
@@ -513,4 +509,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 
 	}
 
+	private final File getTrackExportFileName(int id, String ext) {
+		return new File(Ut.getAppExportDir(this).getAbsolutePath(), "track" + id + ext); // TODO: use iso date in name
+	}
 }

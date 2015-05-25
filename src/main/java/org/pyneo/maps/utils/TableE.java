@@ -10,7 +10,7 @@ import android.database.Cursor;
 public class TableE {
 	static final private String EQU = " = ";
 	static final private String SEP = ", ";
-	static final private String PLH = "?";
+	static final private String PLH = "@";
 
 	public static String[] toString(final Object[] cols) {
 		int i = 0;
@@ -23,9 +23,9 @@ public class TableE {
 
 	public static String equalsList(final Object[] cols) {
 		String stmnt = "";
-		for (int i=0;i<cols.length;i++) {
+		for (int i=0;i<cols.length;) {
 			if (i>0) stmnt += SEP;
-			stmnt += cols[i] + EQU + PLH;
+			stmnt += cols[i] + EQU + (PLH + ++i);
 		}
 		return stmnt;
 	}
@@ -34,26 +34,33 @@ public class TableE {
 		String stmnt = "";
 		for (int i=0;i<cols.length;i++) {
 			if (i>0) stmnt += SEP;
-			stmnt += PLH;
+			stmnt += (PLH + ++i);
 		}
 		return stmnt;
 	}
 
-	public static String fieldList(final Object[] cols) {
-		return TextUtils.join(", ", cols);
+	public static String fieldList(final Object[] cols, boolean doId) {
+		String stmnt = "";
+		for (int i=0;i<cols.length;i++) {
+			if (i>0) stmnt += SEP;
+			stmnt += cols[i];
+			if (doId && i==0) stmnt += " _id";
+		}
+		return stmnt;
+		//return TextUtils.join(", ", cols);
 	}
 
 	static public String selectStatement(Class table, Object[] cols, Object[] where, Object[] order) {
-		String stmnt = "SELECT " + fieldList(cols) + " FROM " + table.getSimpleName();
+		String stmnt = "SELECT " + fieldList(cols, true) + " FROM " + table.getSimpleName();
 		if (where != null)
 			stmnt += " WHERE " + equalsList(where);
 		if (order != null)
-			stmnt += " ORDER BY " + fieldList(order);
+			stmnt += " ORDER BY " + fieldList(order, false);
 		return stmnt;
 	}
 
 	static public String createStatement(Class table, Object[] cols) {
-		String stmnt = "CREATE TABLE " + table.getSimpleName() + " (" + fieldList(cols) + ")";
+		String stmnt = "CREATE TABLE " + table.getSimpleName() + " (" + fieldList(cols, false) + ")";
 		// TODO: add DEFAULT / NOT NULL PRIMARY KEY UNIQUE
 		return stmnt;
 	}
@@ -64,7 +71,7 @@ public class TableE {
 	}
 
 	static public String insertStatement(Class table, Object[] cols) {
-		String stmnt = "INSERT INTO TABLE " + table.getSimpleName() + " (" + fieldList(cols) + ") VALUES (" + placeholderList(cols) + ")";
+		String stmnt = "INSERT INTO TABLE " + table.getSimpleName() + " (" + fieldList(cols, false) + ") VALUES (" + placeholderList(cols) + ")";
 		return stmnt;
 	}
 
@@ -75,7 +82,7 @@ public class TableE {
 		return stmnt;
 	}
 
-	static public String deleteStatement(Class table, Object[] cols, Object[] where) {
+	static public String deleteStatement(Class table, Object[] where) {
 		String stmnt = "DELETE FROM TABLE " + table.getSimpleName();
 		if (where != null)
 			stmnt += " WHERE " + equalsList(where);
@@ -103,7 +110,7 @@ public class TableE {
 		Ut.i("TableE.test(): insertStatement=" + TableE.insertStatement(thing.class, thing.values()));
 		Ut.i("TableE.test(): updateStatement=" + TableE.updateStatement(thing.class, thing.values(), null));
 		Ut.i("TableE.test(): selectStatement=" + TableE.selectStatement(thing.class, thing.values(), null, new Object[]{thing.ID}));
-		Ut.i("TableE.test(): deleteStatement=" + TableE.deleteStatement(thing.class, thing.values(), new Object[]{thing.ID}));
+		Ut.i("TableE.test(): deleteStatement=" + TableE.deleteStatement(thing.class, new Object[]{thing.ID}));
 		Ut.i("TableE.test(): dropStatement=" + TableE.dropStatement(thing.class, thing.values()));
 		if (cursor != null) {
 			cursor.getInt(thing.ID.ordinal());

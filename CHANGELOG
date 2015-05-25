@@ -15,7 +15,7 @@ v.1.0.3
 
 v.1.0.2
 - export of gpx now uses UTC for timestamps (thank you junkyardsparkle for noting)
-- remove unsupported cloudmade tile provider (thank you junkyardsparkle for noting)
+- remove no-op cloudmade tile provider (thank you junkyardsparkle for noting)
 + fix refresh of needle display
 + fix refresh of distance scale (thank you junkyardsparkle for noting)
 + lots of refactoring of the code
@@ -189,5 +189,4 @@ v.0.7.0
 + Added buttons for clearing internal cache and index database to preference
 + Update Yandex.Map URL, Google.Map URL
 - Bug fix: Wrong compass orientation on landscape mode
-
 

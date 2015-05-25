@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.Ut;
+import org.pyneo.maps.utils.TableE;
 import org.pyneo.maps.utils.CoordFormatter;
 
 import org.pyneo.maps.utils.GeoPoint;
@@ -78,17 +79,17 @@ public class PoiActivity extends Activity implements Constants {
 			}
 		});
 		mSpinner = (Spinner)findViewById(R.id.spinnerCategory);
-		Cursor c = mPoiManager.getPoiCategoryListCursor();
+		Cursor c = mPoiManager.getPoiCategories();
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 			R.layout.poi_category_spinner, //android.R.layout.simple_spinner_item,
 			c,
-			new String[]{"name", "iconid"},
+			TableE.toString(new Object[]{category.name, category.iconid}),
 			new int[]{android.R.id.text1, R.id.pic});
 		adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 			@Override
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-				if (cursor.getColumnName(columnIndex).equalsIgnoreCase(ICONID)) {
+				if (columnIndex == category.iconid.ordinal()) {
 					int id = cursor.getInt(columnIndex);
 					Ut.d("setViewValue find id=" + id);
 					((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));

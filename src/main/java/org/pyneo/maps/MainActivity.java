@@ -1027,24 +1027,34 @@ public class MainActivity extends Activity implements Constants {
 				final double latitude = point.getLatitude();
 				final double longitude = point.getLongitude();
 				Intent intent;
-				if (true) {
-					intent = new Intent(Intent.ACTION_SEND);
-					intent.setType("text/plain");
-					intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
-						.append(label)
-						.append('\n')
-						.append("http://www.openstreetmap.org/#map=")
-						.append(zoom)
-						.append('/')
-						.append(latitude)
-						.append('/')
-						.append(longitude)
-						.toString());
-				}
-				else {
-					intent = new Intent(Intent.ACTION_VIEW);
-					intent.setData(Uri.parse("geo:" + latitude + ',' + longitude + "?q=" + latitude + ',' + longitude + '(' + label + ')'));
-				}
+				intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
+					.append(label)
+					.append('\n')
+					.append("http://www.openstreetmap.org/?mlat=")
+					.append(latitude)
+					.append("&mlon=")
+					.append(longitude)
+					.append("#map=")
+					.append(zoom)
+					.append('/')
+					.append(latitude)
+					.append('/')
+					.append(longitude)
+					.append("&layers=T")
+					.toString());
+				startActivity(intent);
+				return true;
+			}
+			case R.id.menu_view: {
+				final String label = "";
+				final int zoom = mMap.getZoomLevel();
+				final double latitude = point.getLatitude();
+				final double longitude = point.getLongitude();
+				Intent intent;
+				intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse("geo:" + latitude + ',' + longitude + "?q=" + latitude + ',' + longitude + '(' + label + ')'));
 				startActivity(intent);
 				return true;
 			}
@@ -1410,23 +1420,46 @@ public class MainActivity extends Activity implements Constants {
 						try {
 							final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
 							final GeoPoint point = poi.mGeoPoint;
-							Intent intent = new Intent(Intent.ACTION_SEND);
+							String label = poi.mTitle;
+							final int zoom = 16;
+							double latitude = point.getLatitude();
+							double longitude = point.getLongitude();
+							Intent intent;
+							intent = new Intent(Intent.ACTION_SEND);
 							intent.setType("text/plain");
 							intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
-								.append(poi.mTitle)
+								.append(label)
 								.append('\n')
 								.append("http://www.openstreetmap.org/?mlat=")
-								.append(point.getLatitude())
+								.append(latitude)
 								.append("&mlon=")
-								.append(point.getLongitude())
+								.append(longitude)
 								.append("#map=")
-								.append(16) // zoom
+								.append(zoom)
 								.append('/')
-								.append(point.getLatitude())
+								.append(latitude)
 								.append('/')
-								.append(point.getLongitude())
+								.append(longitude)
 								.append("&layers=T")
 								.toString());
+							startActivity(intent);
+						}
+						catch (Exception e) {
+							Ut.e(e.toString(), e);
+						}
+						break;
+					}
+					case R.id.menu_view: {
+						try {
+							final PoiPoint poi = mPoiOverlay.getPoiPoint(mMarkerIndex);
+							final GeoPoint point = poi.mGeoPoint;
+							String label = poi.mTitle;
+							final int zoom = 16;
+							double latitude = point.getLatitude();
+							double longitude = point.getLongitude();
+							Intent intent;
+							intent = new Intent(Intent.ACTION_VIEW);
+							intent.setData(Uri.parse("geo:" + latitude + ',' + longitude + "?q=" + latitude + ',' + longitude + '(' + label + ')'));
 							startActivity(intent);
 						}
 						catch (Exception e) {

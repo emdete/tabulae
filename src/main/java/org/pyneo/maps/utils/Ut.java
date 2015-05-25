@@ -244,12 +244,11 @@ public class Ut implements Constants {
 	}
 
 	public static Intent SendMail(String subject, String text) {
-		final String[] email = {"tabulae@pyneo.org"};
 		Intent sendIntent = new Intent(Intent.ACTION_SEND);
-		sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-		sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-		sendIntent.putExtra(Intent.EXTRA_EMAIL, email);
 		sendIntent.setType("message/rfc822");
+		sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"tabulae@pyneo.org"});
+		sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, text);
 		return sendIntent;
 	}
 

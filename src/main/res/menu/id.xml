@@ -18,6 +18,7 @@
 	<item android:id="@+id/menu_exporttokmlpoi" />
 	<item android:id="@+id/menu_stat" />
 	<item android:id="@+id/menu_share" />
+	<item android:id="@+id/menu_view" />
 	<item android:id="@+id/menu_undo" />
 	<item android:id="@+id/right_panel" />
 	<item android:id="@+id/menu_showinfo" />

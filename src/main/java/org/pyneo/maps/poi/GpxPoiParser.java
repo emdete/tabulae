@@ -3,6 +3,7 @@ package org.pyneo.maps.poi;
 import android.database.Cursor;
 
 import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.utils.CursorI;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -26,15 +27,8 @@ public class GpxPoiParser extends DefaultHandler implements Constants {
 		mPoiPoint = new PoiPoint();
 
 		mCategoryMap = new HashMap<String, Integer>();
-		Cursor c = mPoiManager.getPoiCategoryListCursor();
-		if (c != null) {
-			if (c.moveToFirst()) {
-				do {
-					mCategoryMap.put(c.getString(0), c.getInt(2));
-				}
-				while (c.moveToNext());
-			}
-			c.close();
+		for (Cursor c: new CursorI(mPoiManager.getPoiCategories())) {
+			mCategoryMap.put(c.getString(category.name.ordinal()), c.getInt(category.categoryid.ordinal()));
 		}
 	}
 

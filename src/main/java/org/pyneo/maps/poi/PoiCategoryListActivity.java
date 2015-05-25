@@ -45,7 +45,7 @@ public class PoiCategoryListActivity extends ListActivity implements Constants {
 	}
 
 	private void FillData() {
-		Cursor c = mPoiManager.getPoiCategoryListCursor();
+		Cursor c = mPoiManager.getPoiCategories();
 		startManagingCursor(c);
 
 		ListAdapter adapter = new SimpleCursorAdapter(this,
@@ -55,13 +55,11 @@ public class PoiCategoryListActivity extends ListActivity implements Constants {
 		((SimpleCursorAdapter)adapter).setViewBinder(new SimpleCursorAdapter.ViewBinder(){
 			@Override
 			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-				if (cursor.getColumnName(columnIndex).equalsIgnoreCase(category.hidden.name())) {
-				//if (columnIndex == category.hidden.ordinal()) { TODO:CATEGORY
+				if (columnIndex == category.hidden.ordinal()) {
 					((CheckBox)view.findViewById(R.id.checkbox)).setChecked(cursor.getInt(columnIndex) == 1);
 					return true;
 				}
-				else if (cursor.getColumnName(columnIndex).equalsIgnoreCase(category.iconid.name())) {
-				//else if (columnIndex == category.iconid.ordinal()) {
+				else if (columnIndex == category.iconid.ordinal()) {
 					int id = cursor.getInt(columnIndex);
 					Ut.d("setViewValue find id=" + id);
 					((ImageView)view.findViewById(R.id.pic)).setImageResource(PoiActivity.resourceFromPoiIconId(id));
@@ -78,7 +76,7 @@ public class PoiCategoryListActivity extends ListActivity implements Constants {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 
-		mPoiManager.setCategoryHidden((int)id);
+		mPoiManager.togglePoiCategoryHidden((int) id);
 
 //		final CheckBox ch = (CheckBox) v.findViewById(R.id.checkbox);
 //		ch.setChecked(!ch.isChecked());
@@ -108,18 +106,15 @@ public class PoiCategoryListActivity extends ListActivity implements Constants {
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-									ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		int id = (int)((AdapterView.AdapterContextMenuInfo)menuInfo).id;
 		PoiCategory category = mPoiManager.getPoiCategory(id);
-
 		menu.add(0, R.id.menu_editpoi, 0, getText(R.string.menu_edit));
 		if (category.mHidden)
 			menu.add(0, R.id.menu_show, 0, getText(R.string.menu_show));
 		else
 			menu.add(0, R.id.menu_hide, 0, getText(R.string.menu_hide));
 		menu.add(0, R.id.menu_deletepoi, 0, getText(R.string.menu_delete));
-
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 

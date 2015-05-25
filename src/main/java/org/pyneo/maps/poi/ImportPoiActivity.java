@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 
 import org.pyneo.maps.R;
 import org.pyneo.maps.utils.SimpleThreadFactory;
+import org.pyneo.maps.utils.TableE;
 import org.pyneo.maps.utils.Ut;
 
 import org.openintents.filemanager.FileManagerActivity;
@@ -34,7 +34,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class ImportPoiActivity extends Activity {
+public class ImportPoiActivity extends Activity implements Constants {
 	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new SimpleThreadFactory("ImportPoi"));
 	EditText mFileName;
 	Spinner mSpinner;
@@ -55,10 +55,11 @@ public class ImportPoiActivity extends Activity {
 		mFileName.setText(settings.getString("IMPORT_POI_FILENAME", Ut.getAppImportDir(this).getAbsolutePath()));
 
 		mSpinner = (Spinner)findViewById(R.id.spinnerCategory);
-		Cursor c = mPoiManager.getPoiCategoryListCursor();
+		Cursor c = mPoiManager.getPoiCategories();
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c,
-			new String[]{"name"}, new int[]{android.R.id.text1});
+			TableE.toString(new Object[]{category.name}),
+			new int[]{android.R.id.text1});
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mSpinner.setAdapter(adapter);
 

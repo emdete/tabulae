@@ -55,8 +55,8 @@ public class PoiManager implements Constants {
 		return mPoiStorage.addPoiCategory(title, hidden, iconid);
 	}
 
-	public void setCategoryHidden(final int id) {
-		mPoiStorage.setCategoryHidden(id);
+	public void togglePoiCategoryHidden(final int id) {
+		mPoiStorage.togglePoiCategoryHidden(id);
 	}
 
 	public CursorI getMixedMaps() {
@@ -71,8 +71,8 @@ public class PoiManager implements Constants {
 		return mPoiStorage.getTrackPoints(id);
 	}
 
-	public Cursor getPoiCategoryListCursor() {
-		return mPoiStorage.getPoiCategoryListCursor();
+	public Cursor getPoiCategories() {
+		return mPoiStorage.getPoiCategories();
 	}
 
 	public Cursor getPoiListCursor(String sortColNames) {

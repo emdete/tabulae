@@ -3,13 +3,14 @@ package org.pyneo.maps.poi;
 import android.database.Cursor;
 
 import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.utils.CursorI;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.HashMap;
 
-public class KmlPoiParser extends DefaultHandler {
+public class KmlPoiParser extends DefaultHandler implements Constants {
 	private static final String Placemark = "Placemark";
 	private static final String Point = "Point";
 	private static final String NAME = "name";
@@ -32,14 +33,8 @@ public class KmlPoiParser extends DefaultHandler {
 		mItIsPoint = false;
 
 		mCategoryMap = new HashMap<String, Integer>();
-		Cursor c = mPoiManager.getPoiCategoryListCursor();
-		if (c != null) {
-			if (c.moveToFirst()) {
-				do {
-					mCategoryMap.put(c.getString(0), c.getInt(2));
-				} while (c.moveToNext());
-			}
-			c.close();
+		for (Cursor c: new CursorI(mPoiManager.getPoiCategories())) {
+			mCategoryMap.put(c.getString(category.name.ordinal()), c.getInt(category.categoryid.ordinal()));
 		}
 	}
 

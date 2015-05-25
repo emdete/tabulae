@@ -25,31 +25,41 @@ import org.pyneo.maps.utils.Storage;
 import org.pyneo.maps.utils.TableE;
 import org.pyneo.maps.utils.Ut;
 
-public class PoiStorage extends TrackStorage implements Constants { // TODO extend Storage from util
+public class PoiStorage extends TrackStorage implements Constants { // TODO extend from util.Storage
 	public PoiStorage(Context ctx) {
 		super(ctx);
 	}
 
 	// POI ----------------------------------------------------------------------------
+	private static final String POINTS_ = points.class.getSimpleName();
+	private static final String POINTS_POINTID = points.pointid.name();
+	private static final String POINTS_NAME = points.name.name();
+	private static final String POINTS_DESCR = points.descr.name();
+	private static final String POINTS_LAT = points.lat.name();
+	private static final String POINTS_LON = points.lon.name();
+	private static final String POINTS_ALT = points.alt.name();
+	private static final String POINTS_HIDDEN = points.hidden.name();
+	private static final String POINTS_CATEGORYID = points.categoryid.name();
+	private static final String POINTS_ICONID = points.iconid.name();
 
 	public long addPoi(final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int hidden, final int iconid) {
 		long newId = -1;
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
-			cv.put(NAME, aName);
-			cv.put(DESCR, aDescr);
-			cv.put(LAT, aLat);
-			cv.put(LON, aLon);
-			cv.put(ALT, aAlt);
-			cv.put(CATEGORYID, aCategoryId);
-			cv.put(HIDDEN, hidden);
+			cv.put(POINTS_NAME, aName);
+			cv.put(POINTS_DESCR, aDescr);
+			cv.put(POINTS_LAT, aLat);
+			cv.put(POINTS_LON, aLon);
+			cv.put(POINTS_ALT, aAlt);
+			cv.put(POINTS_CATEGORYID, aCategoryId);
+			cv.put(POINTS_HIDDEN, hidden);
 			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
 				Ut.e("iconid="+iconid, new Exception());
-				cv.put(ICONID, 0);
+				cv.put(POINTS_ICONID, 0);
 			}
 			else
-				cv.put(ICONID, iconid);
-			newId = mDatabase.insert(POINTS, null, cv);
+				cv.put(POINTS_ICONID, iconid);
+			newId = mDatabase.insert(POINTS_, null, cv);
 		}
 		return newId;
 	}
@@ -57,44 +67,44 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 	public void updatePoi(final int id, final String aName, final String aDescr, final double aLat, final double aLon, final double aAlt, final int aCategoryId, final int hidden, final int iconid) {
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
-			cv.put(NAME, aName);
-			cv.put(DESCR, aDescr);
-			cv.put(LAT, aLat);
-			cv.put(LON, aLon);
-			cv.put(ALT, aAlt);
-			cv.put(CATEGORYID, aCategoryId);
+			cv.put(POINTS_NAME, aName);
+			cv.put(POINTS_DESCR, aDescr);
+			cv.put(POINTS_LAT, aLat);
+			cv.put(POINTS_LON, aLon);
+			cv.put(POINTS_ALT, aAlt);
+			cv.put(POINTS_CATEGORYID, aCategoryId);
 			cv.put(HIDDEN, hidden);
 			if (iconid < 0 || iconid >= POI_ICON_RESOURCE_IDS.length) {
 				Ut.e("iconid="+iconid, new Exception());
-				cv.put(ICONID, 0);
+				cv.put(POINTS_ICONID, 0);
 			}
 			else
-				cv.put(ICONID, iconid);
+				cv.put(POINTS_ICONID, iconid);
 			final String[] args = {Integer.toString(id)};
-			mDatabase.update(POINTS, cv, UPDATE_POINTS, args);
+			mDatabase.update(POINTS_, cv, UPDATE_POINTS, args);
 		}
 	}
 
-	static final String STAT_deletePoi = "DELETE FROM points WHERE pointid = @1";
+	static final String POINTS__DELETE_WHERE_ID = "DELETE FROM points WHERE pointid = @1";
 	public void deletePoi(final int id) {
 		if (isDatabaseReady()) {
 			final Double[] args = {Double.valueOf(id)};
-			mDatabase.execSQL(STAT_deletePoi, args);
+			mDatabase.execSQL(POINTS__DELETE_WHERE_ID, args);
 		}
 	}
 
-	static final String STAT_DeleteAllPoi = "DELETE FROM points";
+	static final String POINTS__DELETE = "DELETE FROM points";
 	public void deleteAllPoi() {
 		if (isDatabaseReady()) {
-			mDatabase.execSQL(STAT_DeleteAllPoi);
+			mDatabase.execSQL(POINTS__DELETE);
 		}
 	}
 
-	public static final String STAT_getPoi = "SELECT lat, lon, name, descr, pointid, alt, hidden, categoryid, iconid FROM points WHERE pointid = @1";
+	public static final String POINTS__SELECT_WHERE_ID = "SELECT lat, lon, name, descr, pointid, alt, hidden, categoryid, iconid FROM points WHERE pointid = @1";
 	public Cursor getPoi(final int id) {
 		if (isDatabaseReady()) {
 			final String[] args = {Integer.toString(id)};
-			return mDatabase.rawQuery(STAT_getPoi, args);
+			return mDatabase.rawQuery(POINTS__SELECT_WHERE_ID, args);
 		}
 		return null;
 	}
@@ -106,27 +116,29 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 	public SQLiteCursorLoader getPoiListCursorLoader(String sortColNames) {
 		File folder = Ut.getAppMainDir(mCtx, DATA);
 		folder = new File(folder, GEODATA_FILENAME);
-		return new SQLiteCursorLoader(mCtx, new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()), STAT_GET_POI_LIST + sortColNames, null);
+		return new SQLiteCursorLoader(mCtx, new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()), POINTS__SELECT_ORDER + sortColNames, null);
 	}
 
 	public Cursor getPoiListCursor() {
 		return getPoiListCursor(LAT + ',' + LON);
 	}
 
-	public static final String STAT_GET_POI_LIST =
+	public static final String POINTS__SELECT_ORDER =
 		"SELECT p.lat, p.lon, p.name, p.descr, p.pointid, p.pointid _id, p.pointid ID, c.iconid, c.name as catname " +
-		"FROM points p LEFT JOIN category c ON c.categoryid = p.categoryid " +
+		"FROM points p " +
+		"LEFT JOIN category c ON c.categoryid = p.categoryid " +
 		"ORDER BY ";
 	public Cursor getPoiListCursor(String sortColNames) {
 		if (isDatabaseReady()) {
-			return mDatabase.rawQuery(STAT_GET_POI_LIST + sortColNames, null);
+			return mDatabase.rawQuery(POINTS__SELECT_ORDER + sortColNames, null);
 		}
 		return null;
 	}
 
 	public static final String STAT_PoiListNotHidden =
 		"SELECT p.lat, p.lon, p.name, p.descr, p.pointid, p.pointid _id, p.pointid ID, p.categoryid, c.iconid " +
-		"FROM points p LEFT JOIN category c ON c.categoryid = p.categoryid " +
+		"FROM points p " +
+		"LEFT JOIN category c ON c.categoryid = p.categoryid " +
 		"WHERE p.hidden = 0 AND c.hidden = 0 AND c.minzoom <= @1 AND p.lon BETWEEN @2 AND @3 AND p.lat BETWEEN @4 AND @5 " +
 		"ORDER BY lat, lon";
 	public Cursor getPoiListNotHiddenCursor(final int zoom, final double left, final double right, final double top, final double bottom) {
@@ -144,7 +156,6 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 	private static final String CATEGORY_HIDDEN = category.hidden.name();
 	private static final String CATEGORY_ICONID = category.iconid.name();
 	private static final String CATEGORY_MINZOOM = category.minzoom.name();
-	private static final String CATEGORY__SELECT = TableE.selectStatement(category.class, category.values(), null, null);
 
 	public long addPoiCategory(final String title, final int hidden, final int iconid) {
 		long newId = -1;
@@ -163,32 +174,34 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 		return newId;
 	}
 
-	public static final String STAT_PoiCategoryList = "SELECT name, iconid, categoryid _id, hidden FROM category ORDER BY name";
-	public Cursor getPoiCategoryListCursor() {
+	private static final String CATEGORY__SELECT_ORDER_NAME = TableE.selectStatement(
+		category.class, category.values(), null, new Object[]{category.name});
+	public Cursor getPoiCategories() {
 		if (isDatabaseReady()) {
-			return mDatabase.rawQuery(STAT_PoiCategoryList, null);
+			return mDatabase.rawQuery(CATEGORY__SELECT_ORDER_NAME, null);
 		}
 		return null;
 	}
 
-	public static final String STAT_getPoiCategory = "SELECT name, categoryid, hidden, iconid, minzoom FROM category WHERE categoryid = @1";
+	private static final String CATEGORY__SELECT_WHERE_ID = TableE.selectStatement(
+		category.class, category.values(), new Object[]{category.categoryid}, null);
 	public Cursor getPoiCategory(final int id) {
 		if (isDatabaseReady()) {
-			final String[] args = {Integer.toString(id)};
-			return mDatabase.rawQuery(STAT_getPoiCategory, args);
+			return mDatabase.rawQuery(CATEGORY__SELECT_WHERE_ID, new String[]{Integer.toString(id)});
 		}
 		return null;
 	}
 
-	public static final String STAT_setCategoryHidden = "UPDATE category SET hidden = 1 - hidden * 1 WHERE categoryid = @1";
-	public void setCategoryHidden(final int id) {
+	private static final String CATEGORY__UPDATE_HIDDEN = "UPDATE category SET hidden = 1 - hidden * 1 WHERE categoryid = @1";
+	public void togglePoiCategoryHidden(final int id) {
 		if (isDatabaseReady()) {
-			final String[] args = {Long.toString(id)};
-			mDatabase.execSQL(STAT_setCategoryHidden, args);
+			// TODO use proper setter... blindly toggle is ugly
+			mDatabase.execSQL(CATEGORY__UPDATE_HIDDEN, new String[]{Long.toString(id)});
 		}
 	}
 
-	public static final String UPDATE_CATEGORY = "categoryid = @1";
+	private static final String CATEGORY__UPDATE_CATEGORY = TableE.equalsList(
+		new Object[]{category.categoryid});
 	public void updatePoiCategory(final int id, final String title, final int hidden, final int iconid, final int minzoom) {
 		if (isDatabaseReady()) {
 			final ContentValues cv = new ContentValues();
@@ -202,15 +215,16 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 				cv.put(CATEGORY_ICONID, iconid);
 			cv.put(CATEGORY_MINZOOM, minzoom);
 			final String[] args = {Integer.toString(id)};
-			mDatabase.update(CATEGORY_, cv, UPDATE_CATEGORY, args);
+			mDatabase.update(CATEGORY_, cv, CATEGORY__UPDATE_CATEGORY, args);
 		}
 	}
 
-	public static final String STAT_deletePoiCategory = "DELETE FROM category WHERE categoryid = @1";
+	private static final String CATEGORY__DELETE_WHERE_ID = TableE.deleteStatement(
+		category.class, new Object[]{category.categoryid});
 	public void deletePoiCategory(final int id) {
-		if (isDatabaseReady() && id != ZERO) { // predef category My POI never delete
+		if (isDatabaseReady() && id != ZERO) { // TODO: predef category My POI never delete
 			final Double[] args = {Double.valueOf(id)};
-			mDatabase.execSQL(STAT_deletePoiCategory, args);
+			mDatabase.execSQL(CATEGORY__DELETE_WHERE_ID, args);
 		}
 	}
 }

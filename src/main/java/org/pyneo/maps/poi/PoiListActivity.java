@@ -128,50 +128,61 @@ public class PoiListActivity extends ListActivity implements Constants {
 			}
 			startActivity(PoiIntent);
 			return true;
-		} else if (item.getItemId() == R.id.menu_categorylist) {
+		}
+		else if (item.getItemId() == R.id.menu_categorylist) {
 			startActivity((new Intent(this, PoiCategoryListActivity.class)));
 			return true;
-		} else if (item.getItemId() == R.id.menu_importpoi) {
+		}
+		else if (item.getItemId() == R.id.menu_importpoi) {
 			startActivity((new Intent(this, ImportPoiActivity.class)));
 			return true;
-		} else if (item.getItemId() == R.id.menu_delete) {
+		}
+		else if (item.getItemId() == R.id.menu_delete) {
 			showDialog(R.id.menu_delete);
 			return true;
-		} else if (item.getItemId() == R.id.menu_exportgpx) {
+		}
+		else if (item.getItemId() == R.id.menu_exportgpx) {
 			DoExportGpx();
 			return true;
-		} else if (item.getItemId() == R.id.menu_exportkml) {
+		}
+		else if (item.getItemId() == R.id.menu_exportkml) {
 			DoExportKml();
 
-		} else if (item.getItemId() == R.id.menu_sort_name) {
+		}
+		else if (item.getItemId() == R.id.menu_sort_name) {
 			if (mSortOrder.contains("p.name")) {
 				if (mSortOrder.contains("asc"))
 					mSortOrder = "p.name desc";
 				else
 					mSortOrder = "p.name asc";
-			} else {
+			}
+			else {
 				mSortOrder = "p.name asc";
 			}
 			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getPoiListCursor(mSortOrder));
 
-		} else if (item.getItemId() == R.id.menu_sort_category) {
+		}
+		else if (item.getItemId() == R.id.menu_sort_category) {
 			if (mSortOrder.contains("c.name")) {
 				if (mSortOrder.contains("asc"))
 					mSortOrder = "c.name desc";
 				else
 					mSortOrder = "c.name asc";
-			} else {
+			}
+			else {
 				mSortOrder = "c.name asc";
 			}
 			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getPoiListCursor(mSortOrder));
 
-		} else if (item.getItemId() == R.id.menu_sort_coord) {
+		}
+		else if (item.getItemId() == R.id.menu_sort_coord) {
 			if (mSortOrder.contains(LAT)) {
 				if (mSortOrder.contains("asc"))
 					mSortOrder = "lat desc, lon desc";
 				else
 					mSortOrder = "lat asc, lon asc";
-			} else {
+			}
+			else {
 				mSortOrder = "lat, lon asc";
 			}
 			((SimpleCursorAdapter)getListAdapter()).changeCursor(mPoiManager.getPoiListCursor(mSortOrder));
@@ -242,10 +253,12 @@ public class PoiListActivity extends ListActivity implements Constants {
 
 		if (item.getItemId() == R.id.menu_editpoi) {
 			startActivity((new Intent(this, PoiActivity.class)).putExtra("pointid", pointid));
-		} else if (item.getItemId() == R.id.menu_gotopoi) {
+		}
+		else if (item.getItemId() == R.id.menu_gotopoi) {
 			setResult(RESULT_OK, (new Intent()).putExtra("pointid", pointid));
 			finish();
-		} else if (item.getItemId() == R.id.menu_deletepoi) {
+		}
+		else if (item.getItemId() == R.id.menu_deletepoi) {
 			new AlertDialog.Builder(this)
 				.setTitle(R.string.app_name)
 				.setMessage(getResources().getString(R.string.question_delete, getText(R.string.poi)))
@@ -257,15 +270,18 @@ public class PoiListActivity extends ListActivity implements Constants {
 					}
 				}).setNegativeButton(R.string.no, null).create().show();
 
-		} else if (item.getItemId() == R.id.menu_hide) {
+		}
+		else if (item.getItemId() == R.id.menu_hide) {
 			poi.mHidden = true;
 			mPoiManager.updatePoi(poi);
 			((SimpleCursorAdapter)getListAdapter()).getCursor().requery();
-		} else if (item.getItemId() == R.id.menu_show) {
+		}
+		else if (item.getItemId() == R.id.menu_show) {
 			poi.mHidden = false;
 			mPoiManager.updatePoi(poi);
 			((SimpleCursorAdapter)getListAdapter()).getCursor().requery();
-		} else if (item.getItemId() == R.id.menu_share) {
+		}
+		else if (item.getItemId() == R.id.menu_share) {
 			try {
 				final GeoPoint point = poi.mGeoPoint;
 				final String label = poi.mTitle;
@@ -273,30 +289,46 @@ public class PoiListActivity extends ListActivity implements Constants {
 				double latitude = point.getLatitude();
 				double longitude = point.getLongitude();
 				Intent intent;
-				if (true) {
-					intent = new Intent(Intent.ACTION_SEND);
-					intent.setType("text/plain");
-					intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
-						.append(label)
-						.append('\n')
-						.append("http://www.openstreetmap.org/#map=")
-						.append(zoom)
-						.append('/')
-						.append(latitude)
-						.append('/')
-						.append(longitude)
-						.toString());
-				}
-				else {
-					intent = new Intent(Intent.ACTION_VIEW);
-					intent.setData(Uri.parse("geo:" + latitude + ',' + longitude + "?q=" + latitude + ',' + longitude + '(' + label + ')'));
-				}
+				intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_TEXT, new StringBuilder()
+					.append(poi.mTitle)
+					.append('\n')
+					.append("http://www.openstreetmap.org/?mlat=")
+					.append(latitude)
+					.append("&mlon=")
+					.append(longitude)
+					.append("#map=")
+					.append(zoom)
+					.append('/')
+					.append(latitude)
+					.append('/')
+					.append(longitude)
+					.append("&layers=T")
+					.toString());
 				startActivity(intent);
 			}
 			catch (Exception e) {
 				Ut.e(e.toString(), e);
 			}
-		} else if (item.getItemId() == R.id.menu_toradar) {
+		}
+		else if (item.getItemId() == R.id.menu_view) {
+			try {
+				final GeoPoint point = poi.mGeoPoint;
+				final String label = poi.mTitle;
+				final int zoom = 16;
+				double latitude = point.getLatitude();
+				double longitude = point.getLongitude();
+				Intent intent;
+				intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse("geo:" + latitude + ',' + longitude + "?q=" + latitude + ',' + longitude + '(' + label + ')'));
+				startActivity(intent);
+			}
+			catch (Exception e) {
+				Ut.e(e.toString(), e);
+			}
+		}
+		else if (item.getItemId() == R.id.menu_toradar) {
 			try {
 				Intent i = new Intent("com.google.android.radar.SHOW_RADAR");
 				i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -348,7 +380,8 @@ public class PoiListActivity extends ListActivity implements Constants {
 						category.setAttr(Constants.NAME, poiCat.mTitle);
 						category.setAttr(Constants.ICONID, Integer.toString(poiCat.mIconId));
 
-					} while (c.moveToNext());
+					}
+					while (c.moveToNext());
 				}
 				c.close();
 			}
@@ -419,7 +452,8 @@ public class PoiListActivity extends ListActivity implements Constants {
 						category.setAttr(Constants.NAME, poiCat.mTitle);
 						category.setAttr(Constants.ICONID, Integer.toString(poiCat.mIconId));
 
-					} while (c.moveToNext());
+					}
+					while (c.moveToNext());
 				}
 				c.close();
 			}

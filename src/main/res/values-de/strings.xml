@@ -90,7 +90,8 @@
 	<string name="menu_routes">Strecken</string>
 	<string name="menu_search">Suche</string>
 	<string name="menu_settings">Einstellungen</string>
-	<string name="menu_share">Teile</string>
+	<string name="menu_share">Senden</string>
+	<string name="menu_view">Anzeigen</string>
 	<string name="menu_show">Anzeigen</string>
 	<string name="menu_show_dashboard">Dashboard</string>
 	<string name="menu_showinfo">Info anzeigen</string>
