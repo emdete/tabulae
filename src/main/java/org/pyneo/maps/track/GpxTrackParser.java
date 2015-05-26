@@ -10,16 +10,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.Date;
 
 public class GpxTrackParser extends DefaultHandler implements Constants {
-	private static final String TRK = "trk";
-	private static final String LAT = "lat";
-	private static final String LON = "lon";
-	private static final String NAME = "name";
-	private static final String CMT = "cmt";
-	private static final String DESC = "desc";
-	private static final String POINT = "trkpt";
-	private static final String ELE = "ele";
-	private static final String TIME = "time";
-	private static final String EMPTY = "";
 	private StringBuilder builder;
 	private PoiManager mPoiManager;
 	private Track mTrack;

@@ -93,7 +93,7 @@
 	<string name="menu_share">Senden</string>
 	<string name="menu_view">Anzeigen</string>
 	<string name="menu_show">Anzeigen</string>
-	<string name="menu_show_dashboard">Dashboard</string>
+	<string name="menu_show_dashboard">Instrumentenbrett</string>
 	<string name="menu_showinfo">Info anzeigen</string>
 	<string name="menu_showlineinfo">Show info under line</string>
 	<string name="menu_sort_category">Nach Kategorie</string>

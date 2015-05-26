@@ -31,13 +31,6 @@ import org.pyneo.maps.utils.GeoPoint;
 import java.io.File;
 
 public class DownloaderActivity extends Activity implements Constants {
-	private static final String CNT = "cnt";
-	private static final String ERRCNT = "errcnt";
-	private static final String TIME = "time";
-	private static final String MAPID = "mapid";
-	private static final String ZOOM = "zoom";
-	private static final String LAT = "lat";
-	private static final String LON = "lon";
 	IRemoteService mService = null;
 	private MapView mMap;
 	private TileSource mTileSource;

@@ -229,6 +229,7 @@ public class TrackStorage extends Storage implements Constants {
 		return res;
 	}
 
+	public static final String STAT_get_maps = "SELECT mapid, name, type, params FROM 'maps';";
 	public CursorI getMixedMaps() {
 		Cursor ret = null;
 		if (isDatabaseReady())

@@ -12,7 +12,6 @@ public interface Constants extends org.pyneo.Constants {
 	public static final int ZOOM_CONTROL_TOP = 1;
 	public static final String ACCURACY = "accuracy";
 	public static final String ACTION_CONVERSATIONS_REQUEST = "eu.siacs.conversations.location.request";
-	public static final String CATNAME = "catname";
 	public static final String ACTION_CONVERSATIONS_SHOW = "eu.siacs.conversations.location.show";
 	public static final String ACTION_SHOW_MAP_ID = "SHOW_MAP_ID";
 	public static final String ACTION_SHOW_POINTS = "org.pyneo.maps.action.SHOW_POINTS";
@@ -21,6 +20,8 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String ALTITUDE = "altitude";
 	//public static final String CATEGORY = "category";
 	public static final String CATEGORYID = "categoryid";
+	public static final String CATNAME = "catname";
+	public static final String CMT = "cmt";
 	public static final String CNT = "cnt";
 	public static final String DATA = "data";
 	public static final String DATE = "date";
@@ -31,6 +32,7 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String DURATION = "duration";
 	public static final String ELE = "ele";
 	public static final String EMPTY = "";
+	public static final String ERRCNT = "errcnt";
 	public static final String EXTENSIONS = "extensions";
 	public static final String GEODATA_FILENAME = "/geodata.db";
 	public static final String GPS = "gps";
@@ -53,13 +55,17 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String ONE_SPACE = " ";
 	public static final String PARAMS = "params";
 	public static final String POINTS = "points";
+	public static final String POINT = "trkpt";
 	public static final String SHOW = "show";
 	public static final String SPEED = "speed";
 	public static final String STYLE = "style";
+	public static final String TIME = "time";
 	public static final String TRACKID = "trackid";
 	public static final String TRACKPOINTS = "trackpoints";
 	public static final String TRACKS = "tracks";
+	public static final String TRK = "trk";
 	public static final String TYPE = "type";
+	public static final String ZOOM = "zoom";
 	// static { LOGDEBUG = Log.isLoggable(LOGTAG, Log.DEBUG); }
 	public static final String SQL_ADD_category = "INSERT INTO 'category' (categoryid, name, hidden, iconid) VALUES (0, 'My POI', 0, 0);";
 	public static final String SQL_CREATE_activity = "CREATE TABLE 'activity' (activityid INTEGER NOT NULL PRIMARY KEY UNIQUE, name VARCHAR);";
@@ -97,7 +103,6 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String STAT_deleteTrack_1 = "DELETE FROM trackpoints WHERE trackid = @1";
 	public static final String STAT_deleteTrack_2 = "DELETE FROM tracks WHERE trackid = @1";
 	public static final String STAT_get_map = "SELECT mapid, name, type, params FROM 'maps' WHERE mapid = @1;";
-	public static final String STAT_get_maps = "SELECT mapid, name, type, params FROM 'maps';";
 	public static final String STAT_getTrackChecked = "SELECT name, descr, show, trackid, cnt, distance, duration, categoryid, activity, date, style FROM tracks WHERE show = 1";
 	public static final String STAT_getTrackList = "SELECT tracks.name, activity.name || ', ' || strftime('%%d/%%m/%%Y %%H:%%M:%%S', date, 'unixepoch', 'localtime') As title2, descr, trackid _id, cnt, TIME('2011-01-01', duration || ' seconds') as duration, round(distance/1000, 2) AS distance0, show, IFNULL(duration, -1) As NeedStatUpdate, '%s' as units, round(distance/1000/1.609344, 2) AS distance1 FROM tracks LEFT JOIN activity ON activity.activityid = tracks.activity ORDER BY ";
 	public static final String STAT_getTrackPoints = "SELECT lat, lon, alt, speed, date FROM trackpoints WHERE trackid = @1 ORDER BY id";

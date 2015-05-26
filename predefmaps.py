@@ -32,7 +32,7 @@ doc = dict(
 maps = (
 	dict(
 		cat="BING",
-		name="Aerial",
+		name="Satellite",
 		id="bingaero",
 		descr="http://www.bing.com",
 		baseurl="http://ecn.t1.tiles.virtualearth.net/tiles/a",
