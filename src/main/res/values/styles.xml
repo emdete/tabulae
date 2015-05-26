@@ -2,59 +2,49 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 	<style name="stat_title">
 		<item name="android:textSize">12sp</item>
-		<item name="android:typeface">sans</item>
 		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">#ffb4b4b4</item>
+		<item name="android:textColor">@android:color/white</item>
 	</style>
 	<style name="stat_value">
 		<item name="android:textSize">16sp</item>
-		<item name="android:typeface">sans</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">@android:color/white</item>
 	</style>
 	<style name="stat_unit">
 		<item name="android:textSize">11sp</item>
-		<item name="android:typeface">sans</item>
 		<item name="android:textColor">@android:color/white</item>
 	</style>
 	<style name="title_red">
 		<item name="android:textSize">18sp</item>
 		<item name="android:textStyle">bold</item>
-		<item name="android:typeface">sans</item>
 		<item name="android:textColor">@color/primary</item>
 	</style>
 	<style name="title_white_2">
 		<item name="android:textSize">13sp</item>
 		<item name="android:textColor">@android:color/white</item>
-		<item name="android:typeface">sans</item>
 	</style>
 	<style name="data_header">
 		<item name="android:textSize">10sp</item>
-		<item name="android:typeface">sans</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">#ff555555</item>
 	</style>
 	<style name="data_value">
 		<item name="android:textSize">20sp</item>
-		<item name="android:typeface">sans</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">@android:color/white</item>
 	</style>
 	<style name="data_unit">
 		<item name="android:textSize">10sp</item>
-		<item name="android:typeface">sans</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">@android:color/white</item>
 	</style>
 	<style name="descr_gray">
 		<item name="android:textSize">14sp</item>
-		<item name="android:typeface">sans</item>
 		<item name="android:textColor">#ff555555</item>
 	</style>
 	<style name="label_white">
 		<item name="android:textSize">12sp</item>
 		<item name="android:textStyle">bold</item>
-		<item name="android:typeface">sans</item>
 		<item name="android:textColor">@android:color/white</item>
 		<item name="android:paddingTop">1sp</item>
 		<item name="android:paddingBottom">2sp</item>

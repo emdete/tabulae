@@ -16,6 +16,7 @@
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-feature android:name="android.hardware.location" android:required="false" />
@@ -25,6 +26,7 @@
 		android:name=".MapApplication"
 		android:allowClearUserData="false"
 		android:icon="@drawable/ic_launcher"
+		android:theme="@style/TabulaeTheme"
 		android:label="@string/app_name" >
 		<activity
 			android:name=".MainActivity"

@@ -7,12 +7,13 @@
 	>
 	<TextView
 		android:id="@+id/Name"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginLeft="6sp"
-		android:layout_marginTop="6sp"
+		android:layout_margin="3sp"
 		android:text="TextView"
-		android:textAppearance="@style/title_red"
+		android:textStyle="bold"
+		android:textColor="@android:color/white"
+		android:background="@color/primary"
 		/>
 	<TableLayout
 		android:id="@+id/tableLayout1"
