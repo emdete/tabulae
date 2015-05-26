@@ -34,10 +34,11 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String EMPTY = "";
 	public static final String ERRCNT = "errcnt";
 	public static final String EXTENSIONS = "extensions";
-	public static final String GEODATA_FILENAME = "/geodata.db";
+	public static final String GEODATA_FILENAME = "geodata.db";
 	public static final String GPS = "gps";
 	public static final String HIDDEN = "hidden";
 	public static final String ICONID = "iconid";
+	public static final String INDEX_DB = "index.db";
 	public static final String JID = "jid";
 	public static final String LATITUDE = "latitude";
 	public static final String LAT = "lat";
@@ -113,5 +114,6 @@ public interface Constants extends org.pyneo.Constants {
 	public static final String UPDATE_MAPS = "mapid = @1";
 	public static final String UPDATE_POINTS = "pointid = @1";
 	public static final String UPDATE_TRACKS = "trackid = @1";
+	public static final String WRITE_TRACK_DB = "writedtrack.db";
 	//(trackid INTEGER NOT NULL PRIMARY KEY UNIQUE, name VARCHAR, descr VARCHAR, date DATETIME, show INTEGER, cnt INTEGER, duration INTEGER, distance INTEGER, categoryid INTEGER, activity INTEGER);";
 }

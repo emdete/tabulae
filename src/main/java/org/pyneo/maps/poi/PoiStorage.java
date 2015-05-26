@@ -115,8 +115,17 @@ public class PoiStorage extends TrackStorage implements Constants { // TODO exte
 
 	public SQLiteCursorLoader getPoiListCursorLoader(String sortColNames) {
 		File folder = Ut.getAppMainDir(mCtx, DATA);
-		folder = new File(folder, GEODATA_FILENAME);
-		return new SQLiteCursorLoader(mCtx, new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()), POINTS__SELECT_ORDER + sortColNames, null);
+		if (folder.exists()) {
+			folder = new File(folder, GEODATA_FILENAME);
+			try {
+				Ut.d("getDatabase folder=" + folder.getAbsolutePath());
+				return new SQLiteCursorLoader(mCtx, new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()), POINTS__SELECT_ORDER + sortColNames, null);
+			}
+			catch (Exception e) {
+				Ut.e(e.toString(), e);
+			}
+		}
+		return null;
 	}
 
 	public Cursor getPoiListCursor() {

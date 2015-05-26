@@ -12,8 +12,6 @@ import org.pyneo.maps.utils.Ut;
 import java.io.File;
 
 public class TileProviderFileBase extends TileProviderBase implements Constants {
-	private static final String DELETE_FROM_ListCashTables = "DELETE FROM 'ListCashTables' WHERE name LIKE ('%sqlitedb')";
-	private static final String INDEX_DB = "/index.db";
 	protected final SQLiteDatabase mIndexDatabase;
 
 	public TileProviderFileBase(Context ctx) {
@@ -143,12 +141,11 @@ public class TileProviderFileBase extends TileProviderBase implements Constants 
 	}
 
 	private SQLiteDatabase getIndexDatabase(Context ctx) {
-		File folder = Ut.getAppMainDir(ctx, "data");
+		File folder = Ut.getAppMainDir(ctx, DATA);
 		if (!folder.exists()) // no sdcard // TODO Check how it works without a map? if you draw a card during the program?
 			return null;
-
 		Ut.d("OpenStreetMapTileFilesystemProvider: Open INDEX database");
-		return new IndexDatabaseHelper(ctx, folder.getAbsolutePath() + INDEX_DB).getWritableDatabase();
+		return new IndexDatabaseHelper(ctx, folder.getAbsolutePath() + '/' + INDEX_DB).getWritableDatabase();
 	}
 
 	protected class IndexDatabaseHelper extends SQLiteOpenHelper {
@@ -160,6 +157,7 @@ public class TileProviderFileBase extends TileProviderBase implements Constants 
 		public void onCreate(SQLiteDatabase db) {
 		}
 
+		private static final String DELETE_FROM_ListCashTables = "DELETE FROM 'ListCashTables' WHERE name LIKE ('%sqlitedb')";
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			if (oldVersion < 2) {

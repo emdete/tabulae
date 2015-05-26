@@ -104,7 +104,7 @@ public class Storage implements Constants {
 			db.execSQL(SQL_CREATE_trackpoints);
 			db.execSQL(SQL_CREATE_maps);
 			db.execSQL(SQL_CREATE_routes);
-			LoadActivityListFromResource(db);
+			loadActivityListFromResource(db);
 		}
 
 		@Override
@@ -146,7 +146,7 @@ public class Storage implements Constants {
 				db.execSQL(SQL_CREATE_tracks);
 				db.execSQL(SQL_UPDATE_6_4);
 				db.execSQL(SQL_UPDATE_6_5);
-				LoadActivityListFromResource(db);
+				loadActivityListFromResource(db);
 			}
 			if (oldVersion < 20) {
 				db.execSQL(SQL_UPDATE_6_1);
@@ -164,7 +164,7 @@ public class Storage implements Constants {
 			}
 		}
 
-		public void LoadActivityListFromResource(final SQLiteDatabase db) {
+		public void loadActivityListFromResource(final SQLiteDatabase db) {
 			db.execSQL(SQL_CREATE_drop_activity);
 			db.execSQL(SQL_CREATE_activity);
 			String[] act = mCtx.getResources().getStringArray(R.array.track_activity);

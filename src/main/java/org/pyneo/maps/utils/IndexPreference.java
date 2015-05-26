@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class IndexPreference extends Preference {
+public class IndexPreference extends Preference implements Constants {
 	private Button btnClear;
 	private Context mCtx;
 	private File mDbFile;
@@ -28,10 +28,8 @@ public class IndexPreference extends Preference {
 		super(context, attrs);
 		mCtx = context;
 		setWidgetLayoutResource(R.layout.preference_widget_btn_clear);
-		final File folder = Ut.getAppMainDir(mCtx, "data");
-		mDbFile = new File(folder.getAbsolutePath() + "/index.db");
-		setSummary(String.format(mCtx.getString(R.string.pref_index_summary), (int)mDbFile
-			.length() / 1024));
+		mDbFile = new File(Ut.getAppMainDir(mCtx, DATA), INDEX_DB);
+		setSummary(String.format(mCtx.getString(R.string.pref_index_summary), (int)mDbFile.length() / 1024));
 		mHandler = new SimpleInvalidationHandler();
 	}
 

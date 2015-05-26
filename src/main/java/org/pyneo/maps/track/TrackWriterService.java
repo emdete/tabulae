@@ -175,10 +175,10 @@ public class TrackWriterService extends Service implements Constants {
 
 	private void handleCommand(Intent intent) {
 //		appendLog("handleCommand");
-		final File folder = Ut.getAppMainDir(this, "data");
+		final File folder = Ut.getAppMainDir(this, DATA);
 		if (folder.canRead()) {
 			try {
-				db = new DatabaseHelper(this, folder.getAbsolutePath() + "/writedtrack.db").getWritableDatabase();
+				db = new DatabaseHelper(this, folder.getAbsolutePath() + '/' + WRITE_TRACK_DB).getWritableDatabase();
 			}
 			catch (Exception e) {
 				Ut.e(e.toString(), e);

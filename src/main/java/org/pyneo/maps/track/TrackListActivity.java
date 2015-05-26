@@ -119,10 +119,10 @@ public class TrackListActivity extends ListActivity implements Constants {
 		this.mThreadExecutor.execute(new Runnable() {
 			public void run() {
 				SQLiteDatabase db = null;
-				File folder = Ut.getAppMainDir(TrackListActivity.this, "data");
+				File folder = Ut.getAppMainDir(TrackListActivity.this, DATA);
 				if (folder.canRead()) {
 					try {
-						db = new DatabaseHelper(TrackListActivity.this, folder.getAbsolutePath() + "/writedtrack.db").getWritableDatabase();
+						db = new DatabaseHelper(TrackListActivity.this, folder.getAbsolutePath() + '/' + WRITE_TRACK_DB).getWritableDatabase();
 					}
 					catch (Exception e) {
 						db = null;

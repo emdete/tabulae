@@ -34,7 +34,7 @@ import java.util.concurrent.Executors;
 * will fire a thread to initially load the already written track. It will
 * connect to the trackwriter service to receive newly written positions.
 */
-public class CurrentTrackOverlay extends TileViewOverlay {
+public class CurrentTrackOverlay extends TileViewOverlay implements Constants {
 	private ExecutorService mThreadExecutor = Executors.newSingleThreadExecutor(new SimpleThreadFactory("CurrentTrack"));
 	private IRemoteService mService = null;
 	private Paint mPaint = new Paint();
@@ -60,11 +60,11 @@ public class CurrentTrackOverlay extends TileViewOverlay {
 			else {
 				mTrack.getPoints().clear();
 			}
-			final File folder = Ut.getAppMainDir(mContext, "data");
+			final File folder = Ut.getAppMainDir(mContext, DATA);
 			if (folder.canRead()) {
 				SQLiteDatabase db = null;
 				try {
-					db = new DatabaseHelper(mContext, folder.getAbsolutePath() + "/writedtrack.db").getReadableDatabase();
+					db = new DatabaseHelper(mContext, folder.getAbsolutePath() + '/' + WRITE_TRACK_DB).getReadableDatabase();
 				}
 				catch (Exception e) {
 					db = null;
