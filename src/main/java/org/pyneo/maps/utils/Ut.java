@@ -166,14 +166,12 @@ public class Ut implements Constants {
 	private static File getDir(final Context mCtx, final String aPref, final String aDefaultDirName, final String aFolderName) {
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mCtx);
 		final String dirName = pref.getString(aPref, aDefaultDirName) + "/" + aFolderName + "/";
-
 		final File dir = new File(dirName.replace("//", "/").replace("//", "/"));
 		if (!dir.exists()) {
 			if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
 				dir.mkdirs();
 			}
 		}
-
 		return dir;
 	}
 
@@ -207,14 +205,10 @@ public class Ut implements Constants {
 
 	public static String readString(final InputStream in, final int size) throws IOException {
 		byte b[] = new byte[size];
-
-		int lenght = in.read(b);
-		if (b[0] == 0)
+		int length = in.read(b);
+		if (length == 0 || b[0] == 0)
 			return "";
-		else if (lenght > 0)
-			return new String(b, 0, lenght);
-		else
-			return "";
+		return new String(b, 0, length);
 	}
 
 	public static String formatGeoPoint(GeoPoint point) {

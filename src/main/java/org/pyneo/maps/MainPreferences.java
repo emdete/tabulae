@@ -40,9 +40,7 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		registerForContextMenu(getListView());
-
 		final SharedPreferences aPref = PreferenceManager.getDefaultSharedPreferences(this);
-
 		final ArrayList<String> arrEntry = new ArrayList<String>();
 		arrEntry.add("Default");
 		final ArrayList<String> arrEntryValues = new ArrayList<String>();
@@ -59,7 +57,6 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 				}
 			}
 		}
-
 		final String sdf = aPref.getString("pref_dir_main", "NO");
 		if (sdf.equalsIgnoreCase("NO")) {
 			final Editor editor = aPref.edit();
@@ -69,21 +66,17 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 			editor.putString("pref_dir_export", Ut.getExternalStorageDirectory() + "/tabulae/export/");
 			editor.commit();
 		}
-
 		// Load the preferences from an XML resource
 		addPreferencesFromResource(R.xml.mainpreferences);
-
 		((ListPreference)findPreference("pref_person_icon")).setEntries(arrEntry.toArray(new String[arrEntry.size()]));
 		((ListPreference)findPreference("pref_person_icon")).setEntryValues(arrEntryValues.toArray(new String[arrEntry.size()]));
 		((ListPreference)findPreference("pref_arrow_icon")).setEntries(arrEntry.toArray(new String[arrEntry.size()]));
 		((ListPreference)findPreference("pref_arrow_icon")).setEntryValues(arrEntryValues.toArray(new String[arrEntry.size()]));
-
 		findPreference("pref_dir_main").setSummary(aPref.getString("pref_dir_main", Ut.getExternalStorageDirectory() + "/tabulae/"));
 		findPreference("pref_dir_maps").setSummary(aPref.getString("pref_dir_maps", Ut.getExternalStorageDirectory() + "/tabulae/maps/"));
 		findPreference("pref_main_usermaps").setSummary("Maps from " + aPref.getString("pref_dir_maps", Ut.getExternalStorageDirectory() + "/tabulae/maps/"));
 		findPreference("pref_dir_import").setSummary(aPref.getString("pref_dir_import", Ut.getExternalStorageDirectory() + "/tabulae/import/"));
 		findPreference("pref_dir_export").setSummary(aPref.getString("pref_dir_export", Ut.getExternalStorageDirectory() + "/tabulae/export/"));
-
 		findPreference("pref_dir_main").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -112,10 +105,8 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 				return false;
 			}
 		});
-
 		final PreferenceGroup prefMapsgroup = (PreferenceGroup)findPreference("pref_predefmaps_mapsgroup");
 		final PreferenceGroup prefOverlaysgroup = (PreferenceGroup)findPreference("pref_predefmaps_overlaysgroup");
-
 		final SAXParserFactory fac = SAXParserFactory.newInstance();
 		SAXParser parser = null;
 		try {
@@ -128,12 +119,9 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 		catch (Exception e) {
 			Ut.e(e.toString(), e);
 		}
-
 		final File folder = Ut.getAppMapsDir(this);
 		LoadUserMaps(folder);
-
 		findPreference("pref_main_mixmaps").setIntent(new Intent(getApplicationContext(), MixedMapsPreference.class));
-
 		getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 	}
 
@@ -147,7 +135,6 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
 		if (requestCode == R.string.pref_dir_main
 			|| requestCode == R.string.pref_dir_maps
 			|| requestCode == R.string.pref_dir_import
@@ -160,26 +147,27 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 					if (filename.startsWith("file://")) {
 						filename = filename.substring(7);
 					}
-
 					String prefName = "";
 					if (requestCode == R.string.pref_dir_main) {
 						prefName = "pref_dir_main";
-					} else if (requestCode == R.string.pref_dir_maps) {
+					}
+					else if (requestCode == R.string.pref_dir_maps) {
 						prefName = "pref_dir_maps";
-					} else if (requestCode == R.string.pref_dir_import) {
+					}
+					else if (requestCode == R.string.pref_dir_import) {
 						prefName = "pref_dir_import";
-					} else if (requestCode == R.string.pref_dir_export) {
+					}
+					else if (requestCode == R.string.pref_dir_export) {
 						prefName = "pref_dir_export";
 					}
-
+					else {
+					}
 					final SharedPreferences aPref = PreferenceManager.getDefaultSharedPreferences(this);
 					final Editor editor = aPref.edit();
 					editor.putString(prefName, filename);
 					editor.commit();
-
 					onSharedPreferenceChanged(aPref, prefName);
 				}
-
 			}
 		}
 	}
@@ -188,20 +176,16 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 		// Cash file preferences
 		final PreferenceGroup prefUserMapsgroup = (PreferenceGroup)findPreference("pref_usermaps_mapsgroup");
 		prefUserMapsgroup.removeAll();
-
 		final SharedPreferences aPref = PreferenceManager.getDefaultSharedPreferences(this);
 		final Editor prefEditor = aPref.edit();
-
 		final File[] files = folder.listFiles();
-		if (files != null)
+		if (files != null) {
 			for (int i = 0; i < files.length; i++) {
 				if (files[i].getName().toLowerCase().endsWith(getString(R.string.mnm))
 					|| files[i].getName().toLowerCase().endsWith(getString(R.string.tar))
 					|| files[i].getName().toLowerCase().endsWith(getString(R.string.sqlitedb))) {
 					final String name = Ut.FileName2ID(files[i].getName());
-
 					prefEditor.putString(PREF_USERMAPS_ + name + "_baseurl", files[i].getAbsolutePath());
-
 					final CheckBoxPreferenceExt pref = new CheckBoxPreferenceExt(this, PREF_USERMAPS_ + name + "_enabled", false);
 					pref.setKey(PREF_USERMAPS_ + name);
 					pref.setTitle(aPref.getString(PREF_USERMAPS_ + name + "_name", files[i].getName()));
@@ -213,69 +197,70 @@ public class MainPreferences extends PreferenceActivity implements OnSharedPrefe
 							.putExtra("AbsolutePath", files[i].getAbsolutePath())
 					);
 					prefUserMapsgroup.addPreference(pref);
-
 				}
 			}
-
+		}
 		prefEditor.commit();
 	}
 
 	@Override
 	protected void onDestroy() {
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-
 		super.onDestroy();
 	}
 
 	public void onSharedPreferenceChanged(SharedPreferences aPref, String aKey) {
 		Ut.w(aKey);
-
 		if (aKey.equalsIgnoreCase("pref_dir_maps")) {
 			findPreference("pref_main_usermaps").setSummary("Maps from " + aPref.getString("pref_dir_maps", Ut.getExternalStorageDirectory() + "/tabulae/maps/"));
 			findPreference(aKey).setSummary(aPref.getString("pref_dir_maps", Ut.getExternalStorageDirectory() + "/tabulae/maps/"));
-
 			final File dir = new File(aPref.getString("pref_dir_maps", Ut.getExternalStorageDirectory() + "/tabulae/maps/").concat("/").replace("//", "/"));
 			if (!dir.exists()) {
 				if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
 					dir.mkdirs();
 				}
 			}
-			if (dir.exists())
+			if (dir.exists()) {
 				LoadUserMaps(dir);
-		} else if (Ut.equalsIgnoreCase(aKey, 0, 9, "pref_dir_")) {
+			}
+		}
+		else if (Ut.equalsIgnoreCase(aKey, 0, 9, "pref_dir_")) {
 			findPreference("pref_dir_main").setSummary(aPref.getString("pref_dir_main", Ut.getExternalStorageDirectory() + "/tabulae/"));
 			findPreference("pref_dir_import").setSummary(aPref.getString("pref_dir_import", Ut.getExternalStorageDirectory() + "/tabulae/import/"));
 			findPreference("pref_dir_export").setSummary(aPref.getString("pref_dir_export", Ut.getExternalStorageDirectory() + "/tabulae/export/"));
-		} else if (aKey.equalsIgnoreCase("pref_locale")) {
+		}
+		else if (aKey.equalsIgnoreCase("pref_locale")) {
 			Locale locale = ((MapApplication)getApplication()).getDefLocale();
 			final String lang = aPref.getString("pref_locale", " ");
 			if (lang.equalsIgnoreCase("zh_CN")) {
 				locale = Locale.SIMPLIFIED_CHINESE;
-			} else if (lang.equalsIgnoreCase("zh_TW")) {
+			}
+			else if (lang.equalsIgnoreCase("zh_TW")) {
 				locale = Locale.TRADITIONAL_CHINESE;
-			} else if (!lang.equalsIgnoreCase("") && !lang.equalsIgnoreCase(" ")) {
+			}
+			else if (!lang.equalsIgnoreCase("") && !lang.equalsIgnoreCase(" ")) {
 				locale = new Locale(lang);
 			}
 			Locale.setDefault(locale);
 			Configuration config = getBaseContext().getResources().getConfiguration();
 			config.locale = locale;
 			getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
 			finish();
 			Intent myIntent = new Intent(MainPreferences.this, MainPreferences.class);
 			startActivity(myIntent);
-		} else if (Ut.equalsIgnoreCase(aKey, 0, 14, PREF_USERMAPS_)) {
+		}
+		else if (Ut.equalsIgnoreCase(aKey, 0, 14, PREF_USERMAPS_)) {
 			if (aKey.endsWith("name") && findPreference(aKey.replace("_name", "")) != null) {
 				findPreference(aKey.replace("_name", "")).setTitle(aPref.getString(aKey, ""));
-			} else if (aKey.endsWith("_enabled") && findPreference(aKey.replace("_enabled", "")) != null) {
+			}
+			else if (aKey.endsWith("_enabled") && findPreference(aKey.replace("_enabled", "")) != null) {
 				((CheckBoxPreferenceExt)findPreference(aKey.replace("_enabled", ""))).setChecked(aPref.getBoolean(aKey, true));
 			}
-		} else if (Ut.equalsIgnoreCase(aKey, 0, 16, PREF_PREDEFMAPS_)) {
+		}
+		else if (Ut.equalsIgnoreCase(aKey, 0, 16, PREF_PREDEFMAPS_)) {
 			final Preference pref = findPreference(aKey + "_screen");
 			if (pref != null && pref instanceof CheckBoxPreferenceExt)
 				((CheckBoxPreferenceExt)pref).setChecked(aPref.getBoolean(aKey, true));
-
 		}
 	}
-
 }

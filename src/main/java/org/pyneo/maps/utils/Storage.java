@@ -33,7 +33,6 @@ public class Storage implements Constants {
 
 	protected boolean isDatabaseReady() {
 		boolean ret = true;
-
 		if (mDatabase == null)
 			mDatabase = getDatabase();
 
@@ -41,7 +40,6 @@ public class Storage implements Constants {
 			ret = false;
 		else if (!mDatabase.isOpen())
 			mDatabase = getDatabase();
-
 		if (!ret)
 			try {
 				Toast.makeText(mCtx, mCtx.getText(R.string.message_geodata_notavailable), Toast.LENGTH_LONG).show();
@@ -49,7 +47,6 @@ public class Storage implements Constants {
 			catch (Exception e) {
 				Ut.e(e.toString(), e);
 			}
-
 		return ret;
 	}
 
@@ -64,15 +61,15 @@ public class Storage implements Constants {
 
 	protected SQLiteDatabase getDatabase() {
 		File folder = Ut.getAppMainDir(mCtx, DATA);
-		if (folder.exists()) {
+		try {
+			if (!folder.exists())
+				throw new Exception("folder does not exist, folder=" + folder);
 			folder = new File(folder, GEODATA_FILENAME);
-			try {
-				Ut.d("getDatabase folder=" + folder.getAbsolutePath());
-				return new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()).getWritableDatabase();
-			}
-			catch (Exception e) {
-				Ut.e(e.toString(), e);
-			}
+			Ut.i("getDatabase folder=" + folder.getAbsolutePath());
+			return new GeoDatabaseHelper(mCtx, folder.getAbsolutePath()).getWritableDatabase();
+		}
+		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 		return null;
 	}
