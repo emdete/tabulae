@@ -64,74 +64,79 @@ public class SQLiteMapDatabase implements ICacheProvider {
 	}
 
 	private void initDatabaseFiles(final String aFileName, final boolean aCreateNewDatabaseFile) throws RException {
-		for (int i = 0; i < mDatabase.length; i++)
-			if (mDatabase[i] != null)
-				mDatabase[i].close();
-		mBaseFile = new File(aFileName);
-		final File folder = mBaseFile.getParentFile();
-		if (folder != null) {
-			File[] files = folder.listFiles();
-			if (files != null) {
-				int j = 0;
-				mBaseFileIndex = 0;
-				// Count the number of matching files
-				for (int i = 0; i < files.length; i++) {
-					if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
-						j = j + 1;
-						try {
-							String k = files[i].getName().replace(mBaseFile.getName(), "");
-							if (k.length() > 0) {
-								final Integer index = Integer.parseInt(k);
-								if (index > mBaseFileIndex) {
-									mBaseFileIndex = index;
+		try {
+			for (int i = 0; i < mDatabase.length; i++)
+				if (mDatabase[i] != null)
+					mDatabase[i].close();
+			mBaseFile = new File(aFileName);
+			final File folder = mBaseFile.getParentFile();
+			if (folder != null) {
+				File[] files = folder.listFiles();
+				if (files != null) {
+					int j = 0;
+					mBaseFileIndex = 0;
+					// Count the number of matching files
+					for (int i = 0; i < files.length; i++) {
+						if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
+							j = j + 1;
+							try {
+								String k = files[i].getName().replace(mBaseFile.getName(), "");
+								if (k.length() > 0) {
+									final Integer index = Integer.parseInt(k);
+									if (index > mBaseFileIndex) {
+										mBaseFileIndex = index;
+									}
 								}
 							}
-						}
-						catch (Exception e) {
-							Ut.e(e.toString(), e);
+							catch (Exception e) {
+								Ut.e(e.toString(), e);
+							}
 						}
 					}
-				}
-				final int dbFilesCnt = j;
-				// If you want to create another one, then reserve a place for him
-				if (aCreateNewDatabaseFile || j == 0)
-					j = j + 1;
-				// Create an array of a certain size
-				mDatabase = new SQLiteDatabase[j];
-				// Fill the array
-				j = 0;
-				long minsize = 0;
-				for (int i = 0; i < files.length; i++) {
-					if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
-						try {
-							mDatabase[j] = new CacheDatabaseHelper(mContext, files[i].getAbsolutePath()).getWritableDatabase();
-							mDatabase[j].setMaximumSize(MAX_DATABASE_SIZE);
-							if (mDatabaseWritable == null) {
-								mDatabaseWritable = mDatabase[j];
-								minsize = files[i].length();
-							}
-							else {
-								if (files[i].length() < minsize) {
+					final int dbFilesCnt = j;
+					// If you want to create another one, then reserve a place for him
+					if (aCreateNewDatabaseFile || j == 0)
+						j = j + 1;
+					// Create an array of a certain size
+					mDatabase = new SQLiteDatabase[j];
+					// Fill the array
+					j = 0;
+					long minsize = 0;
+					for (int i = 0; i < files.length; i++) {
+						if (files[i].getName().startsWith(mBaseFile.getName()) && !files[i].getName().endsWith(JOURNAL)) {
+							try {
+								mDatabase[j] = new CacheDatabaseHelper(mContext, files[i].getAbsolutePath()).getWritableDatabase();
+								mDatabase[j].setMaximumSize(MAX_DATABASE_SIZE);
+								if (mDatabaseWritable == null) {
 									mDatabaseWritable = mDatabase[j];
 									minsize = files[i].length();
 								}
+								else {
+									if (files[i].length() < minsize) {
+										mDatabaseWritable = mDatabase[j];
+										minsize = files[i].length();
+									}
+								}
+								j = j + 1;
 							}
-							j = j + 1;
-						}
-						catch (Exception e) {
-							Ut.e(e.toString(), e);
+							catch (Exception e) {
+								Ut.e(e.toString(), e);
+							}
 						}
 					}
-				}
-				if (dbFilesCnt == 0) {
-					mDatabase[0] = new CacheDatabaseHelper(null, mBaseFile.getAbsolutePath()).getWritableDatabase();
-					mDatabaseWritable = mDatabase[0];
-				}
-				if (aCreateNewDatabaseFile) {
-					mDatabase[j] = new CacheDatabaseHelper(null, mBaseFile.getAbsolutePath() + (mBaseFileIndex + 1)).getWritableDatabase();
-					mDatabaseWritable = mDatabase[j];
+					if (dbFilesCnt == 0) {
+						mDatabase[0] = new CacheDatabaseHelper(mContext, mBaseFile.getAbsolutePath()).getWritableDatabase();
+						mDatabaseWritable = mDatabase[0];
+					}
+					if (aCreateNewDatabaseFile) {
+						mDatabase[j] = new CacheDatabaseHelper(mContext, mBaseFile.getAbsolutePath() + (mBaseFileIndex + 1)).getWritableDatabase();
+						mDatabaseWritable = mDatabase[j];
+					}
 				}
 			}
+		}
+		catch (Exception e) {
+			Ut.e(e.toString(), e);
 		}
 	}
 
