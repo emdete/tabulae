@@ -41,7 +41,7 @@ public class GeoPoint {
 		this(s, ',');
 	}
 
-	private static GeoPoint fromDoubleStringOrNull(final String s) {
+	public static GeoPoint fromDoubleStringOrNull(final String s) {
 		if (s == null || s.length() == 0) {
 			return null;
 		}
