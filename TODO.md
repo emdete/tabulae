@@ -29,3 +29,4 @@ ToDos / known Bugs
 
 - make https aware (disable all http tile provider)
 
+- add Instrumentation (android.app)
