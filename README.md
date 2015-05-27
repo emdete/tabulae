@@ -1,7 +1,7 @@
 Tabulae
 =======
 
-![screenshots](https://raw.githubusercontent.com/emdete/tabulae/master/screenshot.png)
+![screenshots](https://raw.githubusercontent.com/emdete/Tabulae/master/function.jpg)
 
 Overview
 --------
@@ -19,6 +19,9 @@ This is a simple rastermap viewing app with the following features:
 -	Share your location, your POIs or your track with others
 
 -	Have a dashboard with configureabe parameters
+
+![screenshots](https://raw.githubusercontent.com/emdete/tabulae/master/screenshot.png)
+![screenshots](https://raw.githubusercontent.com/emdete/Tabulae/master/screenshot-statistic.png)
 
 Uses
 ----

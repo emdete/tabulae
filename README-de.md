@@ -10,8 +10,8 @@ Tabulae ist eine App zum Anzeigen von verschiedensten Karten. Es zeigt
 darauf die eigene Position, POIs, aufgezeichnete oder importierte
 Wegstrecken und Streckenplanungen.
 
-Es ist mit Gesten steuerbar aber wesentlich wurde Wert auf die
-Einhandbedienung gelegt um die Nutzung beim Sport zu vereinfachen.
+Es ist mit Gesten steuerbar (zoomen mit zwei Fingern) aber wesentlich wurde
+Wert auf die Einhandbedienung gelegt um die Nutzung beim Sport zu vereinfachen.
 
 Die Karten können vorab heruntergeladen werden, was die Nutzung in
 Gegenden mit schlecher Netzabdeckung erlaubt. Die heruntergeladenen
@@ -19,9 +19,9 @@ Karten werden gespeichert um Bandbreite zu sparen. Kartenanbieter können
 frei definiert werden, einige Beispiele sind vorkonfiguriert. Darüber
 hinaus können eigene Karten direkt aus Dateien verwendet werden.
 
-Auf verschiedene Weise können Positionen mit anderen Apps geteilt oder
-angezeigt werden. Die Wegstrecken und POIs können als gpx und kml im-
-und exportiert werden.
+Auf verschiedene Weise können Positionen mit anderen Apps und Nutzern geteilt
+oder angezeigt werden. Die Wegstrecken und POIs können als gpx und kml im- und
+exportiert werden.
 
 Tabulae benötigt keinen Account zu irgendeinem Dienst, speichert keine
 Daten welcher Art auch immer im Internet. Das Zurverfügung-Stellen von
