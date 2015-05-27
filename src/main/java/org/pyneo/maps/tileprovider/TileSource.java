@@ -14,7 +14,6 @@ import org.pyneo.maps.utils.RException;
 
 import org.pyneo.maps.utils.BoundingBoxE6;
 import org.pyneo.maps.utils.GeoPoint;
-import org.pyneo.maps.utils.Util;
 
 public class TileSource extends TileSourceBase {
 	private TileProviderBase mTileProvider;

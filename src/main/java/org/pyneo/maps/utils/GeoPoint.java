@@ -1,12 +1,10 @@
-// Created by plusminus on 21:28:12 - 25.09.2008
 package org.pyneo.maps.utils;
 
+import android.location.Location;
 import java.util.Locale;
 
 /**
- * 
  * @author Nicolas Gramlich
- * 
  */
 public class GeoPoint {
 	private int mLongitudeE6;
@@ -17,41 +15,41 @@ public class GeoPoint {
 		this.mLongitudeE6 = aLongitudeE6;
 	}
 
-	protected static GeoPoint fromDoubleString(final String s, final char spacer) {
+	public GeoPoint(final double lat, final double lon) {
+		this((int) (lat * 1E6), (int) (lon * 1E6));
+	}
+
+	public GeoPoint(final Location aLoc) {
+		this(aLoc.getLatitude(), aLoc.getLongitude());
+	}
+
+	public GeoPoint(final String lat, final String lon) {
+		this((int)(Double.parseDouble(lat) * 1E6), (int)(Double.parseDouble(lon) * 1E6));
+	}
+
+	public GeoPoint(final String s, final char spacer) {
 		final int spacerPos = s.indexOf(spacer);
-		return new GeoPoint((int) (Double.parseDouble(s.substring(0, spacerPos - 1)) * 1E6),
-				(int) (Double.parseDouble(s.substring(spacerPos + 1, s.length())) * 1E6));
-	}
-
-	public static GeoPoint fromDouble(final double lat, final double lon) {
-		return new GeoPoint((int) (lat * 1E6), (int) (lon * 1E6));
-	}
-
-	public static GeoPoint fromDoubleStringOrNull(final String s) {
-		if (s.equalsIgnoreCase(""))
-			return null;
-
 		try {
-			return fromDoubleString(s);
-		} catch (Exception e) {
-			return null;
+			mLatitudeE6 = (int)(Double.parseDouble(s.substring(0, spacerPos - 1)) * 1E6);
+			mLongitudeE6 = (int)(Double.parseDouble(s.substring(spacerPos + 1, s.length())) * 1E6);
+		}
+		catch (NumberFormatException e) {
 		}
 	}
 
-	public static GeoPoint fromDoubleString(final String s) {
-		// final int commaPos = s.indexOf(',');
-		final String[] f = s.split(",");
-		return new GeoPoint((int) (Double.parseDouble(f[0]) * 1E6), (int) (Double.parseDouble(f[1]) * 1E6));
-		// return new
-		// mGeoPoint((int)(Double.parseDouble(s.substring(0,commaPos-1))* 1E6),
-		// (int)(Double.parseDouble(s.substring(commaPos+1,s.length()))* 1E6));
+	public GeoPoint(final String s) {
+		this(s, ',');
 	}
 
-	public static GeoPoint from2DoubleString(final String lat, final String lon) {
+	private static GeoPoint fromDoubleStringOrNull(final String s) {
+		if (s == null || s.length() == 0) {
+			return null;
+		}
 		try {
-			return new GeoPoint((int) (Double.parseDouble(lat) * 1E6), (int) (Double.parseDouble(lon) * 1E6));
-		} catch (NumberFormatException e) {
-			return new GeoPoint(0, 0);
+			return new GeoPoint(s);
+		}
+		catch (Exception e) {
+			return null;
 		}
 	}
 
@@ -60,11 +58,13 @@ public class GeoPoint {
 		int lat = 0, lon = 0;
 		try {
 			lat = Integer.parseInt(word[0]);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 		}
 		try {
 			lon = Integer.parseInt(word[1]);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 		}
 		return new GeoPoint(lat, lon);
 	}
@@ -100,13 +100,12 @@ public class GeoPoint {
 
 	@Override
 	public String toString() {
-		return new StringBuilder().append(this.mLatitudeE6).append(",").append(this.mLongitudeE6).toString();
+		return new StringBuilder().append(mLatitudeE6).append(",").append(mLongitudeE6).toString();
 	}
 
 	public String toDoubleString() {
-		return String.format(Locale.UK, "%f,%f", this.mLatitudeE6 / 1E6, this.mLongitudeE6 / 1E6);
-		// return new StringBuilder().append(this.mLatitudeE6 /
-		// 1E6).append(",").append(this.mLongitudeE6 / 1E6).toString();
+		return String.format(Locale.UK, "%f,%f", mLatitudeE6 / 1E6, mLongitudeE6 / 1E6);
+		// return new StringBuilder().append(this.mLatitudeE6 / 1E6).append(",").append(this.mLongitudeE6 / 1E6).toString();
 	}
 
 	@Override
@@ -118,11 +117,11 @@ public class GeoPoint {
 	}
 
 	/**
-	 * @see Source@ http://www.geocities.com/DrChengalva/GPSDistance.html
-	 * @param gpA
-	 * @param gpB
-	 * @return distance in meters
-	 */
+	* @see Source@ http://www.geocities.com/DrChengalva/GPSDistance.html
+	* @param gpA
+	* @param gpB
+	* @return distance in meters
+	*/
 	public int distanceTo(final double lat, final double lon) {
 		final float res[] = new float[1];
 		computeDistanceAndBearing(this.mLatitudeE6 / 1E6, this.mLongitudeE6 / 1E6, lat, lon, res);
@@ -260,19 +259,11 @@ public class GeoPoint {
 		return radians / PiOver180;
 	}
 
-	public GeoPoint calculateEndingGlobalCoordinates(GeoPoint start, double startBearing, double distance /*
-																										 * ,
-																										 * double
-																										 * [
-																										 * ]
-																										 * endBearing
-																										 */) {
-
+	public GeoPoint calculateEndingGlobalCoordinates(GeoPoint start, double startBearing, double distance /* , double [ ] endBearing */) {
 		double mSemiMajorAxis = 6378137.0;
 		double mSemiMinorAxis = (1.0 - 1.0 / 298.257223563) * 6378137.0;
 		double mFlattening = 1.0 / 298.257223563;
 		// double mInverseFlattening = 298.257223563;
-
 		double a = mSemiMajorAxis;
 		double b = mSemiMinorAxis;
 		double aSquared = a * a;
@@ -286,23 +277,17 @@ public class GeoPoint {
 		double tanU1 = (1.0 - f) * Math.tan(phi1);
 		double cosU1 = 1.0 / Math.sqrt(1.0 + tanU1 * tanU1);
 		double sinU1 = tanU1 * cosU1;
-
 		// eq. 1
 		double sigma1 = Math.atan2(tanU1, cosAlpha1);
-
 		// eq. 2
 		double sinAlpha = cosU1 * sinAlpha1;
-
 		double sin2Alpha = sinAlpha * sinAlpha;
 		double cos2Alpha = 1 - sin2Alpha;
 		double uSquared = cos2Alpha * (aSquared - bSquared) / bSquared;
-
 		// eq. 3
 		double A = 1 + (uSquared / 16384) * (4096 + uSquared * (-768 + uSquared * (320 - 175 * uSquared)));
-
 		// eq. 4
 		double B = (uSquared / 1024) * (256 + uSquared * (-128 + uSquared * (74 - 47 * uSquared)));
-
 		// iterate until there is a negligible change in sigma
 		double deltaSigma;
 		double sOverbA = s / (b * A);
@@ -312,7 +297,6 @@ public class GeoPoint {
 		double sigmaM2;
 		double cosSigmaM2;
 		double cos2SigmaM2;
-
 		for (;;) {
 			// eq. 5
 			sigmaM2 = 2.0 * sigma1 + sigma;
@@ -320,34 +304,22 @@ public class GeoPoint {
 			cos2SigmaM2 = cosSigmaM2 * cosSigmaM2;
 			sinSigma = Math.sin(sigma);
 			double cosSignma = Math.cos(sigma);
-
 			// eq. 6
-			deltaSigma = B
-					* sinSigma
-					* (cosSigmaM2 + (B / 4.0)
-							* (cosSignma * (-1 + 2 * cos2SigmaM2) - (B / 6.0) * cosSigmaM2 * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM2)));
-
+			deltaSigma = B * sinSigma * (cosSigmaM2 + (B / 4.0) * (cosSignma * (-1 + 2 * cos2SigmaM2) - (B / 6.0) * cosSigmaM2 * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM2)));
 			// eq. 7
 			sigma = sOverbA + deltaSigma;
-
 			// break after converging to tolerance
 			if (Math.abs(sigma - prevSigma) < 0.0000000000001)
 				break;
-
 			prevSigma = sigma;
 		}
-
 		sigmaM2 = 2.0 * sigma1 + sigma;
 		cosSigmaM2 = Math.cos(sigmaM2);
 		cos2SigmaM2 = cosSigmaM2 * cosSigmaM2;
-
 		double cosSigma = Math.cos(sigma);
 		sinSigma = Math.sin(sigma);
-
 		// eq. 8
-		double phi2 = Math.atan2(sinU1 * cosSigma + cosU1 * sinSigma * cosAlpha1,
-				(1.0 - f) * Math.sqrt(sin2Alpha + Math.pow(sinU1 * sinSigma - cosU1 * cosSigma * cosAlpha1, 2.0)));
-
+		double phi2 = Math.atan2(sinU1 * cosSigma + cosU1 * sinSigma * cosAlpha1, (1.0 - f) * Math.sqrt(sin2Alpha + Math.pow(sinU1 * sinSigma - cosU1 * cosSigma * cosAlpha1, 2.0)));
 		// eq. 9
 		// This fixes the pole crossing defect spotted by Matt Feemster. When a
 		// path passes a pole and essentially crosses a line of latitude twice -
@@ -359,25 +331,19 @@ public class GeoPoint {
 		// sinSigma * cosAlpha1);
 		// double lambda = Math.atan(tanLambda);
 		double lambda = Math.atan2(sinSigma * sinAlpha1, (cosU1 * cosSigma - sinU1 * sinSigma * cosAlpha1));
-
 		// eq. 10
 		double C = (f / 16) * cos2Alpha * (4 + f * (4 - 3 * cos2Alpha));
-
 		// eq. 11
 		double L = lambda - (1 - C) * f * sinAlpha * (sigma + C * sinSigma * (cosSigmaM2 + C * cosSigma * (-1 + 2 * cos2SigmaM2)));
-
 		// eq. 12
 		// double alpha2 = Math.atan2(sinAlpha, -sinU1 * sinSigma + cosU1 *
 		// cosSigma * cosAlpha1);
-
 		// build result
 		double latitude = toDegrees(phi2);
 		double longitude = start.getLongitude() + toDegrees(L);
-
 		// if ((endBearing != null) && (endBearing.length > 0)) {
 		// endBearing[0] = toDegrees(alpha2);
 		// }
-
 		return new GeoPoint((int) (1E6 * latitude), (int) (1E6 * longitude));
 	}
 }

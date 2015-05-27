@@ -21,7 +21,6 @@ import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
 import org.pyneo.maps.utils.GeoPoint;
-import org.pyneo.maps.utils.TypeConverter;
 import org.pyneo.maps.utils.StreamUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,7 +87,7 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 
 	public void setLocation(final Location loc) {
 		// Used to save the current position
-		this.mCurrLocation = TypeConverter.locationToGeoPoint(loc);
+		this.mCurrLocation = new GeoPoint(loc);
 		if (!mSearchBubble)
 			setDescr();
 	}
@@ -230,7 +229,7 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 	public void fromPref(SharedPreferences settings) {
 		final String strlocation = settings.getString("SearchResultLocation", "");
 		if (strlocation.length() > 0) {
-			mLocation = GeoPoint.fromDoubleString(strlocation);
+			mLocation = new GeoPoint(strlocation);
 			mDescr = settings.getString("SearchResultDescr", "");
 		}
 	}

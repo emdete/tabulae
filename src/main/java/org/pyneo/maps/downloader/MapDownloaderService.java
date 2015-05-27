@@ -22,7 +22,7 @@ import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
 import org.pyneo.maps.utils.StreamUtils;
-import org.pyneo.maps.utils.Util;
+import org.pyneo.maps.tileprovider.Util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

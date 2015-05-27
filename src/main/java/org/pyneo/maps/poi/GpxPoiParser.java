@@ -45,7 +45,7 @@ public class GpxPoiParser extends DefaultHandler implements Constants {
 		if (localName.equalsIgnoreCase(WPT)) {
 			mPoiPoint = new PoiPoint();
 			mPoiPoint.mCategoryId = mCategoryId;
-			mPoiPoint.mGeoPoint = GeoPoint.from2DoubleString(attributes.getValue(LAT), attributes.getValue(LON));
+			mPoiPoint.mGeoPoint = new GeoPoint(attributes.getValue(LAT), attributes.getValue(LON));
 		}
 		else if (localName.equalsIgnoreCase("categoryid") && mPoiPoint != null) {
 			final String attrName = attributes.getValue(Constants.NAME);

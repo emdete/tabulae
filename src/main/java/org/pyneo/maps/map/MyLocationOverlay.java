@@ -20,7 +20,6 @@ import org.pyneo.maps.map.TileView.OpenStreetMapViewProjection;
 import org.pyneo.maps.utils.Ut;
 
 import org.pyneo.maps.utils.GeoPoint;
-import org.pyneo.maps.utils.TypeConverter;
 
 import java.util.Locale;
 
@@ -104,7 +103,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 
 	public void setLocation(final Location loc) {
 		Ut.d("setLocation loc=" + loc);
-		mLastGeoPoint = TypeConverter.locationToGeoPoint(loc);
+		mLastGeoPoint = new GeoPoint(loc);
 		mAccuracy = loc.getAccuracy();
 		mBearing = loc.getBearing();
 		mSpeed = loc.getSpeed();

@@ -80,7 +80,7 @@ public class KmlPoiParser extends DefaultHandler implements Constants {
 		} else if (localName.equalsIgnoreCase(coordinates)) {
 			mStrArray = builder.toString().split(",");
 			if (mPoiPoint != null)
-				mPoiPoint.mGeoPoint = GeoPoint.from2DoubleString(mStrArray[1], mStrArray[0]);
+				mPoiPoint.mGeoPoint = new GeoPoint(mStrArray[1], mStrArray[0]);
 		} else if (localName.equalsIgnoreCase(Point)) {
 			mItIsPoint = true;
 		}

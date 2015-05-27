@@ -33,7 +33,7 @@ import org.pyneo.maps.map.MapView;
 import org.pyneo.maps.map.TileViewOverlay;
 
 import org.pyneo.maps.utils.GeoPoint;
-import org.pyneo.maps.utils.Util;
+import org.pyneo.maps.tileprovider.Util;
 
 import java.io.File;
 import java.io.InputStream;

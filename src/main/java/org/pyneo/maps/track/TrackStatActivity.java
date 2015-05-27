@@ -10,7 +10,6 @@ import org.pyneo.maps.R;
 import org.pyneo.maps.poi.Constants;
 import org.pyneo.maps.poi.PoiManager;
 import org.pyneo.maps.utils.DistanceFormatter;
-import org.pyneo.maps.utils.Units;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -16,7 +16,7 @@ import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.utils.BoundingBoxE6;
 import org.pyneo.maps.utils.GeoPoint;
 import org.pyneo.maps.utils.MyMath;
-import org.pyneo.maps.utils.Util;
+import org.pyneo.maps.tileprovider.Util;
 
 public class YandexTrafficOverlay extends TileViewOverlay implements org.pyneo.maps.utils.Constants {
 	private static final int LATITUDE = 0;

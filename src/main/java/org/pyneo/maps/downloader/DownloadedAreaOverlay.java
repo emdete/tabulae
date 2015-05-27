@@ -13,7 +13,7 @@ import org.pyneo.maps.map.TileViewOverlay;
 
 import org.pyneo.maps.utils.BoundingBoxE6;
 import org.pyneo.maps.utils.GeoPoint;
-import org.pyneo.maps.utils.Util;
+import org.pyneo.maps.tileprovider.Util;
 
 public class DownloadedAreaOverlay extends TileViewOverlay {
 	private GeoPoint mPoint[];

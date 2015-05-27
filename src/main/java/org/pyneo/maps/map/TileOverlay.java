@@ -16,7 +16,7 @@ import org.pyneo.maps.utils.IMoveListener;
 
 import org.pyneo.maps.utils.BoundingBoxE6;
 import org.pyneo.maps.utils.MyMath;
-import org.pyneo.maps.utils.Util;
+import org.pyneo.maps.tileprovider.Util;
 
 public class TileOverlay extends TileViewOverlay implements org.pyneo.maps.utils.Constants {
 	// TODO following procedures under the question of alteration

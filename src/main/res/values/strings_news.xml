@@ -2,6 +2,7 @@
 <resources>
 <string name='whats_new_dialog_text' translatable='false'>
 v.1.0.5\n
+- fix NPE\n
 \n
 v.1.0.4\n
 - fix drawable issues for different dpi\n

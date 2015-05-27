@@ -84,7 +84,6 @@ import org.pyneo.maps.map.TileView;
 import org.pyneo.maps.map.TileViewOverlay;
 
 import org.pyneo.maps.utils.GeoPoint;
-import org.pyneo.maps.utils.TypeConverter;
 import org.pyneo.maps.utils.StreamUtils;
 import org.json.JSONObject;
 
@@ -425,7 +424,7 @@ public class MainActivity extends Activity implements Constants {
 
 				}
 				else {
-					GeoPoint point = GeoPoint.fromDoubleString(latlon);
+					GeoPoint point = new GeoPoint(latlon);
 					mPoiOverlay.clearPoiList();
 					mPoiOverlay.showTemporaryPoi(-1, point, "GEO", "");
 					setAutoFollow(false);
@@ -439,7 +438,7 @@ public class MainActivity extends Activity implements Constants {
 			mMapId = bundle.getString(MAPNAME);
 			if (bundle.containsKey("center")) {
 				try {
-					final GeoPoint geo = GeoPoint.fromDoubleString(bundle.getString("center"));
+					final GeoPoint geo = new GeoPoint(bundle.getString("center"));
 					mMap.setCenter(geo);
 				}
 				catch (Exception e) {
@@ -479,7 +478,7 @@ public class MainActivity extends Activity implements Constants {
 				double altitude = 0;
 				double accuracy = 0;
 				Ut.i("onCreate location received longitude=" + longitude + ", latitude=" + latitude + ", jid=" + jid + ", name=" + name);
-				GeoPoint point = GeoPoint.fromDouble(latitude, longitude);
+				GeoPoint point = new GeoPoint(latitude, longitude);
 				mPoiOverlay.clearPoiList();
 				mPoiOverlay.showTemporaryPoi(-1, point, name, jid);
 				setAutoFollow(false);
@@ -530,7 +529,7 @@ public class MainActivity extends Activity implements Constants {
 			mMapId = bundle.getString(MAPNAME);
 			if (bundle.containsKey("center")) {
 				try {
-					final GeoPoint geo = GeoPoint.fromDoubleString(bundle.getString("center"));
+					final GeoPoint geo = new GeoPoint(bundle.getString("center"));
 					mMap.setCenter(geo);
 				}
 				catch (Exception e) {
@@ -671,7 +670,7 @@ public class MainActivity extends Activity implements Constants {
 			if (str != null)
 				Toast.makeText(this, str, Toast.LENGTH_LONG).show();
 			if (loc != null) {
-				p = TypeConverter.locationToGeoPoint(loc);
+				p = new GeoPoint(loc);
 				if (mAutoFollow)
 					mMap.setCenter(p);
 				mMyLocationOverlay.setLocation(loc);
@@ -783,8 +782,7 @@ public class MainActivity extends Activity implements Constants {
 	protected void onPause() {
 		Ut.d("onPause");
 		final GeoPoint point = mMap.getMapCenter();
-		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = uiState.edit();
+		SharedPreferences.Editor editor = getPreferences(Activity.MODE_PRIVATE).edit();
 		if (mTileSource != null) {
 			editor.putString(MAPNAME, mTileSource.ID);
 			try {
@@ -807,8 +805,7 @@ public class MainActivity extends Activity implements Constants {
 		editor.putBoolean("show_dashboard", mIndicatorManager != null);
 		editor.putString("targetlocation", mMyLocationOverlay.getTargetLocation() == null? "": mMyLocationOverlay.getTargetLocation().toDoubleString());
 		editor.commit();
-		uiState = getSharedPreferences(MAPNAME, Activity.MODE_PRIVATE);
-		editor = uiState.edit();
+		editor = getSharedPreferences(MAPNAME, Activity.MODE_PRIVATE).edit();
 		if (mTileSource != null)
 			editor.putString(MAPNAME, mTileSource.ID);
 		editor.putInt("Latitude", point.getLatitudeE6());
@@ -889,8 +886,7 @@ public class MainActivity extends Activity implements Constants {
 						String name = Ut.FileName2ID(file.getName());
 						if (pref.getBoolean("pref_usermaps_" + name + "_enabled", false)
 						&& !pref.getBoolean("pref_usermaps_" + name + "_isoverlay", false)) {
-							MenuItem item = submenu.add(pref.getString("pref_usermaps_" + name + "_name",
-								file.getName()));
+							MenuItem item = submenu.add(pref.getString("pref_usermaps_" + name + "_name", file.getName()));
 							item.setTitleCondensed("usermap_" + name);
 						}
 					}
@@ -977,9 +973,7 @@ public class MainActivity extends Activity implements Constants {
 						);
 				}
 				catch (ActivityNotFoundException e) {
-					Toast.makeText(this,
-						R.string.message_nogpsstatus,
-						Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.message_nogpsstatus, Toast.LENGTH_LONG).show();
 					try {
 						startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri
 							.parse("market://search?q=pname:com.vonglasow.michael.satstat")));
@@ -1156,7 +1150,6 @@ public class MainActivity extends Activity implements Constants {
 			mShowOverlay = true;
 			try {
 				mTileSource = new TileSource(this, mapId, overlayId);
-
 			}
 			catch (RException e) {
 				mTileSource = null;
@@ -1321,7 +1314,6 @@ public class MainActivity extends Activity implements Constants {
 						final IndicatorView iv = info.IndicatorView;
 						mIndicatorManager.addIndicatorView(this, iv, iv.getIndicatorTag(), false);
 						mMap.invalidate(); //postInvalidate();
-
 						break;
 					}
 					case R.id.menu_dashboard_add_line: {
@@ -1389,8 +1381,7 @@ public class MainActivity extends Activity implements Constants {
 						break;
 					}
 					case R.id.menu_editpoi: {
-						startActivityForResult((new Intent(this, PoiActivity.class)).putExtra("pointid", mMarkerIndex),
-							R.id.menu_editpoi);
+						startActivityForResult((new Intent(this, PoiActivity.class)).putExtra("pointid", mMarkerIndex), R.id.menu_editpoi);
 						mMap.invalidate(); //postInvalidate();
 						break;
 					}
@@ -1563,7 +1554,6 @@ public class MainActivity extends Activity implements Constants {
 							SharedPreferences.Editor editor = uiState.edit();
 							editor.putString("error", "");
 							editor.commit();
-
 						}
 					}).setNegativeButton(R.string.about_dialog_close, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
@@ -1661,7 +1651,7 @@ public class MainActivity extends Activity implements Constants {
 				if (fields.length > 0) locns = fields[0];
 				if (fields.length > 1) title = fields[1];
 				if (fields.length > 2) descr = fields[2];
-				point = GeoPoint.fromDoubleString(locns);
+				point = new GeoPoint(locns);
 				mPoiOverlay.showTemporaryPoi(id--, point, title, descr);
 			}
 			setAutoFollow(false);
@@ -1690,7 +1680,7 @@ public class MainActivity extends Activity implements Constants {
 				if (mDrivingDirectionUp)
 					if (loc.getSpeed() > 0.5)
 						mMap.setBearing(loc.getBearing());
-				mMap.setCenter(TypeConverter.locationToGeoPoint(loc));
+				mMap.setCenter(new GeoPoint(loc));
 			}
 			mMap.invalidate();
 			setTitle();
@@ -1751,7 +1741,6 @@ public class MainActivity extends Activity implements Constants {
 				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, mLocationListener);
 				if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
 					mStatusLocationProviderName = LocationManager.GPS_PROVIDER;
-
 				try {
 					if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 						Ut.d("NETWORK Provider Enabled");
@@ -1763,7 +1752,6 @@ public class MainActivity extends Activity implements Constants {
 				catch (Exception e) {
 					Ut.e(e.toString(), e);
 				}
-
 			}
 			else if (listProviders.contains(LocationManager.NETWORK_PROVIDER) && lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 				Ut.d("only NETWORK Provider Enabled");

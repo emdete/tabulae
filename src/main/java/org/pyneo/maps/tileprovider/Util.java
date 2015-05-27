@@ -1,12 +1,14 @@
 // Created by plusminus on 17:53:07 - 25.09.2008
-package org.pyneo.maps.utils;
+package org.pyneo.maps.tileprovider;
+
+import org.pyneo.maps.utils.*;
 
 /**
  *
  * @author Nicolas Gramlich
  *
  */
-public class Util implements Constants {
+public class Util implements org.pyneo.maps.utils.Constants {
 
 	public static int[] getMapTileFromCoordinates(final int aLat, final int aLon, final int zoom, final int[] reuse, final int aProjection) {
 		return getMapTileFromCoordinates(aLat / 1E6, aLon / 1E6, zoom, reuse, aProjection);

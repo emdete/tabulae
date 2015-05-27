@@ -24,7 +24,7 @@ import org.pyneo.maps.tileprovider.TileSource;
 
 import org.pyneo.maps.utils.BoundingBoxE6;
 import org.pyneo.maps.utils.GeoPoint;
-import org.pyneo.maps.utils.Util;
+import org.pyneo.maps.tileprovider.Util;
 import org.pyneo.maps.utils.IMoveListener;
 
 import java.util.ArrayList;
