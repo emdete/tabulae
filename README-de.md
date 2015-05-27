@@ -1,6 +1,8 @@
 Tabulae
 =======
 
+![screenshots](https://raw.githubusercontent.com/emdete/Tabulae/master/function.jpg)
+
 Übersicht
 ---------
 
@@ -33,6 +35,8 @@ erhalten wäre aus den heruntergeladenen Kartenteile die grobe Position
 des Nuzters zu ermitteln.
 
 Tabulae enthält keine Werbung.
+
+![screenshots](https://raw.githubusercontent.com/emdete/Tabulae/master/screenshot.png)
 
 Bedienung
 ---------
