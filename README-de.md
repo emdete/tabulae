@@ -37,6 +37,7 @@ des Nuzters zu ermitteln.
 Tabulae enthält keine Werbung.
 
 ![screenshots](https://raw.githubusercontent.com/emdete/Tabulae/master/screenshot.png)
+![screenshots](https://raw.githubusercontent.com/emdete/Tabulae/master/screenshot-statistic.png)
 
 Bedienung
 ---------
