@@ -1,6 +1,5 @@
 package org.pyneo.maps.track;
 
-import com.commonsware.cwac.loaderex.acl.SQLiteCursorLoader;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
