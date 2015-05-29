@@ -34,10 +34,10 @@ public class PoiCategoryActivity extends Activity implements Constants {
 		mMinZoom = (EditText)findViewById(R.id.MinZoom);
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt("id", Constants.EMPTY_ID);
+		int id = extras.getInt(ID, Constants.EMPTY_ID);
 		if (id < 0) {
 			mPoiCategory = new PoiCategory();
-			mTitle.setText(extras.getString("title"));
+			mTitle.setText(extras.getString(TITLE));
 			mHidden.setChecked(false);
 			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.mIconId));
 			mMinZoom.setText("14");
@@ -102,7 +102,7 @@ public class PoiCategoryActivity extends Activity implements Constants {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
-			mPoiCategory.mIconId = data.getIntExtra("iconid", 0);
+			mPoiCategory.mIconId = data.getIntExtra(ICONID, 0);
 			Ut.d("onActivityResult: IconId=" + mPoiCategory.mIconId);
 			mIcon.setImageResource(PoiActivity.resourceFromPoiIconId(mPoiCategory.mIconId));
 		}

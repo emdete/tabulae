@@ -11,11 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 public class Track implements Constants {
-	public static final String COLOR = "color";
-	public static final String COLORSHADOW = "color_shadow";
-	public static final String WIDTH = "width";
-	public static final String SHADOWRADIUS = "shadowradius";
-
 	private final int Id;
 	public String Name;
 	public String Descr;
@@ -116,7 +111,7 @@ public class Track implements Constants {
 		Cnt = trackpoints.size();
 		Duration = 0;
 		if (trackpoints.size() > 0)
-			Duration = (double)((trackpoints.get(trackpoints.size() - 1).date.getTime() - trackpoints.get(0).date
+			Duration = (double)((trackpoints.get(trackpoints.size() - 1).getDate().getTime() - trackpoints.get(0).getDate()
 				.getTime()) / 1000);
 		TrackPoint lastpt = null;
 		Distance = 0;
@@ -126,7 +121,7 @@ public class Track implements Constants {
 			if (lastpt != null) {
 				results[0] = 0;
 				try {
-					Location.distanceBetween(lastpt.lat, lastpt.lon, pt.lat, pt.lon, results);
+					Location.distanceBetween(lastpt.getLat(), lastpt.getLon(), pt.getLat(), pt.getLon(), results);
 					Distance += results[0];
 				}
 				catch (Exception e) {
@@ -140,7 +135,7 @@ public class Track implements Constants {
 		final TrackStatHelper trst = new TrackStatHelper();
 
 		for (TrackPoint pt : trackpoints) {
-			trst.addPoint(pt.lat, pt.lon, pt.alt, pt.speed, pt.date);
+			trst.addPoint(pt.getLat(), pt.getLon(), pt.getAlt(), pt.getSpeed(), pt.getDate());
 		}
 
 		trst.finalCalc();
@@ -148,29 +143,68 @@ public class Track implements Constants {
 		return trst;
 	}
 
-	public class TrackPoint {
-		public double lat;
-		public double lon;
-		public double alt;
-		public double speed;
-		public Date date;
+	public static class TrackPoint {
+		private double lat;
+		private double lon;
+		private double alt;
+		private double speed;
+		private Date date;
 
 		public TrackPoint() {
-			lat = 0;
-			lon = 0;
-			alt = 0;
-			speed = 0;
-			date = new Date();
+			setLat(0);
+			setLon(0);
+			setAlt(0);
+			setSpeed(0);
+			setDate(new Date());
 			// trackpoints = new ArrayList<TrackPoint>(1);
 		}
 
 		public int getLatitudeE6() {
-			return (int)(lat * 1E6);
+			return (int)(getLat() * 1E6);
 		}
 
 		public int getLongitudeE6() {
-			return (int)(lon * 1E6);
+			return (int)(getLon() * 1E6);
+		}
+
+		public double getLat() {
+			return lat;
+		}
+
+		public void setLat(double lat) {
+			this.lat = lat;
+		}
+
+		public double getLon() {
+			return lon;
+		}
+
+		public void setLon(double lon) {
+			this.lon = lon;
+		}
+
+		public double getAlt() {
+			return alt;
+		}
+
+		public void setAlt(double alt) {
+			this.alt = alt;
+		}
+
+		public double getSpeed() {
+			return speed;
+		}
+
+		public void setSpeed(double speed) {
+			this.speed = speed;
+		}
+
+		public java.util.Date getDate() {
+			return date;
+		}
+
+		public void setDate(java.util.Date date) {
+			this.date = date;
 		}
 	}
-
 }

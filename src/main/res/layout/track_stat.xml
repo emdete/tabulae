@@ -4,7 +4,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	>
+	android:background="#ff555555">
 	<TextView
 		android:id="@+id/Name"
 		android:layout_width="match_parent"
@@ -405,6 +405,5 @@
 		android:layout_width="wrap_content"
 		android:layout_height="200sp"
 		android:layout_marginLeft="6sp"
-		android:layout_marginRight="6sp"
-		/>
+		android:layout_marginRight="6sp" />
 </LinearLayout>

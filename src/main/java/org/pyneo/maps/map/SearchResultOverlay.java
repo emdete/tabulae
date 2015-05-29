@@ -39,11 +39,11 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 
 	protected final Paint mPaint = new Paint();
 	protected final Paint mPaintLine;
-	private final String LAT;
-	private final String LON;
-	private final String ALT;
-	private final String DIST;
-	private final String AZIMUT;
+	private final String mLatitude;
+	private final String mLongitude;
+	private final String mAltitude;
+	private final String mDistance;
+	private final String mAzimut;
 	protected GeoPoint mLocation;
 	protected GeoPoint mCurrLocation;
 	protected String mDescr;
@@ -57,7 +57,7 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 	private ExecutorService mThreadPool = Executors.newFixedThreadPool(2, new SimpleThreadFactory("SearchResultOverlay"));
 
 	public SearchResultOverlay(final Context ctx, MapView mapView) {
-		this.mDescr = "";
+		this.mDescr = EMPTY;
 		this.mPaint.setAntiAlias(true);
 		this.mT = (TextView)LayoutInflater.from(ctx).inflate(R.layout.search_bubble, null); //new Button(ctx);
 		this.mT.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -72,11 +72,11 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 		mPaintLine.setStyle(Paint.Style.STROKE);
 		mPaintLine.setColor(ctx.getResources().getColor(R.color.line_to_gps));
 
-		LAT = ctx.getResources().getString(R.string.PoiLat);
-		LON = ctx.getResources().getString(R.string.PoiLon);
-		ALT = ctx.getResources().getString(R.string.PoiAlt);
-		DIST = ctx.getResources().getString(R.string.dist);
-		AZIMUT = ctx.getResources().getString(R.string.azimuth);
+		mLatitude = ctx.getResources().getString(R.string.PoiLat);
+		mLongitude = ctx.getResources().getString(R.string.PoiLon);
+		mAltitude = ctx.getResources().getString(R.string.PoiAlt);
+		mDistance = ctx.getResources().getString(R.string.dist);
+		mAzimut = ctx.getResources().getString(R.string.azimuth);
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 
 	public void Clear() {
 		this.mLocation = null;
-		this.mDescr = "";
+		this.mDescr = EMPTY;
 	}
 
 	@Override
@@ -131,8 +131,7 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event,
-							 TileView mapView) {
+	public boolean onKeyDown(int keyCode, KeyEvent event, TileView mapView) {
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 			if (mLocation != null) {
 				mLocation = null;
@@ -179,7 +178,8 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 				OutputStream out = null;
 
 				try {
-					in = new BufferedInputStream(new URL("http://maps.googleapis.com/maps/api/elevation/json?locations=" + mLocation.toDoubleString() + "&sensor=true").openStream(), StreamUtils.IO_BUFFER_SIZE);
+					// TODO this must be solved with an open API, not google
+					in = new BufferedInputStream(new URL("http://maps.openstreetmap.com/maps/api/elevation/json?locations=" + mLocation.toDoubleString() + "&sensor=true").openStream(), StreamUtils.IO_BUFFER_SIZE);
 
 					final ByteArrayOutputStream dataStream = new ByteArrayOutputStream();
 					out = new BufferedOutputStream(dataStream, StreamUtils.IO_BUFFER_SIZE);
@@ -188,7 +188,7 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 
 					try {
 						final JSONObject json = new JSONObject(dataStream.toString());
-						mElevation = json.getJSONArray("results").getJSONObject(0).getDouble("elevation");
+						mElevation = json.getJSONArray(RESULTS).getJSONObject(0).getDouble(ELEVATION);
 					}
 					catch (JSONException e) {
 						Ut.e(e.toString(), e);
@@ -216,31 +216,31 @@ public class SearchResultOverlay extends TileViewOverlay implements Constants {
 	private void setDescr() {
 		if (mLocation != null)
 			mDescr = new StringBuilder()
-				.append(LAT).append(": ")
+				.append(mLatitude).append(": ")
 				.append(mCf.convertLat(mLocation.getLatitude()))
-				.append("\n").append(LON).append(": ")
+				.append("\n").append(mLongitude).append(": ")
 				.append(mCf.convertLon(mLocation.getLongitude()))
-				.append("\n").append(ALT).append(": ")
+				.append("\n").append(mAltitude).append(": ")
 				.append(mElevation == 0.0? "n/a": mDf.formatElevation(mElevation))
-				.append(mCurrLocation == null? "": String.format(Locale.UK, "\n%s: %.1f°", AZIMUT, mCurrLocation.bearingTo360(mLocation)) + "\n" + DIST + ": " + mDf.formatDistance(mCurrLocation.distanceTo(mLocation)))
+				.append(mCurrLocation == null? EMPTY: String.format(Locale.UK, "\n%s: %.1f°", mAzimut, mCurrLocation.bearingTo360(mLocation)) + "\n" + mDistance + ": " + mDf.formatDistance(mCurrLocation.distanceTo(mLocation)))
 				.toString();
 	}
 
 	public void fromPref(SharedPreferences settings) {
-		final String strlocation = settings.getString("SearchResultLocation", "");
+		final String strlocation = settings.getString(SEARCH_RESULT_LOCATION, EMPTY);
 		if (strlocation.length() > 0) {
 			mLocation = new GeoPoint(strlocation);
-			mDescr = settings.getString("SearchResultDescr", "");
+			mDescr = settings.getString(SEARCH_RESULT_DESCR, EMPTY);
 		}
 	}
 
 	public void toPref(SharedPreferences.Editor editor) {
 		if (mLocation != null && mSearchBubble) {
-			editor.putString("SearchResultDescr", mDescr);
-			editor.putString("SearchResultLocation", mLocation.toDoubleString());
+			editor.putString(SEARCH_RESULT_DESCR, mDescr);
+			editor.putString(SEARCH_RESULT_LOCATION, mLocation.toDoubleString());
 		} else {
-			editor.putString("SearchResultDescr", "");
-			editor.putString("SearchResultLocation", "");
+			editor.putString(SEARCH_RESULT_DESCR, EMPTY);
+			editor.putString(SEARCH_RESULT_LOCATION, EMPTY);
 		}
 	}
 

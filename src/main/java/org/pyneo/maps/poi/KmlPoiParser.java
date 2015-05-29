@@ -11,11 +11,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.HashMap;
 
 public class KmlPoiParser extends DefaultHandler implements Constants {
-	private static final String Placemark = "Placemark";
-	private static final String Point = "Point";
-	private static final String NAME = "name";
-	private static final String coordinates = "coordinates";
-	private static final String description = "description";
 	private StringBuilder builder;
 	private PoiManager mPoiManager;
 	private PoiPoint mPoiPoint;
@@ -48,11 +43,11 @@ public class KmlPoiParser extends DefaultHandler implements Constants {
 	public void startElement(String uri, String localName, String name, Attributes attributes)
 		throws SAXException {
 		builder.delete(0, builder.length());
-		if (localName.equalsIgnoreCase(Placemark)) {
+		if (localName.equalsIgnoreCase(PLACEMARK)) {
 			mPoiPoint = new PoiPoint();
 			mPoiPoint.mCategoryId = mCategoryId;
 			mItIsPoint = false;
-		} else if (localName.equalsIgnoreCase("categoryid") && mPoiPoint != null) {
+		} else if (localName.equalsIgnoreCase(CATEGORYID) && mPoiPoint != null) {
 			final String attrName = attributes.getValue(Constants.NAME);
 			if (mCategoryMap.containsKey(attrName)) {
 				mPoiPoint.mCategoryId = mCategoryMap.get(attrName);
@@ -66,22 +61,23 @@ public class KmlPoiParser extends DefaultHandler implements Constants {
 
 	@Override
 	public void endElement(String uri, String localName, String name) throws SAXException {
-		if (localName.equalsIgnoreCase(Placemark)) {
+		if (localName.equalsIgnoreCase(PLACEMARK)) {
 			if (mItIsPoint) {
-				if (mPoiPoint.mTitle.equalsIgnoreCase("")) mPoiPoint.mTitle = "POI";
+				if (mPoiPoint.mTitle.equalsIgnoreCase(EMPTY))
+					mPoiPoint.mTitle = "POI";
 				mPoiManager.updatePoi(mPoiPoint);
 			}
 		} else if (localName.equalsIgnoreCase(NAME)) {
 			if (mPoiPoint != null)
 				mPoiPoint.mTitle = builder.toString().trim();
-		} else if (localName.equalsIgnoreCase(description)) {
+		} else if (localName.equalsIgnoreCase(DESCRIPTION)) {
 			if (mPoiPoint != null)
 				mPoiPoint.mDescr = builder.toString().trim();
-		} else if (localName.equalsIgnoreCase(coordinates)) {
+		} else if (localName.equalsIgnoreCase(COORDINATES)) {
 			mStrArray = builder.toString().split(",");
 			if (mPoiPoint != null)
 				mPoiPoint.mGeoPoint = new GeoPoint(mStrArray[1], mStrArray[0]);
-		} else if (localName.equalsIgnoreCase(Point)) {
+		} else if (localName.equalsIgnoreCase(POINT)) {
 			mItIsPoint = true;
 		}
 		super.endElement(uri, localName, name);

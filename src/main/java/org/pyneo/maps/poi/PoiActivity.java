@@ -59,7 +59,7 @@ public class PoiActivity extends Activity implements Constants {
 						mLat.setText(mCf.convertLat(CoordFormatter.convertTrowable(mLat.getText().toString())));
 					}
 					catch (Exception e) {
-						mLat.setText("");
+						mLat.setText(EMPTY);
 					}
 				}
 			}
@@ -73,7 +73,7 @@ public class PoiActivity extends Activity implements Constants {
 						mLon.setText(mCf.convertLon(CoordFormatter.convertTrowable(mLon.getText().toString())));
 					}
 					catch (Exception e) {
-						mLon.setText("");
+						mLon.setText(EMPTY);
 					}
 				}
 			}
@@ -102,15 +102,15 @@ public class PoiActivity extends Activity implements Constants {
 		mSpinner.setAdapter(adapter);
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt("pointid", Constants.EMPTY_ID);
+		int id = extras.getInt(POINTID, Constants.EMPTY_ID);
 		if (id < 0) {
 			mPoiPoint = new PoiPoint();
-			mTitle.setText(extras.getString("title"));
+			mTitle.setText(extras.getString(TITLE));
 			mSpinner.setSelection(0);
 			mLat.setText(mCf.convertLat(extras.getDouble(LAT)));
 			mLon.setText(mCf.convertLon(extras.getDouble(LON)));
-			mAlt.setText(String.format(Locale.UK, "%.1f", extras.getDouble("alt", 0.0)));
-			mDescr.setText(extras.getString("descr"));
+			mAlt.setText(String.format(Locale.UK, "%.1f", extras.getDouble(ALT, 0.0)));
+			mDescr.setText(extras.getString(DESCR));
 			mHidden.setChecked(false);
 		}
 		else {

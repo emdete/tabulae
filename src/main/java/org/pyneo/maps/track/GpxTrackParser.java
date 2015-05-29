@@ -36,10 +36,10 @@ public class GpxTrackParser extends DefaultHandler implements Constants {
 		if (localName.equalsIgnoreCase(TRK)) {
 			mTrack = new Track();
 			mTrack.Date = mTrackTime;
-		} else if (localName.equalsIgnoreCase(POINT)) {
+		} else if (localName.equalsIgnoreCase(TRKPT)) {
 			mTrack.AddTrackPoint();
-			mTrack.LastTrackPoint.lat = Double.parseDouble(attributes.getValue(LAT));
-			mTrack.LastTrackPoint.lon = Double.parseDouble(attributes.getValue(LON));
+			mTrack.LastTrackPoint.setLat(Double.parseDouble(attributes.getValue(LAT)));
+			mTrack.LastTrackPoint.setLon(Double.parseDouble(attributes.getValue(LON)));
 		}
 
 		super.startElement(uri, localName, name, attributes);
@@ -65,11 +65,11 @@ public class GpxTrackParser extends DefaultHandler implements Constants {
 				mTrack.Descr = builder.toString().trim();
 		} else if (localName.equalsIgnoreCase(ELE)) {
 			if (mTrack.LastTrackPoint != null && !builder.toString().equalsIgnoreCase(EMPTY))
-				mTrack.LastTrackPoint.alt = Double.parseDouble(builder.toString().trim());
+				mTrack.LastTrackPoint.setAlt(Double.parseDouble(builder.toString().trim()));
 		} else if (localName.equalsIgnoreCase(TIME)) {
 			if (mTrack != null) {
 				if (mTrack.LastTrackPoint != null && !builder.toString().equalsIgnoreCase(EMPTY))
-					mTrack.LastTrackPoint.date = Ut.ParseDate(builder.toString().trim());
+					mTrack.LastTrackPoint.setDate(Ut.ParseDate(builder.toString().trim()));
 			} else {
 				mTrackTime = Ut.ParseDate(builder.toString().trim());
 			}

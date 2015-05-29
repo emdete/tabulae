@@ -55,7 +55,6 @@ public class TrackStatActivity extends Activity {
 				((TextView)findViewById(R.id.moveavgspeed_data)).setText(mDf.formatSpeed2(stat.AvgMoveSpeed)[0]);
 				((TextView)findViewById(R.id.minele_data)).setText(String.format("%.1f", units.M(stat.MinEle)));
 				((TextView)findViewById(R.id.maxele_data)).setText(String.format("%.1f", units.M(stat.MaxEle)));
-
 				((TextView)findViewById(R.id.distance_unit)).setText(units.KM());
 				((TextView)findViewById(R.id.points_unit)).setText(R.string.blank);
 				((TextView)findViewById(R.id.avgspeed_unit)).setText(units.KMH());
@@ -65,10 +64,8 @@ public class TrackStatActivity extends Activity {
 				((TextView)findViewById(R.id.moveavgspeed_unit)).setText(units.KMH());
 				((TextView)findViewById(R.id.minele_unit)).setText(units.M());
 				((TextView)findViewById(R.id.maxele_unit)).setText(units.M());
-
 				((ChartView)findViewById(R.id.chart)).setTrack(tr);
 			}
 		}
 	}
-
 }

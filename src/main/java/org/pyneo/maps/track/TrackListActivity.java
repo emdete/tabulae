@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -90,14 +89,14 @@ public class TrackListActivity extends ListActivity implements Constants {
 			});
 
 		SharedPreferences settings = getPreferences(Activity.MODE_PRIVATE);
-		final int versionDataUpdate = settings.getInt("versionDataUpdate", 0);
+		final int versionDataUpdate = settings.getInt(VERSION_DATA_UPDATE, 0);
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		mUnits = Integer.parseInt(pref.getString("pref_units", "0"));
+		mUnits = Integer.parseInt(pref.getString(PREF_UNITS, "0"));
 
 		if (versionDataUpdate < 8) {
 			mNeedTracksStatUpdate = true;
 			SharedPreferences.Editor editor = settings.edit();
-			editor.putInt("versionDataUpdate", 8);
+			editor.putInt(VERSION_DATA_UPDATE, 8);
 			editor.commit();
 		}
 
@@ -180,7 +179,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 	protected void onPause() {
 		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = uiState.edit();
-		editor.putString("sortOrder", mSortOrder);
+		editor.putString(SORT_ORDER, mSortOrder);
 		editor.commit();
 		super.onPause();
 	}
@@ -188,7 +187,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 	@Override
 	protected void onResume() {
 		final SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
-		mSortOrder = uiState.getString("sortOrder", mSortOrder);
+		mSortOrder = uiState.getString(SORT_ORDER, mSortOrder);
 		FillData();
 		super.onResume();
 	}
@@ -210,7 +209,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 			SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 				R.layout.track_list_item
 				, c,
-				new String[]{"name", "title2", "show", "cnt", "distance" + mUnits, "duration", "units"/*, "descr"*/},
+				new String[]{NAME, TITLE2, SHOW, CNT, DISTANCE + mUnits, DURATION, UNITS/*, "descr"*/},
 				new int[]{R.id.title1, R.id.title2, R.id.checkbox, R.id.data_value1, R.id.data_value2, R.id.data_value3, R.id.data_unit2 /*, R.id.descr*/});
 			adapter.setViewBinder(mViewBinder);
 			setListAdapter(adapter);
@@ -224,7 +223,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 		mThreadExecutor.execute(new Runnable() {
 
 			public void run() {
-				Cursor c = mPoiManager.getTrackListCursor("", "trackid DESC");
+				Cursor c = mPoiManager.getTrackListCursor(EMPTY, TRACKID + " DESC");
 				if (c != null) {
 					if (c.moveToFirst()) {
 						Track tr = null;
@@ -235,7 +234,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 								tr.Activity = 0;
 								final List<Track.TrackPoint> tps = tr.getPoints();
 								if (tps.size() > 0) {
-									tr.Date = tps.get(0).date;
+									tr.Date = tps.get(0).getDate();
 								}
 								tr.CalculateStat();
 								mPoiManager.updateTrack(tr);
@@ -325,11 +324,11 @@ public class TrackListActivity extends ListActivity implements Constants {
 		final int id = (int)((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).id;
 
 		if (item.getItemId() == R.id.menu_stat) {
-			startActivity((new Intent(this, TrackStatActivity.class)).putExtra("id", id));
+			startActivity((new Intent(this, TrackStatActivity.class)).putExtra(ID, id));
 		} else if (item.getItemId() == R.id.menu_editpoi) {
-			startActivity((new Intent(this, TrackActivity.class)).putExtra("id", id));
+			startActivity((new Intent(this, TrackActivity.class)).putExtra(ID, id));
 		} else if (item.getItemId() == R.id.menu_gotopoi) {
-			setResult(RESULT_OK, (new Intent()).putExtra("trackid", id));
+			setResult(RESULT_OK, (new Intent()).putExtra(TRACKID, id));
 			finish();
 		} else if (item.getItemId() == R.id.menu_deletepoi) {
 			new AlertDialog.Builder(this)
@@ -370,17 +369,17 @@ public class TrackListActivity extends ListActivity implements Constants {
 		this.mThreadExecutor.execute(new Runnable() {
 			public void run() {
 				final Track track = mPoiManager.getTrack(trackid);
-				SimpleXML xml = new SimpleXML("kml");
+				SimpleXML xml = new SimpleXML(KML);
 				xml.setAttr("xmlns:gx", "http://www.google.com/kml/ext/2.2");
 				xml.setAttr("xmlns", "http://www.opengis.net/kml/2.2");
 				SimpleXML Placemark = xml.createChild("Placemark");
-				Placemark.createChild("name").setText(track.Name);
-				Placemark.createChild("description").setText(track.Descr);
-				SimpleXML LineString = Placemark.createChild("LineString");
-				SimpleXML coordinates = LineString.createChild("coordinates");
+				Placemark.createChild(NAME).setText(track.Name);
+				Placemark.createChild(DESCRIPTION).setText(track.Descr);
+				SimpleXML LineString = Placemark.createChild(LINE_STRING);
+				SimpleXML coordinates = LineString.createChild(COORDINATES);
 				StringBuilder builder = new StringBuilder();
 				for (TrackPoint tp : track.getPoints()) {
-					builder.append(tp.lon).append(",").append(tp.lat).append(",").append(tp.alt).append(" ");
+					builder.append(tp.getLon()).append(",").append(tp.getLat()).append(",").append(tp.getAlt()).append(" ");
 				}
 				coordinates.setText(builder.toString().trim());
 				File file = getTrackExportFileName(trackid, ".kml");
@@ -415,23 +414,23 @@ public class TrackListActivity extends ListActivity implements Constants {
 				final Track track = mPoiManager.getTrack(trackid);
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 				formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-				SimpleXML xml = new SimpleXML("gpx");
+				SimpleXML xml = new SimpleXML(GPX);
 				xml.setAttr("xsi:schemaLocation", "http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd");
 				xml.setAttr("xmlns", "http://www.topografix.com/GPX/1/0");
 				xml.setAttr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 				xml.setAttr("creator", "Tabulae - https://github.com/emdete/Tabulae");
 				xml.setAttr("version", "1.0");
-				xml.createChild("name").setText(track.Name);
-				xml.createChild("desc").setText(track.Descr);
-				SimpleXML trk = xml.createChild("trk");
-				SimpleXML trkseg = trk.createChild("trkseg");
+				xml.createChild(NAME).setText(track.Name);
+				xml.createChild(DESC).setText(track.Descr);
+				SimpleXML trk = xml.createChild(TRK);
+				SimpleXML trkseg = trk.createChild(TRKSEG);
 				SimpleXML trkpt = null;
 				for (TrackPoint tp : track.getPoints()) {
-					trkpt = trkseg.createChild("trkpt");
-					trkpt.setAttr(LAT, Double.toString(tp.lat));
-					trkpt.setAttr(LON, Double.toString(tp.lon));
-					trkpt.createChild("ele").setText(Double.toString(tp.alt));
-					trkpt.createChild("time").setText(formatter.format(tp.date));
+					trkpt = trkseg.createChild(TRKPT);
+					trkpt.setAttr(LAT, Double.toString(tp.getLat()));
+					trkpt.setAttr(LON, Double.toString(tp.getLon()));
+					trkpt.createChild("ele").setText(Double.toString(tp.getAlt()));
+					trkpt.createChild("time").setText(formatter.format(tp.getDate()));
 				}
 				File file = getTrackExportFileName(trackid, ".gpx");
 				FileOutputStream out;
@@ -497,7 +496,7 @@ public class TrackListActivity extends ListActivity implements Constants {
 	}
 
 	private class CheckBoxViewBinder implements SimpleCursorAdapter.ViewBinder {
-		private static final String SHOW = "show";
+		private static final String SHOW = org.pyneo.maps.Constants.SHOW;
 
 		public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 			if (cursor.getColumnName(columnIndex).equalsIgnoreCase(SHOW)) {

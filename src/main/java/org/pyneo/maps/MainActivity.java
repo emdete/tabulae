@@ -153,9 +153,9 @@ public class MainActivity extends Activity implements Constants {
 	private SampleLocationListener mNetListener;
 	private SearchResultOverlay mSearchResultOverlay;
 	private SensorManager mOrientationSensorManager;
-	private String mStatusLocationProviderName = "";
+	private String mStatusLocationProviderName = EMPTY;
 	private String mMapId = null;
-	private String mOverlayId = "";
+	private String mOverlayId = EMPTY;
 	private TileOverlay mTileOverlay = null;
 	private TileSource mTileSource;
 	private TrackOverlay mTrackOverlay;
@@ -208,10 +208,10 @@ public class MainActivity extends Activity implements Constants {
 		setContentView(R.layout.main);
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		final RelativeLayout rl = (RelativeLayout)findViewById(R.id.map_area);
-		final int pref_zoomctrl = Integer.parseInt(pref.getString("pref_zoomctrl", "1"));
-		final boolean pref_showtitle = pref.getBoolean("pref_showtitle", true);
-		final boolean pref_show_autofollow_button = pref.getBoolean("pref_show_autofollow_button", true);
-		final boolean pref_showscalebar = pref.getBoolean("pref_showscalebar", true);
+		final int pref_zoomctrl = Integer.parseInt(pref.getString(PREF_ZOOMCTRL, "14"));
+		final boolean pref_showtitle = pref.getBoolean(PREF_SHOWTITLE, true);
+		final boolean pref_show_autofollow_button = pref.getBoolean(PREF_SHOW_AUTOFOLLOW_BUTTON, true);
+		final boolean pref_showscalebar = pref.getBoolean(PREF_SHOWSCALEBAR, true);
 		if (!pref_showtitle)
 			findViewById(R.id.screen).setVisibility(View.GONE);
 		mMap = new MapView(this, pref_zoomctrl, pref_showscalebar? 1: 0);
@@ -272,7 +272,7 @@ public class MainActivity extends Activity implements Constants {
 					else if (mPrefOverlayButtonBehavior == 2) {
 						setTileSource(mTileSource.ID, mOverlayId, !mShowOverlay);
 					}
-					else if (mOverlayId.equalsIgnoreCase("") && mTileSource.MAP_TYPE != TileSourceBase.MIXMAP_PAIR) {
+					else if (mOverlayId.equalsIgnoreCase(EMPTY) && mTileSource.MAP_TYPE != TileSourceBase.MIXMAP_PAIR) {
 						v.showContextMenu();
 					}
 					else {
@@ -311,24 +311,24 @@ public class MainActivity extends Activity implements Constants {
 							) {
 								String name = Ut.FileName2ID(file.getName());
 								if (
-									pref.getBoolean("pref_usermaps_" + name + "_enabled", false) &&
+									pref.getBoolean(PREF_USERMAPS + name + ENABLED, false) &&
 									// (mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == Integer.parseInt(pref.getString("pref_usermaps_" + name + "_projection", "1"))) &&
-									pref.getBoolean("pref_usermaps_" + name + "_isoverlay", false)
+									pref.getBoolean(PREF_USERMAPS + name + ISOVERLAY, false)
 								) {
 									MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE,
-										pref.getString("pref_usermaps_" + name + "_name", file.getName()));
-									item.setTitleCondensed("usermap_" + name);
+										pref.getString(PREF_USERMAPS + name + _NAME, file.getName()));
+									item.setTitleCondensed(USERMAP + name);
 								}
 							}
 						}
 					}
 				}
 				for (Cursor c: mPoiManager.getMixedMaps()) {
-					if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", false) && c.getInt(2) == 3) {
+					if (pref.getBoolean(PREF_MIXMAPS + c.getInt(0) + ENABLED, false) && c.getInt(2) == 3) {
 						final JSONObject json = MixedMapsPreference.getMapCustomParams(c.getString(3));
 						//if(mTileSource.PROJECTION == 0 || mTileSource.PROJECTION == json.optInt(MixedMapsPreference.MAPPROJECTION)) {
 						MenuItem item = menu.add(R.id.isoverlay, Menu.NONE, Menu.NONE, c.getString(1));
-						item.setTitleCondensed("mixmap_" + c.getInt(0));
+						item.setTitleCondensed(MIXMAP + c.getInt(0));
 						//}
 					}
 				}
@@ -353,30 +353,30 @@ public class MainActivity extends Activity implements Constants {
 		mMap.setMoveListener(mMoveListener);
 		mOrientationSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
 		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
-		mPrefOverlayButtonBehavior = Integer.parseInt(pref.getString("pref_overlay_button_behavior", "0"));
-		mPrefOverlayButtonVisibility = Integer.parseInt(pref.getString("pref_overlay_button_visibility", "0"));
+		mPrefOverlayButtonBehavior = Integer.parseInt(pref.getString(PREF_OVERLAY_BUTTON_BEHAVIOR, "0"));
+		mPrefOverlayButtonVisibility = Integer.parseInt(pref.getString(PREF_OVERLAY_BUTTON_VISIBILITY, "0"));
 		if (mPrefOverlayButtonVisibility == 1) { // Always hide
 			mOverlayView.setVisibility(View.GONE);
 		}
-		mCompassEnabled = uiState.getBoolean("CompassEnabled", mCompassEnabled);
+		mCompassEnabled = uiState.getBoolean(COMPASS_ENABLED, mCompassEnabled);
 		mCompassView.setVisibility(mCompassEnabled? View.VISIBLE: View.INVISIBLE);
-		mMap.setCenter(new GeoPoint(uiState.getInt("Latitude", 0), uiState.getInt("Longitude", 0)));
-		mGPSFastUpdate = pref.getBoolean("pref_gpsfastupdate", mGPSFastUpdate);
-		mAutoFollow = uiState.getBoolean("AutoFollow", mAutoFollow);
+		mMap.setCenter(new GeoPoint(uiState.getInt(LATITUDE, 0), uiState.getInt(LONGITUDE, 0)));
+		mGPSFastUpdate = pref.getBoolean(PREF_GPSFASTUPDATE, mGPSFastUpdate);
+		mAutoFollow = uiState.getBoolean(AUTO_FOLLOW, mAutoFollow);
 		setAutoFollow(mAutoFollow, true);
 		mTrackOverlay = new TrackOverlay(this, mPoiManager, mCallbackHandler);
 		mCurrentTrackOverlay = new CurrentTrackOverlay(this, mPoiManager);
-		mPoiOverlay = new PoiOverlay(this, mPoiManager, pref.getBoolean("pref_hidepoi", false));
-		mPoiOverlay.setTapIndex(uiState.getInt("curShowPoiId", NO_TAP));
+		mPoiOverlay = new PoiOverlay(this, mPoiManager, pref.getBoolean(PREF_HIDEPOI, false));
+		mPoiOverlay.setTapIndex(uiState.getInt(CUR_SHOW_POI_ID, NO_TAP));
 		mMyLocationOverlay = new MyLocationOverlay(this);
 		mSearchResultOverlay = new SearchResultOverlay(this, mMap);
 		mSearchResultOverlay.fromPref(uiState);
 		fillOverlays();
-		mDrivingDirectionUp = pref.getBoolean("pref_drivingdirectionup", mDrivingDirectionUp);
-		mNorthDirectionUp = pref.getBoolean("pref_northdirectionup", mNorthDirectionUp);
-		final int screenOrientation = Integer.parseInt(pref.getString("pref_screen_orientation", "-1"));
+		mDrivingDirectionUp = pref.getBoolean(PREF_DRIVINGDIRECTIONUP, mDrivingDirectionUp);
+		mNorthDirectionUp = pref.getBoolean(PREF_NORTHDIRECTIONUP, mNorthDirectionUp);
+		final int screenOrientation = Integer.parseInt(pref.getString(PREF_SCREEN_ORIENTATION, "-1"));
 		setRequestedOrientation(screenOrientation);
-		final boolean showstatusbar = pref.getBoolean("pref_showstatusbar", true);
+		final boolean showstatusbar = pref.getBoolean(PREF_SHOWSTATUSBAR, true);
 		if (showstatusbar) {
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 			getWindow().getDecorView().setSystemUiVisibility(0);
@@ -390,10 +390,10 @@ public class MainActivity extends Activity implements Constants {
 				| View.SYSTEM_UI_FLAG_IMMERSIVE // remove for version < API 19
 			);
 		}
-		if (uiState.getString("error", "").length() > 0) {
+		if (uiState.getString(ERROR, EMPTY).length() > 0) {
 			showDialog(R.id.error);
 		}
-		if (!uiState.getString("app_version", "").equalsIgnoreCase(Ut.getAppVersion(this))) {
+		if (!uiState.getString(APP_VERSION, EMPTY).equalsIgnoreCase(Ut.getAppVersion(this))) {
 			DisplayMetrics metrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(metrics);
 			showDialog(R.id.whatsnew);
@@ -415,10 +415,10 @@ public class MainActivity extends Activity implements Constants {
 		}
 		else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
 			Uri uri = queryIntent.getData();
-			if (uri.getScheme().equalsIgnoreCase("geo")) {
-				final String latlon = uri.getEncodedSchemeSpecificPart().replace("?" + uri.getEncodedQuery(), "");
+			if (uri.getScheme().equalsIgnoreCase(GEO)) {
+				final String latlon = uri.getEncodedSchemeSpecificPart().replace("?" + uri.getEncodedQuery(), EMPTY);
 				if (latlon.equals("0,0")) {
-					final String query = uri.getEncodedQuery().replace("q=", "");
+					final String query = uri.getEncodedQuery().replace("q=", EMPTY);
 					queryIntent.putExtra(SearchManager.QUERY, query);
 					doSearchQuery(queryIntent);
 
@@ -426,7 +426,7 @@ public class MainActivity extends Activity implements Constants {
 				else {
 					GeoPoint point = new GeoPoint(latlon);
 					mPoiOverlay.clearPoiList();
-					mPoiOverlay.showTemporaryPoi(-1, point, "GEO", "");
+					mPoiOverlay.showTemporaryPoi(-1, point, "GEO", EMPTY);
 					setAutoFollow(false);
 					mMap.setCenter(point);
 				}
@@ -436,28 +436,28 @@ public class MainActivity extends Activity implements Constants {
 		else if (ACTION_SHOW_MAP_ID.equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = queryIntent.getExtras();
 			mMapId = bundle.getString(MAPNAME);
-			if (bundle.containsKey("center")) {
+			if (bundle.containsKey(CENTER)) {
 				try {
-					final GeoPoint geo = new GeoPoint(bundle.getString("center"));
+					final GeoPoint geo = new GeoPoint(bundle.getString(CENTER));
 					mMap.setCenter(geo);
 				}
 				catch (Exception e) {
 					Ut.e(e.toString(), e);
 				}
 			}
-			if (bundle.containsKey("zoom")) {
+			if (bundle.containsKey(ZOOM)) {
 				try {
-					final int zoom = Integer.valueOf(bundle.getString("zoom"));
+					final int zoom = Integer.valueOf(bundle.getString(ZOOM));
 					mMap.setZoom(zoom);
 					SharedPreferences.Editor editor = uiState.edit();
-					editor.putInt("ZoomLevel", mMap.getZoomLevel());
+					editor.putInt(ZOOM_LEVEL, mMap.getZoomLevel());
 					editor.commit();
 				}
 				catch (Exception e) {
 					Ut.e(e.toString(), e);
 				}
 			}
-			queryIntent.setAction("");
+			queryIntent.setAction(EMPTY);
 			Ut.d("onCreate SharedPreferences");
 		}
 		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
@@ -527,22 +527,22 @@ public class MainActivity extends Activity implements Constants {
 		else if (ACTION_SHOW_MAP_ID.equalsIgnoreCase(queryAction)) {
 			final Bundle bundle = intent.getExtras();
 			mMapId = bundle.getString(MAPNAME);
-			if (bundle.containsKey("center")) {
+			if (bundle.containsKey(CENTER)) {
 				try {
-					final GeoPoint geo = new GeoPoint(bundle.getString("center"));
+					final GeoPoint geo = new GeoPoint(bundle.getString(CENTER));
 					mMap.setCenter(geo);
 				}
 				catch (Exception e) {
 					Ut.e(e.toString(), e);
 				}
 			}
-			if (bundle.containsKey("zoom")) {
+			if (bundle.containsKey(ZOOM)) {
 				try {
-					final int zoom = Integer.valueOf(bundle.getString("zoom"));
+					final int zoom = Integer.valueOf(bundle.getString(ZOOM));
 					mMap.setZoom(zoom);
 					SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 					SharedPreferences.Editor editor = uiState.edit();
-					editor.putInt("ZoomLevel", mMap.getZoomLevel());
+					editor.putInt(ZOOM_LEVEL, mMap.getZoomLevel());
 					editor.commit();
 				}
 				catch (Exception e) {
@@ -573,7 +573,7 @@ public class MainActivity extends Activity implements Constants {
 						Configuration config = getBaseContext().getResources().getConfiguration();
 						final String lang = config.locale.getLanguage();
 						//handler.obtainMessage(Ut.TILEPROVIDER_SEARCH_OK_MESSAGE, res);
-						final String address = "";
+						final String address = EMPTY;
 						setAutoFollow(false, true);
 						final GeoPoint point = new GeoPoint(0, 0);
 						mSearchResultOverlay.setLocation(point, address);
@@ -706,12 +706,12 @@ public class MainActivity extends Activity implements Constants {
 			if (rightText != null) {
 				final double zoom = mMap.getZoomLevelScaled();
 				if (zoom > mMap.getTileSource().ZOOM_MAXLEVEL) {
-					rightText.setText("" + (mMap.getTileSource().ZOOM_MAXLEVEL + 1) + "+");
+					rightText.setText(EMPTY + (mMap.getTileSource().ZOOM_MAXLEVEL + 1) + "+");
 					if (mIndicatorManager != null)
 						mIndicatorManager.setZoom(mMap.getTileSource().ZOOM_MAXLEVEL + 1);
 				}
 				else {
-					rightText.setText("" + (1 + Math.round(zoom)));
+					rightText.setText(EMPTY + (1 + Math.round(zoom)));
 					if (mIndicatorManager != null)
 						mIndicatorManager.setZoom((int)(1 + Math.round(zoom)));
 				}
@@ -728,18 +728,18 @@ public class MainActivity extends Activity implements Constants {
 		final SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
 		if (mMapId == null)
 			mMapId = uiState.getString(MAPNAME, TileSource.MAPNIK);
-		mOverlayId = uiState.getString("OverlayID", "");
-		mShowOverlay = uiState.getBoolean("ShowOverlay", mShowOverlay);
-		mMyLocationOverlay.setTargetLocation(GeoPoint.fromDoubleStringOrNull(uiState.getString("targetlocation", "")));
+		mOverlayId = uiState.getString(OVERLAY_ID, EMPTY);
+		mShowOverlay = uiState.getBoolean(SHOW_OVERLAY, mShowOverlay);
+		mMyLocationOverlay.setTargetLocation(GeoPoint.fromDoubleStringOrNull(uiState.getString(TARGETLOCATION, EMPTY)));
 		setTileSource(mMapId, mOverlayId, mShowOverlay);
 		mMapId = null;
-		if (uiState.getBoolean("show_dashboard", true) && mIndicatorManager == null) {
+		if (uiState.getBoolean(SHOW_DASHBOARD, true) && mIndicatorManager == null) {
 			mIndicatorManager = new IndicatorManager(this);
 			mIndicatorManager.setCenter(mMap.getMapCenter());
 			mIndicatorManager.setLocation(mMyLocationOverlay.getLastLocation());
 			mIndicatorManager.setTargetLocation(mMyLocationOverlay.getTargetLocation());
 		}
-		mMap.setZoom(uiState.getInt("ZoomLevel", 0));
+		mMap.setZoom(uiState.getInt(ZOOM_LEVEL, 0));
 		setTitle();
 		fillOverlays();
 		if (mCompassEnabled)
@@ -753,7 +753,7 @@ public class MainActivity extends Activity implements Constants {
 		mLocationListener.getBestProvider();
 		if (mIndicatorManager != null)
 			mIndicatorManager.Resume(this);
-		if (pref.getBoolean("pref_keepscreenon", true)) {
+		if (pref.getBoolean(PREF_KEEPSCREENON, true)) {
 			myWakeLock = ((PowerManager)getSystemService(POWER_SERVICE)).newWakeLock(
 				PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "Tabulae");
 			myWakeLock.acquire();
@@ -786,33 +786,33 @@ public class MainActivity extends Activity implements Constants {
 		if (mTileSource != null) {
 			editor.putString(MAPNAME, mTileSource.ID);
 			try {
-				editor.putString("OverlayID", mTileOverlay == null? mTileSource.getOverlayName(): mTileOverlay.getTileSource().ID);
+				editor.putString(OVERLAY_ID, mTileOverlay == null? mTileSource.getOverlayName(): mTileOverlay.getTileSource().ID);
 			}
 			catch (Exception e) {
 				Ut.e(e.toString(), e);
 			}
 		}
-		editor.putBoolean("ShowOverlay", mShowOverlay);
-		editor.putInt("Latitude", point.getLatitudeE6());
-		editor.putInt("Longitude", point.getLongitudeE6());
-		editor.putInt("ZoomLevel", mMap.getZoomLevel());
-		editor.putBoolean("CompassEnabled", mCompassEnabled);
-		editor.putBoolean("AutoFollow", mAutoFollow);
-		editor.putString("app_version", Ut.getAppVersion(this));
+		editor.putBoolean(SHOW_OVERLAY, mShowOverlay);
+		editor.putInt(LATITUDE, point.getLatitudeE6());
+		editor.putInt(LONGITUDE, point.getLongitudeE6());
+		editor.putInt(ZOOM_LEVEL, mMap.getZoomLevel());
+		editor.putBoolean(COMPASS_ENABLED, mCompassEnabled);
+		editor.putBoolean(AUTO_FOLLOW, mAutoFollow);
+		editor.putString(APP_VERSION, Ut.getAppVersion(this));
 		if (mPoiOverlay != null)
-			editor.putInt("curShowPoiId", mPoiOverlay.getTapIndex());
+			editor.putInt(CUR_SHOW_POI_ID, mPoiOverlay.getTapIndex());
 		mSearchResultOverlay.toPref(editor);
-		editor.putBoolean("show_dashboard", mIndicatorManager != null);
-		editor.putString("targetlocation", mMyLocationOverlay.getTargetLocation() == null? "": mMyLocationOverlay.getTargetLocation().toDoubleString());
+		editor.putBoolean(SHOW_DASHBOARD, mIndicatorManager != null);
+		editor.putString(TARGETLOCATION, mMyLocationOverlay.getTargetLocation() == null? EMPTY: mMyLocationOverlay.getTargetLocation().toDoubleString());
 		editor.commit();
 		editor = getSharedPreferences(MAPNAME, Activity.MODE_PRIVATE).edit();
 		if (mTileSource != null)
 			editor.putString(MAPNAME, mTileSource.ID);
-		editor.putInt("Latitude", point.getLatitudeE6());
-		editor.putInt("Longitude", point.getLongitudeE6());
-		editor.putInt("ZoomLevel", mMap.getZoomLevel());
-		editor.putBoolean("CompassEnabled", mCompassEnabled);
-		editor.putBoolean("AutoFollow", mAutoFollow);
+		editor.putInt(LATITUDE, point.getLatitudeE6());
+		editor.putInt(LONGITUDE, point.getLongitudeE6());
+		editor.putInt(ZOOM_LEVEL, mMap.getZoomLevel());
+		editor.putBoolean(COMPASS_ENABLED, mCompassEnabled);
+		editor.putBoolean(AUTO_FOLLOW, mAutoFollow);
 		editor.commit();
 		if (myWakeLock != null)
 			myWakeLock.release();
@@ -884,19 +884,19 @@ public class MainActivity extends Activity implements Constants {
 					|| file.getName().toLowerCase().endsWith(".tar")
 					|| file.getName().toLowerCase().endsWith(".sqlitedb")) {
 						String name = Ut.FileName2ID(file.getName());
-						if (pref.getBoolean("pref_usermaps_" + name + "_enabled", false)
-						&& !pref.getBoolean("pref_usermaps_" + name + "_isoverlay", false)) {
-							MenuItem item = submenu.add(pref.getString("pref_usermaps_" + name + "_name", file.getName()));
-							item.setTitleCondensed("usermap_" + name);
+						if (pref.getBoolean(PREF_USERMAPS + name + ENABLED, false)
+						&& !pref.getBoolean(PREF_USERMAPS + name + ISOVERLAY, false)) {
+							MenuItem item = submenu.add(pref.getString(PREF_USERMAPS + name + _NAME, file.getName()));
+							item.setTitleCondensed(USERMAP + name);
 						}
 					}
 				}
 			}
 		}
 		for (Cursor c: mPoiManager.getMixedMaps()) {
-			if (pref.getBoolean("PREF_MIXMAPS_" + c.getInt(0) + "_enabled", true) && c.getInt(2) < 3) {
+			if (pref.getBoolean(PREF_MIXMAPS + c.getInt(0) + ENABLED, true) && c.getInt(2) < 3) {
 				MenuItem item = submenu.add(c.getString(1));
-				item.setTitleCondensed("mixmap_" + c.getInt(0));
+				item.setTitleCondensed(MIXMAP + c.getInt(0));
 			}
 		}
 		final SAXParserFactory fac = SAXParserFactory.newInstance();
@@ -921,10 +921,10 @@ public class MainActivity extends Activity implements Constants {
 		switch (item.getItemId()) {
 			case R.id.area_selector: {
 				startActivity(new Intent(this, AreaSelectorActivity.class)
-					.putExtra("new", true).putExtra(MAPNAME, mTileSource.ID)
-					.putExtra("Latitude", point.getLatitudeE6())
-					.putExtra("Longitude", point.getLongitudeE6())
-					.putExtra("ZoomLevel", mMap.getZoomLevel()));
+					.putExtra(NEW, true).putExtra(MAPNAME, mTileSource.ID)
+					.putExtra(LATITUDE, point.getLatitudeE6())
+					.putExtra(LONGITUDE, point.getLongitudeE6())
+					.putExtra(ZOOM_LEVEL, mMap.getZoomLevel()));
 				return true;
 			}
 			case R.id.menu_show_dashboard: {
@@ -988,7 +988,7 @@ public class MainActivity extends Activity implements Constants {
 				startActivityForResult((new Intent(this, PoiListActivity.class))
 					.putExtra(LAT, point.getLatitude())
 					.putExtra(LON, point.getLongitude())
-					.putExtra("title", "POI"),
+					.putExtra(TITLE, "POI"),
 					R.id.poilist);
 				return true;
 			}
@@ -1016,7 +1016,7 @@ public class MainActivity extends Activity implements Constants {
 				return true;
 			}
 			case R.id.menu_share: {
-				final String label = "";
+				final String label = EMPTY;
 				final int zoom = mMap.getZoomLevel();
 				final double latitude = point.getLatitude();
 				final double longitude = point.getLongitude();
@@ -1042,7 +1042,7 @@ public class MainActivity extends Activity implements Constants {
 				return true;
 			}
 			case R.id.menu_view: {
-				final String label = "";
+				final String label = EMPTY;
 				final int zoom = mMap.getZoomLevel();
 				final double latitude = point.getLatitude();
 				final double longitude = point.getLongitude();
@@ -1076,7 +1076,7 @@ public class MainActivity extends Activity implements Constants {
 			}
 			default: {
 				final String mapid = (String)item.getTitleCondensed();
-				setTileSource(mapid, "", true);
+				setTileSource(mapid, EMPTY, true);
 				fillOverlays();
 				setTitle();
 				return true;
@@ -1123,13 +1123,13 @@ public class MainActivity extends Activity implements Constants {
 					final MenuItem item = menu.add(Menu.NONE, R.id.menu_showinfo, Menu.NONE, R.string.menu_showinfo);
 					item.setCheckable(true);
 					final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-					item.setChecked(pref.getBoolean("pref_show_measure_info", true));
+					item.setChecked(pref.getBoolean(PREF_SHOW_MEASURE_INFO, true));
 				}
 				{
 					final MenuItem item = menu.add(Menu.NONE, R.id.menu_showlineinfo, Menu.NONE, R.string.menu_showlineinfo);
 					item.setCheckable(true);
 					final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-					item.setChecked(pref.getBoolean("pref_show_measure_line_info", true));
+					item.setChecked(pref.getBoolean(PREF_SHOW_MEASURE_LINE_INFO, true));
 				}
 				menu.add(Menu.NONE, R.id.menu_addmeasurepoint, Menu.NONE, R.string.menu_add);
 				menu.add(Menu.NONE, R.id.menu_undo, Menu.NONE, R.string.menu_undo);
@@ -1145,7 +1145,7 @@ public class MainActivity extends Activity implements Constants {
 		final String lastMapID = mTileSource == null? TileSource.MAPNIK: mTileSource.ID;
 		if (mTileSource != null)
 			mTileSource.Free();
-		if (overlayId != null && !overlayId.equalsIgnoreCase("") && aShowOverlay) {
+		if (overlayId != null && !overlayId.equalsIgnoreCase(EMPTY) && aShowOverlay) {
 			mOverlayId = overlayId;
 			mShowOverlay = true;
 			try {
@@ -1169,7 +1169,7 @@ public class MainActivity extends Activity implements Constants {
 				mTileSource = new TileSource(this, mapId, aShowOverlay);
 				mShowOverlay = aShowOverlay;
 				if (mapId != lastMapID)
-					mOverlayId = "";
+					mOverlayId = EMPTY;
 			}
 			catch (RException e) {
 				mTileSource = null;
@@ -1332,7 +1332,7 @@ public class MainActivity extends Activity implements Constants {
 						item.setChecked(!item.isChecked());
 						final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 						Editor editor = pref.edit();
-						editor.putBoolean("pref_show_measure_info", item.isChecked());
+						editor.putBoolean(PREF_SHOW_MEASURE_INFO, item.isChecked());
 						editor.commit();
 						mMeasureOverlay.setShowInfoBubble(item.isChecked());
 						mMap.invalidate(); //postInvalidate();
@@ -1342,7 +1342,7 @@ public class MainActivity extends Activity implements Constants {
 						item.setChecked(!item.isChecked());
 						final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 						Editor editor = pref.edit();
-						editor.putBoolean("pref_show_measure_line_info", item.isChecked());
+						editor.putBoolean(PREF_SHOW_MEASURE_LINE_INFO, item.isChecked());
 						editor.commit();
 						mMeasureOverlay.setShowLineInfo(item.isChecked());
 						mMap.invalidate(); //postInvalidate();
@@ -1376,12 +1376,12 @@ public class MainActivity extends Activity implements Constants {
 						startActivityForResult((new Intent(this, PoiActivity.class))
 							.putExtra(LAT, info.EventGeoPoint.getLatitude())
 							.putExtra(LON, info.EventGeoPoint.getLongitude())
-							.putExtra("alt", info.Elevation)
-							.putExtra("title", "POI"), R.id.menu_addpoi);
+							.putExtra(ALT, info.Elevation)
+							.putExtra(TITLE, "POI"), R.id.menu_addpoi);
 						break;
 					}
 					case R.id.menu_editpoi: {
-						startActivityForResult((new Intent(this, PoiActivity.class)).putExtra("pointid", mMarkerIndex), R.id.menu_editpoi);
+						startActivityForResult((new Intent(this, PoiActivity.class)).putExtra(POINTID, mMarkerIndex), R.id.menu_editpoi);
 						mMap.invalidate(); //postInvalidate();
 						break;
 					}
@@ -1464,8 +1464,8 @@ public class MainActivity extends Activity implements Constants {
 							Intent i = new Intent("com.google.android.radar.SHOW_RADAR");
 							i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 							i.putExtra(NAME, poi1.mTitle);
-							i.putExtra(LATITUDE, poi1.mGeoPoint.getLatitudeE6() / 1000000f);
-							i.putExtra(LONGITUDE, poi1.mGeoPoint.getLongitudeE6() / 1000000f);
+							i.putExtra(LATITUDE, poi1.mGeoPoint.getLatitude());
+							i.putExtra(LONGITUDE, poi1.mGeoPoint.getLongitude());
 							startActivity(i);
 						}
 						catch (Exception e) {
@@ -1526,14 +1526,14 @@ public class MainActivity extends Activity implements Constants {
 						@SuppressWarnings("static-access")
 						public void onClick(DialogInterface dialog, int whichButton) {
 							SharedPreferences settings = getPreferences(Activity.MODE_PRIVATE);
-							String text = settings.getString("error", "");
+							String text = settings.getString(ERROR, EMPTY);
 							String subj = "Tabulae error: ";
 							try {
 								final String[] lines = text.split("\n", 2);
 								final Pattern p = Pattern.compile("[.][\\w]+[:| |\\t|\\n]");
 								final Matcher m = p.matcher(lines[0] + "\n");
 								if (m.find())
-									subj += m.group().replace(".", "").replace(":", "").replace("\n", "") + " at ";
+									subj += m.group().replace(".", EMPTY).replace(":", EMPTY).replace("\n", EMPTY) + " at ";
 								final Pattern p2 = Pattern.compile("[.][\\w]+[(][\\w| |\\t]*[)]");
 								final Matcher m2 = p2.matcher(lines[1]);
 								if (m2.find())
@@ -1552,14 +1552,14 @@ public class MainActivity extends Activity implements Constants {
 							startActivity(Ut.SendMail(subj, text));
 							SharedPreferences uiState = getPreferences(0);
 							SharedPreferences.Editor editor = uiState.edit();
-							editor.putString("error", "");
+							editor.putString(ERROR, EMPTY);
 							editor.commit();
 						}
 					}).setNegativeButton(R.string.about_dialog_close, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
 							SharedPreferences uiState = getPreferences(0);
 							SharedPreferences.Editor editor = uiState.edit();
-							editor.putString("error", "");
+							editor.putString(ERROR, EMPTY);
 							editor.commit();
 						}
 					}).create();
@@ -1579,7 +1579,7 @@ public class MainActivity extends Activity implements Constants {
 			}
 			case R.id.poilist: {
 				if (resultCode == RESULT_OK) {
-					PoiPoint point = mPoiManager.getPoiPoint(data.getIntExtra("pointid", EMPTY_ID));
+					PoiPoint point = mPoiManager.getPoiPoint(data.getIntExtra(POINTID, EMPTY_ID));
 					if (point != null) {
 						setAutoFollow(false);
 						mPoiOverlay.UpdateList();
@@ -1638,16 +1638,16 @@ public class MainActivity extends Activity implements Constants {
 	}
 
 	private void doShowPoints(Intent queryIntent) {
-		final ArrayList<String> locations = queryIntent.getStringArrayListExtra("locations");
+		final ArrayList<String> locations = queryIntent.getStringArrayListExtra(LOCATIONS);
 		if (!locations.isEmpty()) {
 			GeoPoint point = null;
 			mPoiOverlay.clearPoiList();
 			int id = -1;
 			for (String location : locations) {
 				final String[] fields = location.split(";");
-				String locns = "";
-				String title = "";
-				String descr = "";
+				String locns = EMPTY;
+				String title = EMPTY;
+				String descr = EMPTY;
 				if (fields.length > 0) locns = fields[0];
 				if (fields.length > 1) title = fields[1];
 				if (fields.length > 2) descr = fields[2];
@@ -1672,7 +1672,7 @@ public class MainActivity extends Activity implements Constants {
 				Ut.d(LocationManager.NETWORK_PROVIDER + " removed");
 				// TODO when to reenable?
 			}
-			//int cnt = loc.getExtras().getInt("satellites", Integer.MIN_VALUE);
+			//int cnt = loc.getExtras().getInt(SATELLITES, Integer.MIN_VALUE);
 			mStatusLocationProviderName = loc.getProvider(); // + " 2 " + (cnt >= 0 ? cnt : 0);
 			setTitle();
 			mLastSpeed = loc.getSpeed();
@@ -1712,10 +1712,10 @@ public class MainActivity extends Activity implements Constants {
 
 		public void onStatusChanged(String provider, int status, Bundle extras) {
 			Ut.d("onStatusChanged provider=" + provider);
-			mGpsStatusSatCnt = extras.getInt("satellites", Integer.MIN_VALUE);
+			mGpsStatusSatCnt = extras.getInt(SATELLITES, Integer.MIN_VALUE);
 			mGpsStatusState = status;
 			mStatusLocationProviderName = provider;
-			Ut.d(provider + " status: " + status + " cnt: " + extras.getInt("satellites", Integer.MIN_VALUE));
+			Ut.d(provider + " status: " + status + " cnt: " + extras.getInt(SATELLITES, Integer.MIN_VALUE));
 			setTitle();
 		}
 

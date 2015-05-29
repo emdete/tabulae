@@ -42,19 +42,19 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 			android.R.layout.simple_spinner_item, c,
-			new String[]{"name"},
+			new String[]{org.pyneo.maps.Constants.NAME},
 			new int[]{android.R.id.text1});
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mActivity.setAdapter(adapter);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt("id", Constants.EMPTY_ID);
+		int id = extras.getInt(org.pyneo.maps.Constants.ID, Constants.EMPTY_ID);
 
 		if (id < 0) {
 			mTrack = new Track();
-			mName.setText(extras.getString("name"));
-			mDescr.setText(extras.getString("descr"));
+			mName.setText(extras.getString(org.pyneo.maps.Constants.NAME));
+			mDescr.setText(extras.getString(org.pyneo.maps.Constants.DESCR));
 			mActivity.setSelection(0);
 		} else {
 			mTrack = mPoiManager.getTrack(id);

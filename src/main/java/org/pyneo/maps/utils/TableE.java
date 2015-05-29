@@ -95,13 +95,13 @@ public class TableE {
 	* cursor getters. this method does not support col types (a dd) because
 	* sqlite doesn't have one. sqlite has types of cols per row.
 	*/
-	enum thing {ID, LAT, LON, NAME, DESCRIPTION};
+	enum thing {id, lat, lon, name, description};
 
 	public static void test(Cursor cursor ) {
 		for (thing e: thing.values()) {
 			Ut.i("TableE.test(): name=" + e.name() + ", ordinal=" + e.ordinal());
 			switch (e) {
-				case ID:
+				case id:
 				break;
 			}
 		}
@@ -109,11 +109,11 @@ public class TableE {
 		Ut.i("TableE.test(): createStatement=" + TableE.createStatement(thing.class, thing.values()));
 		Ut.i("TableE.test(): insertStatement=" + TableE.insertStatement(thing.class, thing.values()));
 		Ut.i("TableE.test(): updateStatement=" + TableE.updateStatement(thing.class, thing.values(), null));
-		Ut.i("TableE.test(): selectStatement=" + TableE.selectStatement(thing.class, thing.values(), null, new Object[]{thing.ID}));
-		Ut.i("TableE.test(): deleteStatement=" + TableE.deleteStatement(thing.class, new Object[]{thing.ID}));
+		Ut.i("TableE.test(): selectStatement=" + TableE.selectStatement(thing.class, thing.values(), null, new Object[]{thing.id}));
+		Ut.i("TableE.test(): deleteStatement=" + TableE.deleteStatement(thing.class, new Object[]{thing.id}));
 		Ut.i("TableE.test(): dropStatement=" + TableE.dropStatement(thing.class, thing.values()));
 		if (cursor != null) {
-			cursor.getInt(thing.ID.ordinal());
+			cursor.getInt(thing.id.ordinal());
 		}
 	}
 }

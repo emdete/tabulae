@@ -117,9 +117,9 @@ public class GeoPoint {
 	}
 
 	/**
-	* @see Source@ http://www.geocities.com/DrChengalva/GPSDistance.html
-	* @param gpA
-	* @param gpB
+	* @see Source at http://www.geocities.com/DrChengalva/GPSDistance.html
+	* @param lat
+	* @param lon
 	* @return distance in meters
 	*/
 	public int distanceTo(final double lat, final double lon) {

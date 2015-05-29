@@ -69,15 +69,15 @@ public class KmlTrackParser extends DefaultHandler {
 					mStrArray2 = mStrArray[i].trim().split(",");
 					if (mTrack != null) {
 						mTrack.AddTrackPoint();
-						mTrack.LastTrackPoint.lat = Double.parseDouble(mStrArray2[1]);
-						mTrack.LastTrackPoint.lon = Double.parseDouble(mStrArray2[0]);
+						mTrack.LastTrackPoint.setLat(Double.parseDouble(mStrArray2[1]));
+						mTrack.LastTrackPoint.setLon(Double.parseDouble(mStrArray2[0]));
 						if (mStrArray2.length > 2)
 							try {
-								mTrack.LastTrackPoint.alt = Double.parseDouble(mStrArray2[2]);
+								mTrack.LastTrackPoint.setAlt(Double.parseDouble(mStrArray2[2]));
 							}
 							catch (NumberFormatException e) {
 								try {
-									mTrack.LastTrackPoint.alt = (double)Integer.parseInt(mStrArray2[2]);
+									mTrack.LastTrackPoint.setAlt((double)Integer.parseInt(mStrArray2[2]));
 								}
 								catch (NumberFormatException e1) {
 									Ut.e(e.toString(), e1);

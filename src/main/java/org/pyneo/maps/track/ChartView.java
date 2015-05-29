@@ -14,62 +14,56 @@ import android.location.Location;
 import android.util.AttributeSet;
 import android.view.View;
 
-import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.R;
+import org.pyneo.maps.utils.Ut;
 import org.pyneo.maps.track.Track.TrackPoint;
 
 public class ChartView extends View {
-	private static final int TOP_BORDER = 15;
-	private static final float BOTTOM_BORDER = 40;
-	private static final int RIGHT_BORDER = 17;
-	private static final int UNIT_BORDER = 15;
-	private static final int FONT_HEIGHT = 10;
+	private static final int BOTTOM_BORDER = 12;
+	private static final int LEFT_BORDER = 12;
+	private static final int RIGHT_BORDER = 1;
+	private static final int TOP_BORDER = 1;
 	private static final int MAX_INTERVALS = 5;
 	private final Paint borderPaint = new Paint();
-	private final Paint labelPaint = new Paint();
 	private final Paint gridPaint = new Paint();
-	private final Paint gridBarPaint = new Paint();
-	private final Paint clearPaint = new Paint();
-	private final Paint[] graphPaint = {new Paint(), new Paint()};
-	private int zoomLevel = 1;
-	private double maxX;
-	private int leftBorder = -1;
-	private int topBorder = 0;
 	private int bottomBorder = 0;
-	private int w = 0;
-	private int h = 0;
+	private int leftBorder = 0;
+	private int rightBorder = 0;
+	private int topBorder = 0;
+	private int lastWidth = 0;
+	private int lastHeight = 0;
 	private int effectiveWidth = 0;
 	private int effectiveHeight = 0;
 	private Path[] path = {new Path(), new Path()};
+	private final Paint[] graphPaint = {null, null};
+	private Path[] path_transformed = {null, null};
 
 	public ChartView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		final float density = getContext().getResources().getDisplayMetrics().density;
 		final Resources res = getResources();
-		labelPaint.setStyle(Style.STROKE);
-		labelPaint.setColor(Color.BLACK);
-		labelPaint.setAntiAlias(true);
 		borderPaint.setStyle(Style.STROKE);
 		borderPaint.setColor(res.getColor(R.color.chart_border));
-		borderPaint.setAntiAlias(true);
+		//borderPaint.setAntiAlias(true);
 		gridPaint.setStyle(Style.STROKE);
-		gridPaint.setColor(Color.GRAY);
-		gridPaint.setAntiAlias(false);
-		gridBarPaint.set(gridPaint);
-		gridBarPaint.setPathEffect(new DashPathEffect(new float[]{3, 2}, 0));
-		clearPaint.setStyle(Style.FILL);
-		clearPaint.setColor(Color.WHITE);
-		clearPaint.setAntiAlias(false);
+		gridPaint.setPathEffect(new DashPathEffect(new float[]{density*3, density*9}, 0));
+		gridPaint.setColor(Color.WHITE);
+		//gridPaint.setAntiAlias(false);
+		graphPaint[0] = new Paint();
 		graphPaint[0].setColor(res.getColor(R.color.chart_graph_0));
 		graphPaint[0].setStyle(Style.STROKE);
-		graphPaint[0].setStrokeWidth(3);
-		graphPaint[0].setAntiAlias(true);
-		graphPaint[0].setAlpha(180);
+		graphPaint[0].setStrokeWidth(Math.max(1, (int)(density * .6)));
+		//graphPaint[0].setAntiAlias(true);
+		//graphPaint[0].setAlpha(180);
 		graphPaint[0].setStrokeCap(Paint.Cap.ROUND);
 		graphPaint[0].setShadowLayer(10.0f, 0, 0, res.getColor(R.color.chart_graph_0));
 		graphPaint[1] = new Paint(graphPaint[0]);
 		graphPaint[1].setColor(res.getColor(R.color.chart_graph_1));
 		graphPaint[1].setShadowLayer(10.0f, 0, 0, res.getColor(R.color.chart_graph_1));
-		updateDimensions();
+		leftBorder = (int)(density * LEFT_BORDER);
+		rightBorder = (int)(density * RIGHT_BORDER);
+		bottomBorder = (int)(density * BOTTOM_BORDER);
+		topBorder = (int)(density * TOP_BORDER);
 	}
 
 	public ChartView(Context context) {
@@ -84,16 +78,16 @@ public class ChartView extends View {
 		TrackPoint lastpt = null;
 		for (TrackPoint pt : tr.getPoints()) {
 			if (lastpt == null) {
-				path[0].moveTo(0, (float)pt.speed);
-				path[1].moveTo(0, (float)pt.alt);
+				path[0].moveTo(0, (float) pt.getSpeed());
+				path[1].moveTo(0, (float) pt.getAlt());
 			} else {
-				Location.distanceBetween(lastpt.lat, lastpt.lon, pt.lat, pt.lon, results);
+				Location.distanceBetween(lastpt.getLat(), lastpt.getLon(), pt.getLat(), pt.getLon(), results);
 				distance += results[0];
-				path[0].lineTo(distance, (float)pt.speed);
-				path[1].lineTo(distance, (float)pt.alt);
+				path[0].lineTo(distance, (float) pt.getSpeed());
+				path[1].lineTo(distance, (float) pt.getAlt());
 			}
-			if (minSpeed > pt.speed) minSpeed = pt.speed;
-			if (minAlt > pt.alt) minAlt = pt.alt;
+			if (minSpeed > pt.getSpeed()) minSpeed = pt.getSpeed();
+			if (minAlt > pt.getAlt()) minAlt = pt.getAlt();
 			lastpt = pt;
 		}
 		final Matrix m = new Matrix();
@@ -108,93 +102,35 @@ public class ChartView extends View {
 	}
 
 	@Override
-	protected void onDraw(Canvas c) {
-		updateEffectiveDimensionsIfChanged(c);
-		c.save();
-		for (int i=0;i<path.length;i++) {
-			RectF r = new RectF();
-			final Matrix m = new Matrix();
-			Path clone = new Path(path[i]);
-			clone.computeBounds(r, true);
-			m.setScale(effectiveWidth / r.width(), /*-*/ effectiveHeight / r.height());
-			clone.transform(m);
-			m.setTranslate(RIGHT_BORDER, effectiveHeight + BOTTOM_BORDER);
-			clone.transform(m);
-			c.drawPath(clone, graphPaint[i]);
-		}
-		drawXAxis(c);
-		drawYAxis(c);
-		c.restore();
-	}
-
-	private int getX(double distance) {
-		return leftBorder + (int)((distance * effectiveWidth / maxX) * zoomLevel);
-	}
-
-	private void updateDimensions() {
-		// maxX = xMonitor.getMax();
-		// if (data.size() <= 1) {
-		// maxX = 1;
-		// }
-		// for (ChartValueSeries cvs : series) {
-		// cvs.updateDimension();
-		// }
-		// // TODO: This is totally broken. Make sure that we calculate based on
-		// measureText for each
-		// // grid line, as the labels may vary across intervals.
-		// int maxLength = 0;
-		// for (ChartValueSeries cvs : series) {
-		// if (cvs.isEnabled() && cvs.hasData()) {
-		// maxLength += cvs.getMaxLabelLength();
-		// }
-		// }
-		final float density = getContext().getResources().getDisplayMetrics().density;
-		// maxLength = Math.max(maxLength, 1);
-		final int maxLength = 1;
-		leftBorder = (int)(density * (4 + 8 * maxLength));
-		bottomBorder = (int)(density * BOTTOM_BORDER);
-		topBorder = (int)(density * TOP_BORDER);
-		updateEffectiveDimensions();
-	}
-
-	private void updateEffectiveDimensions() {
-		effectiveWidth = Math.max(0, w - 2 * RIGHT_BORDER);
-		effectiveHeight = (int)Math.max(0, h - 2 * BOTTOM_BORDER);
-		//effectiveWidth = Math.max(0, w - leftBorder - RIGHT_BORDER);
-		//effectiveHeight = Math.max(0, h - topBorder - bottomBorder);
-	}
-
-	private void updateEffectiveDimensionsIfChanged(Canvas c) {
-		if (w != c.getWidth() || h != c.getHeight()) {
+	protected void onDraw(Canvas canvas) {
+		if (lastWidth != canvas.getWidth() || lastHeight != canvas.getHeight()) {
 			// Dimensions have changed (for example due to orientation change).
-			w = getWidth();
-			h = getHeight();
-			updateEffectiveDimensions();
+			lastWidth = getWidth();
+			lastHeight = getHeight();
+			effectiveWidth = Math.max(0, lastWidth - (leftBorder + rightBorder));
+			effectiveHeight = (int)Math.max(0, lastHeight - (topBorder + bottomBorder));
 			//setUpPath();
+			for (int i=0;i<path.length;i++) {
+				RectF r = new RectF();
+				final Matrix m = new Matrix();
+				path_transformed[i] = new Path(path[i]);
+				path_transformed[i].computeBounds(r, true);
+				m.setScale(effectiveWidth / r.width(), /*-*/ effectiveHeight / r.height());
+				path_transformed[i].transform(m);
+				m.setTranslate(leftBorder, effectiveHeight + bottomBorder);
+				path_transformed[i].transform(m);
+			}
 		}
-	}
-
-	private void drawXAxis(Canvas canvas) {
-		canvas.drawLine(RIGHT_BORDER, effectiveHeight + BOTTOM_BORDER, effectiveWidth + RIGHT_BORDER, effectiveHeight + BOTTOM_BORDER, borderPaint);
-		//float rightEdge = getX(maxX);
-		//final int y = effectiveHeight + topBorder;
-		//canvas.drawLine(leftBorder, y, rightEdge, y, borderPaint);
-		//Context c = getContext();
-		//String s = mode == Mode.BY_DISTANCE
-		//? (metricUnits ? c.getString(R.string.kilometer) :
-		//c.getString(R.string.mile))
-		//: c.getString(R.string.min);
-		//canvas.drawText(s, rightEdge, effectiveHeight + .2f * UNIT_BORDER +
-		//topBorder, labelPaint);
-	}
-
-	private void drawYAxis(Canvas canvas) {
-		canvas.drawLine(RIGHT_BORDER, BOTTOM_BORDER, RIGHT_BORDER, effectiveHeight + BOTTOM_BORDER, borderPaint);
-		//canvas.drawRect(0, 0, leftBorder - 1, effectiveHeight + topBorder + UNIT_BORDER + 1, clearPaint);
-		//canvas.drawLine(leftBorder, UNIT_BORDER + topBorder, leftBorder, effectiveHeight + topBorder, borderPaint);
-		//for (int i = 1; i < MAX_INTERVALS; ++i) {
-		//	int y = i * effectiveHeight / MAX_INTERVALS + topBorder;
-		//	canvas.drawLine(leftBorder - 5, y, leftBorder, y, gridPaint);
-		//}
+		canvas.save();
+		for (int i=0;i<path.length;i++) {
+			canvas.drawPath(path_transformed[i], graphPaint[i]);
+		}
+		canvas.drawLine(leftBorder, effectiveHeight + bottomBorder, effectiveWidth + leftBorder, effectiveHeight + bottomBorder, borderPaint);
+		canvas.drawLine(leftBorder, bottomBorder, leftBorder, effectiveHeight + bottomBorder, borderPaint);
+		for (int i = 1; i < MAX_INTERVALS; ++i) {
+			int y = i * effectiveHeight / MAX_INTERVALS + topBorder;
+			canvas.drawLine(leftBorder, y, effectiveWidth + leftBorder, y, gridPaint);
+		}
+		canvas.restore();
 	}
 }

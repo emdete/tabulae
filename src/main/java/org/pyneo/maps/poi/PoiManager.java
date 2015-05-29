@@ -220,7 +220,7 @@ public class PoiManager implements Constants {
 			long newId = mPoiStorage.addTrack(track.Name, track.Descr, track.Show? ONE: ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
 
 			for (TrackPoint trackpoint : track.getPoints()) {
-				mPoiStorage.addTrackPoint(newId, trackpoint.lat, trackpoint.lon, trackpoint.alt, trackpoint.speed, trackpoint.date);
+				mPoiStorage.addTrackPoint(newId, trackpoint.getLat(), trackpoint.getLon(), trackpoint.getAlt(), trackpoint.getSpeed(), trackpoint.getDate());
 			}
 		} else
 			mPoiStorage.updateTrack(track.getId(), track.Name, track.Descr, track.Show? ONE: ZERO, track.Cnt, track.Distance, track.Duration, track.Category, track.Activity, track.Date, track.Style);
@@ -252,13 +252,13 @@ public class PoiManager implements Constants {
 		Cursor c = mPoiStorage.getTrackChecked();
 		if (c != null) {
 			tracks = new Track[c.getCount()];
-			final String defStyle = PreferenceManager.getDefaultSharedPreferences(mCtx).getString("pref_track_style", "");
+			final String defStyle = PreferenceManager.getDefaultSharedPreferences(mCtx).getString("pref_track_style", EMPTY);
 			if (c.moveToFirst())
 				do {
 					final int pos = c.getPosition();
 					String style = c.getString(10);
-					if (style == null || style.equalsIgnoreCase(""))
-						style = ""; // TODO ?!?
+					if (style == null || style.equalsIgnoreCase(EMPTY))
+						style = EMPTY; // TODO ?!?
 					tracks[pos] = new Track(c.getInt(3), c.getString(0), c.getString(1), c.getInt(2) == ONE, c.getInt(4), c.getDouble(5), c.getDouble(6), c.getInt(7), c.getInt(8), new Date(c.getLong(9) * 1000), style, defStyle);
 					if (aNeedPoints) {
 						Cursor cpoints = mPoiStorage.getTrackPoints(tracks[pos].getId());
@@ -270,11 +270,11 @@ public class PoiManager implements Constants {
 										break;
 									}
 									tracks[pos].AddTrackPoint(); //track.trackpoints.size()
-									tracks[pos].LastTrackPoint.lat = cpoints.getDouble(0);
-									tracks[pos].LastTrackPoint.lon = cpoints.getDouble(1);
-									tracks[pos].LastTrackPoint.alt = cpoints.getDouble(2);
-									tracks[pos].LastTrackPoint.speed = cpoints.getDouble(3);
-									tracks[pos].LastTrackPoint.date.setTime(cpoints.getLong(4) * 1000); // System.currentTimeMillis()
+									tracks[pos].LastTrackPoint.setLat(cpoints.getDouble(0));
+									tracks[pos].LastTrackPoint.setLon(cpoints.getDouble(1));
+									tracks[pos].LastTrackPoint.setAlt(cpoints.getDouble(2));
+									tracks[pos].LastTrackPoint.setSpeed(cpoints.getDouble(3));
+									tracks[pos].LastTrackPoint.getDate().setTime(cpoints.getLong(4) * 1000); // System.currentTimeMillis()
 								} while (cpoints.moveToNext());
 							}
 							cpoints.close();
@@ -296,10 +296,10 @@ public class PoiManager implements Constants {
 		Cursor c = mPoiStorage.getTrack(id);
 		if (c != null) {
 			if (c.moveToFirst()) {
-				final String defStyle = PreferenceManager.getDefaultSharedPreferences(mCtx).getString("pref_track_style", "");
+				final String defStyle = PreferenceManager.getDefaultSharedPreferences(mCtx).getString("pref_track_style", EMPTY);
 				String style = c.getString(9);
-				if (style == null || style.equalsIgnoreCase(""))
-					style = "";
+				if (style == null || style.equalsIgnoreCase(EMPTY))
+					style = EMPTY;
 
 				track = new Track(id, c.getString(0), c.getString(1), c.getInt(2) == ONE, c.getInt(3), c.getDouble(4), c.getDouble(5), c.getInt(6), c.getInt(7), new Date(c.getLong(8) * 1000), style, defStyle);
 			}
@@ -311,11 +311,11 @@ public class PoiManager implements Constants {
 				if (c.moveToFirst()) {
 					do {
 						track.AddTrackPoint();
-						track.LastTrackPoint.lat = c.getDouble(0);
-						track.LastTrackPoint.lon = c.getDouble(1);
-						track.LastTrackPoint.alt = c.getDouble(2);
-						track.LastTrackPoint.speed = c.getDouble(3);
-						track.LastTrackPoint.date.setTime(c.getLong(4) * 1000); // System.currentTimeMillis()
+						track.LastTrackPoint.setLat(c.getDouble(0));
+						track.LastTrackPoint.setLon(c.getDouble(1));
+						track.LastTrackPoint.setAlt(c.getDouble(2));
+						track.LastTrackPoint.setSpeed(c.getDouble(3));
+						track.LastTrackPoint.getDate().setTime(c.getLong(4) * 1000); // System.currentTimeMillis()
 					} while (c.moveToNext());
 				}
 				c.close();
