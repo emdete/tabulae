@@ -30,3 +30,5 @@ ToDos / known Bugs
 - make https aware (disable all http tile provider)
 
 - add Instrumentation (android.app)
+
+- stop on start (end recording when reaching beginning of track)
