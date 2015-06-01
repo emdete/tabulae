@@ -77,7 +77,7 @@ Zur Planung einer Strecke kann diese vorab erfasst und vermessen werden.
 ### Kooperation
 
 Die App kann die aktuelle Position mit einem Chatprogramm teilen (siehe
-[Conversations](market://search?q=pname:eu.siacs.conversations)).
+"[Conversations](market://search?q=pname:eu.siacs.conversations)").
 
 Fehlersuche
 -----------
