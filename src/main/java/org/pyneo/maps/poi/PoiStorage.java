@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 import com.commonsware.cwac.loaderex.acl.SQLiteCursorLoader;
-import com.commonsware.cwac.loaderex.acl.SQLiteCursorLoader;
 import java.io.File;
 import java.io.File;
 import java.text.SimpleDateFormat;
