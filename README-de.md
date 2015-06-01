@@ -42,15 +42,42 @@ Tabulae enthält keine Werbung.
 Bedienung
 ---------
 
-Instrumentenbrett
+### Instrumentenbrett
 
-Kartenauswahl
+Das Instrumentenbrett (Anzeige von verschiedensten Werten über der Karte) kann
+über das Menu ab- und angeschaltet werden. Auch jedes einzelne Element kann
+entfernt und neue hinzugefügt werden (lange auf ein Element klicken) und die
+Art des Wertes ausgewählt werden.
 
-Wegstrecke
+### Kartenauswahl
 
-POI
+Der Anbieter der Karte kann aus einem Menü gewählt werden. Viele Anbieter sind
+vorkonfiguriert und es können Strassekarten, Topographische Karten,
+Stellitenbilder und andere ausgewählt werden.
 
-Vermessen
+Dem Benutzer obligt zu prüfen, ob der ausgewählte Kartenanbieter der Nutzung
+zustimmt.
+
+### Wegstrecke
+
+Wegstrecken können aufgezeichnet werden. Die Aufzeichnung kann pausiert werden.
+Die Strecke ist in einer internen Datenbank gespeichert werden und in übliche
+Formate (kml und gpx) exportiert werden und in anderen Programmen
+weiterverarbeitet werden.
+
+### POI
+
+POI (Position von Interesse) können markiert werden. Sie können "geteilt",
+"gesendet" und exportiert werden.
+
+### Vermessen
+
+Zur Planung einer Strecke kann diese vorab erfasst und vermessen werden.
+
+### Kooperation
+
+Die App kann die aktuelle Position mit einem Chatprogramm teilen (siehe
+[Conversations](market://search?q=pname:eu.siacs.conversations)).
 
 Fehlersuche
 -----------
