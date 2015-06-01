@@ -157,10 +157,11 @@ public class MapView extends RelativeLayout implements Constants {
 		rigthArea.addView(ll, llParams);
 		final int pad = getResources().getDimensionPixelSize(R.dimen.zoom_ctrl_padding);
 
-		if (SideInOutButtons == 0) return;
+		if (SideInOutButtons == 0)
+			return;
 
 		final ImageView ivZoomIn = new ImageView(getContext());
-		ivZoomIn.setImageResource(R.drawable.zoom_in);
+		ivZoomIn.setImageResource(R.drawable.ic_action_zoom_in);
 
 		if (SideInOutButtons == 3) {
 			ivZoomIn.setPadding(0, pad, 0, pad);
@@ -202,7 +203,7 @@ public class MapView extends RelativeLayout implements Constants {
 
 		final ImageView ivZoomOut = new ImageView(getContext());
 		ivZoomOut.setId(R.id.whatsnew);
-		ivZoomOut.setImageResource(R.drawable.zoom_out);
+		ivZoomOut.setImageResource(R.drawable.ic_action_zoom_out);
 
 		if (SideInOutButtons == 3) {
 			ivZoomOut.setPadding(0, pad, 0, pad);
