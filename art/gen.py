@@ -29,10 +29,13 @@ def glob(w):
 
 def conv_svg(width, height, basename):
 	for d, suffix in SIZES:
-		if basename != 'map_center_cross' and not exists("../src/main/res/drawable-{}dpi/{}.png".format(suffix, basename, )):
+		target = "../src/main/res/drawable-{}dpi/{}.png".format(suffix, basename, )
+		if not exists(target):
+			# this is to not unintenionally creat new images, if you want so
+			# disable this check
 			raise Exception("target doesn't exists: {}".format(basename))
-		system("inkscape -e ../src/main/res/drawable-{}dpi/{}.png -C -w {} -h {} {}.svg".format(
-			suffix, basename, int(width * d / 4), int(height * d / 4), basename,
+		system("inkscape -e {} -C -w {} -h {} {}.svg".format(
+			target, int(width * d / 4), int(height * d / 4), basename,
 			))
 
 handle = Rsvg.Handle()
