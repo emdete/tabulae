@@ -1,3 +1,11 @@
+v.1.0.7
++ scale tiles by screen density to make texts readable
+- various bugfixes
++ code cleanup
+
+v.1.0.6
+- improve layout and colors
+
 v.1.0.5
 - fix NPE
 
