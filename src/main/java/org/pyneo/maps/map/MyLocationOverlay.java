@@ -106,7 +106,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 		mLastGeoPoint = new GeoPoint(loc);
 		mAccuracy = loc.getAccuracy();
 		mBearing = loc.getBearing();
-		mIsMoving = loc.getSpeed() <= 0.278; // not moving
+		mIsMoving = loc.getSpeed() > 0.278; // not moving
 		mIsCurrentLocation = ((System.currentTimeMillis() - loc.getTime()) / 1000L) < 5; // old location?
 		// TODO: from API17 up use: (android.os.SystemClock.elapsedRealtimeNanos() - loc.getElapsedRealtimeNanos()) / 1000000000L;
 		mLoc = loc;
@@ -191,13 +191,13 @@ public class MyLocationOverlay extends TileViewOverlay {
 				c.drawLine(screenCoords.x, screenCoords.y, screenCoordsTarg.x, screenCoordsTarg.y, mPaintLineToGPS);
 			}
 			c.save();
-			if (mIsCurrentLocation) {
+			if (!mIsCurrentLocation) {
 				c.rotate(tileView.getBearing(), screenCoords.x, screenCoords.y);
 				if (mNolocationIcon == null)
 					mNolocationIcon = IconManager.getInstance(mCtx).getNolocationIcon();
 				c.drawBitmap(mNolocationIcon, screenCoords.x - mNolocationIcon.getWidth() / 2, screenCoords.y - mNolocationIcon.getHeight() / 2, mPaint);
 			}
-			else if (mIsMoving) {
+			else if (!mIsMoving) {
 				c.rotate(tileView.getBearing(), screenCoords.x, screenCoords.y);
 				if (mLocationIcon == null)
 					mLocationIcon = IconManager.getInstance(mCtx).getLocationIcon();

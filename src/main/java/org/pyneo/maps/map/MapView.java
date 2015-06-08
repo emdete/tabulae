@@ -145,7 +145,7 @@ public class MapView extends RelativeLayout implements Constants {
 		displayZoomControls(1);
 	}
 
-	public void displayZoomControls(final int SideInOutButtons) {
+	public void displayZoomControls(final int sideInOutButtons) {
 		RelativeLayout rigthArea = (RelativeLayout)findViewById(R.id.right_area);
 
 		final LinearLayout ll = new LinearLayout(getContext());
@@ -157,19 +157,19 @@ public class MapView extends RelativeLayout implements Constants {
 		rigthArea.addView(ll, llParams);
 		final int pad = getResources().getDimensionPixelSize(R.dimen.zoom_ctrl_padding);
 
-		if (SideInOutButtons == 0)
+		if (sideInOutButtons == 0)
 			return;
 
 		final ImageView ivZoomIn = new ImageView(getContext());
 		ivZoomIn.setImageResource(R.drawable.ic_action_zoom_in);
 
-		if (SideInOutButtons == 3) {
+		if (sideInOutButtons == 3) {
 			ivZoomIn.setPadding(0, pad, 0, pad);
 			ll.addView(ivZoomIn);
 		} else {
 			final RelativeLayout.LayoutParams zoominParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 			zoominParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			if (SideInOutButtons != 2) {
+			if (sideInOutButtons != 2) {
 				zoominParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 			} else {
 				zoominParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -205,13 +205,13 @@ public class MapView extends RelativeLayout implements Constants {
 		ivZoomOut.setId(R.id.whatsnew);
 		ivZoomOut.setImageResource(R.drawable.ic_action_zoom_out);
 
-		if (SideInOutButtons == 3) {
+		if (sideInOutButtons == 3) {
 			ivZoomOut.setPadding(0, pad, 0, pad);
 			ll.addView(ivZoomOut);
 		} else {
 			final RelativeLayout.LayoutParams zoomoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 			zoomoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			if (SideInOutButtons != 2) {
+			if (sideInOutButtons != 2) {
 				zoomoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 			} else {
 				zoomoutParams.addRule(RelativeLayout.BELOW, R.id.dashboard_area);

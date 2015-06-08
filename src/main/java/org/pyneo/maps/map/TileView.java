@@ -697,7 +697,7 @@ public class TileView extends View {
 			final boolean doGudermann = true;
 			int lat, lon;
 
-			int i = 0;
+			boolean drawing = false;
 			int lastX = 0, lastY = 0;
 			if (cursor != null) {
 				if (cursor.moveToFirst()) {
@@ -737,29 +737,27 @@ public class TileView extends View {
 							+ (int)(relativePositionInCenterMapTile[LONGITUDE] * tileSizePx);
 						final int y = underGeopointTileScreenTop
 							+ (int)(relativePositionInCenterMapTile[LATITUDE] * tileSizePx);
-
 						/* Add up the offset caused by touch. */
-						if (i == 0) {
-							out.setLastPoint(x, y);
+						if (drawing) {
+							if (Math.abs(lastX - x) > 5 || Math.abs(lastY - y) > 5) {
+								out.lineTo(x, y);
+								lastX = x;
+								lastY = y;
+							}
+						}
+						else {
+							drawing = true;
+							out.moveTo(x, y);
 							lastX = x;
 							lastY = y;
 							baseCoord.x = x;
 							baseCoord.y = y;
 							baseLocation.setCoordsE6(lat, lon);
-							i++;
-						} else {
-							if (Math.abs(lastX - x) > 5 || Math.abs(lastY - y) > 5) {
-								out.lineTo(x, y);
-								lastX = x;
-								lastY = y;
-								i++;
-							}
 						}
 					} while (cursor.moveToNext());
 				}
 				cursor.close();
 			}
-
 			return out;
 		}
 

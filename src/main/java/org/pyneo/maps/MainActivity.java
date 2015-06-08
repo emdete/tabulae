@@ -208,7 +208,7 @@ public class MainActivity extends Activity implements Constants {
 		setContentView(R.layout.main);
 		final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		final RelativeLayout rl = (RelativeLayout)findViewById(R.id.map_area);
-		final int pref_zoomctrl = Integer.parseInt(pref.getString(PREF_ZOOMCTRL, "14"));
+		final int pref_zoomctrl = Integer.parseInt(pref.getString(PREF_ZOOMCTRL, "2"));
 		final boolean pref_showtitle = pref.getBoolean(PREF_SHOWTITLE, true);
 		final boolean pref_show_autofollow_button = pref.getBoolean(PREF_SHOW_AUTOFOLLOW_BUTTON, true);
 		final boolean pref_showscalebar = pref.getBoolean(PREF_SHOWSCALEBAR, true);

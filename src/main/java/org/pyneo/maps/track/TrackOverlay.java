@@ -2,6 +2,7 @@ package org.pyneo.maps.track;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -16,6 +17,7 @@ import org.pyneo.maps.utils.SimpleThreadFactory;
 import org.pyneo.maps.utils.Ut;
 
 import org.pyneo.maps.utils.GeoPoint;
+import org.pyneo.maps.map.TileView.OpenStreetMapViewProjection;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,7 +36,7 @@ public class TrackOverlay extends TileViewOverlay {
 	private TileView mOsmv;
 	private Handler mMainMapActivityCallbackHandler;
 	private boolean mStopDraw = false;
-	private org.pyneo.maps.map.TileView.OpenStreetMapViewProjection mProjection;
+	private OpenStreetMapViewProjection mProjection;
 
 	public TrackOverlay(MainActivity mainActivity, PoiManager poiManager, Handler aHandler) {
 		mMainMapActivityCallbackHandler = aHandler;
@@ -76,17 +78,29 @@ public class TrackOverlay extends TileViewOverlay {
 		}
 		if (mPaths == null)
 			return;
-		final org.pyneo.maps.map.TileView.OpenStreetMapViewProjection pj = osmv.getProjection();
+		final OpenStreetMapViewProjection pj = osmv.getProjection();
 		final Point screenCoords = new Point();
 		pj.toPixels(mBaseLocation, screenCoords);
 		c.save();
 		if (screenCoords.x != mBaseCoords.x && screenCoords.y != mBaseCoords.y) {
 			c.translate(screenCoords.x - mBaseCoords.x, screenCoords.y - mBaseCoords.y);
-			c.scale((float)osmv.mTouchScale, (float)osmv.mTouchScale, mBaseCoords.x, mBaseCoords.y);
+			Ut.i("translate/scale" +
+				", screenCoords=" + screenCoords.x + '/' + screenCoords.y +
+				", mBaseCoords=" + mBaseCoords.x + '/' + mBaseCoords.y +
+				", mTouchScale=" + osmv.mTouchScale);
 		}
-		for (int i = 0; i < mPaths.length; i++)
-			if (mPaths[i] != null && mPaints[i] != null)
+		if (osmv.mTouchScale != 1.0) {
+			c.scale((float)osmv.mTouchScale, (float)osmv.mTouchScale, mBaseCoords.x, mBaseCoords.y);
+			Ut.i("translate/scale" +
+				", none" +
+				", mTouchScale=" + osmv.mTouchScale);
+		}
+		for (int i = 0; i < mPaths.length; i++) {
+			if (mPaths[i] != null && mPaints[i] != null) {
 				c.drawPath(mPaths[i], mPaints[i]);
+				RectF bounds = new RectF(); mPaths[i].computeBounds(bounds, true); Ut.i("bounds=" + bounds);
+			}
+		}
 		c.restore();
 	}
 
@@ -129,7 +143,8 @@ public class TrackOverlay extends TileViewOverlay {
 						catch (Exception e) {
 							mPaths[i] = null;
 						}
-					} else
+					}
+					else
 						mPaths[i] = null;
 				}
 			}
