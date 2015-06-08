@@ -52,7 +52,7 @@ public class YandexTrafficOverlay extends TileViewOverlay implements org.pyneo.m
 		}
 
 		final int tileSizePxNotScale = mTileSource.getTileSizePx(zoomLevel);
-		final int tileSizePx = (int)(this.mTileSource.getTileSizePx(zoomLevel) * mMapView.mTouchScale);
+		final int tileSizePx = (int)(this.mTileSource.getTileSizePx(zoomLevel) * mMapView.getTouchScale());
 		final int[] centerMapTileCoords = Util.getMapTileFromCoordinates(centerGeoPoint.getLatitudeE6(), centerGeoPoint.getLongitudeE6(), zoomLevel, null,
 			mTileSource.PROJECTION);
 

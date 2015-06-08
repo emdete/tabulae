@@ -76,7 +76,7 @@ public class TileOverlay extends TileViewOverlay implements org.pyneo.maps.utils
 	protected void onDraw(Canvas c, TileView tileView) {
 		if (mTileSource != null) {
 			final int tileSizePxNotScale = mTileSource.getTileSizePx(tileView.getZoomLevel());
-			final int tileSizePx = (int)(tileSizePxNotScale * tileView.mTouchScale);
+			final int tileSizePx = (int)(tileSizePxNotScale * tileView.getTouchScale());
 			final int[] centerMapTileCoords = Util.getMapTileFromCoordinates(tileView.mLatitudeE6 + (int)(1E6 * mOffsetLat), tileView.mLongitudeE6 + (int)(1E6 * mOffsetLon), tileView.getZoomLevel(), null, mTileSource.PROJECTION);
 
 			final Point upperLeftCornerOfCenterMapTile = getUpperLeftCornerOfCenterMapTileInScreen(tileView,
@@ -96,7 +96,6 @@ public class TileOverlay extends TileViewOverlay implements org.pyneo.maps.utils
 
 			while (tileIn) {
 				tileIn = false;
-
 				for (x = -radius; x <= radius; x++) {
 					for (y = -radius; y <= radius; y++) {
 						if (x != -radius && x != radius && y != -radius && y != radius) continue;
@@ -111,7 +110,7 @@ public class TileOverlay extends TileViewOverlay implements org.pyneo.maps.utils
 						float arr[] = {mRectDraw.left, mRectDraw.top, mRectDraw.right, mRectDraw.top, mRectDraw.right, mRectDraw.bottom, mRectDraw.left, mRectDraw.bottom, mRectDraw.left, mRectDraw.top};
 						mMatrixBearing.mapPoints(arr);
 
-						if (Ut.Algorithm.isIntersected((int)(tileView.getWidth() * (1 - tileView.mTouchScale) / 2), (int)(tileView.getHeight() * (1 - tileView.mTouchScale) / 2), (int)(tileView.getWidth() * (1 + tileView.mTouchScale) / 2), (int)(tileView.getHeight() * (1 + tileView.mTouchScale) / 2), arr)) {
+						if (Ut.Algorithm.isIntersected((int)(tileView.getWidth() * (1 - tileView.getTouchScale()) / 2), (int)(tileView.getHeight() * (1 - tileView.getTouchScale()) / 2), (int)(tileView.getWidth() * (1 + tileView.getTouchScale()) / 2), (int)(tileView.getHeight() * (1 + tileView.getTouchScale()) / 2), arr)) {
 							tileIn = true;
 							tilecnt++;
 
@@ -131,10 +130,8 @@ public class TileOverlay extends TileViewOverlay implements org.pyneo.maps.utils
 						}
 					}
 				}
-
 				radius++;
 			}
-
 			mTileSource.getTileProvider().ResizeCashe(tilecnt);
 			mTileSource.setReloadTileMode(false);
 		}

@@ -144,7 +144,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 			pj.toPixels(mLastGeoPoint, screenCoords);
 			if (mNeedCircleDistance) {
 				mZoomLevel = tileView.getZoomLevel();
-				mTouchScale = tileView.mTouchScale;
+				mTouchScale = tileView.getTouchScale();
 				int dist = SCALE[mUnits][Math.max(0, Math.min(19, mZoomLevel + 1 + (int)(mTouchScale > 1? Math.round(mTouchScale) - 1: -Math.round(1 / mTouchScale) + 1)) + mScaleCorretion)];
 				final GeoPoint center = tileView.getMapCenter();
 				if (mUnits == 1) {
@@ -168,7 +168,7 @@ public class MyLocationOverlay extends TileViewOverlay {
 				&& ((mAccuracy > 0 && mPrefAccuracy == 1) // always on or
 				|| (mPrefAccuracy > 1 && mAccuracy >= mPrefAccuracy)) // larger than
 			) {
-				int pixelRadius = (int)(tileView.mTouchScale * mAccuracy / ((float)METER_IN_PIXEL / (1 << tileView.getZoomLevel())));
+				int pixelRadius = (int)(tileView.getTouchScale() * mAccuracy / ((float)METER_IN_PIXEL / (1 << tileView.getZoomLevel())));
 				c.drawCircle(screenCoords.x, screenCoords.y, pixelRadius, mPaintAccuracyFill);
 				c.drawCircle(screenCoords.x, screenCoords.y, pixelRadius, mPaintAccuracyBorder);
 			}

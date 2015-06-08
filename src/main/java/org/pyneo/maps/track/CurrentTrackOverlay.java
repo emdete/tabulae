@@ -171,7 +171,10 @@ public class CurrentTrackOverlay extends TileViewOverlay implements Constants {
 		c.save();
 		if (screenCoords.x != mBaseCoords.x && screenCoords.y != mBaseCoords.y) {
 			c.translate(screenCoords.x - mBaseCoords.x, screenCoords.y - mBaseCoords.y);
-			c.scale((float)osmv.mTouchScale, (float)osmv.mTouchScale, mBaseCoords.x, mBaseCoords.y);
+		}
+		float scale = (float)(osmv.getTouchScale() / TileView.DEF_SCALE);
+		if (scale != 1.0) {
+			c.scale(scale, scale, mBaseCoords.x, mBaseCoords.y);
 		}
 		c.drawPath(mPath, mPaint);
 		c.restore();

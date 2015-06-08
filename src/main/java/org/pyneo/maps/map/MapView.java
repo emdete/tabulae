@@ -276,7 +276,7 @@ public class MapView extends RelativeLayout implements Constants {
 	}
 
 	public double getTouchScale() {
-		return mTileView.mTouchScale;
+		return mTileView.getTouchScale();
 	}
 
 	@Override

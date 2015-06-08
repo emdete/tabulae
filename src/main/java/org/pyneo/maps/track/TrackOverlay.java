@@ -84,16 +84,13 @@ public class TrackOverlay extends TileViewOverlay {
 		c.save();
 		if (screenCoords.x != mBaseCoords.x && screenCoords.y != mBaseCoords.y) {
 			c.translate(screenCoords.x - mBaseCoords.x, screenCoords.y - mBaseCoords.y);
-			Ut.i("translate/scale" +
-				", screenCoords=" + screenCoords.x + '/' + screenCoords.y +
-				", mBaseCoords=" + mBaseCoords.x + '/' + mBaseCoords.y +
-				", mTouchScale=" + osmv.mTouchScale);
 		}
-		if (osmv.mTouchScale != 1.0) {
-			c.scale((float)osmv.mTouchScale, (float)osmv.mTouchScale, mBaseCoords.x, mBaseCoords.y);
+		float scale = (float)(osmv.getTouchScale() / TileView.DEF_SCALE);
+		if (scale != 1.0) {
+			c.scale(scale, scale, mBaseCoords.x, mBaseCoords.y);
 			Ut.i("translate/scale" +
 				", none" +
-				", mTouchScale=" + osmv.mTouchScale);
+				", mTouchScale=" + osmv.getTouchScale());
 		}
 		for (int i = 0; i < mPaths.length; i++) {
 			if (mPaths[i] != null && mPaints[i] != null) {

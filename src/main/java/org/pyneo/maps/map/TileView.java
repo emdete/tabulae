@@ -34,6 +34,7 @@ import java.util.List;
 public class TileView extends View {
 	private static final int LATITUDE = 0;
 	private static final int LONGITUDE = 1;
+	public static double DEF_SCALE;
 	public final boolean mDrawTileGrid;
 	//private TileMapHandler mTileMapHandler = new TileMapHandler();
 	protected final List<TileViewOverlay> mOverlays = new ArrayList<TileViewOverlay>();
@@ -42,7 +43,12 @@ public class TileView extends View {
 	final Rect mRectDraw = new Rect();
 	public int mLatitudeE6 = 0;
 	public int mLongitudeE6 = 0;
-	public double mTouchScale = 1;
+
+	public double getTouchScale() {
+		return mTouchScale;
+	}
+
+	private double mTouchScale = 1.0;
 	public PoiMenuInfo mPoiMenuInfo = new PoiMenuInfo(-1);
 	private double mOffsetLat;
 	private double mOffsetLon;
@@ -76,6 +82,8 @@ public class TileView extends View {
 
 	public TileView(Context context) {
 		super(context);
+		DEF_SCALE = context.getResources().getDisplayMetrics().density;
+		mTouchScale = DEF_SCALE;
 
 		mPaint.setFilterBitmap(true);
 		mPaint.setAntiAlias(true);
@@ -197,7 +205,7 @@ public class TileView extends View {
 		else
 			mZoom = Math.max(mTileSource.ZOOM_MINLEVEL, Math.min(mTileSource.ZOOM_MAXLEVEL, zoom));
 
-		mTouchScale = 1;
+		mTouchScale = DEF_SCALE;
 
 		if (mMoveListener != null)
 			mMoveListener.onZoomDetected();
@@ -206,9 +214,9 @@ public class TileView extends View {
 	}
 
 	public double getZoomLevelScaled() {
-		if (mTouchScale == 1)
+		if (mTouchScale == DEF_SCALE)
 			return getZoomLevel();
-		else if (mTouchScale > 1)
+		else if (mTouchScale > DEF_SCALE)
 			return getZoomLevel() + Math.round(mTouchScale) - 1;
 		else
 			return getZoomLevel() - Math.round(1 / mTouchScale) + 1;
@@ -303,17 +311,17 @@ public class TileView extends View {
 			if (mTileSource.ZOOM_MAXLEVEL == getZoomLevel() && mTouchScale > 1) {
 //				mPrevScaleFactor = mTouchScale;
 				return;
-			} else if (mTouchScale > 1) {
+			}
+			else if (mTouchScale > 1) {
 //				mPrevScaleFactor = 1.0;
 				zoom = getZoomLevel() + (int)Math.round(mTouchScale) - 1;
-			} else {
+			}
+			else {
 //				mPrevScaleFactor = 1.0;
 				zoom = getZoomLevel() - (int)Math.round(1 / mTouchScale) + 1;
 			}
-
 			setZoomLevel(zoom);
 		}
-
 	}
 
 	private class TouchListener implements OnExGestureListener {
