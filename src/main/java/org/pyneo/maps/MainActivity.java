@@ -465,7 +465,7 @@ public class MainActivity extends Activity implements Constants {
 				String jid = queryIntent.getStringExtra(JID);
 				String name = queryIntent.getStringExtra(NAME);
 				if (name == null || name.length() == 0) {
-					if (jid != null || jid.length() == 0) {
+					if (jid != null && jid.length() > 0) {
 						name = jid.split("@")[0]; // TODO avoid regex
 					}
 					else {
