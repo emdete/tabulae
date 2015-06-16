@@ -1,13 +1,13 @@
-package org.pyneo.maps.utils;
+package org.pyneo.tabulae.database;
 
-import org.pyneo.maps.utils.Ut;
+import android.util.Log;
 import android.text.TextUtils;
 import android.database.Cursor;
 
 /**
 * Helper class to get some compiler validation into database access.
 */
-public class TableE {
+public class TableE implements Constants {
 	static final private String EQU = " = ";
 	static final private String SEP = ", ";
 	static final private String PLH = "@";
@@ -99,19 +99,19 @@ public class TableE {
 
 	public static void test(Cursor cursor ) {
 		for (thing e: thing.values()) {
-			Ut.i("TableE.test(): name=" + e.name() + ", ordinal=" + e.ordinal());
+			if (DEBUG) Log.d(TAG, "TableE.test(): name=" + e.name() + ", ordinal=" + e.ordinal());
 			switch (e) {
 				case id:
 				break;
 			}
 		}
-		Ut.i("TableE.test(): valueOf=" + thing.valueOf("NAME"));
-		Ut.i("TableE.test(): createStatement=" + TableE.createStatement(thing.class, thing.values()));
-		Ut.i("TableE.test(): insertStatement=" + TableE.insertStatement(thing.class, thing.values()));
-		Ut.i("TableE.test(): updateStatement=" + TableE.updateStatement(thing.class, thing.values(), null));
-		Ut.i("TableE.test(): selectStatement=" + TableE.selectStatement(thing.class, thing.values(), null, new Object[]{thing.id}));
-		Ut.i("TableE.test(): deleteStatement=" + TableE.deleteStatement(thing.class, new Object[]{thing.id}));
-		Ut.i("TableE.test(): dropStatement=" + TableE.dropStatement(thing.class, thing.values()));
+		if (DEBUG) Log.d(TAG, "TableE.test(): valueOf=" + thing.valueOf("NAME"));
+		if (DEBUG) Log.d(TAG, "TableE.test(): createStatement=" + TableE.createStatement(thing.class, thing.values()));
+		if (DEBUG) Log.d(TAG, "TableE.test(): insertStatement=" + TableE.insertStatement(thing.class, thing.values()));
+		if (DEBUG) Log.d(TAG, "TableE.test(): updateStatement=" + TableE.updateStatement(thing.class, thing.values(), null));
+		if (DEBUG) Log.d(TAG, "TableE.test(): selectStatement=" + TableE.selectStatement(thing.class, thing.values(), null, new Object[]{thing.id}));
+		if (DEBUG) Log.d(TAG, "TableE.test(): deleteStatement=" + TableE.deleteStatement(thing.class, new Object[]{thing.id}));
+		if (DEBUG) Log.d(TAG, "TableE.test(): dropStatement=" + TableE.dropStatement(thing.class, thing.values()));
 		if (cursor != null) {
 			cursor.getInt(thing.id.ordinal());
 		}

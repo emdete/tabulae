@@ -1,10 +1,10 @@
-package org.pyneo.maps.utils;
+package org.pyneo.tabulae.database;
 
 import android.database.Cursor;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class CursorI implements Iterable<Cursor> {
+public class CursorI implements Iterable<Cursor>, Constants {
 	Cursor cursor;
 	class IteratorI implements Iterator<Cursor> {
 		Cursor cursor;
