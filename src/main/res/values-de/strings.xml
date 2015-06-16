@@ -4,4 +4,10 @@
 	<string name="menu_map_list">Liste der Kartenanbieter</string>
 	<string name="menu_poi_list">Liste der POIs</string>
 	<string name="menu_track_list">Liste der Pfade</string>
+	<string name="title_accuracy">Genauigkeit</string>
+	<string name="title_latitude">Breite</string>
+	<string name="title_longitude">Länge</string>
+	<string name="title_provider">Quelle</string>
+	<string name="title_satellite">Satelliten</string>
+	<string name="title_speed">Geschwindigkeit</string>
 </resources>

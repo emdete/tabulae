@@ -13,9 +13,52 @@ import org.pyneo.tabulae.Tabulae;
 
 public class Dashboard extends Base implements Constants {
 	private boolean visible = true;
+	DashboardItem[] dashboardItems;
+
+	static class DashboardItem {
+		String value_key;
+		TextView textView;
+		DashboardItem(
+			Activity activity,
+			ViewGroup viewGroup,
+			String header,
+			String value_key,
+			String unit
+			)
+		{
+			View item = (View)LayoutInflater.from(activity).inflate(R.layout.dashboard_item, viewGroup, false);
+			((TextView)item.findViewById(R.id.data_header)).setText(header);
+			((TextView)item.findViewById(R.id.data_unit)).setText(unit);
+			viewGroup.addView(item);
+			textView = ((TextView)item.findViewById(R.id.data_value));
+			this.value_key = value_key;
+		}
+		void inform(int event, Bundle extra) {
+			switch (event) {
+				case R.id.location: {
+					if (extra.containsKey(value_key)) {
+						String value = extra.get(value_key).toString();
+						if (value.length() > 8) {
+							value = value.substring(0, 8);
+						}
+						textView.setText(value);
+					}
+					else {
+						textView.setText("---");
+					}
+					break;
+				}
+			}
+		}
+	}
 
 	public void inform(int event, Bundle extra) {
 		if (DEBUG) Log.d(TAG, "Dashboard.inform event=" + event + ", extra=" + extra);
+		if (dashboardItems != null) {
+			for (DashboardItem d: dashboardItems) {
+				d.inform(event, extra);
+			}
+		}
 		switch (event) {
 			case R.id.event_autofollow:
 				getActivity().findViewById(R.id.dashboard_list).setVisibility(visible? View.GONE: View.VISIBLE);
@@ -44,12 +87,13 @@ public class Dashboard extends Base implements Constants {
 		if (DEBUG) Log.d(TAG, "Dashboard.onActivityCreated");
 		ViewGroup viewGroup = (ViewGroup)getActivity().findViewById(R.id.dashboard).findViewById(R.id.dashboard_list);
 		viewGroup.removeAllViews();
-		for (int i=0;i<3;i++) {
-			View item = (View)LayoutInflater.from(getActivity()).inflate(R.layout.dashboard_item, viewGroup, false);
-			((TextView)item.findViewById(R.id.data_header)).setText("Speed");
-			((TextView)item.findViewById(R.id.data_value)).setText("52." + i);
-			((TextView)item.findViewById(R.id.data_unit)).setText("km/h");
-			viewGroup.addView(item);
-		}
+		dashboardItems = new DashboardItem[]{
+			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
+			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
+			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
+			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
+			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),
+			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
+			};
 	}
 }

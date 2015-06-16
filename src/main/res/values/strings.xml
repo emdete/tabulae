@@ -4,4 +4,14 @@
 	<string name="menu_map_list">List of map providers</string>
 	<string name="menu_poi_list">List of POIs</string>
 	<string name="menu_track_list">List of tracks</string>
+	<string name="title_latitude">Latitude</string>
+	<string name="title_longitude">Longitude</string>
+	<string name="unit_degree" translatable="false">°</string>
+	<string name="title_provider">Provider</string>
+	<string name="title_accuracy">Accuracy</string>
+	<string name="title_speed">Speed</string>
+	<string name="unit_empty" translatable="false"/>
+	<string name="unit_m" translatable="false">m</string>
+	<string name="unit_kmh" translatable="false">km/h</string>
+	<string name="title_satellite">Satellites</string>
 </resources>
