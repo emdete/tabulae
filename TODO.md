@@ -32,3 +32,5 @@ ToDos / known Bugs
 - add Instrumentation (android.app)
 
 - stop on start (end recording when reaching beginning of track)
+
+- use vector images only (https://inloop.github.io/svg2android/)
