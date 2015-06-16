@@ -11,10 +11,18 @@ import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
 
 public class Map extends Base implements Constants {
-	private boolean visible = true;
+	private int zoom = 14;
 
 	public void inform(int event, Bundle extra) {
 		if (DEBUG) Log.d(TAG, "Map.inform event=" + event + ", extra=" + extra);
+		switch (event) {
+			case R.id.event_zoom_in: zoom++; break;
+			case R.id.event_zoom_out: zoom--; break;
+			default: return;
+		}
+		extra = new Bundle();
+		extra.putInt("zoom_level", zoom);
+		((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
 	}
 
 	@Override public void onAttach(Activity activity) {

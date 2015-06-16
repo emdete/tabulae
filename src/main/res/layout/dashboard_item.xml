@@ -9,27 +9,39 @@
 	>
 	<TextView
 		android:id="@+id/data_header"
-		android:layout_width="wrap_content"
+		android:layout_width="70sp"
 		android:layout_height="wrap_content"
+		android:textColor="@color/primary"
+		android:textStyle="bold"
 		android:maxLines="1"
+		android:textSize="14sp"
 		tools:text="Speed"
 		/>
-	<TextView
-		android:id="@+id/data_value"
-		android:layout_width="wrap_content"
+	<RelativeLayout
 		android:layout_height="wrap_content"
+		android:layout_width="70sp"
 		android:layout_below="@+id/data_header"
-		android:maxLines="1"
-		tools:text="52.0"
-		/>
-	<TextView
-		android:id="@+id/data_unit"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignBaseline="@+id/data_value"
-		android:layout_toRightOf="@+id/data_value"
-		android:maxLines="1"
-		android:paddingLeft="1sp"
-		tools:text="km/h"
-		/>
+		>
+		<TextView
+			android:id="@+id/data_value"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/textPrimary"
+			android:textSize="13sp"
+			android:maxLines="1"
+			tools:text="52.00000"
+			/>
+		<TextView
+			android:id="@+id/data_unit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignTop="@+id/data_value"
+			android:textColor="@color/textPrimary"
+			android:layout_toRightOf="@+id/data_value"
+			android:textSize="9sp"
+			android:maxLines="1"
+			android:paddingLeft="1sp"
+			tools:text="km/h"
+			/>
+	</RelativeLayout>
 </RelativeLayout>

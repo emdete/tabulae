@@ -35,6 +35,7 @@ public class Dashboard extends Base implements Constants {
 		}
 		void inform(int event, Bundle extra) {
 			switch (event) {
+				case R.id.event_zoom:
 				case R.id.location: {
 					if (extra.containsKey(value_key)) {
 						String value = extra.get(value_key).toString();
@@ -44,7 +45,7 @@ public class Dashboard extends Base implements Constants {
 						textView.setText(value);
 					}
 					else {
-						textView.setText("---");
+						//textView.setText("---");
 					}
 					break;
 				}
@@ -90,10 +91,11 @@ public class Dashboard extends Base implements Constants {
 		dashboardItems = new DashboardItem[]{
 			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
 			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
-			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
+			//new DashboardItem(getActivity(), viewGroup, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
 			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
 			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),
 			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
+			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_zoom), "zoom_level", getString(R.string.unit_zoom)),
 			};
 	}
 }
