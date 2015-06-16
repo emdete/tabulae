@@ -1,6 +1,8 @@
 ToDos / known Bugs
 ------------------
 
+- add https://de.wikipedia.org/wiki/Rettungspunkt
+
 - fix bug displaying multiple stored tracks on different zooms
 
 - fix bug on scale limits of maps

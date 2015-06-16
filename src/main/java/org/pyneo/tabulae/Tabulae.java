@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.pyneo.tabulae.geolocation.Locus;
 import org.pyneo.tabulae.gui.Base;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
@@ -30,6 +31,7 @@ public class Tabulae extends Activity implements Constants {
 		setContentView (R.layout.base);
 		fragments = new Base[]{
 				new Map(),
+				new Locus(),
 				new Track(),
 				new Controller(),
 				new Poi(),

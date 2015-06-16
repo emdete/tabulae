@@ -14,7 +14,7 @@ public class Map extends Base implements Constants {
 	private boolean visible = true;
 
 	public void inform(int event, Bundle extra) {
-		if (DEBUG) { Log.d(TAG, "Map.inform event=" + event); }
+		if (DEBUG) Log.d(TAG, "Map.inform event=" + event + ", extra=" + extra);
 	}
 
 	@Override public void onAttach(Activity activity) {

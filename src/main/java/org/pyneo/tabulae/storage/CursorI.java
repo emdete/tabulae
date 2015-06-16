@@ -1,8 +1,7 @@
-package org.pyneo.tabulae.database;
+package org.pyneo.tabulae.storage;
 
 import android.database.Cursor;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 public class CursorI implements Iterable<Cursor>, Constants {
 	Cursor cursor;

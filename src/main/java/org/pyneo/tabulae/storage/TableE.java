@@ -1,7 +1,6 @@
-package org.pyneo.tabulae.database;
+package org.pyneo.tabulae.storage;
 
 import android.util.Log;
-import android.text.TextUtils;
 import android.database.Cursor;
 
 /**

@@ -15,7 +15,7 @@ public class Dashboard extends Base implements Constants {
 	private boolean visible = true;
 
 	public void inform(int event, Bundle extra) {
-		if (DEBUG) Log.d(TAG, "Dashboard.inform event=" + event);
+		if (DEBUG) Log.d(TAG, "Dashboard.inform event=" + event + ", extra=" + extra);
 		switch (event) {
 			case R.id.event_autofollow:
 				getActivity().findViewById(R.id.dashboard_list).setVisibility(visible? View.GONE: View.VISIBLE);

@@ -3,4 +3,5 @@
 	<item name="event_scale" type="id" />
 	<item name="event_scale_end" type="id" />
 	<item name="event_scroll" type="id" />
+	<item name="location" type="id" />
 </resources>
