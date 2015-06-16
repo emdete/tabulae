@@ -9,7 +9,18 @@ buildscript {
 
 apply plugin: 'android'
 
+repositories {
+	jcenter()
+}
+
 apply from: "../pyneo.org.gradle"
+android {
+	signingConfigs {
+		release {
+			storeFile file("../pyneo.org.keystore")
+		}
+	}
+}
 
 dependencies {
 	compile 'com.android.support:support-v4:18.0.+'
@@ -20,10 +31,10 @@ android {
 	compileSdkVersion 21
 	buildToolsVersion "21.1.2"
 	defaultConfig {
-		minSdkVersion 8
+		minSdkVersion 21
 		targetSdkVersion 22
-		versionCode 10009
-		versionName "1.0.9"
+		versionCode 20000
+		versionName "2.0.0"
 	}
 	lintOptions {
 		abortOnError false

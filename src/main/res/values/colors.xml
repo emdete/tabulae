@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="primary" type="color">#ffee9900</color>
-	<color name="secondary" type="color">#ff999999</color>
-	<color name="third" type="color">#ff555555</color>
+	<!-- material theme colors: -->
+	<color name="primaryDark" type="color">#000000</color>
+	<color name="primaryMdt" type="color">#ee9900</color>
+	<color name="primaryFgau" type="color">#009988</color>
+	<color name="primary" type="color">@color/primaryFgau</color>
+	<color name="textPrimary" type="color">#ffffff</color>
+	<color name="accent" type="color">#555555</color>
+	<color name="windowBackground" type="color">#bbbbbb</color>
+	<color name="navigationBar" type="color">#000000</color>
+	<!-- -->
 	<color name="enlighten" type="color">#77ffffff</color>
 	<color name="darken" type="color">#77000000</color>
-	<color name="chart_border" type="color">#ffffffff</color>
-	<color name="chart_graph_0" type="color">#ffff5500</color>
-	<color name="chart_graph_1" type="color">#ff00ff00</color>
-	<color name="download_area" type="color">#ff333333</color>
-	<color name="line_to_gps" type="color">#ffff3333</color>
+	<!-- types of pois and tracks(-parts): -->
+	<color name="black" type="color">#000000</color>
+	<color name="blue" type="color">#0000dd</color>
+	<color name="green" type="color">#00ee00</color>
+	<color name="red" type="color">#ff0000</color>
+	<color name="white" type="color">#ffffff</color>
+	<color name="yellow" type="color">#ffdd00</color>
 </resources>

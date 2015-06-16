@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	>
+	<ImageButton
+		android:id="@+id/event_attribute_red"
+		android:src="@drawable/attribute_red"
+		style="@style/buttonstyle"
+		/>
+	<ImageButton
+		android:id="@+id/event_attribute_yellow"
+		android:src="@drawable/attribute_yellow"
+		style="@style/buttonstyle"
+		/>
+	<ImageButton
+		android:id="@+id/event_attribute_green"
+		style="@style/buttonstyle"
+		android:src="@drawable/attribute_green"
+		/>
+	<ImageButton
+		android:id="@+id/event_attribute_blue"
+		style="@style/buttonstyle"
+		android:src="@drawable/attribute_blue"
+		/>
+	<ImageButton
+		android:id="@+id/event_attribute_white"
+		style="@style/buttonstyle"
+		android:src="@drawable/attribute_white"
+		android:visibility="visible"
+		/>
+</merge>

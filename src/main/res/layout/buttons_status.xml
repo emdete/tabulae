@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	>
+	<ImageButton
+		android:id="@+id/event_compass"
+		style="@style/buttonstyle"
+		android:src="@drawable/ic_compass"
+		/>
+	<ImageButton
+		android:id="@+id/event_dummy1"
+		style="@style/buttonstyle"
+		android:visibility="invisible"
+		android:src="@drawable/ic_dummy"
+		/>
+	<ImageButton
+		android:id="@+id/event_dummy2"
+		style="@style/buttonstyle"
+		android:visibility="invisible"
+		android:src="@drawable/ic_dummy"
+		/>
+	<ImageButton
+		android:id="@+id/event_dummy3"
+		style="@style/buttonstyle"
+		android:visibility="invisible"
+		android:src="@drawable/ic_dummy"
+		/>
+	<ImageButton
+		android:id="@+id/event_dummy4"
+		style="@style/buttonstyle"
+		android:visibility="invisible"
+		android:src="@drawable/ic_dummy"
+		/>
+</merge>

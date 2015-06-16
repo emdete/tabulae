@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="org.pyneo.maps"
+	android:installLocation="auto"
+	android:sharedUserId="@string/app_user_id"
+	android:sharedUserLabel="@string/app_user_label"
+	>
+	<supports-screens
+		android:anyDensity="true"
+		android:largeScreens="true"
+		android:normalScreens="true"
+		android:xlargeScreens="true"
+		android:resizeable="true"
+		android:smallScreens="true" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-feature android:name="android.hardware.location" android:required="false" />
+	<uses-feature android:name="android.hardware.location.gps" android:required="false" />
+	<uses-feature android:name="android.hardware.location.network" android:required="false" />
+	<application
+		android:name=".MapApplication"
+		android:allowClearUserData="false"
+		android:icon="@drawable/ic_launcher"
+		android:theme="@style/TabulaeTheme"
+		android:label="@string/app_name" >
+		<activity
+			android:name=".MainActivity"
+			android:label="@string/app_name"
+			android:launchMode="singleTop" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.SEARCH" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+			<meta-data
+				android:name="android.app.searchable"
+				android:resource="@xml/searchable" />
+			<intent-filter>
+				<action android:name=".action.SHOW_POINTS" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="geo" />
+			</intent-filter>
+			<!-- conversations: -->
+			<intent-filter>
+				<action android:name="eu.siacs.conversations.location.request" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="eu.siacs.conversations.location.show" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".MainPreferences" />
+		<activity android:name=".poi.PoiActivity" />
+		<activity android:name=".poi.PoiListActivity" />
+		<activity android:name=".track.TrackListActivity" />
+		<activity android:name=".poi.PoiCategoryActivity" />
+		<activity android:name=".poi.PoiCategoryListActivity" />
+		<activity android:name=".poi.PoiIconSetActivity" />
+		<activity android:name=".poi.ImportPoiActivity" />
+		<activity android:name=".track.ImportTrackActivity" />
+		<activity android:name=".track.TrackActivity" />
+		<activity android:name=".track.TrackStatActivity" />
+		<activity android:name="org.openintents.filemanager.FileManagerActivity" />
+		<activity android:name=".downloader.AreaSelectorActivity" android:launchMode="singleInstance" />
+		<activity android:name=".downloader.DownloaderActivity" />
+		<activity android:name=".preference.MixedMapsPreference" />
+		<activity android:name=".preference.UserMapsPrefActivity" />
+		<activity android:name=".preference.PredefMapsPrefActivity" />
+		<activity android:name=".preference.CustomMapsPrefActivity" />
+		<activity android:name=".preference.PairMapsPrefActivity" />
+		<activity android:name=".downloader.FileDownloadListActivity" />
+		<activity android:name=".poi.GeoDataActivity" android:theme="@style/Theme.AppCompat.Light" />
+		<service
+			android:name=".track.TrackWriterService"
+			android:icon="@drawable/ic_service"
+			android:process=":track"
+			>
+			<intent-filter>
+				<action android:name=".track" />
+				<action android:name=".track.IRemoteService" />
+			</intent-filter>
+		</service>
+		<service
+			android:name=".downloader.MapDownloaderService"
+			android:icon="@drawable/ic_service"
+			android:process=":mapdownloader"
+			>
+			<intent-filter>
+				<action android:name=".downloader" />
+				<action android:name=".downloader.IRemoteService" />
+			</intent-filter>
+		</service>
+		<provider android:name=".utils.SearchSuggestionsProvider" android:authorities="org.pyneo.maps.SuggestionProvider" />
+	</application>
+</manifest>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.pyneo.maps.dashboard.IndicatorView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/secondary"
+	android:id="@+id/RelativeLayout1"
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent"
+	android:paddingBottom="3sp"
+	android:paddingLeft="3sp"
+	android:paddingRight="3sp"
+	android:paddingTop="3sp"
+	>
+	<TextView
+		android:id="@+id/data_header"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:maxLines="1"
+		android:textAppearance="@style/data_header"
+		/>
+	<TextView
+		android:id="@+id/data_value"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/data_header"
+		android:maxLines="1"
+		android:textAppearance="@style/data_value"
+		/>
+	<TextView
+		android:id="@+id/data_unit"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@+id/data_value"
+		android:layout_toRightOf="@+id/data_value"
+		android:maxLines="1"
+		android:paddingLeft="1sp"
+		android:textAppearance="@style/data_unit"
+		/>
+</org.pyneo.maps.dashboard.IndicatorView>

@@ -1,54 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-	<style name="stat_title">
-		<item name="android:textSize">12sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">@android:color/white</item>
+<resources>
+	<style name="buttonstyle">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:scaleType">centerInside</item>
+		<item name="android:background">@null</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:visibility">visible</item>
 	</style>
-	<style name="stat_value">
-		<item name="android:textSize">16sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">@android:color/white</item>
-	</style>
-	<style name="stat_unit">
-		<item name="android:textSize">11sp</item>
-		<item name="android:textColor">@android:color/white</item>
-	</style>
-	<style name="title_red">
-		<item name="android:textSize">18sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">@color/primary</item>
-	</style>
-	<style name="title_white_2">
-		<item name="android:textSize">13sp</item>
-		<item name="android:textColor">@android:color/white</item>
-	</style>
-	<style name="data_header">
-		<item name="android:textSize">10sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">#ff555555</item>
-	</style>
-	<style name="data_value">
-		<item name="android:textSize">20sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">@android:color/white</item>
-	</style>
-	<style name="data_unit">
-		<item name="android:textSize">10sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">@android:color/white</item>
-	</style>
-	<style name="descr_gray">
-		<item name="android:textSize">14sp</item>
-		<item name="android:textColor">#ff555555</item>
-	</style>
-	<style name="label_white">
-		<item name="android:textSize">12sp</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">@android:color/white</item>
-		<item name="android:paddingTop">1sp</item>
-		<item name="android:paddingBottom">2sp</item>
-		<item name="android:paddingLeft">4sp</item>
-		<item name="android:paddingRight">4sp</item>
+	<style name="Theme" parent="@android:style/Theme.Material">
+		<item name="android:colorPrimaryDark">@color/primaryDark</item>
+		<item name="android:colorPrimary">@color/primary</item>
+		<item name="android:textColorPrimary">@color/textPrimary</item>
+		<item name="android:colorAccent">@color/accent</item>
+		<item name="android:windowBackground">@color/windowBackground</item>
+		<item name="android:navigationBarColor">@color/navigationBar</item>
 	</style>
 </resources>
