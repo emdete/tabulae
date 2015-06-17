@@ -5,4 +5,5 @@
 	<item name="event_scroll" type="id" />
 	<item name="location" type="id" />
 	<item name="event_zoom" type="id"/>
+	<item name="scroll" type="id"/>
 </resources>

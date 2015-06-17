@@ -28,11 +28,36 @@ public class Controller extends Base implements Constants {
 			optionsOut = false;
 		}
 		switch (event) {
-			case R.id.event_attribute_red: ((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_red); break;
-			case R.id.event_attribute_yellow: ((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_yellow); break;
-			case R.id.event_attribute_green: ((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_green); break;
-			case R.id.event_attribute_blue: ((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_blue); break;
-			case R.id.event_attribute_white: ((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_white); break;
+			case R.id.event_attribute_red: {
+				((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_red);
+			}
+			break;
+			case R.id.event_attribute_yellow: {
+				((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_yellow);
+			}
+			break;
+			case R.id.event_attribute_green: {
+				((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_green);
+			}
+			break;
+			case R.id.event_attribute_blue: {
+				((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_blue);
+			}
+			break;
+			case R.id.event_attribute_white: {
+				((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_white);
+			}
+			break;
+			case R.id.scroll: {
+				Log.d(TAG, "set view VISIBLE");
+				getActivity().findViewById(R.id.event_autofollow).setVisibility(View.VISIBLE);
+			}
+			break;
+			case R.id.event_autofollow: {
+				Log.d(TAG, "set view INVISIBLE");
+				getActivity().findViewById(R.id.event_autofollow).setVisibility(View.INVISIBLE);
+			}
+			break;
 		}
 	}
 
@@ -61,6 +86,7 @@ public class Controller extends Base implements Constants {
 							return;
 						}
 					}
+					break;
 				}
 				((Tabulae) getActivity()).inform(e, null);
 			}

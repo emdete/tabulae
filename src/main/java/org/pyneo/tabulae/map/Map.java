@@ -1,5 +1,7 @@
 package org.pyneo.tabulae.map;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.events.MapListener;
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.events.ScrollEvent;
@@ -64,12 +67,20 @@ public class Map extends Base implements Constants {
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Map.inform event=" + event + ", extra=" + extra);
 		switch (event) {
-			case R.id.event_zoom_in: {
-				zoom++;
+			case R.id.event_zoom: {
+				mapView.getController().setZoom(zoom);
 			}
 			break;
-			case R.id.event_zoom_out: {
-				zoom--;
+			case R.id.event_zoom_in: if (mapView.canZoomIn()) {
+				extra = new Bundle();
+				extra.putInt("zoom_level", ++zoom);
+				((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
+			}
+			break;
+			case R.id.event_zoom_out: if (mapView.canZoomOut()) {
+				extra = new Bundle();
+				extra.putInt("zoom_level", --zoom);
+				((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
 			}
 			break;
 			case R.id.location: if (follow) {
@@ -83,21 +94,18 @@ public class Map extends Base implements Constants {
 				if (DEBUG) Log.d(TAG, "Map.inform current=" + current);
 				myLocationConsumer.onLocationChanged(current, iMyLocationProvider);
 			}
-			return;
+			break;
+			case R.id.scroll: {
+				follow = false;
+			}
+			break;
 			case R.id.event_autofollow:
 				follow = !follow;
 				if (follow) {
 					mapView.getController().setCenter(new GeoPoint(latitude, longitude));
 				}
-			return;
-			default: return;
-			// mapView.scrollTo();
+			break;
 		}
-		mapView.getController().setZoom(zoom);
-		zoom = mapView.getController().setZoom(zoom);
-		extra = new Bundle();
-		extra.putInt("zoom_level", zoom);
-		((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
 	}
 
 	@Override public void onAttach(Activity activity) {
@@ -123,10 +131,12 @@ public class Map extends Base implements Constants {
 		mapView.setBuiltInZoomControls(false);
 		mapView.setMultiTouchControls(true);
 		mapView.getController().setZoom(zoom);
+		//zoom = mapView.getController().getZoom();
 		mapView.getController().setCenter(new GeoPoint(latitude, longitude));
 		mapView.setMapListener(new MapListener() {
 			@Override
 			public boolean onScroll(ScrollEvent event) {
+				((Tabulae)getActivity()).inform(R.id.scroll, null);
 				return true;
 			}
 			@Override
@@ -141,10 +151,8 @@ public class Map extends Base implements Constants {
 		if (TileSourceFactory.containsTileSource(ts)) {
 			mapView.setTileSource(TileSourceFactory.getTileSource(ts));
 		}
-		if (false) {
-			mapView.setTilesScaledToDpi(true);
-		}
-		else {
+		if (true) { // dpi / sp scaling:
+			//mapView.setTilesScaledToDpi(true);
 			final float density = getActivity().getResources().getDisplayMetrics().density;
 			final float user_def = 1.3f; // TODO: where to get sp/dp?
 			TileSystem.setTileSize((int) (mapView.getTileProvider().getTileSource().getTileSizePixels() * density * user_def));
@@ -154,10 +162,16 @@ public class Map extends Base implements Constants {
 			mRotationGestureOverlay.setEnabled(false);
 			mapView.getOverlays().add(mRotationGestureOverlay);
 		}
-		if (true) { // location
-			MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(getActivity(), iMyLocationProvider, mapView);
+		if (true) { // mylocation
+			ResourceProxyImpl rp = new ResourceProxyImpl(getActivity());
+			MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(iMyLocationProvider, mapView, rp);
+			Bitmap bm = rp.getBitmap(ResourceProxy.bitmap.person);
+			mLocationOverlay.setPersonHotspot(bm.getWidth()/2, bm.getHeight()/2);
+			mLocationOverlay.setDrawAccuracyEnabled(true);
+			mLocationOverlay.disableFollowLocation();
 			mapView.getOverlays().add(mLocationOverlay);
 			mLocationOverlay.enableMyLocation();
 		}
 	}
 }
+
