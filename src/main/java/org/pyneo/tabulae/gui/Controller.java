@@ -22,7 +22,7 @@ public class Controller extends Base implements Constants {
 	private boolean optionsOut;
 
 	public void inform(int event, Bundle extra) {
-		if (DEBUG) Log.d(TAG, "Controller.inform event=" + event + ", extra=" + extra);
+		//if (DEBUG) Log.d(TAG, "Controller.inform event=" + event + ", extra=" + extra);
 		if (optionsOut) {
 			getActivity().findViewById(R.id.attributes).startAnimation(popInAnimation);
 			optionsOut = false;

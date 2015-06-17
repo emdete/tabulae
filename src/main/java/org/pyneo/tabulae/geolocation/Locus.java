@@ -51,13 +51,34 @@ public class Locus extends Base implements Constants, LocationListener {
 	}
 
 	public void inform(int event, Bundle extra) {
-		if (DEBUG) Log.d(TAG, "Locus.inform event=" + event + ", extra=" + extra);
+		//if (DEBUG) Log.d(TAG, "Locus.inform event=" + event + ", extra=" + extra);
 	}
 
-	static Bundle toBundle(Location location) {
+	public static Location toLocation(Bundle location) {
+		Location ret = null;
+		if (location != null) {
+			ret = new Location(location.getString("provider"));
+			if (location.containsKey("accuracy"))
+				ret.setAccuracy((float)location.getDouble("accuracy"));
+			if (location.containsKey("altitude"))
+				ret.setAltitude(location.getDouble("altitude"));
+			if (location.containsKey("bearing"))
+				ret.setBearing((float)location.getDouble("bearing"));
+			ret.setElapsedRealtimeNanos(location.getLong("elapsed"));
+			ret.setLatitude(location.getDouble("latitude"));
+			ret.setLongitude(location.getDouble("longitude"));
+			if (location.containsKey("speed"))
+				ret.setSpeed((float)location.getDouble("speed"));
+			ret.setTime(location.getLong("time"));
+		}
+		return ret;
+	}
+
+	public static Bundle toBundle(Location location) {
 		Bundle ret = null;
 		if (location != null) {
 			ret = new Bundle(location.getExtras());
+			ret.putString("provider", location.getProvider());
 			if (location.hasAccuracy() && location.getAccuracy() != 0)
 				ret.putDouble("accuracy", location.getAccuracy());
 			if (location.hasAltitude())
@@ -67,7 +88,6 @@ public class Locus extends Base implements Constants, LocationListener {
 			ret.putLong("elapsed", location.getElapsedRealtimeNanos());
 			ret.putDouble("latitude", location.getLatitude());
 			ret.putDouble("longitude", location.getLongitude());
-			ret.putString("provider", location.getProvider());
 			if (location.hasSpeed())
 				ret.putDouble("speed", location.getSpeed());
 			ret.putLong("time", location.getTime());
