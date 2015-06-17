@@ -58,7 +58,7 @@ public class Locus extends Base implements Constants, LocationListener {
 		Bundle ret = null;
 		if (location != null) {
 			ret = new Bundle(location.getExtras());
-			if (location.hasAccuracy())
+			if (location.hasAccuracy() && location.getAccuracy() != 0)
 				ret.putDouble("accuracy", location.getAccuracy());
 			if (location.hasAltitude())
 				ret.putDouble("altitude", location.getAltitude());

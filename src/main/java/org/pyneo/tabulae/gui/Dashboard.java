@@ -16,11 +16,14 @@ public class Dashboard extends Base implements Constants {
 	DashboardItem[] dashboardItems;
 
 	static class DashboardItem {
+		int event;
 		String value_key;
 		TextView textView;
+
 		DashboardItem(
 			Activity activity,
 			ViewGroup viewGroup,
+			int event,
 			String header,
 			String value_key,
 			String unit
@@ -32,23 +35,16 @@ public class Dashboard extends Base implements Constants {
 			viewGroup.addView(item);
 			textView = ((TextView)item.findViewById(R.id.data_value));
 			this.value_key = value_key;
+			this.event = event;
+			textView.setText("---");
 		}
 		void inform(int event, Bundle extra) {
-			switch (event) {
-				case R.id.event_zoom:
-				case R.id.location: {
-					if (extra.containsKey(value_key)) {
-						String value = extra.get(value_key).toString();
-						if (value.length() > 8) {
-							value = value.substring(0, 8);
-						}
-						textView.setText(value);
-					}
-					else {
-						//textView.setText("---");
-					}
-					break;
+			if (event == this.event && extra.containsKey(value_key)) {
+				String value = extra.get(value_key).toString();
+				if (value.length() > 8) {
+					value = value.substring(0, 8);
 				}
+				textView.setText(value);
 			}
 		}
 	}
@@ -61,7 +57,7 @@ public class Dashboard extends Base implements Constants {
 			}
 		}
 		switch (event) {
-			case R.id.event_autofollow:
+			case R.id.event_dashboard:
 				getActivity().findViewById(R.id.dashboard_list).setVisibility(visible? View.GONE: View.VISIBLE);
 				visible = !visible;
 			break;
@@ -89,13 +85,13 @@ public class Dashboard extends Base implements Constants {
 		ViewGroup viewGroup = (ViewGroup)getActivity().findViewById(R.id.dashboard).findViewById(R.id.dashboard_list);
 		viewGroup.removeAllViews();
 		dashboardItems = new DashboardItem[]{
-			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
-			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
-			//new DashboardItem(getActivity(), viewGroup, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
-			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
-			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),
-			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
-			new DashboardItem(getActivity(), viewGroup, getString(R.string.title_zoom), "zoom_level", getString(R.string.unit_zoom)),
+			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
+			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
+			//new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
+			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
+			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),
+			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
+			new DashboardItem(getActivity(), viewGroup, R.id.event_zoom, getString(R.string.title_zoom), "zoom_level", getString(R.string.unit_zoom)),
 			};
 	}
 }

@@ -25,4 +25,8 @@
 		android:showAsAction="ifRoom"
 		android:title="@string/menu_pre_load"
 		/>
+	<item
+		android:id="@+id/event_dashboard"
+		android:title="@string/menu_dashboard"
+		/>
 </menu>

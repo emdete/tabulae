@@ -79,44 +79,6 @@ public class Controller extends Base implements Constants {
 		}) {
 			view.findViewById(resourceId).setOnClickListener(clickListener);
 		}
-		final GestureDetector moveD = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
-			private Bundle bundle = new Bundle();
-			@Override public boolean onFling(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-				//Log.d(TAG, "onFling: " + e1 + e2);
-				return true;
-			}
-			@Override public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-				bundle.putDouble("px", distanceX);
-				bundle.putDouble("py", distanceY);
-				inform(R.id.event_scroll, bundle);
-				return true;
-			}
-		});
-		final ScaleGestureDetector scaleD = new ScaleGestureDetector(getActivity(), new ScaleGestureDetector.SimpleOnScaleGestureListener(){
-			private double scale = 1.0;
-			private Bundle bundle = new Bundle();
-			@Override public boolean onScale(ScaleGestureDetector detector) {
-				scale *= detector.getScaleFactor();
-				inform(R.id.event_scale, bundle);
-				return true;
-			}
-			@Override public void onScaleEnd(ScaleGestureDetector detector) {
-				scale *= detector.getScaleFactor();
-				bundle.putDouble("scale", scale);
-				inform(R.id.event_scale_end, bundle);
-				scale = 1.0;
-			}
-		});
-		scaleD.setQuickScaleEnabled(true);
-		view.findViewById(R.id.drag).setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (optionsOut) return false;
-				moveD.onTouchEvent(event);
-				scaleD.onTouchEvent(event);
-				return true;
-			}
-		});
 		return view;
 	}
 
