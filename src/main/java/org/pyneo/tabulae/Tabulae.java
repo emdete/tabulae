@@ -12,7 +12,7 @@ import org.pyneo.tabulae.geolocation.Locus;
 import org.pyneo.tabulae.gui.Base;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
-import org.pyneo.tabulae.gui.Map;
+import org.pyneo.tabulae.map.Map;
 import org.pyneo.tabulae.gui.Poi;
 import org.pyneo.tabulae.gui.Track;
 

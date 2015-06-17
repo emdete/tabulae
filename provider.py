@@ -32,26 +32,11 @@ doc = dict(
 maps = (
 	dict(
 		cat="BING",
-		name="Satellite",
-		id="bingaero",
-		descr="http://www.bing.com",
-		baseurl="http://ecn.t1.tiles.virtualearth.net/tiles/a",
-		image_filenameending=".jpeg?g=1134&amp;n=z",
-		zoom_minlevel=1,
-		zoom_maxlevel=19,
-		maptile_sizepx=256,
-		url_builder_type=6,
-		tile_source_type=0,
-		projection=1,
-		yandex_traffic_on=0,
-		),
-	dict(
-		cat="BING",
 		name="Hybrid",
 		id="bingbi",
 		descr="http://www.bing.com",
 		baseurl="http://ecn.dynamic.t1.tiles.virtualearth.net/comp/ch/",
-		image_filenameending="?mkt=en-us&amp;it=A,G,L&amp;shading=hill&amp;n=z&amp;cb=1",
+		image_filenameending="?mkt=en-us&it=A,G,L&shading=hill&n=z&cb=1",
 		zoom_minlevel=1,
 		zoom_maxlevel=19,
 		maptile_sizepx=256,
@@ -66,7 +51,7 @@ maps = (
 		id="bingmap",
 		descr="http://www.bing.com",
 		baseurl="http://ecn.dynamic.t3.tiles.virtualearth.net/comp/ch/",
-		image_filenameending="?mkt=en-us&amp;it=G,VE,BX,L,LA&amp;shading=hill&amp;n=z&amp;cb=1",
+		image_filenameending="?mkt=en-us&it=G,VE,BX,L,LA&shading=hill&n=z&cb=1",
 		zoom_minlevel=1,
 		zoom_maxlevel=19,
 		maptile_sizepx=256,
@@ -141,7 +126,7 @@ maps = (
 		name="Land",
 		id="googleland",
 		descr="http://maps.google.com",
-		baseurl="http://mt.google.com/vt/lyrs=t@131,r@218000000&amp;",
+		baseurl="http://mt.google.com/vt/lyrs=t@131,r@218000000&",
 		image_filenameending=".png",
 		zoom_minlevel=0,
 		zoom_maxlevel=15,
@@ -157,7 +142,7 @@ maps = (
 		name="Map",
 		id="googlemap",
 		descr="http://maps.google.com",
-		baseurl="http://mts0.google.com/vt/lyrs=m@218000000&amp;",
+		baseurl="http://mts0.google.com/vt/lyrs=m@218000000&",
 		image_filenameending=".png",
 		zoom_minlevel=0,
 		zoom_maxlevel=19,
@@ -174,7 +159,7 @@ maps = (
 		layer="true",
 		id="googlenames",
 		descr="http://maps.google.com",
-		baseurl="http://mts1.google.com/vt/lyrs=h@195026035&amp;",
+		baseurl="http://mts1.google.com/vt/lyrs=h@195026035&",
 		image_filenameending=".png",
 		zoom_minlevel=0,
 		zoom_maxlevel=19,
@@ -220,7 +205,7 @@ maps = (
 		id="openspace",
 		name="Map",
 		descr="Covering the whole of Great Britain http://www.ordnancesurvey.co.uk",
-		baseurl="http://openspace.ordnancesurvey.co.uk/osmapapi/ts?FORMAT=image%2Fpng&amp;KEY=6694613F8B469C97E0405F0AF160360A&amp;URL=http%3A%2F%2Fopenspace.ordnancesurvey.co.uk%2Fopenspace%2Fsupport.html&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetMap&amp;STYLES=&amp;EXCEPTIONS=application%2Fvnd.ogc.se_inimage&amp;",
+		baseurl="http://openspace.ordnancesurvey.co.uk/osmapapi/ts?FORMAT=image%2Fpng&KEY=6694613F8B469C97E0405F0AF160360A&URL=http%3A%2F%2Fopenspace.ordnancesurvey.co.uk%2Fopenspace%2Fsupport.html&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&",
 		image_filenameending="",
 		zoom_minlevel=7,
 		zoom_maxlevel=17,
@@ -358,7 +343,7 @@ maps = (
 		id="cykloatlas",
 		descr="http://www.cykloserver.cz/cykloatlas/",
 		baseurl="http://services.tmapserver.cz/stiles/gm/shc/",
-		image_filenameending=".png?m=s&amp;t=1342300315&amp;k=5we6HahGpebRedkR5NxReQ",
+		image_filenameending=".png?m=s&t=1342300315&k=5we6HahGpebRedkR5NxReQ",
 		zoom_minlevel=7,
 		zoom_maxlevel=15,
 		maptile_sizepx=256,
@@ -389,7 +374,7 @@ maps = (
 		id="mapabc",
 		isfake="true",
 		descr="",
-		baseurl="http://emap0.is.autonavi.com/appmaptile?&amp;",
+		baseurl="http://emap0.is.autonavi.com/appmaptile?&",
 		image_filenameending=".gif",
 		zoom_minlevel=3,
 		zoom_maxlevel=17,
@@ -409,21 +394,6 @@ maps = (
 		image_filenameending=".jpg",
 		zoom_minlevel=9,
 		zoom_maxlevel=15,
-		maptile_sizepx=256,
-		url_builder_type=0,
-		tile_source_type=0,
-		projection=1,
-		yandex_traffic_on=0,
-		),
-	dict(
-		cat="Outdooractive",
-		name="Map",
-		id="outdooractive",
-		descr="",
-		baseurl="http://s3.outdooractive.com/portal/map/",
-		image_filenameending=".png",
-		zoom_minlevel=0,
-		zoom_maxlevel=18,
 		maptile_sizepx=256,
 		url_builder_type=0,
 		tile_source_type=0,
@@ -509,7 +479,7 @@ maps = (
 		),
 	dict(
 		cat="OSM",
-		name="ASTER GDEM &amp; SRTM Hillshade",
+		name="ASTER GDEM & SRTM Hillshade",
 		layer="true",
 		id="osmhill",
 		descr="http://openmapsurfer.uni-hd.de",
@@ -652,7 +622,7 @@ maps = (
 		),
 	dict(
 		cat="OSM",
-		name="Hike &amp; Bike Map",
+		name="Hike & Bike Map",
 		id="osmhikin",
 		descr="OpenStreetMap Hiking (Germany only) http://hikebikemap.de/",
 		baseurl="http://openpistemap.org/tiles/contours/",
@@ -854,7 +824,7 @@ maps = (
 		name="Maps 2",
 		id="smm2",
 		descr="http://www.marshruty.ru/",
-		baseurl="http://maps.marshruty.ru/ml.ashx?al=1&amp;i=1&amp;x=",
+		baseurl="http://maps.marshruty.ru/ml.ashx?al=1&i=1&x=",
 		image_filenameending="",
 		zoom_minlevel=8,
 		zoom_maxlevel=13,
@@ -881,10 +851,10 @@ maps = (
 		),
 	dict(
 		cat="Statkart Norway",
-		name="Sj&#248;kart (Norway)",
+		name="Sjøkart (Norway)",
 		id="statkartsjo",
 		descr="Sea map of Norway",
-		baseurl="http://opencache.statkart.no/gatekeeper/gk/gk.open_ve?layers=sjo_hovedkart2&amp;format=image/png&amp;quadkey=",
+		baseurl="http://opencache.statkart.no/gatekeeper/gk/gk.open_ve?layers=sjo_hovedkart2&format=image/png&quadkey=",
 		image_filenameending="",
 		zoom_minlevel=0,
 		zoom_maxlevel=19,
@@ -899,7 +869,7 @@ maps = (
 		name="Topo2 (Norway)",
 		id="statkarttopo2",
 		descr="Topographic map of Norway",
-		baseurl="http://opencache.statkart.no/gatekeeper/gk/gk.open_ve?layers=topo2&amp;format=image/png&amp;quadkey=",
+		baseurl="http://opencache.statkart.no/gatekeeper/gk/gk.open_ve?layers=topo2&format=image/png&quadkey=",
 		image_filenameending="",
 		zoom_minlevel=0,
 		zoom_maxlevel=19,
@@ -1231,8 +1201,8 @@ maps = (
 		layer="true",
 		id="yaharhyb",
 		descr="http://harita.yandex.com.tr",
-		baseurl="http://vec01.maps.yandex.net/tiles?l=skl&amp;v=2.29.0&amp;x=",
-		image_filenameending="&amp;lang=tr_TR",
+		baseurl="http://vec01.maps.yandex.net/tiles?l=skl&v=2.29.0&x=",
+		image_filenameending="&lang=tr_TR",
 		zoom_minlevel=0,
 		zoom_maxlevel=17,
 		maptile_sizepx=256,
@@ -1246,8 +1216,8 @@ maps = (
 		name="Haritalar.Map",
 		id="yaharmap",
 		descr="http://harita.yandex.com.tr",
-		baseurl="http://vec.maps.yandex.net/tiles?l=map&amp;v=2.29.0&amp;x=",
-		image_filenameending="&amp;lang=tr_TR",
+		baseurl="http://vec.maps.yandex.net/tiles?l=map&v=2.29.0&x=",
+		image_filenameending="&lang=tr_TR",
 		zoom_minlevel=0,
 		zoom_maxlevel=17,
 		maptile_sizepx=256,
@@ -1261,8 +1231,8 @@ maps = (
 		name="Haritalar.Sattelite",
 		id="yaharsat",
 		descr="http://harita.yandex.com.tr",
-		baseurl="http://sat02.maps.yandex.net/tiles?l=sat&amp;v=1.35.0&amp;x=",
-		image_filenameending="&amp;lang=tr_TR",
+		baseurl="http://sat02.maps.yandex.net/tiles?l=sat&v=1.35.0&x=",
+		image_filenameending="&lang=tr_TR",
 		zoom_minlevel=0,
 		zoom_maxlevel=17,
 		maptile_sizepx=256,
@@ -1277,7 +1247,7 @@ maps = (
 		layer="true",
 		id="yandexhyb",
 		descr="http://maps.yandex.ru",
-		baseurl="http://vec01.maps.yandex.net/tiles?l=skl&amp;v=2.31.1&amp;x=",
+		baseurl="http://vec01.maps.yandex.net/tiles?l=skl&v=2.31.1&x=",
 		image_filenameending="",
 		zoom_minlevel=0,
 		zoom_maxlevel=17,
@@ -1292,7 +1262,7 @@ maps = (
 		name="Map",
 		id="yandexmap",
 		descr="http://maps.yandex.ru",
-		baseurl="http://vec.maps.yandex.net/tiles?l=map&amp;v=2.45.0&amp;x=",
+		baseurl="http://vec.maps.yandex.net/tiles?l=map&v=2.45.0&x=",
 		image_filenameending="",
 		zoom_minlevel=0,
 		zoom_maxlevel=17,
@@ -1307,7 +1277,7 @@ maps = (
 		name="People's",
 		id="yandexpeople",
 		descr="http://maps.yandex.ru",
-		baseurl="http://03.pvec.maps.yandex.net/?l=pmap&amp;x=",
+		baseurl="http://03.pvec.maps.yandex.net/?l=pmap&x=",
 		image_filenameending="",
 		zoom_minlevel=0,
 		zoom_maxlevel=19,
@@ -1322,7 +1292,7 @@ maps = (
 		name="Sattelite",
 		id="yandexsat",
 		descr="http://maps.yandex.ru",
-		baseurl="http://sat01.maps.yandex.net/tiles?l=sat&amp;v=3.102.0&amp;x=",
+		baseurl="http://sat01.maps.yandex.net/tiles?l=sat&v=3.102.0&x=",
 		image_filenameending="",
 		zoom_minlevel=0,
 		zoom_maxlevel=19,
@@ -1338,7 +1308,7 @@ maps = (
 		id="yandexmaptraffic",
 		cache="yandexmap",
 		descr="http://maps.yandex.ru",
-		baseurl="http://vec.maps.yandex.net/tiles?l=map&amp;v=2.45.0&amp;x=",
+		baseurl="http://vec.maps.yandex.net/tiles?l=map&v=2.45.0&x=",
 		image_filenameending="",
 		zoom_minlevel=0,
 		zoom_maxlevel=17,
@@ -1380,49 +1350,50 @@ maps = (
 		projection=1,
 		yandex_traffic_on=0,
 		),
+	### rework:
+	dict(
+		cat="Outdooractive",
+		name="Map",
+		id="outdooractive_map",
+		descr="",
+		baseurl="http://s3.outdooractive.com/portal/map/{z}/{x}/{y}.png",
+		zoom_minlevel=0,
+		zoom_maxlevel=18,
+		maptile_sizepx=256,
+		projection=1,
+		enabled=True,
+		),
+	dict(
+		cat="BING",
+		name="Satellite",
+		id="bing_satellite",
+		descr="http://www.bing.com",
+		baseurl="http://ecn.t1.tiles.virtualearth.net/tiles/a{ms}.jpeg?g=1134&n=z",
+		zoom_minlevel=1,
+		zoom_maxlevel=19,
+		maptile_sizepx=256,
+		projection=1,
+		enabled=True,
+		url_builder_type=6,
+		),
 	)
 
-def check(baseurl, url_builder_type, image_filenameending, enabled=True, **argv):
+def java_out(enabled=False, **argv):
 	if enabled:
-		if url_builder_type == 12:
-			if image_filenameending:
-				raise Exception(image_filenameending)
-			url = baseurl.format(x=10, y=10, z=10, )
-		return True
-
-def xml_out(enabled=True, **argv):
-	print('	<map', end=' ')
-	for k in (
-		'cat',
-		'name',
-		'timedependent',
-		'layer',
-		'id',
-		'cache',
-		'isfake',
-		'descr',
-		'baseurl',
-		'image_filenameending',
-		'zoom_minlevel',
-		'zoom_maxlevel',
-		'maptile_sizepx',
-		'url_builder_type',
-		'tile_source_type',
-		'projection',
-		'yandex_traffic_on',
-		'googlescale',
-	):
-		if k in argv:
-			print('{}="{}"'.format(k, argv[k]), end=' ')
-	print('/>')
+		print('''		TileSourceFactory.addTileSource(new ParedTileSource("{cat}: {name}", {zoom_minlevel}, {zoom_maxlevel}, {maptile_sizepx}, new String[]{{"{baseurl}", }}));'''.format(**argv))
 
 def main():
-	print('<?xml version="1.0" encoding="UTF-8"?>')
-	print('<root>')
+	print('''package org.pyneo.tabulae.map;
+
+import org.osmdroid.tileprovider.tilesource.ITileSource;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+
+public class Provider {
+	static {''')
 	for map_ in maps:
-		if check(**map_):
-			xml_out(**map_)
-	print('</root>')
+		java_out(**map_)
+	print('''	}
+}''')
 
 if __name__ == '__main__':
 	from sys import argv

@@ -1,4 +1,4 @@
-package org.pyneo.tabulae.gui;
+package org.pyneo.tabulae.map;
 
 import android.graphics.Color;
 import android.util.Log;
@@ -9,18 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.osmdroid.events.MapListener;
+import org.osmdroid.ResourceProxy;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.MapTileProviderBasic;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
-
 import org.osmdroid.util.TileSystem;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.TilesOverlay;
+
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import org.pyneo.tabulae.map.Provider;
+import org.pyneo.tabulae.gui.Base;
 
 public class Map extends Base implements Constants {
 	private int zoom = 14;
@@ -29,6 +33,7 @@ public class Map extends Base implements Constants {
 	double latitude = 52;
 	double longitude = 7;
 	double accuracy = 0;
+	Provider p = new Provider();
 
 	public void inform(int event, Bundle extra) {
 		if (DEBUG) Log.d(TAG, "Map.inform event=" + event + ", extra=" + extra);
@@ -101,10 +106,10 @@ public class Map extends Base implements Constants {
 				return true;
 			}
 		});
-		// Add tiles layer with custom tile source
-		//final ITileSource tileSource = new ParedTileSource("FietsRegionaal", null, 3, 18, 256, new String[]{"http://overlay.openstreetmap.nl/openfietskaart-rcn/"});
-		//mapView.setTileSource(tileSource);
-		// scale to sp:
+		String ts = "BING: Satellite";
+		if (TileSourceFactory.containsTileSource(ts)) {
+			mapView.setTileSource(TileSourceFactory.getTileSource(ts));
+		}
 		if (false) {
 			mapView.setTilesScaledToDpi(true);
 		}

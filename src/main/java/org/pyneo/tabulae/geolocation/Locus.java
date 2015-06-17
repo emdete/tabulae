@@ -79,7 +79,8 @@ public class Locus extends Base implements Constants, LocationListener {
 		//if (DEBUG) Log.d(TAG, "Locus.onLocationChanged: location=" + location);
 		last = betterLocation(last, location);
 		// TODO: only send when changed?
-		((Tabulae) getActivity()).inform(R.id.location, toBundle(last));
+		if (getActivity() != null)
+			((Tabulae) getActivity()).inform(R.id.location, toBundle(last));
 	}
 
 	@Override public void onProviderDisabled(String provider) {
