@@ -26,6 +26,7 @@
 	<ImageButton
 		android:id="@+id/event_autofollow"
 		style="@style/buttonstyle"
+		android:visibility="invisible"
 		android:src="@drawable/ic_autofollow"
 		/>
 </merge>

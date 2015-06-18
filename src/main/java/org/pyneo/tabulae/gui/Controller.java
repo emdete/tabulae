@@ -23,10 +23,6 @@ public class Controller extends Base implements Constants {
 
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Controller.inform event=" + event + ", extra=" + extra);
-		if (optionsOut) {
-			getActivity().findViewById(R.id.attributes).startAnimation(popInAnimation);
-			optionsOut = false;
-		}
 		switch (event) {
 			case R.id.event_attribute_red: {
 				((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_red);
@@ -48,16 +44,22 @@ public class Controller extends Base implements Constants {
 				((ImageButton)getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_white);
 			}
 			break;
-			case R.id.scroll: {
-				Log.d(TAG, "set view VISIBLE");
-				getActivity().findViewById(R.id.event_autofollow).setVisibility(View.VISIBLE);
-			}
+			case R.id.event_attribute:
+			case R.id.event_overlay:
+			case R.id.event_zoom_in:
+			case R.id.event_zoom_out:
 			break;
 			case R.id.event_autofollow: {
-				Log.d(TAG, "set view INVISIBLE");
-				getActivity().findViewById(R.id.event_autofollow).setVisibility(View.INVISIBLE);
+				boolean autofollow = extra == null || extra.getBoolean("autofollow");
+				getActivity().findViewById(R.id.event_autofollow).setVisibility(autofollow? View.INVISIBLE: View.VISIBLE);
 			}
 			break;
+			default: // prevent closing attributes on unknown events
+			return;
+		}
+		if (optionsOut) {
+			getActivity().findViewById(R.id.attributes).startAnimation(popInAnimation);
+			optionsOut = false;
 		}
 	}
 

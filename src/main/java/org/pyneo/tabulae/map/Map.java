@@ -95,15 +95,11 @@ public class Map extends Base implements Constants {
 				myLocationConsumer.onLocationChanged(current, iMyLocationProvider);
 			}
 			break;
-			case R.id.scroll: {
-				follow = false;
-			}
-			break;
-			case R.id.event_autofollow:
-				follow = !follow;
-				if (follow) {
+			case R.id.event_autofollow: {
+				follow = extra == null || extra.getBoolean("autofollow");
+				if (follow)
 					mapView.getController().setCenter(new GeoPoint(latitude, longitude));
-				}
+			}
 			break;
 		}
 	}
@@ -126,6 +122,7 @@ public class Map extends Base implements Constants {
 	@Override public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		if (DEBUG) Log.d(TAG, "Map.onActivityCreated");
+		final float density = getActivity().getResources().getDisplayMetrics().density;
 		mapView = (MapView)getActivity().findViewById(R.id.mapview);
 		mapView.setMinZoomLevel(2);
 		mapView.setBuiltInZoomControls(false);
@@ -136,7 +133,11 @@ public class Map extends Base implements Constants {
 		mapView.setMapListener(new MapListener() {
 			@Override
 			public boolean onScroll(ScrollEvent event) {
-				((Tabulae)getActivity()).inform(R.id.scroll, null);
+				if (follow && event.getX() + event.getY() > 50 * density) {
+					Bundle extra = new Bundle();
+					extra.putBoolean("autofollow", false);
+					//((Tabulae)getActivity()).inform(R.id.event_autofollow, extra);
+				}
 				return true;
 			}
 			@Override
@@ -153,7 +154,6 @@ public class Map extends Base implements Constants {
 		}
 		if (true) { // dpi / sp scaling:
 			//mapView.setTilesScaledToDpi(true);
-			final float density = getActivity().getResources().getDisplayMetrics().density;
 			final float user_def = 1.3f; // TODO: where to get sp/dp?
 			TileSystem.setTileSize((int) (mapView.getTileProvider().getTileSource().getTileSizePixels() * density * user_def));
 		}
