@@ -112,6 +112,6 @@ public class Locus extends Base implements Constants, LocationListener {
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		if (DEBUG) Log.d(TAG, "Locus.onStatusChanged: provider=" + provider);
+		if (DEBUG) Log.d(TAG, "Locus.onStatusChanged: provider=" + provider + ", extra=" + extras);
 	}
 }

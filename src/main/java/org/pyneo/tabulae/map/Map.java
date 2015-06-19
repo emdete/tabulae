@@ -99,7 +99,7 @@ public class Map extends Base implements Constants {
 				}
 				if (myLocationConsumer != null) {
 					Location current = Locus.toLocation(extra);
-					if (DEBUG) Log.d(TAG, "Map.inform current=" + current);
+					//if (DEBUG) Log.d(TAG, "Map.inform current=" + current);
 					myLocationConsumer.onLocationChanged(current, iMyLocationProvider);
 				}
 				break;
@@ -156,7 +156,7 @@ public class Map extends Base implements Constants {
 				if (follow && event.getX() + event.getY() > 50 * density) {
 					Bundle extra = new Bundle();
 					extra.putBoolean("autofollow", false);
-					//((Tabulae)getActivity()).inform(R.id.event_autofollow, extra);
+					((Tabulae)getActivity()).inform(R.id.event_autofollow, extra);
 				}
 				return true;
 			}
@@ -206,20 +206,29 @@ public class Map extends Base implements Constants {
 						if (mPath == null || mLastZoomLevel != proj.getZoomLevel()) {
 							mPath = new OsmPath();
 							Point p = new Point();
+							int last = 0;
 							for (TrackGpxParser.TrackPoint trackPoint: track) {
-								Log.d(TAG, "trkpt trackPoint=" + trackPoint);
+								//Log.d(TAG, "trkpt trackPoint=" + trackPoint);
 								p = proj.toPixels(trackPoint, p);
-								if (mPath.isEmpty())
-									mPath.moveTo(p.x, p.y);
-								else
-									mPath.lineTo(p.x, p.y);
+								Log.d(TAG, "p x=" + p.x + ", y=" + p.y);
+								//if (Math.abs(p.x) < 2000 && Math.abs(p.y) < 2000)
+								{
+									if (mPath.isEmpty()) {
+										mPath.moveTo(p.x, p.y);
+										last = p.x + p.y;
+									}
+									else if (Math.abs(last - (p.x + p.y)) > 3*density) {
+										mPath.lineTo(p.x, p.y);
+										last = p.x + p.y;
+									}
+								}
 							}
 							mPath.close();
 							mLastZoomLevel = proj.getZoomLevel();
 							mPaint.setStyle(Paint.Style.STROKE);
 							mPaint.setStrokeCap(Paint.Cap.ROUND);
 							mPaint.setColor(Color.RED);
-							mPaint.setStrokeWidth(density);
+							mPaint.setStrokeWidth(2 * density);
 						}
 						mPath.onDrawCycle(proj); // adapt panning
 						c.drawPath(mPath, mPaint);

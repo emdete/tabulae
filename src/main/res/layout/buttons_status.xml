@@ -5,6 +5,7 @@
 	<ImageButton
 		android:id="@+id/event_compass"
 		style="@style/buttonstyle"
+		android:visibility="invisible"
 		android:src="@drawable/ic_compass"
 		/>
 	<ImageButton
