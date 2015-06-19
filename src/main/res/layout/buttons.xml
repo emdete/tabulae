@@ -15,7 +15,8 @@
 	<ImageButton
 		android:id="@+id/event_attribute"
 		style="@style/buttonstyle"
-		android:src="@drawable/attribute_green"
+		android:visibility="invisible"
+		android:src="@drawable/attribute_white"
 		/>
 	<ImageButton
 		android:id="@+id/event_overlay"

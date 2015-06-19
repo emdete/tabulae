@@ -3,6 +3,7 @@ package org.pyneo.tabulae.map;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.location.Location;
@@ -192,43 +193,43 @@ public class Map extends Base implements Constants {
 			mapView.getOverlays().add(mLocationOverlay);
 			mLocationOverlay.enableMyLocation();
 		}
-		try {
-			TrackGpxParser t = new TrackGpxParser(new File("/sdcard/tabulae/export/track46.gpx"));
-			for (TrackGpxParser.TrackPoint p: t) {
-				Log.d(TAG, "trkpt p=" + p);
-			}
-		}
-		catch (Exception e) {
-			Log.e(TAG, "e=" + e, e);
-		}
-		if (false) { // add a track overlay
-			Overlay mPathOverlay;
-			mPathOverlay = new Overlay(getActivity()) {
-				private int mLastZoomLevel;
-				private OsmPath mPath;
-				protected Paint mPaint = new Paint();
-				@Override protected void draw(Canvas c, MapView osmv, boolean shadow) {
-					if (shadow) return;
-					final Projection proj = osmv.getProjection();
-					if (mPath == null || mLastZoomLevel != proj.getZoomLevel()) {
-						mPath = createPath();
-						mLastZoomLevel = proj.getZoomLevel();
+		if (true) { // add a track overlay
+			try {
+				final TrackGpxParser track = new TrackGpxParser(new File("/sdcard/tabulae/export/track46.gpx"));
+				Overlay mPathOverlay = new Overlay(getActivity()) {
+					private int mLastZoomLevel;
+					private OsmPath mPath;
+					protected Paint mPaint = new Paint();
+					@Override protected void draw(Canvas c, MapView osmv, boolean shadow) {
+						if (shadow) return;
+						final Projection proj = osmv.getProjection();
+						if (mPath == null || mLastZoomLevel != proj.getZoomLevel()) {
+							mPath = new OsmPath();
+							Point p = new Point();
+							for (TrackGpxParser.TrackPoint trackPoint: track) {
+								Log.d(TAG, "trkpt trackPoint=" + trackPoint);
+								p = proj.toPixels(trackPoint, p);
+								if (mPath.isEmpty())
+									mPath.moveTo(p.x, p.y);
+								else
+									mPath.lineTo(p.x, p.y);
+							}
+							mPath.close();
+							mLastZoomLevel = proj.getZoomLevel();
+							mPaint.setStyle(Paint.Style.STROKE);
+							mPaint.setStrokeCap(Paint.Cap.ROUND);
+							mPaint.setColor(Color.RED);
+							mPaint.setStrokeWidth(density);
+						}
+						mPath.onDrawCycle(proj); // adapt panning
+						c.drawPath(mPath, mPaint);
 					}
-					mPath.onDrawCycle(proj); // adapt panning
-					c.drawPath(mPath, mPaint);
-				}
-				private OsmPath createPath() {
-					final OsmPath path = new OsmPath();
-					final Projection proj = mapView.getProjection();
-					Point p = null;
-					p = proj.toPixels(new GeoPoint(52.0, 7.0), p);
-					path.moveTo(p.x, p.y);
-					path.lineTo(p.x, p.y);
-					path.close();
-					return path;
-				}
-			};
-			mapView.getOverlayManager().add(mPathOverlay);
+				};
+				mapView.getOverlayManager().add(mPathOverlay);
+			}
+			catch (Exception e) {
+				Log.e(TAG, "e=" + e, e);
+			}
 		}
 	}
 }
