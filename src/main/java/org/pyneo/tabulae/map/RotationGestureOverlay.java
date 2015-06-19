@@ -10,14 +10,11 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.IOverlayMenuProvider;
 import org.osmdroid.views.overlay.Overlay;
 
-public class RotationGestureOverlay extends Overlay implements
-		RotationGestureDetector.RotationListener, IOverlayMenuProvider {
+public class RotationGestureOverlay extends Overlay implements RotationGestureDetector.RotationListener, IOverlayMenuProvider {
 	private final static boolean SHOW_ROTATE_MENU_ITEMS = false;
-
 	private final static int MENU_ENABLED = getSafeMenuId();
 	private final static int MENU_ROTATE_CCW = getSafeMenuId();
 	private final static int MENU_ROTATE_CW = getSafeMenuId();
-
 	private final RotationGestureDetector mRotationDetector;
 	private MapView mMapView;
 	private boolean mOptionsMenuEnabled = true;
@@ -58,13 +55,10 @@ public class RotationGestureOverlay extends Overlay implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu pMenu, int pMenuIdOffset, MapView pMapView) {
-		pMenu.add(0, MENU_ENABLED + pMenuIdOffset, Menu.NONE, "Enable rotation").setIcon(
-				android.R.drawable.ic_menu_info_details);
+		pMenu.add(0, MENU_ENABLED + pMenuIdOffset, Menu.NONE, "Enable rotation").setIcon(android.R.drawable.ic_menu_info_details);
 		if (SHOW_ROTATE_MENU_ITEMS) {
-			pMenu.add(0, MENU_ROTATE_CCW + pMenuIdOffset, Menu.NONE,
-					"Rotate maps counter clockwise").setIcon(android.R.drawable.ic_menu_rotate);
-			pMenu.add(0, MENU_ROTATE_CW + pMenuIdOffset, Menu.NONE, "Rotate maps clockwise")
-					.setIcon(android.R.drawable.ic_menu_rotate);
+			pMenu.add(0, MENU_ROTATE_CCW + pMenuIdOffset, Menu.NONE, "Rotate maps counter clockwise").setIcon(android.R.drawable.ic_menu_rotate);
+			pMenu.add(0, MENU_ROTATE_CW + pMenuIdOffset, Menu.NONE, "Rotate maps clockwise").setIcon(android.R.drawable.ic_menu_rotate);
 		}
 		return true;
 	}
@@ -75,23 +69,24 @@ public class RotationGestureOverlay extends Overlay implements
 			if (this.isEnabled()) {
 				mMapView.setMapOrientation(0);
 				this.setEnabled(false);
-			} else {
+			}
+			else {
 				this.setEnabled(true);
 				return true;
 			}
-		} else if (pItem.getItemId() == MENU_ROTATE_CCW + pMenuIdOffset) {
+		}
+		else if (pItem.getItemId() == MENU_ROTATE_CCW + pMenuIdOffset) {
 			mMapView.setMapOrientation(mMapView.getMapOrientation() - 10);
-		} else if (pItem.getItemId() == MENU_ROTATE_CW + pMenuIdOffset) {
+		}
+		else if (pItem.getItemId() == MENU_ROTATE_CW + pMenuIdOffset) {
 			mMapView.setMapOrientation(mMapView.getMapOrientation() + 10);
 		}
-
 		return false;
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(final Menu pMenu, final int pMenuIdOffset, final MapView pMapView) {
-		pMenu.findItem(MENU_ENABLED + pMenuIdOffset).setTitle(
-				this.isEnabled() ? "Disable rotation" : "Enable rotation");
+		pMenu.findItem(MENU_ENABLED + pMenuIdOffset).setTitle(this.isEnabled()? "Disable rotation": "Enable rotation");
 		return false;
 	}
 }
