@@ -9,7 +9,7 @@ run: src/main/res/values/strings_news.xml
 
 dbg: run
 	adb install -r build/outputs/apk/*-debug.apk
-	adb shell am start org.pyneo.tabulae/.Tabulae
+	adb shell am start org.pyneo.maps/.MainActivity
 
 clean:
 	./gradlew -q clean

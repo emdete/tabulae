@@ -165,7 +165,9 @@ public class PoiActivity extends Activity implements Constants {
 		mPoiPoint.mTitle = mTitle.getText().toString();
 		mPoiPoint.mCategoryId = (int)mSpinner.getSelectedItemId();
 		mPoiPoint.mDescr = mDescr.getText().toString();
-		mPoiPoint.mGeoPoint = new GeoPoint(mLat.getText().toString(), mLon.getText().toString());
+		mPoiPoint.mGeoPoint = new GeoPoint(
+			CoordFormatter.convertTrowable(mLat.getText().toString()),
+			CoordFormatter.convertTrowable(mLon.getText().toString()));
 		mPoiPoint.mHidden = mHidden.isChecked();
 		try {
 			mPoiPoint.mAlt = Double.parseDouble(mAlt.getText().toString());

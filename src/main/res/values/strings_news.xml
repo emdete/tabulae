@@ -1,6 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
 <string name='whats_new_dialog_text' translatable='false'>
+v.1.0.10\n
++ catch up with google playstore version\n
+- prevent exc on parsing degree char\n
+\n
 v.1.0.9\n
 - fix display problem on track display\n
 \n

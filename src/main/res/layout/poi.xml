@@ -55,7 +55,7 @@
 			android:id="@+id/Lon"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:inputType="text|numberSigned|numberDecimal"
+			android:inputType="numberSigned|numberDecimal|text"
 			android:text="@+id/Lon" />
 		<TextView
 			android:text="@string/PoiAlt"

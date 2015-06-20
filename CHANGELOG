@@ -1,3 +1,7 @@
+v.1.0.10
++ catch up with google playstore version
+- prevent exc on parsing degree char
+
 v.1.0.9
 - fix display problem on track display
 
