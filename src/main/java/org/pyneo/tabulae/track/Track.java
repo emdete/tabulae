@@ -1,13 +1,15 @@
-package org.pyneo.tabulae.gui;
+package org.pyneo.tabulae.track;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import org.pyneo.tabulae.R;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Overlay;
+import org.pyneo.tabulae.Tabulae;
+import org.pyneo.tabulae.gui.Base;
+
+import java.io.File;
 
 public class Track extends Base implements Constants {
 	private boolean visible = true;
@@ -33,18 +35,20 @@ public class Track extends Base implements Constants {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (DEBUG) {
-			Log.d(TAG, "Track.onCreateView");
-		}
-		return inflater.inflate(R.layout.track, container, false);
-	}
-
-	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		if (DEBUG) {
 			Log.d(TAG, "Track.onActivityCreated");
+		}
+		// add a parsedTrack overlay
+		try {
+			final MapView mapView = ((Tabulae)getActivity()).getMapView();
+			final TrackGpxParser track = new TrackGpxParser(new File("/sdcard/tabulae/export/track46.gpx"));
+			Overlay mPathOverlay = new TrackOverlay(getActivity(), track);
+			mapView.getOverlayManager().add(mPathOverlay);
+		}
+		catch (Exception e) {
+			Log.e(TAG, "e=" + e, e);
 		}
 	}
 }

@@ -175,8 +175,7 @@ public class Map extends Base implements Constants {
 		}
 		if (true) { // dpi / sp scaling:
 			//mapView.setTilesScaledToDpi(true);
-			final float user_def = 1.3f; // TODO: where to get sp/dp?
-			TileSystem.setTileSize((int)(mapView.getTileProvider().getTileSource().getTileSizePixels() * density * user_def));
+			TileSystem.setTileSize((int)(mapView.getTileProvider().getTileSource().getTileSizePixels() * density * USER_FONT_FACTOR));
 		}
 		if (false) { // rotation
 			RotationGestureOverlay mRotationGestureOverlay = new RotationGestureOverlay(getActivity(), mapView);
@@ -193,53 +192,10 @@ public class Map extends Base implements Constants {
 			mapView.getOverlays().add(mLocationOverlay);
 			mLocationOverlay.enableMyLocation();
 		}
-		if (true) { // add a track overlay
-			try {
-				final TrackGpxParser track = new TrackGpxParser(new File("/sdcard/tabulae/export/track46.gpx"));
-				Overlay mPathOverlay = new Overlay(getActivity()) {
-					private int mLastZoomLevel;
-					private OsmPath mPath;
-					protected Paint mPaint = new Paint();
-					@Override protected void draw(Canvas c, MapView osmv, boolean shadow) {
-						if (shadow) return;
-						final Projection proj = osmv.getProjection();
-						if (mPath == null || mLastZoomLevel != proj.getZoomLevel()) {
-							mPath = new OsmPath();
-							Point p = new Point();
-							int last = 0;
-							for (TrackGpxParser.TrackPoint trackPoint: track) {
-								//Log.d(TAG, "trkpt trackPoint=" + trackPoint);
-								p = proj.toPixels(trackPoint, p);
-								Log.d(TAG, "p x=" + p.x + ", y=" + p.y);
-								//if (Math.abs(p.x) < 2000 && Math.abs(p.y) < 2000)
-								{
-									if (mPath.isEmpty()) {
-										mPath.moveTo(p.x, p.y);
-										last = p.x + p.y;
-									}
-									else if (Math.abs(last - (p.x + p.y)) > 3*density) {
-										mPath.lineTo(p.x, p.y);
-										last = p.x + p.y;
-									}
-								}
-							}
-							mPath.close();
-							mLastZoomLevel = proj.getZoomLevel();
-							mPaint.setStyle(Paint.Style.STROKE);
-							mPaint.setStrokeCap(Paint.Cap.ROUND);
-							mPaint.setColor(Color.RED);
-							mPaint.setStrokeWidth(2 * density);
-						}
-						mPath.onDrawCycle(proj); // adapt panning
-						c.drawPath(mPath, mPaint);
-					}
-				};
-				mapView.getOverlayManager().add(mPathOverlay);
-			}
-			catch (Exception e) {
-				Log.e(TAG, "e=" + e, e);
-			}
-		}
+	}
+
+	public MapView getMapView() {
+		return mapView;
 	}
 }
 

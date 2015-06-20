@@ -8,12 +8,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.osmdroid.views.MapView;
 import org.pyneo.tabulae.geolocation.Locus;
 import org.pyneo.tabulae.gui.Base;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
 import org.pyneo.tabulae.gui.Poi;
-import org.pyneo.tabulae.gui.Track;
+import org.pyneo.tabulae.track.Track;
 import org.pyneo.tabulae.map.Map;
 
 public class Tabulae extends Activity implements Constants {
@@ -100,5 +101,9 @@ public class Tabulae extends Activity implements Constants {
 		for (Base b : fragments) {
 			b.inform(event, extra);
 		}
+	}
+
+	public MapView getMapView() {
+		return ((Map)fragments[0]).getMapView();
 	}
 }

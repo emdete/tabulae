@@ -1,9 +1,6 @@
 package org.pyneo.tabulae.track;
 
-import android.util.Log;
-
 import org.osmdroid.util.GeoPoint;
-import org.pyneo.tabulae.gui.Track;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -22,6 +19,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 /* parse xml like:
 * <gpx ...><name>...</name><desc /><trk><trkseg><trkpt lon="..." lat="..."><ele>..</ele><time>2015-08-11T00:00:00Z</time>...
+* see https://de.wikipedia.org/wiki/GPS_Exchange_Format
 */
 public class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Constants {
 	public static SAXParserFactory factory = SAXParserFactory.newInstance();
