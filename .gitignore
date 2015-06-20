@@ -1,8 +1,6 @@
+build/
 .gradle/
 .idea/
-Makefile
-RMaps.iml
-build/
+*.iml
 local.properties
-Tabulae.iml
 .*.sw?
