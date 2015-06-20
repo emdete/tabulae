@@ -1,6 +1,11 @@
+v.1.0.9
+- fix display problem on track display
+
+v.1.0.8
+- various smaller bugfixes
+
 v.1.0.7
 + scale tiles by screen density to make texts readable
-- various bugfixes
 + code cleanup
 
 v.1.0.6

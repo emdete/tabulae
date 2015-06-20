@@ -1,9 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
 <string name='whats_new_dialog_text' translatable='false'>
+v.1.0.9\n
+- fix display problem on track display\n
+\n
+v.1.0.8\n
+- various smaller bugfixes\n
+\n
 v.1.0.7\n
 + scale tiles by screen density to make texts readable\n
-- various bugfixes\n
 + code cleanup\n
 \n
 v.1.0.6\n
