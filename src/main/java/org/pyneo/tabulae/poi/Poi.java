@@ -1,4 +1,4 @@
-package org.pyneo.tabulae.gui;
+package org.pyneo.tabulae.poi;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.pyneo.tabulae.R;
+import org.pyneo.tabulae.gui.Base;
+import org.pyneo.tabulae.gui.Constants;
 
 public class Poi extends Base implements Constants {
 	private boolean visible = true;

@@ -1,3 +1,4 @@
+# https://inloop.github.io/svg2android/
 all: poi_blue.svg ic_launcher.png
 
 run: all
