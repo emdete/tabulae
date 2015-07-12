@@ -1,10 +1,10 @@
 #!/usr/bin/env make -f
 .PHONY: all run clean doc dist dbg art gradle
 
-all: src/main/res/values/strings_news.xml src/main/java/org/pyneo/tabulae/map/Provider.java
+all: src/main/res/values/strings_news.xml
 	./gradlew -q assembleRelease
 
-run: src/main/res/values/strings_news.xml src/main/java/org/pyneo/tabulae/map/Provider.java
+run: src/main/res/values/strings_news.xml
 	./gradlew -q assembleDebug
 
 dbg: run
@@ -19,7 +19,4 @@ clean:
 
 src/main/res/values/strings_news.xml: CHANGELOG
 	awk -f $<.awk < $< > $@
-
-src/main/java/org/pyneo/tabulae/map/Provider.java: provider.py
-	./$< > $@
 

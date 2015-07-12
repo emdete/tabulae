@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.osmdroid.views.MapView;
+import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.geolocation.Locus;
 import org.pyneo.tabulae.gui.Base;
 import org.pyneo.tabulae.gui.Controller;

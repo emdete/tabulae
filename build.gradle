@@ -27,11 +27,7 @@ android {
 dependencies {
 	compile 'com.android.support:support-v4:22.2.0'
 	compile 'com.android.support:appcompat-v7:22.2.0'
-	// osm:
-	compile 'commons-logging:commons-logging:1.1.3'
-	compile 'org.slf4j:slf4j-android:1.6.1-RC1'
-	compile 'org.osmdroid:osmdroid-android:4.3'
-	// vec: compile 'org.mapsforge:mapsforge-map-android:0.5.+'
+	compile 'org.mapsforge:mapsforge-map-android:0.5.+'
 }
 
 android {

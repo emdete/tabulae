@@ -1,6 +1,6 @@
 package org.pyneo.tabulae.track;
 
-import org.osmdroid.util.GeoPoint;
+import org.mapsforge.core.model.LatLong;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -125,8 +125,13 @@ public class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Cons
 		}
 	}
 
-	static public class TrackPoint extends GeoPoint {
+	static public class TrackPoint extends LatLong {
 		private Date timestamp;
+		private float altitude;
+
+		void setAltitude(float altitude) {
+			this.altitude = altitude;
+		}
 
 		TrackPoint(final double latitude, final double longitude) {
 			super(latitude, longitude);
