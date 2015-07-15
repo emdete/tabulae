@@ -3,11 +3,14 @@ package org.pyneo.tabulae;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StatFs;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import java.io.File;
 import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.geolocation.Locus;
 import org.pyneo.tabulae.gui.Base;
@@ -19,6 +22,7 @@ import org.pyneo.tabulae.map.Map;
 
 public class Tabulae extends Activity implements Constants {
 	private Base[] fragments;
+	File baseStorageFile = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,31 @@ public class Tabulae extends Activity implements Constants {
 		});
 		setContentView(R.layout.base);
 		fragments = new Base[]{new Map(), new Locus(), new Track(), new Controller(), new Poi(), new Dashboard(),};
+		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+		String baseStorage = preferences.getString("baseStorage", null);
+		if (savedInstanceState != null) {
+			baseStorage = savedInstanceState.getString("baseStorage", baseStorage);
+		}
+		if (baseStorage != null) {
+			baseStorageFile = new File(baseStorage);
+			if (!Environment.getExternalStorageState(baseStorageFile).equals(Environment.MEDIA_MOUNTED)) {
+				baseStorage = null; // not accessable anymore
+			}
+		}
+		if (baseStorageFile == null) {
+			// look for the largest storage to begin with
+			long baseStorageSpace = 0;
+			for (File dir: getApplicationContext().getExternalFilesDirs(null)) {
+				if (Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
+					long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
+					if (dirSpace > baseStorageSpace) {
+						baseStorageFile = dir;
+						baseStorageSpace = dirSpace;
+					}
+				}
+			}
+			Log.d(TAG, "found baseStorageFile=" + baseStorageFile + ", baseStorageSpace=" + baseStorageSpace);
+		}
 	}
 
 	@Override
@@ -97,10 +126,28 @@ public class Tabulae extends Activity implements Constants {
 		return true;
 	}
 
+	@Override protected void onSaveInstanceState(Bundle bundle) {
+		super.onSaveInstanceState(bundle);
+		Log.d(TAG, "onSaveInstanceState bundle=" + bundle);
+		bundle.putString("baseStorage", baseStorageFile.getPath());
+	}
+
 	public void inform(int event, Bundle extra) {
 		for (Base b : fragments) {
 			b.inform(event, extra);
 		}
+	}
+
+	public File getThemesDir() {
+		return new File(baseStorageFile, "themes");
+	}
+
+	public File getTilesDir() {
+		return new File(baseStorageFile, "tiles");
+	}
+
+	public File getMapsDir() {
+		return new File(baseStorageFile, "maps");
 	}
 
 	public MapView getMapView() {

@@ -76,7 +76,7 @@ public class Dashboard extends Base implements Constants {
 		}
 
 		void inform(int event, Bundle extra) {
-			if (event == this.event && extra.containsKey(value_key)) {
+			if (event == this.event && extra != null && extra.containsKey(value_key)) {
 				String value = extra.get(value_key).toString();
 				if (value.length() > 8) {
 					value = value.substring(0, 8);

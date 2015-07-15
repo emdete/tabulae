@@ -4,11 +4,4 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	>
-	<org.osmdroid.views.MapView
-		android:id="@+id/mapview"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		tilesource="MapquestAerial"
-		android:layerType="software"
-		/> <!-- hw accel gives: Path too large to be rendered into a texture -->
 </FrameLayout>

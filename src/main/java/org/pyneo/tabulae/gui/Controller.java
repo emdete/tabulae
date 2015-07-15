@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
 
@@ -47,8 +46,9 @@ public class Controller extends Base implements Constants {
 			case R.id.event_zoom_out:
 				break;
 			case R.id.event_autofollow: {
-				boolean autofollow = extra == null || extra.getBoolean("autofollow");
-				getActivity().findViewById(R.id.event_autofollow).setVisibility(autofollow? View.INVISIBLE: View.VISIBLE);
+				if (extra != null && extra.containsKey("autofollow"))
+					getActivity().findViewById(R.id.event_autofollow).setVisibility(
+						extra.getBoolean("autofollow")? View.INVISIBLE: View.VISIBLE);
 			}
 			break;
 			default: // prevent closing attributes on unknown events
@@ -94,7 +94,18 @@ public class Controller extends Base implements Constants {
 				((Tabulae)getActivity()).inform(e, null);
 			}
 		};
-		for (int resourceId : new int[]{R.id.event_attribute_blue, R.id.event_attribute_green, R.id.event_attribute_red, R.id.event_attribute_white, R.id.event_attribute_yellow, R.id.event_attribute, R.id.event_autofollow, R.id.event_overlay, R.id.event_zoom_in, R.id.event_zoom_out,}) {
+		for (int resourceId : new int[]{
+				R.id.event_attribute_blue,
+				R.id.event_attribute_green,
+				R.id.event_attribute_red,
+				R.id.event_attribute_white,
+				R.id.event_attribute_yellow,
+				R.id.event_attribute,
+				R.id.event_autofollow,
+				R.id.event_overlay,
+				R.id.event_zoom_in,
+				R.id.event_zoom_out,
+				}) {
 			view.findViewById(resourceId).setOnClickListener(clickListener);
 		}
 		return view;
