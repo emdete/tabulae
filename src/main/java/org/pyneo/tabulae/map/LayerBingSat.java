@@ -24,7 +24,7 @@ class LayerBingSat extends LayerB {
 	static final public String ID = "bing_sat";
 
 	LayerBingSat(Tabulae activity, MapView mapView) {
-		super(activity, mapView, ID);
+		super(activity, mapView);
 		tileLayer = new TileDownloadLayer(tileCache, mapView.getModel().mapViewPosition,
 			new Source(), AndroidGraphicFactory.INSTANCE);
 		mapView.getLayerManager().getLayers().add(tileLayer);

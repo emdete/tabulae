@@ -54,15 +54,11 @@ public class Map extends Base implements Constants {
 					((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
 				}
 			break;
-			case R.id.event_map_list: {
-				inform(R.id.event_map_outdooractive, null);
-			}
-			break;
 			case R.id.event_map_vector:
 			case R.id.event_map_bing_satellite:
 			case R.id.event_map_google_satellite:
 			case R.id.event_map_mapquest:
-			case R.id.event_map_outdooractive: {
+			case R.id.event_map_outdoor_active: {
 				layers.get(currentMap).setVisible(false);
 				currentMap = event;
 				layers.get(currentMap).setVisible(true);
@@ -113,7 +109,7 @@ public class Map extends Base implements Constants {
 		layers.put(R.id.event_map_bing_satellite, new LayerBingSat((Tabulae) getActivity(), mapView));
 		layers.put(R.id.event_map_google_satellite, new LayerGoogleSat((Tabulae) getActivity(), mapView));
 		layers.put(R.id.event_map_mapquest, new LayerMapQuest((Tabulae) getActivity(), mapView));
-		layers.put(R.id.event_map_outdooractive, new LayerOutdoorActive((Tabulae) getActivity(), mapView));
+		layers.put(R.id.event_map_outdoor_active, new LayerOutdoorActive((Tabulae) getActivity(), mapView));
 		layers.get(currentMap).setVisible(true);
 	}
 

@@ -13,7 +13,7 @@ class LayerOutdoorActive extends LayerB {
 	static final public String ID = "outdoor_active";
 
 	LayerOutdoorActive(Tabulae activity, MapView mapView) {
-		super(activity, mapView, ID);
+		super(activity, mapView);
 		tileLayer = new TileDownloadLayer(tileCache, mapView.getModel().mapViewPosition, new Source(), AndroidGraphicFactory.INSTANCE);
 		mapView.getLayerManager().getLayers().add(tileLayer);
 		setVisible(false);

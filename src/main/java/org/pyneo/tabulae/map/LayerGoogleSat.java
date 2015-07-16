@@ -19,7 +19,7 @@ class LayerGoogleSat extends LayerB {
 	static final public String ID = "google_sat";
 
 	LayerGoogleSat(Tabulae activity, MapView mapView) {
-		super(activity, mapView, ID);
+		super(activity, mapView);
 		tileLayer = new TileDownloadLayer(tileCache, mapView.getModel().mapViewPosition,
 			new Source(), AndroidGraphicFactory.INSTANCE);
 		mapView.getLayerManager().getLayers().add(tileLayer);

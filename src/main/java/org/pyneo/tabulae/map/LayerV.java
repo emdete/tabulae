@@ -19,7 +19,7 @@ class LayerV extends LayerB {
 	static final public String ID = "mapsforge";
 
 	LayerV(Tabulae activity, MapView mapView) {
-		super(activity, mapView, ID);
+		super(activity, mapView);
 		MultiMapDataStore multiMapDataStore = new MultiMapDataStore(MultiMapDataStore.DataPolicy.RETURN_ALL);
 		File mapsDir = activity.getMapsDir();
 		File[] maps = mapsDir.listFiles();
@@ -32,5 +32,9 @@ class LayerV extends LayerB {
 		((TileRendererLayer)tileLayer).setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
 		mapView.getLayerManager().getLayers().add(tileLayer);
 		setVisible(false);
+	}
+
+	String getId() {
+		return ID;
 	}
 }

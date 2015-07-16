@@ -21,12 +21,12 @@ public abstract class LayerB implements Constants {
 	protected TileCache tileCache;
 	InMemoryTileCache memCache;
 
-	public LayerB(Tabulae activity, MapView mapView, String id) {
+	public LayerB(Tabulae activity, MapView mapView) {
 		this.mapView = mapView;
 		memCache = new InMemoryTileCache(10);
 		tileCache = new TwoLevelTileCache(
 			memCache,
-			new FileSystemTileCache(99999, new File(activity.getTilesDir(), id), AndroidGraphicFactory.INSTANCE, true, 3, true)
+			new FileSystemTileCache(99999, new File(activity.getTilesDir(), getId()), AndroidGraphicFactory.INSTANCE, true, 3, true)
 			);
 	}
 

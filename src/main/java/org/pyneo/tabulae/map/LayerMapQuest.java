@@ -19,7 +19,7 @@ class LayerMapQuest extends LayerB {
 	static final public String ID = "mapquest";
 
 	LayerMapQuest(Tabulae activity, MapView mapView) {
-		super(activity, mapView, ID);
+		super(activity, mapView);
 		tileLayer = new TileDownloadLayer(tileCache, mapView.getModel().mapViewPosition, new Source(), AndroidGraphicFactory.INSTANCE);
 		mapView.getLayerManager().getLayers().add(tileLayer);
 		setVisible(false);
