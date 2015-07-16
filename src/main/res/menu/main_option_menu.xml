@@ -35,6 +35,8 @@
 		/>
 	<item
 		android:id="@+id/event_dashboard"
+		android:icon="@drawable/ic_menu_dashboard"
 		android:title="@string/menu_dashboard"
+		android:showAsAction="ifRoom"
 		/>
 </menu>
