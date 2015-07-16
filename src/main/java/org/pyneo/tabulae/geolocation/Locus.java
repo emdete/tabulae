@@ -3,6 +3,7 @@ package org.pyneo.tabulae.geolocation;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.location.Location;
 import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
@@ -19,7 +20,12 @@ public class Locus extends Base implements Constants {
 	@Override public void onStart() {
 		super.onStart();
 		MapView mapView = ((Tabulae)getActivity()).getMapView();
-		myLocationOverlay = new ThreeStateLocationOverlay(getActivity(), mapView.getModel().mapViewPosition);
+		myLocationOverlay = new ThreeStateLocationOverlay(getActivity(), mapView.getModel().mapViewPosition) {
+			@Override public void onLocationChanged(Location location) {
+				super.onLocationChanged(location);
+				((Tabulae)getActivity()).inform(R.id.location, ThreeStateLocationOverlay.toBundle(location));
+			}
+		};
 		myLocationOverlay.setSnapToLocationEnabled(true);
 		mapView.getLayerManager().getLayers().add(myLocationOverlay);
 	}
