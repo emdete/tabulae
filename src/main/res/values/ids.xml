@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<item name="event_scale" type="id" />
+	<item name="event_map_bing_satellite" type="id"/>
+	<item name="event_map_google_satellite" type="id"/>
+	<item name="event_map_mapquest" type="id"/>
+	<item name="event_map_outdooractive" type="id"/>
+	<item name="event_map_vector" type="id"/>
 	<item name="event_scale_end" type="id" />
+	<item name="event_scale" type="id" />
 	<item name="event_scroll" type="id" />
-	<item name="location" type="id" />
 	<item name="event_zoom" type="id"/>
+	<item name="location" type="id" />
 </resources>

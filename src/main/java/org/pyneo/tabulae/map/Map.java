@@ -1,62 +1,32 @@
 package org.pyneo.tabulae.map;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import java.io.File;
-import org.mapsforge.core.model.Dimension;
+
+import java.util.HashMap;
+
 import org.mapsforge.core.model.LatLong;
-import org.mapsforge.core.model.MapPosition;
-import org.mapsforge.core.model.Tile;
-import org.mapsforge.map.android.AndroidPreferences;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
-import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
-import org.mapsforge.map.layer.cache.FileSystemTileCache;
-import org.mapsforge.map.layer.cache.TileCache;
-import org.mapsforge.map.layer.download.TileDownloadLayer;
-import org.mapsforge.map.layer.download.tilesource.OnlineTileSource;
-import org.mapsforge.map.layer.download.tilesource.OpenStreetMapMapnik;
-import org.mapsforge.map.layer.Layer;
-import org.mapsforge.map.layer.Layers;
-import org.mapsforge.map.layer.renderer.TileRendererLayer;
-import org.mapsforge.map.layer.TileLayer;
-import org.mapsforge.map.model.common.Observer;
-import org.mapsforge.map.model.common.PreferencesFacade;
 import org.mapsforge.map.model.DisplayModel;
-import org.mapsforge.map.model.FrameBufferModel;
 import org.mapsforge.map.model.MapViewPosition;
-import org.mapsforge.map.reader.MapDataStore;
-import org.mapsforge.map.reader.MapFile;
-import org.mapsforge.map.reader.MultiMapDataStore;
-import org.mapsforge.map.rendertheme.ExternalRenderTheme;
-import org.mapsforge.map.rendertheme.InternalRenderTheme;
-import org.mapsforge.map.rendertheme.XmlRenderTheme;
-import org.mapsforge.map.rendertheme.XmlRenderThemeStyleMenu;
-import org.pyneo.tabulae.geolocation.Locus;
 import org.pyneo.tabulae.gui.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
-import org.pyneo.tabulae.track.TrackGpxParser;
 
 public class Map extends Base implements Constants {
 	// get one from http://download.mapsforge.org/maps/ and adapt path to your needs:
 	private MapView mapView;
-	private TLayer tLayer;
+	private int currentMap = R.id.event_map_vector;
+	private HashMap<Integer,LayerB> layers = new HashMap<>();
 	private boolean follow = true;
 	private double latitude = 52.517037;
 	private double longitude = 13.38886;
-	private double accuracy = 0;
 	private byte zoom = 14;
 
 	public void inform(int event, Bundle extra) {
@@ -85,7 +55,17 @@ public class Map extends Base implements Constants {
 				}
 			break;
 			case R.id.event_map_list: {
-				mapView.setVisibility(View.INVISIBLE);
+				inform(R.id.event_map_outdooractive, null);
+			}
+			break;
+			case R.id.event_map_vector:
+			case R.id.event_map_bing_satellite:
+			case R.id.event_map_google_satellite:
+			case R.id.event_map_mapquest:
+			case R.id.event_map_outdooractive: {
+				layers.get(currentMap).setVisible(false);
+				currentMap = event;
+				layers.get(currentMap).setVisible(true);
 			}
 			break;
 		}
@@ -129,13 +109,34 @@ public class Map extends Base implements Constants {
 		if (DEBUG) { Log.d(TAG, "Map.onStart"); }
 		mapView.getModel().mapViewPosition.setCenter(new LatLong(latitude, longitude));
 		mapView.getModel().mapViewPosition.setZoomLevel(zoom);
-		tLayer = new TLayer((Tabulae)getActivity(), mapView);
+		layers.put(R.id.event_map_vector, new LayerV((Tabulae) getActivity(), mapView));
+		layers.put(R.id.event_map_bing_satellite, new LayerBingSat((Tabulae) getActivity(), mapView));
+		layers.put(R.id.event_map_google_satellite, new LayerGoogleSat((Tabulae) getActivity(), mapView));
+		layers.put(R.id.event_map_mapquest, new LayerMapQuest((Tabulae) getActivity(), mapView));
+		layers.put(R.id.event_map_outdooractive, new LayerOutdoorActive((Tabulae) getActivity(), mapView));
+		layers.get(currentMap).setVisible(true);
+	}
+
+	@Override public void onPause() {
+		super.onPause();
+		for (LayerB layerB : layers.values()) {
+			layerB.onPause();
+		}
+	}
+
+	@Override public void onResume() {
+		super.onResume();
+		for (LayerB layerB : layers.values()) {
+			layerB.onResume();
+		}
 	}
 
 	@Override public void onStop() {
 		super.onStop();
 		if (DEBUG) Log.d(TAG, "onStop");
-		tLayer.onDestroy();
+		for (LayerB layerB : layers.values()) {
+			layerB.onDestroy();
+		}
 	}
 
 	@Override public void onDestroy() {

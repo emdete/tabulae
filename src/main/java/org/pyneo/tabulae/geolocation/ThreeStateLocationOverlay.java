@@ -190,16 +190,16 @@ public class ThreeStateLocationOverlay extends Layer implements LocationListener
 			}
 			else {
 				float accuracy = location.getAccuracy();
-				if (DEBUG) { Log.d(TAG, "circle: accuracy=" + accuracy); }
+				//if (DEBUG) { Log.d(TAG, "circle: accuracy=" + accuracy); }
 				circle.setRadius(accuracy);
 				if (!location.hasSpeed() || !location.hasBearing()) {
 					marker = map_needle_pinned;
-					if (DEBUG) { Log.d(TAG, "pinned: no speed or bearing"); }
+					//if (DEBUG) { Log.d(TAG, "pinned: no speed or bearing"); }
 				}
 				else {
 					float speed = location.getSpeed();
 					if (speed < 2.0) {
-						if (DEBUG) { Log.d(TAG, "pinned: speed=" + speed); }
+						//if (DEBUG) { Log.d(TAG, "pinned: speed=" + speed); }
 						marker = map_needle_pinned;
 					}
 					else {

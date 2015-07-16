@@ -43,7 +43,7 @@ public class Locus extends Base implements Constants {
 	}
 
 	public void inform(int event, Bundle extra) {
-		if (DEBUG) Log.d(TAG, "Locus.inform event=" + event + ", extra=" + extra);
+		//if (DEBUG) Log.d(TAG, "Locus.inform event=" + event + ", extra=" + extra);
 		switch (event) {
 			case R.id.event_autofollow: {
 				if (extra != null && extra.containsKey("autofollow")) {
