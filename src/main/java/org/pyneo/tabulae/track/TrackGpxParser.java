@@ -1,10 +1,5 @@
 package org.pyneo.tabulae.track;
 
-import org.mapsforge.core.model.LatLong;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,9 +8,12 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import org.mapsforge.core.model.LatLong;
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.SAXException;
 
 /* parse xml like:
 * <gpx ...><name>...</name><desc /><trk><trkseg><trkpt lon="..." lat="..."><ele>..</ele><time>2015-08-11T00:00:00Z</time>...
@@ -127,11 +125,7 @@ public class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Cons
 
 	static public class TrackPoint extends LatLong {
 		private Date timestamp;
-		private float altitude;
-
-		void setAltitude(float altitude) {
-			this.altitude = altitude;
-		}
+		private int altitude;
 
 		TrackPoint(final double latitude, final double longitude) {
 			super(latitude, longitude);
@@ -143,6 +137,14 @@ public class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Cons
 
 		public void setTimestamp(Date timestamp) {
 			this.timestamp = timestamp;
+		}
+
+		public void setAltitude(int altitude) {
+			this.altitude = altitude;
+		}
+
+		public int getAltitude() {
+			return altitude;
 		}
 	}
 }

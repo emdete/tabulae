@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.model.DisplayModel;
 import org.mapsforge.map.model.MapViewPosition;
@@ -85,6 +86,7 @@ public class Map extends Base implements Constants {
 			}
 		};
 		mapView.setClickable(true);
+		// TODO: consider mapView.setGestureDetector();?
 		mapView.getMapScaleBar().setVisible(false);
 		mapView.getModel().mapViewPosition.setZoomLevelMin((byte) 4);
 		mapView.getModel().mapViewPosition.setZoomLevelMax((byte) 20);

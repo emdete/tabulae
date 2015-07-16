@@ -1,6 +1,7 @@
 package org.pyneo.tabulae.map;
 
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.cache.FileSystemTileCache;
 import org.mapsforge.map.layer.cache.InMemoryTileCache;
@@ -23,11 +24,17 @@ public abstract class LayerB implements Constants {
 
 	public LayerB(Tabulae activity, MapView mapView) {
 		this.mapView = mapView;
-		memCache = new InMemoryTileCache(10);
-		tileCache = new TwoLevelTileCache(
-			memCache,
-			new FileSystemTileCache(99999, new File(activity.getTilesDir(), getId()), AndroidGraphicFactory.INSTANCE, true, 3, true)
-			);
+		if (false) {
+			memCache = new InMemoryTileCache(10);
+			tileCache = new TwoLevelTileCache(
+				memCache,
+				new FileSystemTileCache(99999, new File(activity.getTilesDir(), getId()), AndroidGraphicFactory.INSTANCE, false, 3, true)
+				);
+		}
+		else {
+			tileCache = AndroidUtil.createTileCache(activity, getId(), mapView.getModel().displayModel.getTileSize(),
+				.9f, mapView.getModel().frameBufferModel.getOverdrawFactor());
+		}
 	}
 
 	byte getZoomLevelMin() {
@@ -47,7 +54,7 @@ public abstract class LayerB implements Constants {
 			mapView.getModel().mapViewPosition.setZoomLevelMax(getZoomLevelMax());
 		}
 		else {
-			memCache.purge();
+			if (memCache != null) memCache.purge();
 		}
 	}
 
