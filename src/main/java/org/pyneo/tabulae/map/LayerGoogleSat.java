@@ -13,7 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Bing satellite based layer
+ * Google satellite based layer
  */
 class LayerGoogleSat extends LayerB {
 	static final String ID = "google_sat";
