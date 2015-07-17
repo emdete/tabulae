@@ -29,7 +29,7 @@ public class Locus extends Base implements Constants {
 		if (DEBUG) Log.d(TAG, "Locus.onResume");
 		MapView mapView = ((Tabulae)getActivity()).getMapView();
 		mapView.getLayerManager().getLayers().add(myLocationOverlay);
-		myLocationOverlay.enable(true);
+		myLocationOverlay.enable(false);
 	}
 
 	@Override public void onPause() {

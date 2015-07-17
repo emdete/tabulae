@@ -24,11 +24,18 @@ class LayerV extends LayerB {
 		File mapsDir = activity.getMapsDir();
 		File[] maps = mapsDir.listFiles();
 		if (maps != null) for (File map: maps) {
-			Log.d(TAG, "map=" + map);
-			// TODO use boundingBox of MapFile to sort the files?
-			multiMapDataStore.addMapDataStore(new MapFile(map), true, true);
+			if (map.isFile()) {
+				try {
+					multiMapDataStore.addMapDataStore(new MapFile(map), true, true);
+					Log.d(TAG, "LayerV loaded map=" + map);
+				}
+				catch (Exception e) {
+					Log.e(TAG, "LayerV error map=" + map, e);
+				}
+			}
 		}
-		tileLayer = new TileRendererLayer(tileCache, multiMapDataStore, mapView.getModel().mapViewPosition, false, true, AndroidGraphicFactory.INSTANCE);
+		tileLayer = new TileRendererLayer(tileCache, multiMapDataStore,
+			mapView.getModel().mapViewPosition, false, true, AndroidGraphicFactory.INSTANCE);
 		((TileRendererLayer)tileLayer).setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
 		mapView.getLayerManager().getLayers().add(tileLayer);
 		setVisible(false);

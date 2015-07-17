@@ -52,7 +52,6 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	protected static final GraphicFactory GRAPHIC_FACTORY = AndroidGraphicFactory.INSTANCE;
 	protected float minDistance = 0.0f;
 	protected long minTime = 0;
-	protected boolean centerAtNextFix;
 	protected boolean showAccuracy;
 	protected final Circle circle;
 	protected Location lastLocation;
@@ -66,31 +65,24 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	protected boolean snapToLocationEnabled;
 
 	/**
-	 * Constructs a new {@code ThreeStateLocationOverlay} with the default circle paints.
-	 *
-	 * @param context
-	 *            a reference to the application context.
-	 * @param mapViewPosition
-	 *            the {@code MapViewPosition} whose location will be updated.
-	 */
+	* Constructs a new {@code ThreeStateLocationOverlay} with the default circle paints.
+	*
+	* @param context a reference to the application context.
+	* @param mapViewPosition the {@code MapViewPosition} whose location will be updated.
+	*/
 	public ThreeStateLocationOverlay(Context context, MapViewPosition mapViewPosition) {
 		this(context, mapViewPosition, getDefaultCircleFill(), getDefaultCircleStroke());
 	}
 
 	/**
-	 * Constructs a new {@code ThreeStateLocationOverlay} with the given circle paints.
-	 *
-	 * @param context
-	 *            a reference to the application context.
-	 * @param mapViewPosition
-	 *            the {@code MapViewPosition} whose location will be updated.
-	 * @param circleFill
-	 *            the {@code Paint} used to fill the circle that represents the accuracy of the current location (might be null).
-	 * @param circleStroke
-	 *            the {@code Paint} used to stroke the circle that represents the accuracy of the current location (might be null).
-	 */
-	public ThreeStateLocationOverlay(Context context, MapViewPosition mapViewPosition, Paint circleFill,
-							Paint circleStroke) {
+	* Constructs a new {@code ThreeStateLocationOverlay} with the given circle paints.
+	*
+	* @param context a reference to the application context.
+	* @param mapViewPosition the {@code MapViewPosition} whose location will be updated.
+	* @param circleFill the {@code Paint} used to fill the circle that represents the accuracy of the current location (might be null).
+	* @param circleStroke the {@code Paint} used to stroke the circle that represents the accuracy of the current location (might be null).
+	*/
+	public ThreeStateLocationOverlay(Context context, MapViewPosition mapViewPosition, Paint circleFill, Paint circleStroke) {
 		super();
 		this.mapViewPosition = mapViewPosition;
 		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -106,8 +98,8 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	}
 
 	/**
-	 * Stops the receiving of location updates. Has no effect if location updates are already disabled.
-	 */
+	* Stops the receiving of location updates. Has no effect if location updates are already disabled.
+	*/
 	public synchronized void disable() {
 		if (myLocationEnabled) {
 			myLocationEnabled = false;
@@ -128,48 +120,38 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	}
 
 	/**
-	 * Enables the receiving of location updates from the most accurate {@link LocationProvider} available.
-	 *
-	 * @param centerAtFirstFix
-	 *            whether the map should be centered to the first received location fix.
-	 * @return true if at least one location provider was found, false otherwise.
-	 */
-	public synchronized boolean enable(boolean centerAtFirstFix) {
-		if (!enableBestAvailableProvider()) {
-			return false;
-		}
-		centerAtNextFix = centerAtFirstFix;
+	* Enables the receiving of location updates from the most accurate {@link LocationProvider} available.
+	*
+	* @param snapToLocationEnabled wether the maps should snap to the current location
+	* @return true
+	*/
+	public synchronized boolean enable(boolean snapToLocationEnabled) {
+		this.snapToLocationEnabled = snapToLocationEnabled;
 		circle.setDisplayModel(displayModel);
 		map_needle_pinned.setDisplayModel(displayModel);
 		map_needle.setDisplayModel(displayModel);
 		map_needle_off.setDisplayModel(displayModel);
+		enableLocationProvider();
 		return true;
 	}
 
 	/**
-	 * @return the most-recently received location fix (might be null).
-	 */
+	* @return the most-recently received location fix (might be null).
+	*/
 	public synchronized Location getLastLocation() {
 		return lastLocation;
 	}
 
 	/**
-	 * @return true if the map will be centered at the next received location fix, false otherwise.
-	 */
-	public synchronized boolean isCenterAtNextFix() {
-		return centerAtNextFix;
-	}
-
-	/**
-	 * @return true if the receiving of location updates is currently enabled, false otherwise.
-	 */
+	* @return true if the receiving of location updates is currently enabled, false otherwise.
+	*/
 	public synchronized boolean isEnabled() {
 		return myLocationEnabled;
 	}
 
 	/**
-	 * @return true if the snap-to-location mode is enabled, false otherwise.
-	 */
+	* @return true if the snap-to-location mode is enabled, false otherwise.
+	*/
 	public synchronized boolean isSnapToLocationEnabled() {
 		return snapToLocationEnabled;
 	}
@@ -184,22 +166,22 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 		synchronized (this) {
 			long age = (SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()) / 1000000000;
 			if (age > 3 || !location.hasAccuracy() || location.getAccuracy() == 0) {
-				if (DEBUG) { Log.d(TAG, "off: age=" + age); }
+				//if (DEBUG) Log.d(TAG, "ThreeStateLocationOverlay.onLocationChanged off: age=" + age);
 				marker = map_needle_off;
 				circle.setRadius(0);
 			}
 			else {
 				float accuracy = location.getAccuracy();
-				//if (DEBUG) { Log.d(TAG, "circle: accuracy=" + accuracy); }
+				//if (DEBUG) { Log.d(TAG, "ThreeStateLocationOverlay.onLocationChanged circle: accuracy=" + accuracy); }
 				circle.setRadius(accuracy);
 				if (!location.hasSpeed() || !location.hasBearing()) {
 					marker = map_needle_pinned;
-					//if (DEBUG) { Log.d(TAG, "pinned: no speed or bearing"); }
+					//if (DEBUG) { Log.d(TAG, "ThreeStateLocationOverlay.onLocationChanged pinned: no speed or bearing"); }
 				}
 				else {
 					float speed = location.getSpeed();
 					if (speed < 2.0) {
-						//if (DEBUG) { Log.d(TAG, "pinned: speed=" + speed); }
+						//if (DEBUG) { Log.d(TAG, "ThreeStateLocationOverlay.onLocationChanged pinned: speed=" + speed); }
 						marker = map_needle_pinned;
 					}
 					else {
@@ -212,8 +194,7 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 			LatLong latLong = new LatLong(location.getLatitude(), location.getLongitude(), true);
 			marker.setLatLong(latLong);
 			circle.setLatLong(latLong);
-			if (centerAtNextFix || snapToLocationEnabled) {
-				centerAtNextFix = false;
+			if (snapToLocationEnabled) {
 				mapViewPosition.animateTo(latLong);
 			}
 			requestRedraw();
@@ -222,11 +203,11 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	}
 
 	@Override public void onProviderDisabled(String provider) {
-		enableBestAvailableProvider();
+		enableLocationProvider();
 	}
 
 	@Override public void onProviderEnabled(String provider) {
-		enableBestAvailableProvider();
+		enableLocationProvider();
 	}
 
 	@Override
@@ -235,30 +216,32 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	}
 
 	/**
-	 * Minimum distance between location updates, in meters.
-	 * You should call this before calling {@link ThreeStateLocationOverlay#enable(boolean)}.
-	 */
+	* Minimum distance between location updates, in meters.
+	* You should call this before calling {@link ThreeStateLocationOverlay#enable(boolean)}.
+	*/
 	public void setMinDistance(float minDistance) {
 		this.minDistance = minDistance;
 	}
 
 	/**
-	 * Minimum time interval between location updates, in milliseconds.
-	 * You should call this before calling {@link ThreeStateLocationOverlay#enable(boolean)}.
-	 */
+	* Minimum time interval between location updates, in milliseconds.
+	* You should call this before calling {@link ThreeStateLocationOverlay#enable(boolean)}.
+	*/
 	public void setMinTime(long minTime) {
 		this.minTime = minTime;
 	}
 
 	/**
-	 * @param snapToLocationEnabled
-	 *            whether the map should be centered at each received location fix.
-	 */
+	* @param snapToLocationEnabled whether the map should be centered at each received location.
+	*/
 	public synchronized void setSnapToLocationEnabled(boolean snapToLocationEnabled) {
 		this.snapToLocationEnabled = snapToLocationEnabled;
+		if (snapToLocationEnabled) {
+			onLocationChanged(lastLocation);
+		}
 	}
 
-	protected synchronized boolean enableBestAvailableProvider() {
+	protected synchronized boolean enableLocationProvider() {
 		disable();
 		for (String provider : locationManager.getProviders(true)) {
 			Location pl = locationManager.getLastKnownLocation(provider);

@@ -15,29 +15,12 @@ public class Dashboard extends Base implements Constants {
 	protected DashboardItem[] dashboardItems;
 	protected boolean visible = true;
 
-	public void inform(int event, Bundle extra) {
-		//if (DEBUG) Log.d(TAG, "Dashboard.inform event=" + event + ", extra=" + extra);
-		if (dashboardItems != null) {
-			for (DashboardItem d : dashboardItems) {
-				d.inform(event, extra);
-			}
-		}
-		switch (event) {
-			case R.id.event_dashboard:
-				getActivity().findViewById(R.id.dashboard_list).setVisibility(visible? View.GONE: View.VISIBLE);
-				visible = !visible;
-				break;
-		}
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (DEBUG) Log.d(TAG, "Dashboard.onCreateView");
 		return inflater.inflate(R.layout.dashboard, container, false);
 	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
+	@Override public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		if (DEBUG) Log.d(TAG, "Dashboard.onActivityCreated");
 		ViewGroup viewGroup = (ViewGroup)getActivity().findViewById(R.id.dashboard).findViewById(R.id.dashboard_list);
@@ -77,6 +60,21 @@ public class Dashboard extends Base implements Constants {
 				}
 				textView.setText(value);
 			}
+		}
+	}
+
+	public void inform(int event, Bundle extra) {
+		//if (DEBUG) Log.d(TAG, "Dashboard.inform event=" + event + ", extra=" + extra);
+		if (dashboardItems != null) {
+			for (DashboardItem d : dashboardItems) {
+				d.inform(event, extra);
+			}
+		}
+		switch (event) {
+			case R.id.event_dashboard:
+				getActivity().findViewById(R.id.dashboard_list).setVisibility(visible? View.GONE: View.VISIBLE);
+				visible = !visible;
+				break;
 		}
 	}
 }

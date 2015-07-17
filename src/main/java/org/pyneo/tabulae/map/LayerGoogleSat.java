@@ -17,6 +17,7 @@ import java.net.URL;
  */
 class LayerGoogleSat extends LayerB {
 	static final String ID = "google_sat";
+	static final String strGalileo = new String("Galileo");
 
 	LayerGoogleSat(Tabulae activity, MapView mapView) {
 		super(activity, mapView, true);
@@ -49,7 +50,14 @@ class LayerGoogleSat extends LayerB {
 		}
 
 		@Override public URL getTileUrl(Tile tile) throws MalformedURLException {
-			return new URL(getProtocol(), getHostName(), port, getBaseUrl() + getExtension());
+			return new URL(getProtocol(), getHostName(), port, new StringBuilder()
+				.append(getBaseUrl())
+				.append("&src=app")
+				.append("&x=").append(tile.tileX)
+				.append("&y=").append(tile.tileY)
+				.append("&z=").append(tile.zoomLevel)
+				.append("&s=").append(strGalileo.substring(0, (tile.tileX * 3 + tile.tileY) % 8))
+				.toString());
 		}
 	}
 }

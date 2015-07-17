@@ -17,11 +17,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 class AlternatingLine extends Polyline implements Constants {
-	protected final GraphicFactory graphicFactory;
-
 	public AlternatingLine(GraphicFactory graphicFactory) {
 		super(null, graphicFactory);
-		this.graphicFactory = graphicFactory;
 	}
 
 	@Override public synchronized void draw(BoundingBox boundingBox, byte zoomLevel, Canvas canvas, Point topLeftPoint) {

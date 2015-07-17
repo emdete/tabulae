@@ -74,7 +74,7 @@ class LayerBingSat extends LayerB {
 				.append(encodeQuadTree(tile.zoomLevel, tile.tileX, tile.tileY))
 				.append(getExtension());
 			URL url = new URL(getProtocol(), getHostName(), port, stringBuilder.toString());
-			Log.d(TAG, "getTileUrl url=" + url);
+			//Log.d(TAG, "getTileUrl url=" + url);
 			return url;
 		}
 	}

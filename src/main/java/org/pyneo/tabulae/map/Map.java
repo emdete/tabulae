@@ -24,10 +24,6 @@ public class Map extends Base implements Constants {
 	private MapView mapView;
 	private int currentMap = R.id.event_map_mapquest;
 	private HashMap<Integer,LayerB> layers = new HashMap<>();
-	private boolean follow = true;
-	private double latitude = 52.517037;
-	private double longitude = 13.38886;
-	private byte zoom = 14;
 
 	@Override public void onCreate(Bundle bundle) {
 		if (DEBUG) { Log.d(TAG, "Map.onCreate"); }
@@ -51,8 +47,6 @@ public class Map extends Base implements Constants {
 		DisplayModel displayModel = mapView.getModel().displayModel;
 		displayModel.setBackgroundColor(0xffbbbbbb);
 		displayModel.setUserScaleFactor(1.5f);
-		mapView.getModel().mapViewPosition.setCenter(new LatLong(latitude, longitude));
-		mapView.getModel().mapViewPosition.setZoomLevel(zoom);
 		layers.put(R.id.event_map_vector, new LayerV((Tabulae) getActivity(), mapView));
 		layers.put(R.id.event_map_bing_satellite, new LayerBingSat((Tabulae) getActivity(), mapView));
 		layers.put(R.id.event_map_google_satellite, new LayerGoogleSat((Tabulae) getActivity(), mapView));
@@ -92,7 +86,7 @@ public class Map extends Base implements Constants {
 		switch (event) {
 			case R.id.event_zoom_in: {
 				MapViewPosition mvp = mapView.getModel().mapViewPosition;
-				zoom = mvp.getZoomLevel();
+				byte zoom = mvp.getZoomLevel();
 				zoom++;
 				mvp.setZoomLevel(zoom);
 				zoom = mvp.getZoomLevel();
@@ -103,7 +97,7 @@ public class Map extends Base implements Constants {
 			break;
 			case R.id.event_zoom_out: {
 				MapViewPosition mvp = mapView.getModel().mapViewPosition;
-				zoom = mvp.getZoomLevel();
+				byte zoom = mvp.getZoomLevel();
 				zoom--;
 				mvp.setZoomLevel(zoom);
 				zoom = mvp.getZoomLevel();

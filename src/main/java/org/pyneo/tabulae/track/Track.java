@@ -19,7 +19,6 @@ import org.pyneo.tabulae.R;
 
 public class Track extends Base implements Constants {
 	@SuppressLint("SdCardPath")
-	private static final String GPXFILE = "/sdcard/tabulae/export/track50.gpx";
 	AlternatingLine polyline;
 
 	public void inform(int event, Bundle extra) {
@@ -33,7 +32,8 @@ public class Track extends Base implements Constants {
 						double minLongitude = 222;
 						double maxLatitude = -222;
 						double maxLongitude = -222;
-						for (TrackGpxParser.TrackPoint trackPoint : new TrackGpxParser(new File(GPXFILE))) {
+						for (TrackGpxParser.TrackPoint trackPoint : new TrackGpxParser(
+							new File(((Tabulae)getActivity()).getGpxDir(), "sample.gpx"))) {
 							//if (DEBUG) Log.d(TAG, "Track.inform trackPoint=" + trackPoint);
 							if (trackPoint.latitude > maxLatitude) maxLatitude = trackPoint.latitude;
 							if (trackPoint.latitude < minLatitude) minLatitude = trackPoint.latitude;
