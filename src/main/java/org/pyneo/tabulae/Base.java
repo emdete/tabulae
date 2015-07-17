@@ -1,4 +1,4 @@
-package org.pyneo.tabulae.gui;
+package org.pyneo.tabulae;
 
 import android.app.Fragment;
 import android.os.Bundle;

@@ -16,10 +16,10 @@ import org.pyneo.tabulae.Tabulae;
  * Default vector bases layer
  */
 class LayerV extends LayerB {
-	static final public String ID = "mapsforge";
+	static final String ID = "mapsforge";
 
 	LayerV(Tabulae activity, MapView mapView) {
-		super(activity, mapView);
+		super(activity, mapView, false);
 		MultiMapDataStore multiMapDataStore = new MultiMapDataStore(MultiMapDataStore.DataPolicy.RETURN_ALL);
 		File mapsDir = activity.getMapsDir();
 		File[] maps = mapsDir.listFiles();

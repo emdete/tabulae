@@ -1,24 +1,19 @@
 package org.pyneo.tabulae.geolocation;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.location.Location;
 import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
-import org.pyneo.tabulae.gui.Base;
-import org.pyneo.tabulae.map.Map;
+import org.pyneo.tabulae.Base;
 
 public class Locus extends Base implements Constants {
 	private ThreeStateLocationOverlay myLocationOverlay;
 
 	@Override public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
-	}
-
-	@Override public void onStart() {
-		super.onStart();
+		if (DEBUG) Log.d(TAG, "Locus.onCreate");
 		MapView mapView = ((Tabulae)getActivity()).getMapView();
 		myLocationOverlay = new ThreeStateLocationOverlay(getActivity(), mapView.getModel().mapViewPosition) {
 			@Override public void onLocationChanged(Location location) {
@@ -26,20 +21,23 @@ public class Locus extends Base implements Constants {
 				((Tabulae)getActivity()).inform(R.id.location, ThreeStateLocationOverlay.toBundle(location));
 			}
 		};
-		myLocationOverlay.setSnapToLocationEnabled(true);
-		mapView.getLayerManager().getLayers().add(myLocationOverlay);
-	}
-
-	@Override public void onPause() {
-		super.onPause();
-		if (DEBUG) Log.d(TAG, "onPause");
-		myLocationOverlay.disable();
+		myLocationOverlay.setSnapToLocationEnabled(false);
 	}
 
 	@Override public void onResume() {
 		super.onResume();
-		if (DEBUG) Log.d(TAG, "onResume");
+		if (DEBUG) Log.d(TAG, "Locus.onResume");
+		MapView mapView = ((Tabulae)getActivity()).getMapView();
+		mapView.getLayerManager().getLayers().add(myLocationOverlay);
 		myLocationOverlay.enable(true);
+	}
+
+	@Override public void onPause() {
+		super.onPause();
+		if (DEBUG) Log.d(TAG, "Locus.onPause");
+		MapView mapView = ((Tabulae)getActivity()).getMapView();
+		myLocationOverlay.disable();
+		mapView.getLayerManager().getLayers().remove(myLocationOverlay);
 	}
 
 	public void inform(int event, Bundle extra) {

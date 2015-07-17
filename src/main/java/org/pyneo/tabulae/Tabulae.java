@@ -11,9 +11,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.io.File;
+
+import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.geolocation.Locus;
-import org.pyneo.tabulae.gui.Base;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
 import org.pyneo.tabulae.poi.Poi;
@@ -21,8 +22,8 @@ import org.pyneo.tabulae.track.Track;
 import org.pyneo.tabulae.map.Map;
 
 public class Tabulae extends Activity implements Constants {
-	private Base[] fragments;
-	File baseStorageFile = null;
+	protected Base[] fragments;
+	protected File baseStorageFile = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,14 @@ public class Tabulae extends Activity implements Constants {
 			}
 		});
 		setContentView(R.layout.base);
-		fragments = new Base[]{new Map(), new Locus(), new Track(), new Controller(), new Poi(), new Dashboard(),};
+		fragments = new Base[]{
+			new Map(),
+			new Track(),
+			new Poi(),
+			new Locus(),
+			new Controller(),
+			new Dashboard(),
+			};
 		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 		String baseStorage = preferences.getString("baseStorage", null);
 		if (savedInstanceState != null) {
@@ -110,6 +118,7 @@ public class Tabulae extends Activity implements Constants {
 	protected void onDestroy() {
 		super.onDestroy();
 		if (DEBUG) Log.d(TAG, "Tabulae.onDestroy");
+		AndroidGraphicFactory.clearResourceMemoryCache();
 	}
 
 	@Override

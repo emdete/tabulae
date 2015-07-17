@@ -17,7 +17,7 @@ public class CursorI implements Iterable<Cursor>, Constants {
 	 */
 	static void test(Cursor cursor) {
 		for (Cursor o : new CursorI(cursor)) {
-			; // do something with the row
+			// do something with the row
 		}
 	}
 

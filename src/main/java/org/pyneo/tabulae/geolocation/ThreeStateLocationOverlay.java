@@ -48,7 +48,7 @@ import org.pyneo.tabulae.R;
  * Play Services. Also note that ThreeStateLocationOverlay needs to be added to a view before requesting location updates
  * (otherwise no DisplayModel is set).
  */
-public class ThreeStateLocationOverlay extends Layer implements LocationListener, Constants {
+class ThreeStateLocationOverlay extends Layer implements LocationListener, Constants {
 	protected static final GraphicFactory GRAPHIC_FACTORY = AndroidGraphicFactory.INSTANCE;
 	protected float minDistance = 0.0f;
 	protected long minTime = 0;
@@ -95,11 +95,11 @@ public class ThreeStateLocationOverlay extends Layer implements LocationListener
 		this.mapViewPosition = mapViewPosition;
 		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 		map_needle_pinned = new Marker(null, AndroidGraphicFactory.convertToBitmap(
-			context.getResources().getDrawable(R.drawable.map_needle_pinned)), 0, 0);
+			context.getResources().getDrawable(R.drawable.map_needle_pinned, null)), 0, 0);
 		map_needle = new RotatingMarker(null, AndroidGraphicFactory.convertToBitmap(
-			context.getResources().getDrawable(R.drawable.map_needle)), 0, 0);
+			context.getResources().getDrawable(R.drawable.map_needle, null)), 0, 0);
 		map_needle_off = new Marker(null, AndroidGraphicFactory.convertToBitmap(
-			context.getResources().getDrawable(R.drawable.map_needle_off)), 0, 0);
+			context.getResources().getDrawable(R.drawable.map_needle_off, null)), 0, 0);
 		marker = map_needle_off;
 		showAccuracy = true;
 		circle = new Circle(null, 0, circleFill, circleStroke);

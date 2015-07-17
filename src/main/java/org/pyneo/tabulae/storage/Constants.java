@@ -1,4 +1,4 @@
-package org.pyneo.tabulae.gui;
+package org.pyneo.tabulae.storage;
 
-public interface Constants extends org.pyneo.tabulae.Constants {
+interface Constants extends org.pyneo.tabulae.Constants {
 }

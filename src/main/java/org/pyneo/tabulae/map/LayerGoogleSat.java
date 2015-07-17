@@ -16,10 +16,10 @@ import java.net.URL;
  * Bing satellite based layer
  */
 class LayerGoogleSat extends LayerB {
-	static final public String ID = "google_sat";
+	static final String ID = "google_sat";
 
 	LayerGoogleSat(Tabulae activity, MapView mapView) {
-		super(activity, mapView);
+		super(activity, mapView, true);
 		tileLayer = new TileDownloadLayer(tileCache, mapView.getModel().mapViewPosition,
 			new Source(), AndroidGraphicFactory.INSTANCE);
 		mapView.getLayerManager().getLayers().add(tileLayer);
@@ -49,11 +49,7 @@ class LayerGoogleSat extends LayerB {
 		}
 
 		@Override public URL getTileUrl(Tile tile) throws MalformedURLException {
-			StringBuilder stringBuilder = new StringBuilder()
-				.append(getBaseUrl())
-				.append(getExtension());
-			URL url = new URL(getProtocol(), getHostName(), port, stringBuilder.toString());
-			return url;
+			return new URL(getProtocol(), getHostName(), port, getBaseUrl() + getExtension());
 		}
 	}
 }

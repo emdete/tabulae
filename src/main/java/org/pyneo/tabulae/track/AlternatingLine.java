@@ -16,8 +16,8 @@ import org.mapsforge.map.layer.overlay.Polyline;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class AlternatingLine extends Polyline implements Constants {
-	GraphicFactory graphicFactory;
+class AlternatingLine extends Polyline implements Constants {
+	protected final GraphicFactory graphicFactory;
 
 	public AlternatingLine(GraphicFactory graphicFactory) {
 		super(null, graphicFactory);
@@ -53,7 +53,7 @@ public class AlternatingLine extends Polyline implements Constants {
 		throw new RuntimeException("getPaintStroke called with no parms"); // i hate to do that, it's just to validate my code
 	}
 
-	public synchronized Paint getPaintStroke(LatLong from, LatLong to) {
+	synchronized Paint getPaintStroke(LatLong from, LatLong to) {
 		Paint paint = AndroidGraphicFactory.INSTANCE.createPaint();
 		paint.setStrokeWidth(16);
 		paint.setStyle(Style.STROKE);

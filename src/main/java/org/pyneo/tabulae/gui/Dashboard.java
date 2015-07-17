@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 
 public class Dashboard extends Base implements Constants {
-	DashboardItem[] dashboardItems;
-	private boolean visible = true;
+	protected DashboardItem[] dashboardItems;
+	protected boolean visible = true;
 
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Dashboard.inform event=" + event + ", extra=" + extra);
@@ -27,18 +28,6 @@ public class Dashboard extends Base implements Constants {
 				visible = !visible;
 				break;
 		}
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		if (DEBUG) Log.d(TAG, "Dashboard.onAttach");
-		super.onAttach(activity);
-	}
-
-	@Override
-	public void onCreate(Bundle bundle) {
-		if (DEBUG) Log.d(TAG, "Dashboard.onCreate");
-		super.onCreate(bundle);
 	}
 
 	@Override
@@ -70,7 +59,7 @@ public class Dashboard extends Base implements Constants {
 		TextView textView;
 
 		DashboardItem(Activity activity, ViewGroup viewGroup, int event, String header, String value_key, String unit) {
-			View item = (View)LayoutInflater.from(activity).inflate(R.layout.dashboard_item, viewGroup, false);
+			View item = LayoutInflater.from(activity).inflate(R.layout.dashboard_item, viewGroup, false);
 			((TextView)item.findViewById(R.id.data_header)).setText(header);
 			((TextView)item.findViewById(R.id.data_unit)).setText(unit);
 			viewGroup.addView(item);

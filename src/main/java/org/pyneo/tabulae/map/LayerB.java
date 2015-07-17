@@ -16,15 +16,15 @@ import java.io.File;
 /**
  * Base of the layers, adds features like proper hide, force zoom limits, ...
  */
-public abstract class LayerB implements Constants {
+abstract class LayerB implements Constants {
 	protected MapView mapView;
 	protected TileLayer tileLayer;
 	protected TileCache tileCache;
-	InMemoryTileCache memCache;
+	protected InMemoryTileCache memCache;
 
-	public LayerB(Tabulae activity, MapView mapView) {
+	LayerB(Tabulae activity, MapView mapView, boolean persistant) {
 		this.mapView = mapView;
-		if (false) {
+		if (persistant) {
 			memCache = new InMemoryTileCache(10);
 			tileCache = new TwoLevelTileCache(
 				memCache,

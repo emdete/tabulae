@@ -20,7 +20,7 @@ public class TableE implements Constants {
 		return ret;
 	}
 
-	public static String equalsList(final Object[] cols) {
+	static String equalsList(final Object[] cols) {
 		String stmnt = "";
 		for (int i = 0; i < cols.length; ) {
 			if (i > 0) stmnt += SEP;
@@ -29,7 +29,7 @@ public class TableE implements Constants {
 		return stmnt;
 	}
 
-	public static String placeholderList(final Object[] cols) {
+	static String placeholderList(final Object[] cols) {
 		String stmnt = "";
 		for (int i = 0; i < cols.length; i++) {
 			if (i > 0) stmnt += SEP;
@@ -53,34 +53,40 @@ public class TableE implements Constants {
 		String stmnt = "SELECT " + fieldList(cols, true) + " FROM " + table.getSimpleName();
 		if (where != null) stmnt += " WHERE " + equalsList(where);
 		if (order != null) stmnt += " ORDER BY " + fieldList(order, false);
+		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);
 		return stmnt;
 	}
 
 	static public String createStatement(Class table, Object[] cols) {
 		String stmnt = "CREATE TABLE " + table.getSimpleName() + " (" + fieldList(cols, false) + ")";
 		// TODO: add DEFAULT / NOT NULL PRIMARY KEY UNIQUE
+		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);
 		return stmnt;
 	}
 
 	static public String dropStatement(Class table, Object[] cols) {
 		String stmnt = "DROP TABLE " + table.getSimpleName();
+		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);
 		return stmnt;
 	}
 
 	static public String insertStatement(Class table, Object[] cols) {
 		String stmnt = "INSERT INTO TABLE " + table.getSimpleName() + " (" + fieldList(cols, false) + ") VALUES (" + placeholderList(cols) + ")";
+		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);
 		return stmnt;
 	}
 
 	static public String updateStatement(Class table, Object[] cols, Object[] where) {
 		String stmnt = "UPDATE TABLE " + table.getSimpleName() + " SET " + equalsList(cols);
 		if (where != null) stmnt += " WHERE " + equalsList(where);
+		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);
 		return stmnt;
 	}
 
 	static public String deleteStatement(Class table, Object[] where) {
 		String stmnt = "DELETE FROM TABLE " + table.getSimpleName();
 		if (where != null) stmnt += " WHERE " + equalsList(where);
+		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);
 		return stmnt;
 	}
 
@@ -115,8 +121,6 @@ public class TableE implements Constants {
 			cursor.getInt(thing.id.ordinal());
 		}
 	}
-
-	;
 
 	/*
 	* here the sample code starts. the columns of a table are defined as a java

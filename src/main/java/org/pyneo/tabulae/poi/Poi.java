@@ -1,11 +1,7 @@
 package org.pyneo.tabulae.poi;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.mapsforge.core.graphics.Bitmap;
@@ -16,11 +12,33 @@ import org.mapsforge.map.layer.overlay.Marker;
 import org.mapsforge.map.view.MapView;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
-import org.pyneo.tabulae.gui.Base;
+import org.pyneo.tabulae.Base;
 
 public class Poi extends Base implements Constants {
-	private boolean visible = true;
-	Marker marker;
+	protected boolean visible = true;
+	protected Marker marker;
+
+	@Override public void onCreate(Bundle bundle) {
+		if (DEBUG) Log.d(TAG, "Poi.onCreate");
+		super.onCreate(bundle);
+	}
+
+	@Override public void onResume() {
+		super.onResume();
+		if (DEBUG) Log.d(TAG, "Poi.onResume");
+		MapView mapView = ((Tabulae)getActivity()).getMapView();
+	}
+
+	@Override public void onPause() {
+		super.onPause();
+		if (DEBUG) Log.d(TAG, "Poi.onPause");
+		MapView mapView = ((Tabulae)getActivity()).getMapView();
+		if (marker != null) {
+			mapView.getLayerManager().getLayers().remove(marker);
+			marker.onDestroy();
+			marker = null;
+		}
+	}
 
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Poi.inform event=" + event + ", extra=" + extra);
@@ -34,7 +52,7 @@ public class Poi extends Base implements Constants {
 				}
 				else {
 					LatLong latLong = new LatLong(51.18199624, 6.20537151);
-					Bitmap bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_black));
+					Bitmap bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_black, null));
 					marker = new Marker(latLong, bitmap, 0, -bitmap.getHeight() / 2) {
 						@Override public boolean onTap(LatLong geoPoint, Point viewPosition, Point tapPoint) {
 							if (contains(viewPosition, tapPoint)) {
@@ -52,27 +70,6 @@ public class Poi extends Base implements Constants {
 				}
 			}
 			break;
-		}
-	}
-
-	@Override public void onCreate(Bundle bundle) {
-		if (DEBUG) {
-			Log.d(TAG, "Poi.onCreate");
-		}
-		super.onCreate(bundle);
-	}
-
-	@Override public void onStart() {
-		super.onStart();
-		if (DEBUG) { Log.d(TAG, "Map.onStart"); }
-	}
-
-	@Override public void onStop() {
-		MapView mapView = ((Tabulae)getActivity()).getMapView();
-		if (marker != null) {
-			mapView.getLayerManager().getLayers().remove(marker);
-			marker.onDestroy();
-			marker = null;
 		}
 	}
 }

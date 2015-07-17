@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -19,31 +20,38 @@ import org.xml.sax.SAXException;
 * <gpx ...><name>...</name><desc /><trk><trkseg><trkpt lon="..." lat="..."><ele>..</ele><time>2015-08-11T00:00:00Z</time>...
 * see https://de.wikipedia.org/wiki/GPS_Exchange_Format
 */
-public class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Constants {
-	public static SAXParserFactory factory = SAXParserFactory.newInstance();
-	public static final String[] formats = new String[]{
-		"yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-		"yyyy-MM-dd'T'HH:mm:ssZ",
-		"yyyy-MM-dd'T'HH:mmZ",
-		"yyyy-MM-dd'T'HH:mm:ss'Z'",
-		"yyyy-MM-dd HH:mm:ss.SSSZ",
-		"yyyy-MM-dd HH:mmZ",
-		"yyyy-MM-dd HH:mm",
-		"yyyy-MM-dd",
+class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Constants {
+	static SAXParserFactory factory = SAXParserFactory.newInstance();
+	static final SimpleDateFormat[] simpleDateFormats = new SimpleDateFormat[]{
+		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US),
+		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),
+		new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ", Locale.US),
+		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
+		new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ", Locale.US),
+		new SimpleDateFormat("yyyy-MM-dd HH:mmZ", Locale.US),
+		new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US),
+		new SimpleDateFormat("yyyy-MM-dd", Locale.US),
 		};
-	private static final String CMT = "cmt";
-	private static final String DESC = "desc";
-	private static final String ELE = "ele";
-	private static final String NAME = "name";
-	private static final String TIME = "time";
-	private static final String TRK = "trk";
-	private static final String LAT = "lat";
-	private static final String LON = "lon";
-	private static final String TRKPT = "trkpt";
-	private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
-	private List<TrackPoint> track = new ArrayList<TrackPoint>();
-	private String trackname;
-	private String description;
+	static {
+		final TimeZone UTC = TimeZone.getTimeZone("UTC");
+		for (SimpleDateFormat sdf: simpleDateFormats) {
+			sdf.setTimeZone(UTC);
+		}
+	}
+	protected static final String CMT = "cmt";
+	protected static final String DESC = "desc";
+	protected static final String ELE = "ele";
+	protected static final String NAME = "name";
+	protected static final String TIME = "time";
+	protected static final String TRK = "trk";
+	protected static final String LAT = "lat";
+	protected static final String LON = "lon";
+	protected static final String TRKPT = "trkpt";
+	protected SimpleDateFormat successSdf = simpleDateFormats[0];
+	protected String trackname;
+	protected String description;
+	protected String comment;
+	protected List<TrackPoint> track = new ArrayList<TrackPoint>();
 
 	public TrackGpxParser(File file) throws Exception {
 		SAXParser parser = factory.newSAXParser();
@@ -54,25 +62,28 @@ public class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Cons
 		return track.iterator();
 	}
 
-	public static Date parseDate(final String str) {
-		SimpleDateFormat sdf = new SimpleDateFormat();
-		sdf.setTimeZone(UTC);
-		for (String format : formats) {
-			sdf.applyPattern(format);
+	Date parseDate(final String str) {
+		try { // try the last successful format to parse
+			return successSdf.parse(str);
+		}
+		catch (ParseException e) {
+		}
+		for (SimpleDateFormat sdf : simpleDateFormats) {
 			try {
+				successSdf = sdf;
 				return sdf.parse(str);
 			}
 			catch (ParseException e) {
 				// if (DEBUG) Log.e(TAG, e.toString(), e);
-				; // ignore parser errors
+				// ignore parser errors
 			}
 		}
 		return new Date(0);
 	}
 
-	private class Handler extends DefaultHandler {
-		private StringBuilder cdata = new StringBuilder();
-		private TrackPoint trkpt;
+	protected class Handler extends DefaultHandler {
+		protected StringBuilder cdata = new StringBuilder();
+		protected TrackPoint trkpt;
 
 		@Override
 		public void characters(char[] ch, int start, int length) throws SAXException {
@@ -84,7 +95,7 @@ public class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Cons
 		public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
 			cdata.delete(0, cdata.length());
 			if (localName.equalsIgnoreCase(TRK)) {
-				;
+				//
 			}
 			else if (localName.equalsIgnoreCase(TRKPT)) {
 				trkpt = new TrackPoint(
@@ -98,13 +109,13 @@ public class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Cons
 		@Override
 		public void endElement(String uri, String localName, String name) throws SAXException {
 			if (localName.equalsIgnoreCase(TRK)) {
-				; // done reading
+				// done reading
 			}
 			else if (localName.equalsIgnoreCase(NAME)) {
 				trackname = cdata.toString().trim(); // trackname
 			}
 			else if (localName.equalsIgnoreCase(CMT)) {
-				cdata.toString().trim(); //
+				comment = cdata.toString().trim(); //
 			}
 			else if (localName.equalsIgnoreCase(DESC)) {
 				description = cdata.toString().trim(); // trackdescription
@@ -124,8 +135,8 @@ public class TrackGpxParser implements Iterable<TrackGpxParser.TrackPoint>, Cons
 	}
 
 	static public class TrackPoint extends LatLong {
-		private Date timestamp;
-		private int altitude;
+		protected Date timestamp;
+		protected int altitude;
 
 		TrackPoint(final double latitude, final double longitude) {
 			super(latitude, longitude);
