@@ -1,21 +1,15 @@
 package org.pyneo.tabulae.map;
 
-import android.util.Log;
-
-import org.mapsforge.core.model.Tile;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.download.TileDownloadLayer;
 import org.mapsforge.map.layer.download.tilesource.OnlineTileSource;
 import org.pyneo.tabulae.Tabulae;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 /**
  * Bing satellite based layer
  */
-class LayerMapQuest extends LayerB {
+class LayerMapQuest extends LayerBase {
 	static final String ID = "mapquest";
 
 	LayerMapQuest(Tabulae activity, MapView mapView) {

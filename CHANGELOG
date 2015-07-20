@@ -1,2 +1,5 @@
 v.2.0.0
 + rewrite
++ mapsforge vector maps
++ gpx read + display
++ poi display

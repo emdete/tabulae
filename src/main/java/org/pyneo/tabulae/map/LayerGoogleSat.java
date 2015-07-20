@@ -1,7 +1,5 @@
 package org.pyneo.tabulae.map;
 
-import android.util.Log;
-
 import org.mapsforge.core.model.Tile;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
@@ -15,7 +13,7 @@ import java.net.URL;
 /**
  * Google satellite based layer
  */
-class LayerGoogleSat extends LayerB {
+class LayerGoogleSat extends LayerBase {
 	static final String ID = "google_sat";
 	static final String strGalileo = new String("Galileo");
 

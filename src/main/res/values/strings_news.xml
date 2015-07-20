@@ -3,5 +3,8 @@
 <string name='whats_new_dialog_text' translatable='false'>
 v.2.0.0\n
 + rewrite\n
++ mapsforge vector maps\n
++ gpx read + display\n
++ poi display\n
 </string>
 </resources>

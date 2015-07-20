@@ -1,4 +1,4 @@
-package org.pyneo.tabulae.geolocation;
+package org.pyneo.tabulae.locus;
 
 import android.os.Bundle;
 import android.util.Log;

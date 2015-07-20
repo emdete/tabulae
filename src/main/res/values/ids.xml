@@ -4,6 +4,7 @@
 	<item name="event_map_google_satellite" type="id"/>
 	<item name="event_map_mapquest" type="id"/>
 	<item name="event_map_outdoor_active" type="id"/>
+	<item name="event_map_openandromaps" type="id"/>
 	<item name="event_map_vector" type="id"/>
 	<item name="event_scale_end" type="id" />
 	<item name="event_scale" type="id" />

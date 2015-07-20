@@ -1,33 +1,18 @@
-package org.pyneo.tabulae.geolocation;
+package org.pyneo.tabulae.locus;
 /*
  * Copyright © 2015 Himal Rai (initial implementation from https://groups.google.com/forum/#!topic/mapsforge-dev/BS-b3q5XAa0)
  * Copyright © 2015 Emux (valuable hints)
  * Copyright © 2015 M. Dietrich (cleanup, simplification)
  */
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.os.Bundle;
-import android.util.Log;
-import android.os.SystemClock;
 import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.graphics.Canvas;
-import org.mapsforge.core.graphics.GraphicFactory;
-import org.mapsforge.core.graphics.Paint;
-import org.mapsforge.core.graphics.Style;
 import org.mapsforge.core.model.BoundingBox;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.core.model.Point;
 import org.mapsforge.core.model.Rectangle;
 import org.mapsforge.core.util.MercatorProjection;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
-import org.mapsforge.map.layer.Layer;
-import org.mapsforge.map.layer.overlay.Circle;
 import org.mapsforge.map.layer.overlay.Marker;
-import org.mapsforge.map.model.MapViewPosition;
 
 class RotatingMarker extends Marker {
 	protected float degree = 0.0f;

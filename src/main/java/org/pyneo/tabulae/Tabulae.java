@@ -14,7 +14,7 @@ import java.io.File;
 
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
-import org.pyneo.tabulae.geolocation.Locus;
+import org.pyneo.tabulae.locus.Locus;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
 import org.pyneo.tabulae.poi.Poi;
@@ -132,6 +132,13 @@ public class Tabulae extends Activity implements Constants {
 	}
 
 	/**
+	* directory for storage
+	*/
+	public File getBaseDir() {
+		return baseStorageFile;
+	}
+
+	/**
 	* directory for gpx exchange
 	*/
 	public File getGpxDir() {
@@ -153,16 +160,7 @@ public class Tabulae extends Activity implements Constants {
 	* directory for the mapsforge map files
 	*/
 	public File getMapsDir() {
-		File ret = new File(baseStorageFile, "maps/mapsforge");
-		ret.mkdirs();
-		return ret;
-	}
-
-	/**
-	* directory for the themes
-	*/
-	public File getThemesDir() {
-		File ret = new File(baseStorageFile, "maps/mapsforge/themes");
+		File ret = new File(baseStorageFile, "maps");
 		ret.mkdirs();
 		return ret;
 	}

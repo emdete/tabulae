@@ -9,7 +9,7 @@ import org.pyneo.tabulae.Tabulae;
 /**
  * Downloadlayer for outdooractive
  */
-class LayerOutdoorActive extends LayerB {
+class LayerOutdoorActive extends LayerBase {
 	static final String ID = "outdoor_active";
 
 	LayerOutdoorActive(Tabulae activity, MapView mapView) {

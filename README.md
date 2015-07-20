@@ -28,39 +28,10 @@ Uses
 
 The app uses the following libraries:
 
-[osmdroid](https://github.com/osmdroid/osmdroid)
-
-[ManuelPeinado](https://github.com/ManuelPeinado/MultiChoiceAdapter)
-
-[cwac-loaderex](https://github.com/commonsguy/cwac-loaderex)
-
-[android-ColorPickerPreference](https://github.com/attenzione/android-ColorPickerPreference)
-
-[filemanager](https://github.com/openintents/filemanager)
-
-All libraries are copied as source into the project tree instead of
-using subprojects or the like.
+[mapsforge](https://github.com/mapsforge/mapsforge)
 
 Debugging
 ---------
 
-The app does alot of debug logging but that level must be enabled. you can do
-so by issuing `setprop log.tag.org.pyneo.maps DEBUG` in a shell on the
-device.
-
-Origin
-------
-
-This app is a fork from RMaps found at
-
-[robertprojects](https://code.google.com/p/robertprojects/source)
-
-the app is described at
-
-[robertdeveloper](http://robertdeveloper.blogspot.com/2009/08/rmaps.html)
-
-
-email of the developer is
-
-[robertk506@gmail.com](mailto:robertk506@gmail.com)
+The app does alot of debug logging when build for debug.
 

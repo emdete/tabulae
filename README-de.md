@@ -87,17 +87,12 @@ Fehlersuche
 Stürzt Tabulae ab, kann ein Fehlerbericht beim nächsten Start erzeugt
 und versendet werden.
 
-Tabulae logged mit den üblichen Android Board-Mitteln. Der Befehl
-(Installation des Android SDK vorausgesetzt), um das mehr Informationen
-zu erhalten lautet:
-
-	adb shell setprop log.tag.org.pyneo.maps DEBUG
-
-und mit dem Befehl:
+Tabulae logged mit den üblichen Android Board-Mitteln. Mit dem Befehl:
 
 	adb logcat -v time -s org.pyneo.maps
 
-lässt sich beobachten, was Tabulae zu sagen hat.
+lässt sich beobachten, was Tabulae zu sagen hat. Ein Debug-Build (siehe
+nächstes Kapitel) logged mehr Informationen.
 
 Selbst Compilieren
 ------------------

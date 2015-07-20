@@ -15,18 +15,16 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.pyneo.tabulae.geolocation;
+package org.pyneo.tabulae.locus;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
-import android.util.Log;
 import android.os.SystemClock;
-import org.mapsforge.core.graphics.Bitmap;
+
 import org.mapsforge.core.graphics.Canvas;
 import org.mapsforge.core.graphics.GraphicFactory;
 import org.mapsforge.core.graphics.Paint;
@@ -195,7 +193,7 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 			marker.setLatLong(latLong);
 			circle.setLatLong(latLong);
 			if (snapToLocationEnabled) {
-				mapViewPosition.animateTo(latLong);
+				mapViewPosition.setCenter(latLong);
 			}
 			requestRedraw();
 			lastLocation = location;

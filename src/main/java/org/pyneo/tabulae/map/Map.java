@@ -1,6 +1,5 @@
 package org.pyneo.tabulae.map;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 
 import java.util.HashMap;
 
-import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.model.DisplayModel;
@@ -22,8 +20,8 @@ import org.pyneo.tabulae.Tabulae;
 public class Map extends Base implements Constants {
 	// get one from http://download.mapsforge.org/maps/ and adapt path to your needs:
 	private MapView mapView;
-	private int currentMap = R.id.event_map_mapquest;
-	private HashMap<Integer,LayerB> layers = new HashMap<>();
+	private int currentMap = -1;
+	private HashMap<Integer,LayerBase> layers = new HashMap<>();
 
 	@Override public void onCreate(Bundle bundle) {
 		if (DEBUG) { Log.d(TAG, "Map.onCreate"); }
@@ -47,11 +45,13 @@ public class Map extends Base implements Constants {
 		DisplayModel displayModel = mapView.getModel().displayModel;
 		displayModel.setBackgroundColor(0xffbbbbbb);
 		displayModel.setUserScaleFactor(1.5f);
-		layers.put(R.id.event_map_vector, new LayerV((Tabulae) getActivity(), mapView));
-		layers.put(R.id.event_map_bing_satellite, new LayerBingSat((Tabulae) getActivity(), mapView));
-		layers.put(R.id.event_map_google_satellite, new LayerGoogleSat((Tabulae) getActivity(), mapView));
-		layers.put(R.id.event_map_mapquest, new LayerMapQuest((Tabulae) getActivity(), mapView));
-		layers.put(R.id.event_map_outdoor_active, new LayerOutdoorActive((Tabulae) getActivity(), mapView));
+		//layers.put(R.id.event_map_vector, new LayerMapsForge((Tabulae) getActivity(), mapView));
+		layers.put(R.id.event_map_openandromaps, new LayerOpenAndroMaps((Tabulae) getActivity(), mapView));
+		//layers.put(R.id.event_map_bing_satellite, new LayerBingSat((Tabulae) getActivity(), mapView));
+		//layers.put(R.id.event_map_google_satellite, new LayerGoogleSat((Tabulae) getActivity(), mapView));
+		//layers.put(R.id.event_map_mapquest, new LayerMapQuest((Tabulae) getActivity(), mapView));
+		//layers.put(R.id.event_map_outdoor_active, new LayerOutdoorActive((Tabulae) getActivity(), mapView));
+		currentMap = R.id.event_map_openandromaps;
 		layers.get(currentMap).setVisible(true);
 	}
 
@@ -62,14 +62,14 @@ public class Map extends Base implements Constants {
 
 	@Override public void onResume() {
 		super.onResume();
-		for (LayerB layerB : layers.values()) {
+		for (LayerBase layerB : layers.values()) {
 			layerB.onResume();
 		}
 	}
 
 	@Override public void onPause() {
 		super.onPause();
-		for (LayerB layerB : layers.values()) {
+		for (LayerBase layerB : layers.values()) {
 			layerB.onPause();
 			layerB.onDestroy();
 		}
@@ -107,6 +107,7 @@ public class Map extends Base implements Constants {
 			}
 			break;
 			case R.id.event_map_vector:
+			case R.id.event_map_openandromaps:
 			case R.id.event_map_bing_satellite:
 			case R.id.event_map_google_satellite:
 			case R.id.event_map_mapquest:

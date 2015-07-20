@@ -1,4 +1,4 @@
-package org.pyneo.tabulae.geolocation;
+package org.pyneo.tabulae.locus;
 
 interface Constants extends org.pyneo.tabulae.Constants {
 }

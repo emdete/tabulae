@@ -1,26 +1,19 @@
 package org.pyneo.tabulae.map;
 
-import android.util.Log;
-
 import org.mapsforge.core.model.Tile;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.download.TileDownloadLayer;
 import org.mapsforge.map.layer.download.tilesource.OnlineTileSource;
-import org.mapsforge.map.layer.renderer.TileRendererLayer;
-import org.mapsforge.map.reader.MapFile;
-import org.mapsforge.map.reader.MultiMapDataStore;
-import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import org.pyneo.tabulae.Tabulae;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
  * Bing satellite based layer
  */
-class LayerBingSat extends LayerB {
+class LayerBingSat extends LayerBase {
 	static final public String ID = "bing_sat";
 
 	LayerBingSat(Tabulae activity, MapView mapView) {

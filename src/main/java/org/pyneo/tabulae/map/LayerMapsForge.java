@@ -15,22 +15,22 @@ import org.pyneo.tabulae.Tabulae;
 /**
  * Default vector bases layer
  */
-class LayerV extends LayerB {
+class LayerMapsForge extends LayerBase {
 	static final String ID = "mapsforge";
 
-	LayerV(Tabulae activity, MapView mapView) {
+	LayerMapsForge(Tabulae activity, MapView mapView) {
 		super(activity, mapView, false);
 		MultiMapDataStore multiMapDataStore = new MultiMapDataStore(MultiMapDataStore.DataPolicy.RETURN_ALL);
-		File mapsDir = activity.getMapsDir();
+		File mapsDir = new File(activity.getMapsDir(), ID);
 		File[] maps = mapsDir.listFiles();
 		if (maps != null) for (File map: maps) {
 			if (map.isFile()) {
 				try {
 					multiMapDataStore.addMapDataStore(new MapFile(map), true, true);
-					Log.d(TAG, "LayerV loaded map=" + map);
+					if (DEBUG) Log.d(TAG, "LayerMapsForge loaded map=" + map);
 				}
 				catch (Exception e) {
-					Log.e(TAG, "LayerV error map=" + map, e);
+					Log.e(TAG, "LayerMapsForge error map=" + map, e);
 				}
 			}
 		}
