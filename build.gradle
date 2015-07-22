@@ -28,8 +28,7 @@ dependencies {
 	compile 'com.android.support:support-v4:22.2.0'
 	compile 'com.android.support:appcompat-v7:22.2.0'
 	compile 'org.mapsforge:mapsforge-map-android:0.5.+'
-	// compile 'org.json:json-simple-1.1.1'
-	compile files('libraries/json-simple-1.1.1.jar')
+	compile 'com.googlecode.json-simple:json-simple:1.1.1'
 }
 
 android {
