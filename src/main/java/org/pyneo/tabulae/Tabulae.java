@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.io.File;
-
+import android.content.Intent;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.fawlty.Fawlty;
@@ -96,6 +96,13 @@ public class Tabulae extends Activity implements Constants {
 		}
 	}
 
+	@Override public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+		if (DEBUG) Log.d(TAG, "Tabulae.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode);
+		for (Base b : fragments) {
+			b.onActivityResult(requestCode, resultCode, resultData);
+		}
+	}
+
 	@Override protected void onPause() {
 		super.onPause();
 		if (DEBUG) Log.d(TAG, "Tabulae.onPause");
@@ -132,7 +139,7 @@ public class Tabulae extends Activity implements Constants {
 
 	@Override protected void onSaveInstanceState(Bundle bundle) {
 		super.onSaveInstanceState(bundle);
-		Log.d(TAG, "onSaveInstanceState bundle=" + bundle);
+		Log.d(TAG, "Tabulae.onSaveInstanceState bundle=" + bundle);
 		bundle.putString("baseStorage", baseStorageFile.getPath());
 	}
 

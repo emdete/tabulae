@@ -15,7 +15,7 @@
 	<ImageButton
 		android:id="@+id/event_attribute"
 		style="@style/buttonstyle"
-		android:visibility="visible"
+		android:visibility="invisible"
 		android:src="@drawable/attribute_white"
 		/>
 	<ImageButton

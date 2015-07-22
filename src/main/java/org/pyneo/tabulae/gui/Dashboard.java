@@ -26,14 +26,16 @@ public class Dashboard extends Base implements Constants {
 		ViewGroup viewGroup = (ViewGroup)getActivity().findViewById(R.id.dashboard).findViewById(R.id.dashboard_list);
 		viewGroup.removeAllViews();
 		dashboardItems = new DashboardItem[]{
-				//new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
-				//new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
-				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
-				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_bearing), "bearing", getString(R.string.unit_degree)),
-				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
-				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),
-				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_zoom, getString(R.string.title_zoom), "zoom_level", getString(R.string.unit_zoom)),};
+			//new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
+			//new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
+			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
+			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
+			//new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_bearing), "bearing", getString(R.string.unit_degree)),
+			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
+			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),
+			new DashboardItem(getActivity(), viewGroup, R.id.event_zoom, getString(R.string.title_zoom), "zoom_level", getString(R.string.unit_zoom)),
+			//new DashboardItem(getActivity(), viewGroup, R.id.cell_ident, "Cell Identifier", "cell_ident", ""),
+		};
 	}
 
 	static class DashboardItem {

@@ -35,6 +35,16 @@
 		android:title="@string/menu_pre_load"
 		/>
 	<item
+		android:id="@+id/event_fawlty"
+		android:title="Serving cell"
+		android:visible="false"
+		/>
+	<item
+		android:id="@+id/event_screencapture"
+		android:title="Capture screen"
+		android:visible="false"
+		/>
+	<item
 		android:id="@+id/event_dashboard"
 		android:icon="@drawable/ic_menu_dashboard"
 		android:title="@string/menu_dashboard"

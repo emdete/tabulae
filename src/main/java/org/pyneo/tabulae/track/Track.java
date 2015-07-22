@@ -18,7 +18,6 @@ import org.pyneo.tabulae.Tabulae;
 import org.pyneo.tabulae.R;
 
 public class Track extends Base implements Constants {
-	@SuppressLint("SdCardPath")
 	AlternatingLine polyline;
 
 	public void inform(int event, Bundle extra) {
@@ -57,7 +56,7 @@ public class Track extends Base implements Constants {
 					}
 				}
 				catch (Exception e) {
-					Log.e(TAG, "Map.inform", e);
+					Log.e(TAG, "Track.inform", e);
 				}
 			}
 			break;
@@ -80,7 +79,7 @@ public class Track extends Base implements Constants {
 
 	@Override public void onPause() {
 		super.onPause();
-		if (DEBUG) Log.d(TAG, "onPause");
+		if (DEBUG) Log.d(TAG, "Track.onPause");
 		polyline.getLatLongs().clear();
 		MapView mapView = ((Tabulae)getActivity()).getMapView();
 		mapView.getLayerManager().getLayers().remove(polyline);

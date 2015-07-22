@@ -1,5 +1,6 @@
 package org.pyneo.tabulae.map;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,19 +10,23 @@ import android.view.ViewGroup;
 
 import java.util.HashMap;
 
+import org.mapsforge.core.model.LatLong;
+import org.mapsforge.map.android.AndroidPreferences;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.model.DisplayModel;
 import org.mapsforge.map.model.MapViewPosition;
+import org.mapsforge.map.model.common.PreferencesFacade;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
 
 public class Map extends Base implements Constants {
 	// get one from http://download.mapsforge.org/maps/ and adapt path to your needs:
-	private MapView mapView;
-	private int currentMap = -1;
-	private HashMap<Integer,LayerBase> layers = new HashMap<>();
+	protected MapView mapView;
+	protected int currentMap = -1;
+	protected HashMap<Integer,LayerBase> layers = new HashMap<>();
+	protected PreferencesFacade preferencesFacade;
 
 	@Override public void onCreate(Bundle bundle) {
 		if (DEBUG) { Log.d(TAG, "Map.onCreate"); }
@@ -35,6 +40,10 @@ public class Map extends Base implements Constants {
 				return super.onTouchEvent(motionEvent);
 			}
 		};
+		preferencesFacade = new AndroidPreferences(getActivity().getSharedPreferences("map", Context.MODE_PRIVATE));
+		mapView.getModel().init(preferencesFacade);
+		announceZoom();
+		announceLocation();
 		mapView.setClickable(true);
 		// TODO: consider mapView.setGestureDetector();?
 		mapView.getMapScaleBar().setVisible(false);
@@ -69,6 +78,8 @@ public class Map extends Base implements Constants {
 
 	@Override public void onPause() {
 		super.onPause();
+		mapView.getModel().save(preferencesFacade);
+		preferencesFacade.save();
 		for (LayerBase layerB : layers.values()) {
 			layerB.onPause();
 			layerB.onDestroy();
@@ -86,24 +97,14 @@ public class Map extends Base implements Constants {
 		switch (event) {
 			case R.id.event_zoom_in: {
 				MapViewPosition mvp = mapView.getModel().mapViewPosition;
-				byte zoom = mvp.getZoomLevel();
-				zoom++;
-				mvp.setZoomLevel(zoom);
-				zoom = mvp.getZoomLevel();
-				extra = new Bundle();
-				extra.putInt("zoom_level", zoom);
-				((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
+				mvp.setZoomLevel((byte)(mvp.getZoomLevel() + 1));
+				announceZoom();
 			}
 			break;
 			case R.id.event_zoom_out: {
 				MapViewPosition mvp = mapView.getModel().mapViewPosition;
-				byte zoom = mvp.getZoomLevel();
-				zoom--;
-				mvp.setZoomLevel(zoom);
-				zoom = mvp.getZoomLevel();
-				extra = new Bundle();
-				extra.putInt("zoom_level", zoom);
-				((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
+				mvp.setZoomLevel((byte)(mvp.getZoomLevel() - 1));
+				announceZoom();
 			}
 			break;
 			case R.id.event_map_vector:
@@ -118,5 +119,19 @@ public class Map extends Base implements Constants {
 			}
 			break;
 		}
+	}
+
+	void announceLocation() {
+		LatLong mvp = mapView.getModel().mapViewPosition.getCenter();
+		Bundle extra = new Bundle();
+		extra.putDouble("latitude", mvp.latitude);
+		extra.putDouble("longitude", mvp.longitude);
+		((Tabulae)getActivity()).inform(R.id.location, extra);
+	}
+
+	void announceZoom() {
+		Bundle extra = new Bundle();
+		extra.putInt("zoom_level", mapView.getModel().mapViewPosition.getZoomLevel());
+		((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
 	}
 }
