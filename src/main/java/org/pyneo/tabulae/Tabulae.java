@@ -14,10 +14,12 @@ import java.io.File;
 
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
+import org.pyneo.tabulae.fawlty.Fawlty;
 import org.pyneo.tabulae.locus.Locus;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
 import org.pyneo.tabulae.poi.Poi;
+import org.pyneo.tabulae.screencapture.ScreenCaptureFragment;
 import org.pyneo.tabulae.track.Track;
 import org.pyneo.tabulae.map.Map;
 
@@ -39,9 +41,11 @@ public class Tabulae extends Activity implements Constants {
 			new Map(),
 			new Track(),
 			new Poi(),
+			new Fawlty(),
 			new Locus(),
 			new Controller(),
 			new Dashboard(),
+			new ScreenCaptureFragment(),
 			};
 		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 		String baseStorage = preferences.getString("baseStorage", null);
@@ -84,11 +88,12 @@ public class Tabulae extends Activity implements Constants {
 		super.onResume();
 		if (DEBUG) Log.d(TAG, "Tabulae.onResume");
 		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction tx = fragmentManager.beginTransaction();
 		for (Base b : fragments) {
+			FragmentTransaction tx = fragmentManager.beginTransaction();
+			//if (DEBUG) Log.d(TAG, "Tabulae.onResume b=" + b.getClass().getSimpleName());
 			tx.add(R.id.tabulae, b, b.getClass().getSimpleName());
+			tx.commit();
 		}
-		tx.commit();
 	}
 
 	@Override protected void onPause() {
