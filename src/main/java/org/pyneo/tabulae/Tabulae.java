@@ -128,8 +128,10 @@ public class Tabulae extends Activity implements Constants {
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.main_option_menu, menu);
-		menu.getItem(R.id.event_screencapture).setVisible(true);
-		menu.getItem(R.id.event_fawlty).setVisible(true);
+		if (DEBUG) {
+			menu.findItem(R.id.event_screencapture).setVisible(true);
+			menu.findItem(R.id.event_fawlty).setVisible(true);
+		}
 		return true;
 	}
 

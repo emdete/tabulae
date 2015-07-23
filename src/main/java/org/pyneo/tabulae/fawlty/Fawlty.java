@@ -24,20 +24,27 @@ import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
 
 public class Fawlty extends Base implements Constants {
-	WirelessEnvListener wirelessEnvListener;
-	String last_ident;
-	Circle circle;
+	private static final String STATE_ENABLED = "fawlty_enabled";
+	protected boolean enabled;
+	protected WirelessEnvListener wirelessEnvListener;
+	protected String last_ident;
+	protected LatLong last_latLong;
+	protected Circle circle;
 
-	@Override public void onCreate(Bundle bundle) {
+	@Override public void onCreate(Bundle savedInstanceState) {
 		//if (DEBUG) Log.d(TAG, "Fawlty.onCreate");
-		super.onCreate(bundle);
+		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			enabled = savedInstanceState.getBoolean(STATE_ENABLED);
+		}
+		last_latLong = new LatLong(0, 0);
 		wirelessEnvListener = new WirelessEnvListener(getActivity()) {
 			@Override public void onLocationChanged(Location location, String ident) {
 				//if (DEBUG) Log.d(TAG, "got it location=" + location + ", ident=" + ident + ", last_ident=" + Fawlty.this.last_ident);
-				LatLong ll = new LatLong(location.getLatitude(), location.getLongitude());
+				last_latLong = new LatLong(location.getLatitude(), location.getLongitude());
 				float accuracy = location.getAccuracy();
-				if (!ident.equals(Fawlty.this.last_ident) || !ll.equals(circle.getPosition())) {
-					circle.setLatLong(ll);
+				if (!ident.equals(Fawlty.this.last_ident) || !last_latLong.equals(circle.getPosition())) {
+					circle.setLatLong(last_latLong);
 					circle.setRadius(accuracy);
 					Fawlty.this.last_ident = ident;
 					//if (DEBUG) Log.d(TAG, "location set");
@@ -49,45 +56,24 @@ public class Fawlty extends Base implements Constants {
 		};
 	}
 
+	@Override public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (DEBUG) Log.d(TAG, "Fawlty.onSaveInstanceState");
+		outState.putBoolean(STATE_ENABLED, enabled);
+	}
+
 	@Override public void onResume() {
 		super.onResume();
 		if (DEBUG) Log.d(TAG, "Fawlty.onResume");
-		MapView mapView = ((Tabulae)getActivity()).getMapView();
-		Paint paint = AndroidGraphicFactory.INSTANCE.createPaint();
-		paint.setColor(0x77ff0000);
-		paint.setStrokeWidth(0);
-		paint.setStyle(Style.FILL);
-		circle = new Circle(new LatLong(0,0), 1, paint, null) {
-			@Override public boolean onTap(LatLong geoPoint, Point viewPosition, Point tapPoint) {
-				if (contains(geoPoint)) {
-					Toast.makeText(getActivity(), "Ident: " + last_ident, Toast.LENGTH_LONG).show();
-					return true;
-				}
-				return false;
-			}
-			boolean contains(LatLong geoPoint) {
-				double d = distance_in_meter(getPosition(), geoPoint);
-				if (DEBUG) Log.d(TAG, "contains d=" + d + ", radius=" + getRadius());
-				return d < getRadius();
-			}
-		};
-		mapView.getLayerManager().getLayers().add(circle);
-		//paint = (Paint)paint.clone();
-		//paint.setColor(0x7700ff00);
-		//FixedPixelCircle tappableCircle = new FixedPixelCircle(new LatLong(51.24,6.79), 50, paint, null);
-		//mapView.getLayerManager().getLayers().add(tappableCircle);
-		wirelessEnvListener.enable();
+		if (enabled) {
+			enable();
+		}
 	}
 
 	@Override public void onPause() {
 		super.onPause();
 		if (DEBUG) Log.d(TAG, "Fawlty.onPause");
-		wirelessEnvListener.disable();
-		MapView mapView = ((Tabulae)getActivity()).getMapView();
-		mapView.getLayerManager().getLayers().remove(circle);
-	}
-
-	public void inform(int event, Bundle extra) {
+		disable();
 	}
 
 	static double distance_in_meter(final LatLong latlong1, final LatLong latlong2) {
@@ -100,5 +86,58 @@ public class Fawlty extends Base implements Constants {
 		final double c = 2f * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 		final double d = R * c;
 		return d;
+	}
+
+	void enable() {
+		MapView mapView = ((Tabulae)getActivity()).getMapView();
+		if (circle == null) {
+			Paint paint = AndroidGraphicFactory.INSTANCE.createPaint();
+			paint.setColor(0x77ff0000);
+			paint.setStrokeWidth(0);
+			paint.setStyle(Style.FILL);
+			circle = new Circle(last_latLong, 1, paint, null) {
+				@Override public boolean onTap(LatLong geoPoint, Point viewPosition, Point tapPoint) {
+					if (contains(geoPoint)) {
+						Toast.makeText(getActivity(), "Ident: " + last_ident, Toast.LENGTH_LONG).show();
+						return true;
+					}
+					return false;
+				}
+				boolean contains(LatLong geoPoint) {
+					double d = distance_in_meter(getPosition(), geoPoint);
+					if (DEBUG) Log.d(TAG, "contains d=" + d + ", radius=" + getRadius());
+					return d < getRadius();
+				}
+			};
+			mapView.getLayerManager().getLayers().add(circle);
+			//paint = (Paint)paint.clone();
+			//paint.setColor(0x7700ff00);
+			//FixedPixelCircle tappableCircle = new FixedPixelCircle(new LatLong(51.24,6.79), 50, paint, null);
+			//mapView.getLayerManager().getLayers().add(tappableCircle);
+			wirelessEnvListener.enable();
+		}
+	}
+
+	void disable() {
+		wirelessEnvListener.disable();
+		if (circle != null) {
+			MapView mapView = ((Tabulae)getActivity()).getMapView();
+			mapView.getLayerManager().getLayers().remove(circle);
+		}
+	}
+
+	public void inform(int event, Bundle extra) {
+		switch (event) {
+			case R.id.event_fawlty: {
+				if (enabled) {
+					disable();
+					enabled = false;
+				}
+				else {
+					enable();
+					enabled = true;
+				}
+			}
+		}
 	}
 }

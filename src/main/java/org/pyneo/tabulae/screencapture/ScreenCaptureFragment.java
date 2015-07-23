@@ -67,8 +67,8 @@ public class ScreenCaptureFragment extends Base implements Constants {
 	@Override public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onSaveInstanceState mResultData=" + mResultData + ", mResultCode=" + mResultCode);
+		outState.putBoolean(STATE_ENABLED, enabled);
 		if (mResultData != null) {
-			outState.putBoolean(STATE_ENABLED, enabled);
 			outState.putInt(STATE_RESULT_CODE, mResultCode);
 			outState.putParcelable(STATE_RESULT_DATA, mResultData);
 		}
