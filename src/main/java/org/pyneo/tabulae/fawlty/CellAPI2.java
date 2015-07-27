@@ -76,6 +76,7 @@ public class CellAPI2 implements Constants {
 				entry.putAll(r);
 			}
 		}
+		if (DEBUG) Log.d(TAG, "retrieveLocation: response list=" + list);
 		return list;
 	}
 }

@@ -13,7 +13,7 @@ import org.pyneo.tabulae.R;
 
 public class Dashboard extends Base implements Constants {
 	protected DashboardItem[] dashboardItems;
-	protected boolean visible = true;
+	protected boolean enabled = true;
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (DEBUG) Log.d(TAG, "Dashboard.onCreateView");
@@ -74,8 +74,8 @@ public class Dashboard extends Base implements Constants {
 		}
 		switch (event) {
 			case R.id.event_dashboard:
-				getActivity().findViewById(R.id.dashboard_list).setVisibility(visible? View.GONE: View.VISIBLE);
-				visible = !visible;
+				getActivity().findViewById(R.id.dashboard_list).setVisibility(enabled? View.GONE: View.VISIBLE);
+				enabled = !enabled;
 				break;
 		}
 	}

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<item name="conversations_show" type="id"/>
+	<item name="conversations_request" type="id"/>
+	<item name="event_view_location_request" type="id"/>
 	<item name="cell_ident" type="id"/>
 	<item name="allow_screen_capture" type="id"/>
 	<item name="event_map_bing_satellite" type="id"/>

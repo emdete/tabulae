@@ -29,7 +29,10 @@ public class Fawlty extends Base implements Constants {
 	protected WirelessEnvListener wirelessEnvListener;
 	protected String last_ident;
 	protected LatLong last_latLong;
+	protected LatLong last_latLong_tower;
 	protected Circle circle;
+	protected Marker marker;
+	protected Bitmap bitmap;
 
 	@Override public void onCreate(Bundle savedInstanceState) {
 		//if (DEBUG) Log.d(TAG, "Fawlty.onCreate");
@@ -38,14 +41,17 @@ public class Fawlty extends Base implements Constants {
 			enabled = savedInstanceState.getBoolean(STATE_ENABLED);
 		}
 		last_latLong = new LatLong(0, 0);
+		last_latLong_tower = new LatLong(0, 0);
 		wirelessEnvListener = new WirelessEnvListener(getActivity()) {
 			@Override public void onLocationChanged(Location location, String ident) {
 				//if (DEBUG) Log.d(TAG, "got it location=" + location + ", ident=" + ident + ", last_ident=" + Fawlty.this.last_ident);
 				last_latLong = new LatLong(location.getLatitude(), location.getLongitude());
+				last_latLong_tower = new LatLong(location.getExtras().getDouble("latitude_tower"), location.getExtras().getDouble("longitude_tower"));
 				float accuracy = location.getAccuracy();
 				if (!ident.equals(Fawlty.this.last_ident) || !last_latLong.equals(circle.getPosition())) {
 					circle.setLatLong(last_latLong);
 					circle.setRadius(accuracy);
+					marker.setLatLong(last_latLong_tower);
 					Fawlty.this.last_ident = ident;
 					//if (DEBUG) Log.d(TAG, "location set");
 					Bundle extra = new Bundle();
@@ -109,13 +115,17 @@ public class Fawlty extends Base implements Constants {
 					return d < getRadius();
 				}
 			};
-			mapView.getLayerManager().getLayers().add(circle);
-			//paint = (Paint)paint.clone();
-			//paint.setColor(0x7700ff00);
-			//FixedPixelCircle tappableCircle = new FixedPixelCircle(new LatLong(51.24,6.79), 50, paint, null);
-			//mapView.getLayerManager().getLayers().add(tappableCircle);
-			wirelessEnvListener.enable();
+			bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_blue, null));
+			bitmap.incrementRefCount();
+			marker = new Marker(last_latLong_tower, bitmap, 0, -bitmap.getHeight() / 2);
 		}
+		mapView.getLayerManager().getLayers().add(circle);
+		mapView.getLayerManager().getLayers().add(marker);
+		//paint = (Paint)paint.clone();
+		//paint.setColor(0x7700ff00);
+		//FixedPixelCircle tappableCircle = new FixedPixelCircle(new LatLong(51.24,6.79), 50, paint, null);
+		//mapView.getLayerManager().getLayers().add(tappableCircle);
+		wirelessEnvListener.enable();
 	}
 
 	void disable() {
@@ -123,6 +133,12 @@ public class Fawlty extends Base implements Constants {
 		if (circle != null) {
 			MapView mapView = ((Tabulae)getActivity()).getMapView();
 			mapView.getLayerManager().getLayers().remove(circle);
+			//circle.onDestroy();
+			//circle = null;
+			//bitmap.decrementRefCount();
+			mapView.getLayerManager().getLayers().remove(marker);
+			//marker.onDestroy();
+			//marker = null;
 		}
 	}
 
@@ -132,10 +148,12 @@ public class Fawlty extends Base implements Constants {
 				if (enabled) {
 					disable();
 					enabled = false;
+					Toast.makeText(getActivity(), "Serving cell disabled", Toast.LENGTH_SHORT).show();
 				}
 				else {
 					enable();
 					enabled = true;
+					Toast.makeText(getActivity(), "Serving cell enabled", Toast.LENGTH_SHORT).show();
 				}
 			}
 		}

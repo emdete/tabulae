@@ -38,16 +38,27 @@
 		android:id="@+id/event_fawlty"
 		android:title="Serving cell"
 		android:visible="false"
+		android:checkable="true"
 		/>
 	<item
 		android:id="@+id/event_screencapture"
 		android:title="Capture screen"
 		android:visible="false"
+		android:checkable="true"
 		/>
 	<item
 		android:id="@+id/event_dashboard"
 		android:icon="@drawable/ic_menu_dashboard"
 		android:title="@string/menu_dashboard"
 		android:showAsAction="ifRoom"
+		android:checkable="true"
+		/>
+	<item
+		android:id="@+id/event_view_location"
+		android:title="View location"
+		/>
+	<item
+		android:id="@+id/event_send_location"
+		android:title="Send location"
 		/>
 </menu>

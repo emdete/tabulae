@@ -60,6 +60,13 @@ Stellitenbilder und andere ausgewählt werden.
 Dem Benutzer obligt zu prüfen, ob der ausgewählte Kartenanbieter der Nutzung
 zustimmt.
 
+### Vector
+
+Die App nutzt wo es geht Vector-Grafiken. Alle Icons sind Vectoren (die aus
+SVGs konvertiert werden) um die leidige DPI Abhängigkeit zu umgehen
+(https://developer.android.com/training/material/drawables.html). Auch
+Vektorkarten werden genutzt (mapsforge).
+
 ### Wegstrecke
 
 Wegstrecken können aufgezeichnet werden. Die Aufzeichnung kann pausiert werden.

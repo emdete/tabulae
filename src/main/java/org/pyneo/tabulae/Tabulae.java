@@ -1,5 +1,9 @@
 package org.pyneo.tabulae;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.Executors;
+import android.net.Uri;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -18,6 +22,7 @@ import org.pyneo.tabulae.fawlty.Fawlty;
 import org.pyneo.tabulae.locus.Locus;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
+import org.pyneo.tabulae.conversations.Conversations;
 import org.pyneo.tabulae.poi.Poi;
 import org.pyneo.tabulae.screencapture.ScreenCaptureFragment;
 import org.pyneo.tabulae.track.Track;
@@ -46,6 +51,7 @@ public class Tabulae extends Activity implements Constants {
 			new Controller(),
 			new Dashboard(),
 			new ScreenCaptureFragment(),
+			new Conversations(),
 			};
 		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 		String baseStorage = preferences.getString("baseStorage", null);
@@ -70,8 +76,37 @@ public class Tabulae extends Activity implements Constants {
 					}
 				}
 			}
-			Log.d(TAG, "using baseStorageFile=" + baseStorageFile + ", baseStorageSpace=" + deKay(baseStorageSpace));
+			Log.d(TAG, "Tabulae. using baseStorageFile=" + baseStorageFile + ", baseStorageSpace=" + deKay(baseStorageSpace));
 		}
+		final Intent queryIntent = getIntent();
+		final String queryAction = queryIntent.getAction();
+		if (DEBUG) Log.d(TAG, "Tabulae.onCreate process intent=" + queryIntent + ", action=" + queryAction);
+		if (Intent.ACTION_MAIN.equals(queryAction)) {
+			// nothing more to do
+		}
+		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
+			inform(R.id.conversations_show, queryIntent.getExtras());
+		}
+		else if (ACTION_CONVERSATIONS_REQUEST.equals(queryAction)) {
+			inform(R.id.conversations_request, queryIntent.getExtras());
+		}
+		else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
+			try {
+				Uri uri = queryIntent.getData();
+				if (uri.getScheme().equalsIgnoreCase(GEO)) {
+					final String[] latlon = uri.getEncodedSchemeSpecificPart().replace("?" + uri.getEncodedQuery(), "").split(","); // TODO avoid regex
+					Bundle extra = queryIntent.getExtras();
+					extra.putDouble(LATITUDE, Double.parseDouble(latlon[0]));
+					extra.putDouble(LONGITUDE, Double.parseDouble(latlon[1]));
+					inform(R.id.event_view_location_request, extra);
+				}
+			}
+			catch (Exception e) {
+				// Toast?
+			}
+		}
+		else
+			Log.e(TAG, "Tabulae.onCreate no fit action=" + queryAction);
 	}
 
 	@Override protected void onStart() {
@@ -181,6 +216,15 @@ public class Tabulae extends Activity implements Constants {
 		return ret;
 	}
 
+	/**
+	* directory for the screen movies
+	*/
+	public File getMoviesDir() {
+		File ret = new File(baseStorageFile, "movies");
+		ret.mkdirs();
+		return ret;
+	}
+
 	public MapView getMapView() {
 		return ((Map)fragments[0]).getMapView();
 	}
@@ -197,9 +241,23 @@ public class Tabulae extends Activity implements Constants {
 		return String.format("%.2fTB", d);
 	}
 
-	public void inform(int event, Bundle extra) {
-		for (Base b : fragments) {
-			b.inform(event, extra);
+	// TODO remove decouple hack
+	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory(){
+		@Override public Thread newThread(Runnable r) {
+			return new Thread(r, "inform");
 		}
+	});
+	public void inform(final int event, final Bundle extra) {
+		this.mThreadPool.execute(new Runnable() {
+			public void run() {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						for (Base b : fragments) {
+							b.inform(event, extra);
+						}
+					}
+				});
+			}
+		});
 	}
 }

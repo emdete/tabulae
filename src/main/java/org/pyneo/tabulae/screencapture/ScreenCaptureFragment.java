@@ -22,6 +22,9 @@ import android.widget.Button;
 import android.widget.Toast;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Base;
+import org.pyneo.tabulae.Tabulae;
+import java.io.File;
+import java.util.Random;
 
 public class ScreenCaptureFragment extends Base implements Constants {
 	private static final String STATE_ENABLED = "screencapture_enabled";
@@ -139,7 +142,7 @@ public class ScreenCaptureFragment extends Base implements Constants {
 					mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
 					mScreenWidth = ((mScreenWidth+15)/16) * 16; // round up to multiple of 16
 					mMediaRecorder.setVideoSize(mScreenWidth, mScreenHeight);
-					mMediaRecorder.setOutputFile("/sdcard/capture.mp4");
+					mMediaRecorder.setOutputFile(getMovieName().getPath());
 					mMediaRecorder.prepare();
 					mMediaRecorder.start();
 					mVirtualDisplay = mMediaProjection.createVirtualDisplay(
@@ -204,6 +207,17 @@ public class ScreenCaptureFragment extends Base implements Constants {
 			}
 		}
 		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.stopRecording: recording stopped");
+	}
+
+	private static final Random random = new Random();
+	File getMovieName() {
+		File f;
+		do {
+			f = new File(((Tabulae)getActivity()).getMoviesDir(), "capture_" + random.nextLong() + ".mp4");
+		}
+		while (f.exists());
+		if (DEBUG) Log.d(TAG, "getMovieName f=" + f);
+		return f;
 	}
 
 	public void inform(int event, Bundle extra) {

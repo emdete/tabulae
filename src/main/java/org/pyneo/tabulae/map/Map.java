@@ -1,15 +1,15 @@
 package org.pyneo.tabulae.map;
 
+import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.net.Uri;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.HashMap;
-
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.AndroidPreferences;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
@@ -92,6 +92,20 @@ public class Map extends Base implements Constants {
 		return mapView;
 	}
 
+	void announceLocation() {
+		LatLong mvp = mapView.getModel().mapViewPosition.getCenter();
+		Bundle extra = new Bundle();
+		extra.putDouble("latitude", mvp.latitude);
+		extra.putDouble("longitude", mvp.longitude);
+		((Tabulae)getActivity()).inform(R.id.location, extra);
+	}
+
+	void announceZoom() {
+		Bundle extra = new Bundle();
+		extra.putInt("zoom_level", mapView.getModel().mapViewPosition.getZoomLevel());
+		((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
+	}
+
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Map.inform event=" + event + ", extra=" + extra);
 		switch (event) {
@@ -118,20 +132,37 @@ public class Map extends Base implements Constants {
 				layers.get(currentMap).setVisible(true);
 			}
 			break;
+			case R.id.event_send_location: {
+				final MapViewPosition mvp = mapView.getModel().mapViewPosition;
+				final String label = "";
+				final byte zoom = mvp.getZoomLevel();
+				final LatLong latLong = mvp.getCenter();
+				final Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("text/plain");
+				intent.putExtra(Intent.EXTRA_TEXT, label + '\n'
+					+ "http://www.openstreetmap.org/?mlat=" + latLong.latitude
+					+ "&mlon=" + latLong.longitude
+					+ "#map=" + zoom
+					+ '/' + latLong.latitude
+					+ '/' + latLong.longitude
+					+ "&layers=T"
+					);
+				startActivity(intent);
+			}
+			case R.id.event_view_location: {
+				final MapViewPosition mvp = mapView.getModel().mapViewPosition;
+				final String label = "";
+				final byte zoom = mvp.getZoomLevel();
+				final LatLong latLong = mvp.getCenter();
+				final Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse("geo:"
+					+ latLong.latitude + ','
+					+ latLong.longitude + "?q="
+					+ latLong.latitude + ','
+					+ latLong.longitude + '('
+					+ label + ')'));
+				startActivity(intent);
+			}
 		}
-	}
-
-	void announceLocation() {
-		LatLong mvp = mapView.getModel().mapViewPosition.getCenter();
-		Bundle extra = new Bundle();
-		extra.putDouble("latitude", mvp.latitude);
-		extra.putDouble("longitude", mvp.longitude);
-		((Tabulae)getActivity()).inform(R.id.location, extra);
-	}
-
-	void announceZoom() {
-		Bundle extra = new Bundle();
-		extra.putInt("zoom_level", mapView.getModel().mapViewPosition.getZoomLevel());
-		((Tabulae)getActivity()).inform(R.id.event_zoom, extra);
 	}
 }

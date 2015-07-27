@@ -64,8 +64,7 @@ public class WirelessEnvListener extends PhoneStateListener implements Constants
 		last_location = null;
 	}
 
-	@Override
-	public void onCellInfoChanged(List<CellInfo> cellInfos) {
+	@Override public void onCellInfoChanged(List<CellInfo> cellInfos) {
 		//if (DEBUG) Log.d(TAG, "WirelessEnvListener.onCellInfoChanged: cellInfos=" + cellInfos);
 		try {
 			Iterable<TheDictionary> cell_ids = null;
@@ -129,6 +128,7 @@ public class WirelessEnvListener extends PhoneStateListener implements Constants
 	public void onLocationChanged(Location location, String ident) {
 		if (DEBUG) Log.e(TAG, "onLocationChanged: location=" + location);
 	}
+
 	static public Location constructLocation(TheList cellapi2_response) {
 		Location location = null;
 		for (TheDictionary ident_location: cellapi2_response) {
@@ -147,6 +147,10 @@ public class WirelessEnvListener extends PhoneStateListener implements Constants
 					location.setAccuracy((float)accuracy);
 					location.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
 					location.setTime(System.currentTimeMillis());
+					Bundle extra = new Bundle();
+					extra.putDouble("latitude_tower", ident_location.getDouble("latitude_tower"));
+					extra.putDouble("longitude_tower", ident_location.getDouble("longitude_tower"));
+					location.setExtras(extra);
 					break;
 				}
 			}
@@ -157,6 +161,7 @@ public class WirelessEnvListener extends PhoneStateListener implements Constants
 	public void run() {
 		//if (DEBUG) Log.d(TAG, "run:");
 		try {
+			onCellInfoChanged(null);
 			telephonyManager.listen(this, PhoneStateListener.LISTEN_CELL_INFO | PhoneStateListener.LISTEN_SERVICE_STATE);
 			CellLocation.requestLocationUpdate();
 		}
