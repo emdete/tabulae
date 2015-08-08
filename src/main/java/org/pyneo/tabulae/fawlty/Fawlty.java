@@ -115,7 +115,7 @@ public class Fawlty extends Base implements Constants {
 					return d < getRadius();
 				}
 			};
-			bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_blue, null));
+			bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_red, null));
 			bitmap.incrementRefCount();
 			marker = new Marker(last_latLong_tower, bitmap, 0, -bitmap.getHeight() / 2);
 		}

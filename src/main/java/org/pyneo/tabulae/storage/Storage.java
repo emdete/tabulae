@@ -11,7 +11,7 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 
 	enum tracks {_id, name, description, timestamp, visible, pointcount, duration, distance, categoryid, activityid, };
 	enum trackpoints {_id, trackid, latitude, longitude, altitude, speed, timestamp, attribute, };
-	enum pois {_id, name, description, latitude, longitude, altitude, visible, categoryid, iconid, };
+	enum points {_id, name, description, latitude, longitude, altitude, visible, categoryid, iconid, };
 	enum category {_id, name, description, visible, iconid, minzoom, };
 	enum activity {_id, name, description, };
 
