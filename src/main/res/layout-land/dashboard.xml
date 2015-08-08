@@ -6,14 +6,19 @@
 	android:layout_width="match_parent"
 	android:gravity="right"
 	>
-	<LinearLayout
-		android:id="@+id/dashboard_list"
-		android:layout_height="fill_parent"
+	<ScrollView
 		android:layout_width="wrap_content"
-		android:layout_alignParentRight="true"
-		android:orientation="vertical"
-		android:background="@color/accent"
-		/>
+		android:layout_height="match_parent"
+		>
+		<LinearLayout
+			android:id="@+id/dashboard_list"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_alignParentRight="true"
+			android:orientation="vertical"
+			android:background="@color/accent"
+			/>
+	</ScrollView>
 	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
