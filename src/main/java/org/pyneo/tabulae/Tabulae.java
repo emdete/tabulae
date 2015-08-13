@@ -94,14 +94,17 @@ public class Tabulae extends Activity implements Constants {
 			try {
 				Uri uri = queryIntent.getData();
 				if (uri.getScheme().equalsIgnoreCase(GEO)) {
-					final String[] latlon = uri.getEncodedSchemeSpecificPart().replace("?" + uri.getEncodedQuery(), "").split(","); // TODO avoid regex
-					Bundle extra = queryIntent.getExtras();
+					final String part = uri.getEncodedSchemeSpecificPart().split("\\?")[0];
+					final String[] latlon = part.split(","); // TODO avoid regex
+					Bundle extra = new Bundle();
 					extra.putDouble(LATITUDE, Double.parseDouble(latlon[0]));
 					extra.putDouble(LONGITUDE, Double.parseDouble(latlon[1]));
+					if (DEBUG) Log.d(TAG, "Tabulae.onCreate extra=" + extra);
 					inform(R.id.event_view_location_request, extra);
 				}
 			}
 			catch (Exception e) {
+				Log.e(TAG, "Tabulae.onCreate", e);
 				// Toast?
 			}
 		}
