@@ -25,8 +25,31 @@ public class Map extends Base implements Constants {
 	// get one from http://download.mapsforge.org/maps/ and adapt path to your needs:
 	protected MapView mapView;
 	protected int currentMap = -1;
-	protected HashMap<Integer,LayerBase> layers = new HashMap<>();
+	protected LayerBase layer;
 	protected PreferencesFacade preferencesFacade;
+
+	void activateLayer(int id) {
+		if (layer == null || id != currentMap) {
+			if (layer != null) {
+				layer.onPause();
+				layer.onDestroy();
+				layer = null;
+			}
+			currentMap = id;
+			switch (id) {
+			case R.id.event_map_vector: layer = new LayerMapsForge((Tabulae) getActivity(), mapView); break;
+			case R.id.event_map_openandromaps: layer = new LayerOpenAndroMaps((Tabulae) getActivity(), mapView); break;
+			case R.id.event_map_bing_satellite: layer = new LayerBingSat((Tabulae) getActivity(), mapView); break;
+			case R.id.event_map_google_satellite: layer = new LayerGoogleSat((Tabulae) getActivity(), mapView); break;
+			case R.id.event_map_mapquest: layer = new LayerMapQuest((Tabulae) getActivity(), mapView); break;
+			case R.id.event_map_outdoor_active: layer = new LayerOutdoorActive((Tabulae) getActivity(), mapView); break;
+			}
+		}
+		if (layer != null) {
+			layer.setVisible(true);
+			layer.onResume();
+		}
+	}
 
 	@Override public void onCreate(Bundle bundle) {
 		if (DEBUG) { Log.d(TAG, "Map.onCreate"); }
@@ -54,14 +77,7 @@ public class Map extends Base implements Constants {
 		DisplayModel displayModel = mapView.getModel().displayModel;
 		displayModel.setBackgroundColor(0xffbbbbbb);
 		displayModel.setUserScaleFactor(1.5f);
-		//layers.put(R.id.event_map_vector, new LayerMapsForge((Tabulae) getActivity(), mapView));
-		layers.put(R.id.event_map_openandromaps, new LayerOpenAndroMaps((Tabulae) getActivity(), mapView));
-		//layers.put(R.id.event_map_bing_satellite, new LayerBingSat((Tabulae) getActivity(), mapView));
-		//layers.put(R.id.event_map_google_satellite, new LayerGoogleSat((Tabulae) getActivity(), mapView));
-		//layers.put(R.id.event_map_mapquest, new LayerMapQuest((Tabulae) getActivity(), mapView));
-		//layers.put(R.id.event_map_outdoor_active, new LayerOutdoorActive((Tabulae) getActivity(), mapView));
 		currentMap = R.id.event_map_openandromaps;
-		layers.get(currentMap).setVisible(true);
 	}
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,19 +87,14 @@ public class Map extends Base implements Constants {
 
 	@Override public void onResume() {
 		super.onResume();
-		for (LayerBase layerB : layers.values()) {
-			layerB.onResume();
-		}
+		activateLayer(currentMap);
 	}
 
 	@Override public void onPause() {
 		super.onPause();
 		mapView.getModel().save(preferencesFacade);
 		preferencesFacade.save();
-		for (LayerBase layerB : layers.values()) {
-			layerB.onPause();
-			layerB.onDestroy();
-		}
+		activateLayer(-1);
 		mapView.getModel().mapViewPosition.destroy();
 		mapView.destroy();
 	}
@@ -127,9 +138,7 @@ public class Map extends Base implements Constants {
 			case R.id.event_map_google_satellite:
 			case R.id.event_map_mapquest:
 			case R.id.event_map_outdoor_active: {
-				layers.get(currentMap).setVisible(false);
-				currentMap = event;
-				layers.get(currentMap).setVisible(true);
+				activateLayer(event);
 			}
 			break;
 			case R.id.event_send_location: {

@@ -2,8 +2,6 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.pyneo.tabulae"
-	android:versionCode="1"
-	android:versionName="1.0"
 	>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
@@ -58,5 +56,9 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>
+		<service
+			android:name=".locus.Service"
+			android:exported="false"
+			/>
 	</application>
 </manifest>
