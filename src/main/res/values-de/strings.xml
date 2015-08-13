@@ -7,6 +7,7 @@
 	<string name="menu_track_list">Liste der Pfade</string>
 	<string name="title_accuracy">Genauigkeit</string>
 	<string name="title_bearing">Richtung</string>
+	<string name="title_current_map">Karte</string>
 	<string name="title_latitude">Breite</string>
 	<string name="title_longitude">Länge</string>
 	<string name="title_provider">Quelle</string>

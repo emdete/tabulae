@@ -6,6 +6,7 @@
 	<item name="cell_ident" type="id"/>
 	<item name="allow_screen_capture" type="id"/>
 	<item name="event_map_bing_satellite" type="id"/>
+	<item name="event_current_map" type="id"/>
 	<item name="event_map_google_satellite" type="id"/>
 	<item name="event_map_mapquest" type="id"/>
 	<item name="event_map_outdoor_active" type="id"/>

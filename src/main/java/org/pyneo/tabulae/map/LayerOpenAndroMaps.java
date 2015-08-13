@@ -52,7 +52,7 @@ class LayerOpenAndroMaps extends LayerBase {
 				}
 			}
 //		}
-		mapView.getLayerManager().getLayers().add(tileLayer);
+		mapView.getLayerManager().getLayers().add(0, tileLayer);
 		setVisible(false);
 	}
 

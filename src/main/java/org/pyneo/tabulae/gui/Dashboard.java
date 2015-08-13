@@ -35,6 +35,7 @@ public class Dashboard extends Base implements Constants {
 			new DashboardItem(getActivity(), viewGroup, R.id.cell_ident, "Cell Identifier", "cell_ident", ""),
 			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
 			new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
+			new DashboardItem(getActivity(), viewGroup, R.id.event_current_map, getString(R.string.title_current_map), "current_map", getString(R.string.unit_empty)),
 		};
 	}
 

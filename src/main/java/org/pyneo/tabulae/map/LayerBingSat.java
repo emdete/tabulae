@@ -20,12 +20,12 @@ class LayerBingSat extends LayerBase {
 		super(activity, mapView, true);
 		tileLayer = new TileDownloadLayer(tileCache, mapView.getModel().mapViewPosition,
 			new Source(), AndroidGraphicFactory.INSTANCE);
-		mapView.getLayerManager().getLayers().add(tileLayer);
+		mapView.getLayerManager().getLayers().add(0, tileLayer);
 		setVisible(false);
 	}
 
 	byte getZoomLevelMax() {
-		return (byte)19;
+		return (byte)18;
 	}
 
 	String getId() {

@@ -40,16 +40,21 @@ public class Map extends Base implements Constants {
 			}
 			currentMap = id;
 			switch (id) {
-			case R.id.event_map_vector: layer = new LayerMapsForge((Tabulae) getActivity(), mapView); break;
-			case R.id.event_map_openandromaps: layer = new LayerOpenAndroMaps((Tabulae) getActivity(), mapView); break;
-			case R.id.event_map_bing_satellite: layer = new LayerBingSat((Tabulae) getActivity(), mapView); break;
-			case R.id.event_map_google_satellite: layer = new LayerGoogleSat((Tabulae) getActivity(), mapView); break;
-			case R.id.event_map_mapquest: layer = new LayerMapQuest((Tabulae) getActivity(), mapView); break;
-			case R.id.event_map_outdoor_active: layer = new LayerOutdoorActive((Tabulae) getActivity(), mapView); break;
+			case 0: layer = new LayerMapsForge((Tabulae) getActivity(), mapView); break;
+			case 1: layer = new LayerOpenAndroMaps((Tabulae) getActivity(), mapView); break;
+			case 2: layer = new LayerBingSat((Tabulae) getActivity(), mapView); break;
+			case 3: layer = new LayerGoogleSat((Tabulae) getActivity(), mapView); break;
+			case 4: layer = new LayerMapQuest((Tabulae) getActivity(), mapView); break;
+			case 5: layer = new LayerOutdoorActive((Tabulae) getActivity(), mapView); break;
 			}
+			Bundle extra = new Bundle();
+			if (layer != null) {
+				extra.putString("current_map", layer.getId());
+			}
+			((Tabulae)getActivity()).inform(R.id.event_current_map, extra);
 			if (id != -1) {
 				Editor editor = preferences.edit();
-				editor.putInt("currentMap", currentMap);
+				editor.putInt("currentMap", currentMap); // TODO do not put a resource id into preferences
 				editor.commit();
 			}
 		}
@@ -86,7 +91,7 @@ public class Map extends Base implements Constants {
 		DisplayModel displayModel = mapView.getModel().displayModel;
 		displayModel.setBackgroundColor(0xffbbbbbb);
 		displayModel.setUserScaleFactor(1.5f);
-		currentMap = preferences.getInt("currentMap", R.id.event_map_openandromaps);
+		currentMap = preferences.getInt("currentMap", 0);
 	}
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -141,15 +146,6 @@ public class Map extends Base implements Constants {
 				announceZoom();
 			}
 			break;
-			case R.id.event_map_vector:
-			case R.id.event_map_openandromaps:
-			case R.id.event_map_bing_satellite:
-			case R.id.event_map_google_satellite:
-			case R.id.event_map_mapquest:
-			case R.id.event_map_outdoor_active: {
-				activateLayer(event);
-			}
-			break;
 			case R.id.event_send_location: {
 				final MapViewPosition mvp = mapView.getModel().mapViewPosition;
 				final String label = "";
@@ -167,6 +163,7 @@ public class Map extends Base implements Constants {
 					);
 				startActivity(intent);
 			}
+			break;
 			case R.id.event_view_location: {
 				final MapViewPosition mvp = mapView.getModel().mapViewPosition;
 				final String label = "";
@@ -181,6 +178,13 @@ public class Map extends Base implements Constants {
 					+ label + ')'));
 				startActivity(intent);
 			}
+			break;
+			case R.id.event_map_vector: activateLayer(0); break;
+			case R.id.event_map_openandromaps: activateLayer(1); break;
+			case R.id.event_map_bing_satellite: activateLayer(2); break;
+			case R.id.event_map_google_satellite: activateLayer(3); break;
+			case R.id.event_map_mapquest: activateLayer(4); break;
+			case R.id.event_map_outdoor_active: activateLayer(5); break;
 		}
 	}
 }

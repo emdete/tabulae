@@ -15,7 +15,7 @@ class LayerOutdoorActive extends LayerBase {
 	LayerOutdoorActive(Tabulae activity, MapView mapView) {
 		super(activity, mapView, true);
 		tileLayer = new TileDownloadLayer(tileCache, mapView.getModel().mapViewPosition, new Source(), AndroidGraphicFactory.INSTANCE);
-		mapView.getLayerManager().getLayers().add(tileLayer);
+		mapView.getLayerManager().getLayers().add(0, tileLayer);
 		setVisible(false);
 	}
 

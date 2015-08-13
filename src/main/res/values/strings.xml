@@ -7,6 +7,7 @@
 	<string name="menu_track_list">List of tracks</string>
 	<string name="title_accuracy">Accuracy</string>
 	<string name="title_bearing">Bearing</string>
+	<string name="title_current_map">Map</string>
 	<string name="title_latitude">Latitude</string>
 	<string name="title_longitude">Longitude</string>
 	<string name="title_provider">Provider</string>

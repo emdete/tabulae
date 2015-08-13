@@ -28,7 +28,7 @@ abstract class LayerBase implements Constants {
 			memCache = new InMemoryTileCache(10);
 			tileCache = new TwoLevelTileCache(
 				memCache,
-				new FileSystemTileCache(99999, new File(activity.getTilesDir(), getId()), AndroidGraphicFactory.INSTANCE)//, false, 3, true)
+				new FileSystemTileCache(99999, new File(activity.getTilesDir(), getId()), AndroidGraphicFactory.INSTANCE, true)
 				);
 		}
 		else {

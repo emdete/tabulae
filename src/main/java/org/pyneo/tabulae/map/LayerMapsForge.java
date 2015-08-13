@@ -37,7 +37,7 @@ class LayerMapsForge extends LayerBase {
 		tileLayer = new TileRendererLayer(tileCache, multiMapDataStore,
 			mapView.getModel().mapViewPosition, false, true, AndroidGraphicFactory.INSTANCE);
 		((TileRendererLayer)tileLayer).setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
-		mapView.getLayerManager().getLayers().add(tileLayer);
+		mapView.getLayerManager().getLayers().add(0, tileLayer);
 		setVisible(false);
 	}
 

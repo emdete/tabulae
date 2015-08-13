@@ -21,7 +21,7 @@ class LayerGoogleSat extends LayerBase {
 		super(activity, mapView, true);
 		tileLayer = new TileDownloadLayer(tileCache, mapView.getModel().mapViewPosition,
 			new Source(), AndroidGraphicFactory.INSTANCE);
-		mapView.getLayerManager().getLayers().add(tileLayer);
+		mapView.getLayerManager().getLayers().add(0, tileLayer);
 		setVisible(false);
 	}
 
@@ -35,7 +35,7 @@ class LayerGoogleSat extends LayerBase {
 
 	static class Source extends OnlineTileSource {
 		Source() {
-			super(new String[]{"khms1.google.com", }, 80);
+			super(new String[]{"khms%d.google.com", }, 80);
 			setAlpha(false);
 			setBaseUrl("/kh/v=140");
 			setExtension("png");
@@ -48,12 +48,15 @@ class LayerGoogleSat extends LayerBase {
 		}
 
 		@Override public URL getTileUrl(Tile tile) throws MalformedURLException {
-			return new URL(getProtocol(), getHostName(), port, new StringBuilder()
+			int servernum = (tile.tileX + 2 * tile.tileY) % 4;
+			return new URL(getProtocol(), String.format(getHostName(), servernum), port, new StringBuilder()
 				.append(getBaseUrl())
-				.append("&src=app")
+				.append("&hl=").append("en")
+				.append("&src=").append("app")
 				.append("&x=").append(tile.tileX)
 				.append("&y=").append(tile.tileY)
 				.append("&z=").append(tile.zoomLevel)
+				.append("&scale=").append(true)
 				.append("&s=").append(strGalileo.substring(0, (tile.tileX * 3 + tile.tileY) % 8))
 				.toString());
 		}
