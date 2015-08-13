@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.net.Uri;
 import android.view.MotionEvent;
 import android.view.View;
+import android.content.SharedPreferences;
 import android.view.ViewGroup;
+import android.content.SharedPreferences.Editor;
 import java.util.HashMap;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.AndroidPreferences;
@@ -26,6 +28,7 @@ public class Map extends Base implements Constants {
 	protected MapView mapView;
 	protected int currentMap = -1;
 	protected LayerBase layer;
+	protected SharedPreferences preferences;
 	protected PreferencesFacade preferencesFacade;
 
 	void activateLayer(int id) {
@@ -44,6 +47,11 @@ public class Map extends Base implements Constants {
 			case R.id.event_map_mapquest: layer = new LayerMapQuest((Tabulae) getActivity(), mapView); break;
 			case R.id.event_map_outdoor_active: layer = new LayerOutdoorActive((Tabulae) getActivity(), mapView); break;
 			}
+			if (id != -1) {
+				Editor editor = preferences.edit();
+				editor.putInt("currentMap", currentMap);
+				editor.commit();
+			}
 		}
 		if (layer != null) {
 			layer.setVisible(true);
@@ -52,7 +60,7 @@ public class Map extends Base implements Constants {
 	}
 
 	@Override public void onCreate(Bundle bundle) {
-		if (DEBUG) { Log.d(TAG, "Map.onCreate"); }
+		if (DEBUG) Log.d(TAG, "Map.onCreate bundle=" + bundle);
 		super.onCreate(bundle);
 		AndroidGraphicFactory.createInstance(getActivity().getApplication());
 		mapView = new MapView(getActivity()) {
@@ -63,7 +71,8 @@ public class Map extends Base implements Constants {
 				return super.onTouchEvent(motionEvent);
 			}
 		};
-		preferencesFacade = new AndroidPreferences(getActivity().getSharedPreferences("map", Context.MODE_PRIVATE));
+		preferences = getActivity().getSharedPreferences("map", Context.MODE_PRIVATE);
+		preferencesFacade = new AndroidPreferences(preferences);
 		mapView.getModel().init(preferencesFacade);
 		announceZoom();
 		announceLocation();
@@ -77,11 +86,11 @@ public class Map extends Base implements Constants {
 		DisplayModel displayModel = mapView.getModel().displayModel;
 		displayModel.setBackgroundColor(0xffbbbbbb);
 		displayModel.setUserScaleFactor(1.5f);
-		currentMap = R.id.event_map_openandromaps;
+		currentMap = preferences.getInt("currentMap", R.id.event_map_openandromaps);
 	}
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (DEBUG) { Log.d(TAG, "Map.onCreateView"); }
+		if (DEBUG) Log.d(TAG, "Map.onCreateView");
 		return mapView;
 	}
 
