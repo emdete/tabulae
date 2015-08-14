@@ -30,7 +30,7 @@ class LayerGoogleSat extends LayerBase {
 	}
 
 	byte getZoomLevelMax() {
-		return (byte)19;
+		return (byte)18;
 	}
 
 	static class Source extends OnlineTileSource {
