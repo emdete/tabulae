@@ -45,46 +45,56 @@ public class Poi extends Base implements Constants {
 		}
 	}
 
+	void addPoi(final String name, final String description, final double latitude, final double longitude) {
+		MapView mapView = ((Tabulae)getActivity()).getMapView();
+		if (marker != null) {
+			bitmap.decrementRefCount();
+			mapView.getLayerManager().getLayers().remove(marker);
+			marker.onDestroy();
+			marker = null;
+		}
+		LatLong latLong = new LatLong(latitude, longitude);
+		bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_black, null));
+		bitmap.incrementRefCount();
+		marker = new Marker(latLong, bitmap, 0, -bitmap.getHeight() / 2) {
+			@Override public boolean onTap(LatLong geoPoint, Point viewPosition, Point tapPoint) {
+				if (contains(viewPosition, tapPoint)) {
+					Toast.makeText(getActivity(), String.format("%s: '%s'", name, description), Toast.LENGTH_SHORT).show();
+					return true;
+				}
+				return false;
+			}
+		};
+		mapView.getLayerManager().getLayers().add(marker);
+		Bundle extra = new Bundle();
+		extra.putBoolean("autofollow", false);
+		((Tabulae)getActivity()).inform(R.id.event_autofollow, extra);
+		try {
+			LatLong location = mapView.getModel().mapViewPosition.getMapPosition().latLong; // TODO: sort
+			BoundingBox bb = new BoundingBox(latLong.latitude, latLong.longitude, location.latitude, location.longitude);
+			mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(
+				bb.getCenterPoint(),
+				LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb,
+						mapView.getModel().displayModel.getTileSize())));
+		}
+		catch (Exception e) {
+			mapView.getModel().mapViewPosition.setCenter(latLong);
+		}
+	}
+
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Poi.inform event=" + event + ", extra=" + extra);
 		switch (event) {
+			case R.id.event_poi_new: {
+				double latitude = extra.getDouble(LATITUDE, 0);
+				double longitude = extra.getDouble(LONGITUDE, 0);
+				String name = extra.getString(NAME, "poi");
+				String description = extra.getString(DESCRIPTION, "");
+				addPoi(name, description, latitude, longitude);
+			}
+			break;
 			case R.id.event_poi_list: {
-				MapView mapView = ((Tabulae)getActivity()).getMapView();
-				if (marker != null) {
-					bitmap.decrementRefCount();
-					mapView.getLayerManager().getLayers().remove(marker);
-					marker.onDestroy();
-					marker = null;
-				}
-				else {
-					LatLong latLong = new LatLong(51.18199624, 6.20537151);
-					bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_black, null));
-					bitmap.incrementRefCount();
-					marker = new Marker(latLong, bitmap, 0, -bitmap.getHeight() / 2) {
-						@Override public boolean onTap(LatLong geoPoint, Point viewPosition, Point tapPoint) {
-							if (contains(viewPosition, tapPoint)) {
-								Toast.makeText(getActivity(), "CID: 3:262.02.1.2", Toast.LENGTH_SHORT).show();
-								return true;
-							}
-							return false;
-						}
-					};
-					mapView.getLayerManager().getLayers().add(marker);
-					extra = new Bundle();
-					extra.putBoolean("autofollow", false);
-					((Tabulae)getActivity()).inform(R.id.event_autofollow, extra);
-					try {
-						LatLong location = mapView.getModel().mapViewPosition.getMapPosition().latLong; // TODO: sort
-						BoundingBox bb = new BoundingBox(latLong.latitude, latLong.longitude, location.latitude, location.longitude);
-						mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(
-							bb.getCenterPoint(),
-							LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb,
-									mapView.getModel().displayModel.getTileSize())));
-					}
-					catch (Exception e) {
-						mapView.getModel().mapViewPosition.setCenter(latLong);
-					}
-				}
+				addPoi("CID", "3:262.02.1.2", 51.18199624, 6.20537151);
 			}
 			break;
 		}

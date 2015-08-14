@@ -1,8 +1,11 @@
 package org.pyneo.tabulae;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.Executors;
+
+import android.app.ActivityManager;
 import android.net.Uri;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -17,12 +20,12 @@ import android.view.MenuItem;
 import java.io.File;
 import android.content.Intent;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.fawlty.Fawlty;
 import org.pyneo.tabulae.locus.Locus;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
-import org.pyneo.tabulae.conversations.Conversations;
 import org.pyneo.tabulae.poi.Poi;
 import org.pyneo.tabulae.screencapture.ScreenCaptureFragment;
 import org.pyneo.tabulae.track.Track;
@@ -51,7 +54,6 @@ public class Tabulae extends Activity implements Constants {
 			new Controller(),
 			new Dashboard(),
 			new ScreenCaptureFragment(),
-			new Conversations(),
 			};
 		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 		String baseStorage = preferences.getString("baseStorage", null);
@@ -84,14 +86,51 @@ public class Tabulae extends Activity implements Constants {
 		if (Intent.ACTION_MAIN.equals(queryAction)) {
 			// nothing more to do
 		}
-		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
-			inform(R.id.conversations_show, queryIntent.getExtras());
-		}
 		else if (ACTION_CONVERSATIONS_REQUEST.equals(queryAction)) {
-			inform(R.id.conversations_request, queryIntent.getExtras());
+			String package_ = getCallingPackage();
+			String activity = getCallingActivity().flattenToString();
+			if (DEBUG) Log.d(TAG, "Tabulae.onCreate package_=" + package_ + ", activity=" + activity);
+			Bundle extra = queryIntent.getExtras();
+			MapView mapView = getMapView();
+			LatLong location = mapView.getModel().mapViewPosition.getCenter(); // TODO defere location determination?
+			Intent result = new Intent();
+			result.putExtra(LATITUDE, location.latitude);
+			result.putExtra(LONGITUDE, location.longitude);
+			//result.putExtra(ALTITUDE, .getAltitude());
+			//result.putExtra(ACCURACY, .getAccuracy());
+			setResult(Activity.RESULT_OK, result);
+			finish();
+		}
+		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
+			Bundle extra = queryIntent.getExtras();
+			if (extra.containsKey(LONGITUDE) && extra.containsKey(LATITUDE)) {
+				String jid = extra.getString(JID);
+				String name = extra.getString(NAME);
+				if (name == null || name.length() == 0) {
+					if (jid != null && jid.length() > 0) {
+						name = jid.split("@")[0]; // TODO avoid regex
+					}
+					else {
+						name = "Jabber";
+						jid = "@xmpp";
+					}
+				}
+				double latitude = extra.getDouble(LATITUDE, 0);
+				double longitude = extra.getDouble(LONGITUDE, 0);
+				extra = new Bundle();
+				extra.putDouble(LATITUDE, latitude);
+				extra.putDouble(LONGITUDE, longitude);
+				extra.putString(NAME, jid);
+				extra.putString(DESCRIPTION, name);
+				if (DEBUG) Log.d(TAG, "Tabulae.onCreate new poi extra=" + extra);
+				inform(R.id.event_poi_new, extra);
+			}
+			else
+				Log.w(TAG, "onCreate conversations intent recceived with no latitude/longitude");
 		}
 		else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
 			try {
+				//List<ActivityManager.RecentTaskInfo> recentTasks = ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).getRecentTasks(99, ActivityManager.RECENT_WITH_EXCLUDED);
 				Uri uri = queryIntent.getData();
 				if (uri.getScheme().equalsIgnoreCase(GEO)) {
 					final String part = uri.getEncodedSchemeSpecificPart().split("\\?")[0];
@@ -99,8 +138,10 @@ public class Tabulae extends Activity implements Constants {
 					Bundle extra = new Bundle();
 					extra.putDouble(LATITUDE, Double.parseDouble(latlon[0]));
 					extra.putDouble(LONGITUDE, Double.parseDouble(latlon[1]));
-					if (DEBUG) Log.d(TAG, "Tabulae.onCreate extra=" + extra);
-					inform(R.id.event_view_location_request, extra);
+					extra.putString(NAME, "poi");
+					extra.putString(DESCRIPTION, "shared poi");
+					if (DEBUG) Log.d(TAG, "Tabulae.onCreate new poi extra=" + extra);
+					inform(R.id.event_poi_new, extra);
 				}
 			}
 			catch (Exception e) {

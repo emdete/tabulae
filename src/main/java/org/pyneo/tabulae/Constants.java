@@ -12,4 +12,7 @@ public interface Constants {
 	public static final String LONGITUDE = "longitude";
 	public static final String ALTITUDE = "altitude";
 	public static final String ACCURACY = "accuracy";
+	public static final String JID = "jid";
+	public static final String NAME = "name";
+	public static final String DESCRIPTION = "description";
 }
