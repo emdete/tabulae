@@ -41,17 +41,41 @@ public class Fawlty extends Base implements Constants {
 			enabled = savedInstanceState.getBoolean(STATE_ENABLED);
 		}
 		last_latLong = new LatLong(0, 0);
-		last_latLong_tower = new LatLong(0, 0);
+		last_latLong_tower = null;
 		wirelessEnvListener = new WirelessEnvListener(getActivity()) {
 			@Override public void onLocationChanged(Location location, String ident) {
 				//if (DEBUG) Log.d(TAG, "got it location=" + location + ", ident=" + ident + ", last_ident=" + Fawlty.this.last_ident);
 				last_latLong = new LatLong(location.getLatitude(), location.getLongitude());
-				last_latLong_tower = new LatLong(location.getExtras().getDouble("latitude_tower"), location.getExtras().getDouble("longitude_tower"));
+				if (location.getExtras().containsKey("latitude_tower")) {
+					last_latLong_tower = new LatLong(location.getExtras().getDouble("latitude_tower"), location.getExtras().getDouble("longitude_tower"));
+				}
+				else {
+					last_latLong_tower = null;
+				}
 				float accuracy = location.getAccuracy();
+				long rcd = location.getExtras().getLong("rcd", 5000);
 				if (!ident.equals(Fawlty.this.last_ident) || !last_latLong.equals(circle.getPosition())) {
 					circle.setLatLong(last_latLong);
-					circle.setRadius(accuracy);
-					marker.setLatLong(last_latLong_tower);
+					if (rcd == 2000) {
+						circle.setRadius(accuracy);
+						if (last_latLong_tower != null) {
+							marker.setLatLong(last_latLong_tower);
+							marker.setVisible(true);
+						}
+						else {
+							marker.setVisible(false);
+						}
+						circle.setVisible(true);
+					}
+					else {
+						circle.setVisible(false);
+						marker.setVisible(false);
+						getActivity().runOnUiThread(new Runnable() {
+							public void run() {
+								Toast.makeText(getActivity(), "Ident: " + last_ident + " not found", Toast.LENGTH_LONG).show();
+							}
+						});
+					}
 					Fawlty.this.last_ident = ident;
 					//if (DEBUG) Log.d(TAG, "location set");
 					Bundle extra = new Bundle();
@@ -117,7 +141,8 @@ public class Fawlty extends Base implements Constants {
 			};
 			bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_red, null));
 			bitmap.incrementRefCount();
-			marker = new Marker(last_latLong_tower, bitmap, 0, -bitmap.getHeight() / 2);
+			marker = new Marker(new LatLong(0, 0), bitmap, 0, -bitmap.getHeight() / 2);
+			marker.setVisible(false);
 		}
 		mapView.getLayerManager().getLayers().add(circle);
 		mapView.getLayerManager().getLayers().add(marker);

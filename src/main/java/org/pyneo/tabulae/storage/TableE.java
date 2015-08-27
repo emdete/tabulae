@@ -57,13 +57,6 @@ public class TableE implements Constants {
 		return stmnt;
 	}
 
-	static public String createStatement(Class table, Object[] cols) {
-		String stmnt = "CREATE TABLE " + table.getSimpleName() + " (" + fieldList(cols, false) + ")";
-		// TODO: add DEFAULT / NOT NULL PRIMARY KEY UNIQUE
-		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);
-		return stmnt;
-	}
-
 	static public String dropStatement(Class table, Object[] cols) {
 		String stmnt = "DROP TABLE " + table.getSimpleName();
 		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);

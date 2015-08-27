@@ -275,7 +275,7 @@ public class Tabulae extends Activity implements Constants {
 
 	static private final String deKay(long l) {
 		double d = l;
-		String[] fs = new String[]{"%.2fB", "%.2fKB", "%.2fMB", "%.2fGB", };
+		final String[] fs = new String[]{"%.2fB", "%.2fKB", "%.2fMB", "%.2fGB", };
 		for (String f: fs) {
 			if (d < 1024.0) {
 				return String.format(f, d);
@@ -285,20 +285,23 @@ public class Tabulae extends Activity implements Constants {
 		return String.format("%.2fTB", d);
 	}
 
-	// TODO remove decouple hack
+	public void inform(final int event, final Bundle extra) {
+		for (Base b : fragments) {
+			b.inform(event, extra);
+		}
+	}
+
 	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory(){
 		@Override public Thread newThread(Runnable r) {
 			return new Thread(r, "inform");
 		}
 	});
-	public void inform(final int event, final Bundle extra) {
+	public void asyncInform(final int event, final Bundle extra) {
 		this.mThreadPool.execute(new Runnable() {
 			public void run() {
 				runOnUiThread(new Runnable() {
 					public void run() {
-						for (Base b : fragments) {
-							b.inform(event, extra);
-						}
+						inform(event, extra);
 					}
 				});
 			}

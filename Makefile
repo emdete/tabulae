@@ -5,7 +5,7 @@ all: src/main/res/values/strings_news.xml
 	./gradlew -q assembleRelease
 
 run: src/main/res/values/strings_news.xml
-	./gradlew --offline --quiet assembleDebug
+	./gradlew --quiet assembleDebug
 
 dbg: run
 	#chmod 0644 art/ic_launcher.png build/outputs/apk/*-debug.apk

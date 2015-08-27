@@ -150,6 +150,7 @@ public class WirelessEnvListener extends PhoneStateListener implements Constants
 					Bundle extra = new Bundle();
 					extra.putDouble("latitude_tower", ident_location.getDouble("latitude_tower"));
 					extra.putDouble("longitude_tower", ident_location.getDouble("longitude_tower"));
+					extra.putLong("rcd", rcd);
 					location.setExtras(extra);
 					break;
 				}

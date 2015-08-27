@@ -42,19 +42,19 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 		startManagingCursor(c);
 		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
 			android.R.layout.simple_spinner_item, c,
-			new String[]{org.pyneo.maps.Constants.NAME},
+			new String[]{"name"},
 			new int[]{android.R.id.text1});
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mActivity.setAdapter(adapter);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras == null) extras = new Bundle();
-		int id = extras.getInt(org.pyneo.maps.Constants.ID, Constants.EMPTY_ID);
+		int id = extras.getInt("id", Constants.EMPTY_ID);
 
 		if (id < 0) {
 			mTrack = new Track();
-			mName.setText(extras.getString(org.pyneo.maps.Constants.NAME));
-			mDescr.setText(extras.getString(org.pyneo.maps.Constants.DESCR));
+			mName.setText(extras.getString("name"));
+			mDescr.setText(extras.getString("descr"));
 			mActivity.setSelection(0);
 		} else {
 			mTrack = mPoiManager.getTrack(id);
@@ -89,7 +89,7 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 			});
 
 		final Drawable dr = new TrackStyleDrawable(mTrack.Color, mTrack.Width, mTrack.ColorShadow, mTrack.ShadowRadius);
-		final Drawable[] d = {getResources().getDrawable(R.drawable.track_background), dr};
+		final Drawable[] d = {getResources().getDrawable(R.drawable.ic_track_background), dr};
 		LayerDrawable ld = new LayerDrawable(d);
 		((Button)findViewById(R.id.trackstyle)).setCompoundDrawablesWithIntrinsicBounds(null, null, ld, null);
 	}
@@ -127,7 +127,7 @@ public class TrackActivity extends Activity implements OnTrackStyleChangedListen
 		mTrack.ShadowRadius = shadowradius;
 		mTrack.Style = mTrack.getStyle();
 		final Drawable dr = new TrackStyleDrawable(mTrack.Color, mTrack.Width, mTrack.ColorShadow, mTrack.ShadowRadius);
-		final Drawable[] d = {getResources().getDrawable(R.drawable.track_background), dr};
+		final Drawable[] d = {getResources().getDrawable(R.drawable.ic_track_background), dr};
 		LayerDrawable ld = new LayerDrawable(d);
 		((Button)findViewById(R.id.trackstyle)).setCompoundDrawablesWithIntrinsicBounds(null, null, ld, null);
 	}
