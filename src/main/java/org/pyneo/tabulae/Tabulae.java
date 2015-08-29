@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.Executors;
-
+import android.widget.Toast;
 import android.app.ActivityManager;
 import android.net.Uri;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
@@ -55,21 +56,26 @@ public class Tabulae extends Activity implements Constants {
 			new Dashboard(),
 			new ScreenCaptureFragment(),
 			};
+		if (savedInstanceState != null) {
+			// .. = savedInstanceState.getString("..", null);
+		}
 		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 		String baseStorage = preferences.getString("baseStorage", null);
-		if (savedInstanceState != null) {
-			baseStorage = savedInstanceState.getString("baseStorage", baseStorage);
-		}
+		Log.d(TAG, "Tabulae.onCreate preferences baseStorage=" + baseStorage);
 		if (baseStorage != null) {
 			baseStorageFile = new File(baseStorage);
 			if (!Environment.getExternalStorageState(baseStorageFile).equals(Environment.MEDIA_MOUNTED)) {
-				baseStorage = null; // not accessable anymore
+				Log.e(TAG, "Tabulae.onCreate not mounted: baseStorage=" + baseStorage);
+				Toast.makeText(this, "Storage gone! Please reinsert SD.", Toast.LENGTH_LONG).show();
+				// TODO: ask for different storage
+				finish();
 			}
 		}
+		long baseStorageSpace = 0;
 		if (baseStorageFile == null) {
 			// look for the largest storage to begin with
-			long baseStorageSpace = 0;
 			for (File dir: getApplicationContext().getExternalFilesDirs(null)) {
+				Log.d(TAG, "Tabulae.onCreate getExternalFilesDirs baseStorage=" + baseStorage);
 				if (dir != null && Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
 					long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
 					if (dirSpace > baseStorageSpace) {
@@ -78,8 +84,14 @@ public class Tabulae extends Activity implements Constants {
 					}
 				}
 			}
-			Log.d(TAG, "Tabulae. using baseStorageFile=" + baseStorageFile + ", baseStorageSpace=" + deKay(baseStorageSpace));
+			Editor editor = preferences.edit();
+			editor.putString("baseStorage", baseStorage);
+			editor.commit();
 		}
+		else {
+			baseStorageSpace = new StatFs(baseStorageFile.getPath()).getAvailableBytes();
+		}
+		Log.d(TAG, "Tabulae.onCreate using baseStorageFile=" + baseStorageFile + ", baseStorageSpace=" + deKay(baseStorageSpace));
 		final Intent queryIntent = getIntent();
 		final String queryAction = queryIntent.getAction();
 		if (DEBUG) Log.d(TAG, "Tabulae.onCreate process intent=" + queryIntent + ", action=" + queryAction);
@@ -117,13 +129,8 @@ public class Tabulae extends Activity implements Constants {
 				}
 				double latitude = extra.getDouble(LATITUDE, 0);
 				double longitude = extra.getDouble(LONGITUDE, 0);
-				extra = new Bundle();
-				extra.putDouble(LATITUDE, latitude);
-				extra.putDouble(LONGITUDE, longitude);
-				extra.putString(NAME, jid);
-				extra.putString(DESCRIPTION, name);
-				if (DEBUG) Log.d(TAG, "Tabulae.onCreate new poi extra=" + extra);
-				inform(R.id.event_poi_new, extra);
+				long _id = Poi.storePointPosition(this, jid, name, latitude, longitude, true);
+				Log.w(TAG, "onCreate.ACTION_CONVERSATIONS_SHOW _id=" + _id);
 			}
 			else
 				Log.w(TAG, "onCreate conversations intent recceived with no latitude/longitude");
@@ -223,7 +230,7 @@ public class Tabulae extends Activity implements Constants {
 	@Override protected void onSaveInstanceState(Bundle bundle) {
 		super.onSaveInstanceState(bundle);
 		Log.d(TAG, "Tabulae.onSaveInstanceState bundle=" + bundle);
-		bundle.putString("baseStorage", baseStorageFile.getPath());
+		// bundle.putString("..", ..);
 	}
 
 	/**

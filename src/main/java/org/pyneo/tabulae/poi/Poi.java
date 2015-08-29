@@ -18,11 +18,11 @@ import java.util.List;
 
 public class Poi extends Base implements Constants {
 	class PointAd {
-		protected PoiItem point;
+		protected PoiItem pointItem;
 		protected Marker marker;
 		protected Bitmap bitmap;
-		PointAd(final PoiItem point) {
-			this.point = point;
+		PointAd(final PoiItem pointItem) {
+			this.pointItem = pointItem;
 			MapView mapView = ((Tabulae)getActivity()).getMapView();
 			if (marker != null) {
 				bitmap.decrementRefCount();
@@ -30,13 +30,13 @@ public class Poi extends Base implements Constants {
 				marker.onDestroy();
 				marker = null;
 			}
-			LatLong latLong = new LatLong(point.getLatitude(), point.getLongitude());
+			LatLong latLong = new LatLong(pointItem.getLatitude(), pointItem.getLongitude());
 			bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_black, null));
 			bitmap.incrementRefCount();
 			marker = new Marker(latLong, bitmap, 0, -bitmap.getHeight() / 2) {
 				@Override public boolean onTap(LatLong geoPoint, Point viewPosition, Point tapPoint) {
 					if (contains(viewPosition, tapPoint)) {
-						Toast.makeText(getActivity(), String.format("%s: '%s'", point.getName(), point.getDescription()), Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), String.format("%s: '%s'", pointItem.getName(), pointItem.getDescription()), Toast.LENGTH_SHORT).show();
 						return true;
 					}
 					return false;
@@ -65,8 +65,9 @@ public class Poi extends Base implements Constants {
 		super.onResume();
 		if (DEBUG) Log.d(TAG, "Poi.onResume");
 		MapView mapView = ((Tabulae)getActivity()).getMapView();
-		for (PoiItem point: new Storage((Tabulae)getActivity()).getVisiblePoints()) {
-			pointsAd.add(new PointAd(point));
+		for (PoiItem pointItem: new Storage((Tabulae)getActivity()).getVisiblePoints()) {
+			Log.d(TAG, "Poi.onResume pointItem=" + pointItem);
+			pointsAd.add(new PointAd(pointItem));
 		}
 	}
 
@@ -98,18 +99,14 @@ public class Poi extends Base implements Constants {
 	}
 	*/
 
+	static public long storePointPosition(Tabulae activity, String name, String description, double latitude, double longitude, boolean visible) {
+		return new Storage(activity).store(new PoiItem(name, description, latitude, longitude, visible));
+	}
+
 	public void inform(int event, Bundle extra) {
-		//if (DEBUG) Log.d(TAG, "Poi.inform event=" + event + ", extra=" + extra);
 		switch (event) {
-			case R.id.event_poi_new: {
-				double latitude = extra.getDouble(LATITUDE, 0);
-				double longitude = extra.getDouble(LONGITUDE, 0);
-				String name = extra.getString(NAME, "poi");
-				String description = extra.getString(DESCRIPTION, "");
-				new Storage((Tabulae)getActivity()).store(new PoiItem(name, description, latitude, longitude, true));
-			}
-			break;
 			case R.id.event_poi_list: {
+				if (DEBUG) Log.d(TAG, "Poi.inform event=" + event + ", extra=" + extra);
 			}
 			break;
 		}

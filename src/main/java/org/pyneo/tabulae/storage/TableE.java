@@ -92,9 +92,10 @@ public class TableE implements Constants {
 			}
 		}
 		if (DEBUG) Log.d(TAG, "TableE.test(): valueOf=" + thing.valueOf("NAME"));
+	/*
 		if (DEBUG) {
 			Log.d(TAG, "TableE.test(): createStatement=" + TableE.createStatement(thing.class, thing.values()));
-		}
+		} */
 		if (DEBUG) {
 			Log.d(TAG, "TableE.test(): insertStatement=" + TableE.insertStatement(thing.class, thing.values()));
 		}

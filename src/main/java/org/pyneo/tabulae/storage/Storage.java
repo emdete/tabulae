@@ -25,14 +25,15 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 
 	public Storage(final Tabulae context) {
 		super(context, new File(context.getBaseDir(), ID + ".db").getAbsolutePath(), null, mCurrentVersion);
+		if (DEBUG) Log.d(TAG, "db=" + new File(context.getBaseDir(), ID + ".db").getAbsolutePath());
 	}
 
 	@Override public void onCreate(final SQLiteDatabase db) {
 		db.execSQL(createStatement(tracks.class, tracks.values()));
+		db.execSQL(createStatement(points.class, points.values()));
 	}
 
 	@Override public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
-		db.execSQL(createStatement(points.class, points.values()));
 	}
 
 	public static String fieldList(final Object[] cols, boolean doId) {
@@ -41,8 +42,8 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 			if (i > 0) stmnt += ", ";
 			stmnt += cols[i];
 			switch (i) {
-				case 0: stmnt += "PRIMARY KEY"; break; // db ident
-				case 1: stmnt += "UNIQUE"; break; // human name
+				case 0: stmnt += " INTEGER PRIMARY KEY"; break; // db ident
+				case 1: stmnt += " NOT NULL UNIQUE"; break; // human readable name
 			}
 		}
 		return stmnt;
@@ -60,19 +61,33 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 		return new Storage(activity).getWritableDatabase();
 	}
 
+	long exists(String table, String name) {
+		SQLiteDatabase db = getReadableDatabase();
+		try {
+			for (Cursor cursor : new CursorI(db.query(table, new String[]{"_id"}, "name = ?", new String[]{name}, null, null, null))) {
+				return cursor.getLong(0);
+			}
+		}
+		finally {
+			db.close();
+		}
+		return -1;
+	}
+
 	public List<PoiItem> getVisiblePoints() {
 		List<PoiItem> ret = new ArrayList<>();
 		SQLiteDatabase db = getReadableDatabase();
 		try {
-			Cursor cursor = db.query(points.class.getSimpleName(), null, "visible = true", null, null, null, null);
-			ret.add(new PoiItem(
+			for (Cursor cursor : new CursorI(db.query(points.class.getSimpleName(), null, "visible != 0", null, null, null, null))) {
+				ret.add(new PoiItem(
 					cursor.getInt(points._id.ordinal()),
 					cursor.getString(points.name.ordinal()),
 					cursor.getString(points.description.ordinal()),
 					cursor.getDouble(points.latitude.ordinal()),
 					cursor.getDouble(points.longitude.ordinal()),
 					cursor.getInt(points.visible.ordinal()) != 0
-			));
+					));
+			}
 		}
 		finally {
 			db.close();
@@ -80,26 +95,40 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 		return ret;
 	}
 
-	public void store(PoiItem poiItem) {
+	public long store(PoiItem poiItem) {
+		long _id = exists(points.class.getSimpleName(), poiItem.getName());
 		SQLiteDatabase db = getWritableDatabase();
 		db.beginTransaction();
 		try {
 			ContentValues cv = new ContentValues();
-			cv.put(points.name.toString(), poiItem.getName());
 			cv.put(points.description.toString(), poiItem.getDescription());
 			cv.put(points.latitude.toString(), poiItem.getLatitude());
 			cv.put(points.longitude.toString(), poiItem.getLongitude());
 			cv.put(points.visible.toString(), poiItem.isVisible()? 1: 0);
-			long _id = db.insert(points.class.getSimpleName(), null, cv);
-			if (_id != -1) {
-				poiItem.setId(_id);
-				db.setTransactionSuccessful();
+			if (_id == -1) {
+				cv.put(points.name.toString(), poiItem.getName());
+				_id = db.insert(points.class.getSimpleName(), null, cv);
+				if (_id != -1) {
+					poiItem.setId(_id);
+					db.setTransactionSuccessful();
+					return _id;
+				}
+				if (DEBUG) Log.e(TAG, "insert did not succeed");
+			}
+			else {
+				int count = db.update(points.class.getSimpleName(), cv, "_id = ?", new String[]{Long.toString(_id)});
+				if (count == 1) {
+					db.setTransactionSuccessful();
+					return _id;
+				}
+				if (DEBUG) Log.e(TAG, "update did not effect only one row but count=" + count + ", _id=" + _id);
 			}
 		}
 		finally {
 			db.endTransaction();
 			db.close();
 		}
+		return -1;
 	}
 
 	/*
@@ -136,6 +165,5 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 			}
 		}
 	}
-
-	 */
+	*/
 }
