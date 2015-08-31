@@ -1,21 +1,21 @@
 package org.pyneo.tabulae.storage;
 
 public class Item {
-	long _id;
+	long id;
 
 	public Item() {
-		_id = -1;
+		id = -1;
 	}
 
-	public Item(long _id) {
-		this._id = _id;
+	public Item(long id) {
+		this.id = id;
 	}
 
-	public void setId(long _id) {
-		this._id = _id;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public long getId() {
-		return _id;
+		return id;
 	}
 }
