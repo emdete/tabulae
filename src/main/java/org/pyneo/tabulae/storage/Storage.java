@@ -17,11 +17,11 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 	protected final static int mCurrentVersion = 1;
 	static final private String ID = "tabulae";
 
-	public enum tracks {id, name, description, timestamp, visible, pointcount, duration, distance, categoryid, activityid, };
-	public enum trackpoints {id, trackid, latitude, longitude, altitude, speed, timestamp, attribute, };
-	public enum points {id, name, description, latitude, longitude, altitude, visible, categoryid, iconid, };
-	public enum category {id, name, description, visible, iconid, minzoom, };
 	public enum activity {id, name, description, };
+	public enum category {id, name, description, visible, iconid, minzoom, };
+	public enum points {id, name, description, latitude, longitude, altitude, visible, categoryid, iconid, };
+	public enum trackpoints {id, sequence, trackid, latitude, longitude, altitude, speed, timestamp, attribute, };
+	public enum tracks {id, name, description, timestamp, timezone, visible, pointcount, duration, distance, categoryid, activityid, cropto, cropfrom, };
 
 	public Storage(final Tabulae context) {
 		super(context, new File(context.getBaseDir(), ID + ".db").getAbsolutePath(), null, mCurrentVersion);
@@ -29,15 +29,20 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 	}
 
 	@Override public void onCreate(final SQLiteDatabase db) {
-		db.execSQL(createStatement(tracks.class, tracks.values()));
+		db.execSQL(createStatement(activity.class, activity.values()));
+		db.execSQL(createStatement(category.class, category.values()));
 		db.execSQL(createStatement(points.class, points.values()));
+		db.execSQL(createStatement(trackpoints.class, trackpoints.values()));
+		db.execSQL(createStatement(tracks.class, tracks.values()));
 	}
 
 	@Override public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
 	}
 
-	public static String fieldList(final Object[] cols, boolean doId) {
-		String stmnt = "";
+	static public String createStatement(Class table, Object[] cols) {
+		String stmnt = "CREATE TABLE ";
+		stmnt += table.getSimpleName();
+		stmnt += " (";
 		for (int i = 0; i < cols.length; i++) {
 			if (i > 0) stmnt += ", ";
 			stmnt += cols[i];
@@ -46,13 +51,7 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 				case 1: stmnt += " NOT NULL UNIQUE"; break; // human readable name
 			}
 		}
-		return stmnt;
-		//return TextUtils.join(", ", cols);
-	}
-
-	static public String createStatement(Class table, Object[] cols) {
-		String stmnt = "CREATE TABLE " + table.getSimpleName() + " (" + fieldList(cols, false) + ")";
-		// TODO: add DEFAULT / NOT NULL PRIMARY KEY UNIQUE
+		stmnt += ")";
 		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);
 		return stmnt;
 	}

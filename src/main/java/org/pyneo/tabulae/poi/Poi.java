@@ -102,10 +102,11 @@ public class Poi extends Base implements Constants {
 			bb = bb.extend(new BoundingBox(latLong.latitude, latLong.longitude, latLong.latitude, latLong.longitude)); // TODO add extend with LatLong
 		}
 		try {
-			mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(
-				bb.getCenterPoint(),
-				LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb,
-						mapView.getModel().displayModel.getTileSize())));
+			byte zoom = LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb, mapView.getModel().displayModel.getTileSize());
+			if (zoom > MAX_ZOOM) {
+				zoom = MAX_ZOOM;
+			}
+			mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(bb.getCenterPoint(), zoom));
 		}
 		catch (Exception e) {
 			mapView.getModel().mapViewPosition.setCenter(latLong);

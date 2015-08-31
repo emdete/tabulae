@@ -3,44 +3,22 @@ package org.pyneo.tabulae.poi;
 import org.pyneo.tabulae.storage.Item;
 
 public class PoiItem extends Item implements Constants {
-	String name;
-	String description;
 	double latitude;
 	double longitude;
 	boolean visible;
 
 	public PoiItem(int id_, String name, String description, double latitude, double longitude, boolean visible) {
-		super(id_);
-		this.name = name;
-		this.description = description;
+		super(id_, name, description);
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.visible = visible;
 	}
 
 	public PoiItem(String name, String description, double latitude, double longitude, boolean visible) {
-		super();
-		this.name = name;
-		this.description = description;
+		super(name, description);
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.visible = visible;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public double getLatitude() {

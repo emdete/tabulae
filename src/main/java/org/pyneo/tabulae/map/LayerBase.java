@@ -38,11 +38,11 @@ abstract class LayerBase implements Constants {
 	}
 
 	byte getZoomLevelMin() {
-		return (byte)4;
+		return MIN_ZOOM;
 	}
 
 	byte getZoomLevelMax() {
-		return (byte)23;
+		return MAX_ZOOM;
 	}
 
 	abstract String getId();
