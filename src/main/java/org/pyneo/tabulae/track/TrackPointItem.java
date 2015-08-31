@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class TrackPointItem extends ItemBase {
 	int sequence;
-	int trackid;
+	long trackid;
 	double latitude;
 	double longitude;
 	double altitude;
@@ -14,7 +14,7 @@ public class TrackPointItem extends ItemBase {
 	int attribute;
 
 	public TrackPointItem() {
-		super();
+		super(-1);
 	}
 
 	public int getSequence() {
@@ -25,11 +25,11 @@ public class TrackPointItem extends ItemBase {
 		this.sequence = sequence;
 	}
 
-	public int getTrackid() {
+	public long getTrackid() {
 		return trackid;
 	}
 
-	public void setTrackid(int trackid) {
+	public void setTrackid(long trackid) {
 		this.trackid = trackid;
 	}
 

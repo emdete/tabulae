@@ -5,24 +5,36 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import org.pyneo.tabulae.Tabulae;
 import org.pyneo.tabulae.poi.PoiItem;
-
+import org.pyneo.tabulae.track.Track;
+import org.pyneo.tabulae.track.TrackItem;
+import org.pyneo.tabulae.track.TrackPointItem;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/** a storage class to store projos into the database. it contains all
+ * information to take care of the database interface, the pojos itself dont
+ * have any persistance functionality */
 public class Storage extends SQLiteOpenHelper implements Constants {
 	protected final static int mCurrentVersion = 1;
 	static final private String ID = "tabulae";
 
+	/* these are enums that are "misused" - they hold the names of the columns
+	 * of a table in the database. sqlite does not control colum types but
+	 * colum types per records so you don't neet do specify any when creating
+	 * the table. that's why just names are enough. furthermore the first will
+	 * be the primay key and must named "id" if android shall autofill it. the
+	 * second is meant as a uniq human identifier. */
 	public enum activity {id, name, description, };
 	public enum category {id, name, description, visible, iconid, minzoom, };
 	public enum points {id, name, description, latitude, longitude, altitude, visible, categoryid, iconid, };
 	public enum trackpoints {id, sequence, trackid, latitude, longitude, altitude, speed, timestamp, attribute, };
 	public enum tracks {id, name, description, timestamp, timezone, visible, pointcount, duration, distance, categoryid, activityid, cropto, cropfrom, };
 
+	/** the storage retrieves the location of the database by calling
+	 * getBaseDir from Tabulae */
 	public Storage(final Tabulae context) {
 		super(context, new File(context.getBaseDir(), ID + ".db").getAbsolutePath(), null, mCurrentVersion);
 		if (DEBUG) Log.d(TAG, "db=" + new File(context.getBaseDir(), ID + ".db").getAbsolutePath());
@@ -39,6 +51,7 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 	@Override public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
 	}
 
+	/** constructs a create statement from a enum. */
 	static public String createStatement(Class table, Object[] cols) {
 		String stmnt = "CREATE TABLE ";
 		stmnt += table.getSimpleName();
@@ -51,13 +64,12 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 				case 1: stmnt += " NOT NULL UNIQUE"; break; // human readable name
 			}
 		}
+		if (table == trackpoints.class) {
+			stmnt += ", FOREIGN KEY(trackid) REFERENCES tracks(id)";
+		}
 		stmnt += ")";
 		if (DEBUG) Log.d(TAG, "stmnt=" + stmnt);
 		return stmnt;
-	}
-
-	public SQLiteDatabase getDatabase(final Tabulae activity) {
-		return new Storage(activity).getWritableDatabase();
 	}
 
 	long exists(String table, String name) {
@@ -113,8 +125,6 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 				if (id == -1) {
 					throw new Exception("insert did not succeed");
 				}
-				poiItem.setId(id);
-				db.setTransactionSuccessful();
 			}
 			else {
 				int count = db.update(points.class.getSimpleName(), cv, points.id.toString() + " = ?", new String[]{Long.toString(id)});
@@ -122,9 +132,81 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 					id = -1;
 					throw new Exception("update did not effect only one row but count=" + count + ", id=" + id);
 				}
-				poiItem.setId(id);
-				db.setTransactionSuccessful();
 			}
+			poiItem.setId(id);
+			db.setTransactionSuccessful();
+		}
+		catch (Exception e) {
+			Log.e(TAG, "Storage.store: error", e);
+		}
+		finally {
+			db.endTransaction();
+			db.close();
+		}
+		return id;
+	}
+
+	long store(TrackItem trackItem) {
+		long id = trackItem.getId();
+		if (id == -1) {
+			id = exists(tracks.class.getSimpleName(), trackItem.getName());
+		}
+		SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+		try {
+			ContentValues cv = new ContentValues();
+			cv.put(tracks.name.toString(), trackItem.getName());
+			if (id == -1) {
+				id = db.insert(tracks.class.getSimpleName(), null, cv);
+				if (id == -1) {
+					throw new Exception("insert did not succeed");
+				}
+			}
+			else {
+				int count = db.update(tracks.class.getSimpleName(), cv, tracks.id.toString() + " = ?", new String[]{Long.toString(id)});
+				if (count != 1) {
+					id = -1;
+					throw new Exception("update did not effect only one row but count=" + count + ", id=" + id);
+				}
+			}
+			trackItem.setId(id);
+			db.delete(trackpoints.class.getSimpleName(), trackpoints.trackid.toString() + " = ?", new String[]{Long.toString(id)});
+			for (TrackPointItem trackPointItem: trackItem.getTrackPoints()) {
+				trackPointItem.setTrackid(id);
+				_store(db, trackPointItem);
+			}
+			db.setTransactionSuccessful();
+		}
+		catch (Exception e) {
+			Log.e(TAG, "Storage.store: error", e);
+		}
+		finally {
+			db.endTransaction();
+			db.close();
+		}
+		return id;
+	}
+
+	/** this method may be used inside another store method. that's why its
+	 * private and requires a db obj. */
+	private long _store(SQLiteDatabase db, TrackPointItem trackPointItem) {
+		long id = -1;
+		db.beginTransaction();
+		try {
+			ContentValues cv = new ContentValues();
+			cv.put(trackpoints.sequence.toString(), trackPointItem.getSequence());
+			cv.put(trackpoints.trackid.toString(), trackPointItem.getSequence());
+			cv.put(trackpoints.latitude.toString(), trackPointItem.getSequence());
+			cv.put(trackpoints.longitude.toString(), trackPointItem.getSequence());
+			cv.put(trackpoints.altitude.toString(), trackPointItem.getSequence());
+			cv.put(trackpoints.speed.toString(), trackPointItem.getSequence());
+			cv.put(trackpoints.timestamp.toString(), trackPointItem.getSequence());
+			cv.put(trackpoints.attribute.toString(), trackPointItem.getSequence());
+			id = db.insert(trackpoints.class.getSimpleName(), null, cv);
+			if (id == -1) {
+				throw new Exception("insert did not succeed");
+			}
+			trackPointItem.setId(id);
 		}
 		catch (Exception e) {
 			Log.e(TAG, "Storage.store: error", e);

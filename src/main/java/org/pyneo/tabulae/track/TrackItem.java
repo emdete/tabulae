@@ -1,7 +1,8 @@
 package org.pyneo.tabulae.track;
 
 import org.pyneo.tabulae.storage.Item;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
 public class TrackItem extends Item {
@@ -14,6 +15,7 @@ public class TrackItem extends Item {
 	int activityid;
 	int cropto;
 	int cropfrom;
+	List<TrackPointItem> trackPoints = new ArrayList<TrackPointItem>();
 
 	public TrackItem(int id_, String name, String description) {
 		super(id_, name, description);
@@ -21,6 +23,10 @@ public class TrackItem extends Item {
 
 	public TrackItem(String name, String description) {
 		super(name, description);
+	}
+
+	public List<TrackPointItem> getTrackPoints() {
+		return trackPoints;
 	}
 
 	public Date getTimestamp() {
