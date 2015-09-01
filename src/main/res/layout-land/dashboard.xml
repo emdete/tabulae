@@ -9,6 +9,7 @@
 	<ScrollView
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
+		android:id="@+id/dashboard_list_scroller"
 		>
 		<LinearLayout
 			android:id="@+id/dashboard_list"
@@ -22,7 +23,7 @@
 	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
-		android:layout_toLeftOf="@+id/dashboard_list"
+		android:layout_toLeftOf="@+id/dashboard_list_scroller"
 		android:orientation="vertical"
 		android:visibility="visible"
 		>

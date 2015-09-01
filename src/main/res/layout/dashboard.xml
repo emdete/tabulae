@@ -9,6 +9,7 @@
 	<HorizontalScrollView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_toLeftOf="@+id/dashboard_list_scroller"
 		>
 		<LinearLayout
 			android:id="@+id/dashboard_list"
@@ -22,7 +23,7 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@+id/dashboard_list"
+		android:layout_toLeftOf="@+id/dashboard_list_scroller"
 		android:orientation="horizontal"
 		android:visibility="visible"
 		>
