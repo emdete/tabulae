@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import org.pyneo.tabulae.Tabulae;
 import org.pyneo.tabulae.poi.PoiItem;
-import org.pyneo.tabulae.track.Track;
 import org.pyneo.tabulae.track.TrackItem;
 import org.pyneo.tabulae.track.TrackPointItem;
 import java.io.File;
@@ -18,8 +17,8 @@ import java.util.List;
  * information to take care of the database interface, the pojos itself dont
  * have any persistance functionality */
 public class Storage extends SQLiteOpenHelper implements Constants {
-	protected final static int mCurrentVersion = 1;
-	static final private String ID = "tabulae";
+	private final static int mCurrentVersion = 1;
+	private final static String ID = "tabulae";
 
 	/* these are enums that are "misused" - they hold the names of the columns
 	 * of a table in the database. sqlite does not control colum types but
@@ -31,7 +30,7 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 	public enum category {id, name, description, visible, iconid, minzoom, };
 	public enum points {id, name, description, latitude, longitude, altitude, visible, categoryid, iconid, };
 	public enum trackpoints {id, sequence, trackid, latitude, longitude, altitude, speed, timestamp, attribute, };
-	public enum tracks {id, name, description, timestamp, timezone, visible, pointcount, duration, distance, categoryid, activityid, cropto, cropfrom, };
+	public enum tracks {id, name, description, timestamp, timezone, visible, pointcount, duration, distance, categoryid, activityid, crop_to, crop_from, };
 
 	/** the storage retrieves the location of the database by calling
 	 * getBaseDir from Tabulae */
@@ -49,16 +48,34 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 	}
 
 	@Override public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+		if (newVersion != mCurrentVersion) {
+			Log.e(TAG, "onUpgrade oldVersion=" + oldVersion + ", newVersion=" + newVersion + ", mCurrentVersion=" + mCurrentVersion);
+		}
+		switch (oldVersion) {
+			case 1:
+			break;
+		}
+	}
+
+	/** android needs a list of string names of the columns for queries. this
+	 * method copies enums to strings for that purpose */
+	static String[] toStrings(final Enum[] cols) {
+		int i = 0;
+		String[] ret = new String[cols.length];
+		for (Enum col : cols) {
+			ret[i++] = col.name();
+		}
+		return ret;
 	}
 
 	/** constructs a create statement from a enum. */
-	static public String createStatement(Class table, Object[] cols) {
+	static public String createStatement(Class table, Enum[] cols) {
 		String stmnt = "CREATE TABLE ";
 		stmnt += table.getSimpleName();
 		stmnt += " (";
 		for (int i = 0; i < cols.length; i++) {
 			if (i > 0) stmnt += ", ";
-			stmnt += cols[i];
+			stmnt += cols[i].name();
 			switch (i) {
 				case 0: stmnt += " PRIMARY KEY"; break; // db ident
 				case 1: stmnt += " NOT NULL UNIQUE"; break; // human readable name
@@ -75,7 +92,7 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 	long exists(String table, String name) {
 		SQLiteDatabase db = getReadableDatabase();
 		try {
-			for (Cursor cursor : new CursorI(db.query(table, new String[]{points.id.toString()}, points.name.toString() + " = ?", new String[]{name}, null, null, null))) {
+			for (Cursor cursor : new CursorI(db.query(table, new String[]{points.id.name()}, points.name.name() + " = ?", new String[]{name}, null, null, null))) {
 				return cursor.getLong(0);
 			}
 		}
@@ -85,11 +102,12 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 		return -1;
 	}
 
+	// points:
 	public List<PoiItem> getVisiblePoints() {
 		List<PoiItem> ret = new ArrayList<>();
 		SQLiteDatabase db = getReadableDatabase();
 		try {
-			for (Cursor cursor : new CursorI(db.query(points.class.getSimpleName(), null, points.visible.toString() + " != 0", null, null, null, null))) {
+			for (Cursor cursor : new CursorI(db.query(points.class.getSimpleName(), toStrings(points.values()), points.visible.name() + " != 0", null, null, null, null))) {
 				ret.add(new PoiItem(
 					cursor.getInt(points.id.ordinal()),
 					cursor.getString(points.name.ordinal()),
@@ -115,11 +133,11 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 		db.beginTransaction();
 		try {
 			ContentValues cv = new ContentValues();
-			cv.put(points.name.toString(), poiItem.getName());
-			cv.put(points.description.toString(), poiItem.getDescription());
-			cv.put(points.latitude.toString(), poiItem.getLatitude());
-			cv.put(points.longitude.toString(), poiItem.getLongitude());
-			cv.put(points.visible.toString(), poiItem.isVisible()? 1: 0);
+			cv.put(points.name.name(), poiItem.getName());
+			cv.put(points.description.name(), poiItem.getDescription());
+			cv.put(points.latitude.name(), poiItem.getLatitude());
+			cv.put(points.longitude.name(), poiItem.getLongitude());
+			cv.put(points.visible.name(), poiItem.isVisible()? 1: 0);
 			if (id == -1) {
 				id = db.insert(points.class.getSimpleName(), null, cv);
 				if (id == -1) {
@@ -127,7 +145,7 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 				}
 			}
 			else {
-				int count = db.update(points.class.getSimpleName(), cv, points.id.toString() + " = ?", new String[]{Long.toString(id)});
+				int count = db.update(points.class.getSimpleName(), cv, points.id.name() + " = ?", new String[]{Long.toString(id)});
 				if (count != 1) {
 					id = -1;
 					throw new Exception("update did not effect only one row but count=" + count + ", id=" + id);
@@ -146,6 +164,35 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 		return id;
 	}
 
+	// tracks:
+	public List<TrackItem> getVisibleTracks() {
+		List<TrackItem> ret = new ArrayList<>();
+		SQLiteDatabase db = getReadableDatabase();
+		try {
+			for (Cursor cursor : new CursorI(db.query(tracks.class.getSimpleName(), toStrings(tracks.values()), tracks.visible.name() + " != 0", null, null, null, null))) {
+				TrackItem trackItem = new TrackItem(
+					cursor.getInt(tracks.id.ordinal()),
+					cursor.getString(tracks.name.ordinal()),
+					cursor.getString(tracks.description.ordinal())
+					//cursor.getInt(tracks.visible.ordinal()) != 0
+					);
+				getTrackItems(trackItem.getTrackPoints(), trackItem.getId());
+				ret.add(trackItem);
+			}
+		}
+		finally {
+			db.close();
+		}
+		return ret;
+	}
+
+	public List<TrackPointItem> getTrackItems(List<TrackPointItem> ret, long trackid) {
+		if (ret == null) {
+			ret = new ArrayList<>();
+		}
+		return ret;
+	}
+
 	long store(TrackItem trackItem) {
 		long id = trackItem.getId();
 		if (id == -1) {
@@ -155,7 +202,7 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 		db.beginTransaction();
 		try {
 			ContentValues cv = new ContentValues();
-			cv.put(tracks.name.toString(), trackItem.getName());
+			cv.put(tracks.name.name(), trackItem.getName());
 			if (id == -1) {
 				id = db.insert(tracks.class.getSimpleName(), null, cv);
 				if (id == -1) {
@@ -163,18 +210,24 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 				}
 			}
 			else {
-				int count = db.update(tracks.class.getSimpleName(), cv, tracks.id.toString() + " = ?", new String[]{Long.toString(id)});
+				int count = db.update(tracks.class.getSimpleName(), cv, tracks.id.name() + " = ?", new String[]{Long.toString(id)});
 				if (count != 1) {
 					id = -1;
 					throw new Exception("update did not effect only one row but count=" + count + ", id=" + id);
 				}
 			}
 			trackItem.setId(id);
-			db.delete(trackpoints.class.getSimpleName(), trackpoints.trackid.toString() + " = ?", new String[]{Long.toString(id)});
+			db.delete(trackpoints.class.getSimpleName(), trackpoints.trackid.name() + " = ?", new String[]{Long.toString(id)});
+			int sequence = 0;
 			for (TrackPointItem trackPointItem: trackItem.getTrackPoints()) {
 				trackPointItem.setTrackid(id);
+				trackPointItem.setSequence(sequence++);
 				_store(db, trackPointItem);
 			}
+			cv.put(tracks.pointcount.name(), sequence);
+			cv.put(tracks.crop_to.name(), 0);
+			cv.put(tracks.crop_from.name(), sequence);
+			db.update(tracks.class.getSimpleName(), cv, tracks.id.name() + " = ?", new String[]{Long.toString(id)});
 			db.setTransactionSuccessful();
 		}
 		catch (Exception e) {
@@ -188,20 +241,19 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 	}
 
 	/** this method may be used inside another store method. that's why its
-	 * private and requires a db obj. */
+	 * private and requires a db obj. tx is not handled. */
 	private long _store(SQLiteDatabase db, TrackPointItem trackPointItem) {
 		long id = -1;
-		db.beginTransaction();
 		try {
 			ContentValues cv = new ContentValues();
-			cv.put(trackpoints.sequence.toString(), trackPointItem.getSequence());
-			cv.put(trackpoints.trackid.toString(), trackPointItem.getSequence());
-			cv.put(trackpoints.latitude.toString(), trackPointItem.getSequence());
-			cv.put(trackpoints.longitude.toString(), trackPointItem.getSequence());
-			cv.put(trackpoints.altitude.toString(), trackPointItem.getSequence());
-			cv.put(trackpoints.speed.toString(), trackPointItem.getSequence());
-			cv.put(trackpoints.timestamp.toString(), trackPointItem.getSequence());
-			cv.put(trackpoints.attribute.toString(), trackPointItem.getSequence());
+			cv.put(trackpoints.sequence.name(), trackPointItem.getSequence());
+			cv.put(trackpoints.trackid.name(), trackPointItem.getTrackid());
+			cv.put(trackpoints.latitude.name(), trackPointItem.getLatitude());
+			cv.put(trackpoints.longitude.name(), trackPointItem.getLongitude());
+			cv.put(trackpoints.altitude.name(), trackPointItem.getAltitude());
+			cv.put(trackpoints.speed.name(), trackPointItem.getSpeed());
+			cv.put(trackpoints.timestamp.name(), trackPointItem.getTimestamp().getTime());
+			cv.put(trackpoints.attribute.name(), trackPointItem.getAltitude());
 			id = db.insert(trackpoints.class.getSimpleName(), null, cv);
 			if (id == -1) {
 				throw new Exception("insert did not succeed");
@@ -211,46 +263,6 @@ public class Storage extends SQLiteOpenHelper implements Constants {
 		catch (Exception e) {
 			Log.e(TAG, "Storage.store: error", e);
 		}
-		finally {
-			db.endTransaction();
-			db.close();
-		}
 		return id;
 	}
-
-	/*
-	public void remove() {
-		super.remove(Storage.points.class.getSimpleName());
-	}
-
-	public void store() {
-		super.store(
-			Storage.
-			Storage.points.values(),
-			new Object[]{
-				name,
-				description,
-				latitude,
-				longitude,
-				visible,
-				});
-	}
-
-	public void remove(String table) {
-		SQLiteDatabase mDatabase = null;
-		mDatabase.delete(table, points.id.toString() + " = ?", new String[]{Long.toString(id)});
-	}
-
-	public void store(String table, Object[] names, Object[] fields) {
-		if (fields.length != names.length-1) {
-			throw new RuntimeException("length of fields does not match length of names");
-		}
-		SQLiteDatabase mDatabase = null;
-		if (id == -1) {
-				// TODO commit
-				return;
-			}
-		}
-	}
-	*/
 }
