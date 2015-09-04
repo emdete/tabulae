@@ -1,5 +1,8 @@
 package org.pyneo.tabulae;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public interface Constants {
 	String TAG = "org.pyneo.tabulae";
 	boolean DEBUG = true;
@@ -17,4 +20,5 @@ public interface Constants {
 	public static final String JID = "jid";
 	public static final String NAME = "name";
 	public static final String DESCRIPTION = "description";
+	public static final SimpleDateFormat ISODATEFORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z+0000'", Locale.UK); // ISO8601
 }
