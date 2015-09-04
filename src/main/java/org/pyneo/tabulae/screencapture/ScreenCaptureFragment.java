@@ -20,11 +20,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-import org.pyneo.tabulae.R;
-import org.pyneo.tabulae.Base;
-import org.pyneo.tabulae.Tabulae;
 import java.io.File;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import org.pyneo.tabulae.Base;
+import org.pyneo.tabulae.R;
+import org.pyneo.tabulae.Tabulae;
 
 public class ScreenCaptureFragment extends Base implements Constants {
 	private static final String STATE_ENABLED = "screencapture_enabled";
@@ -209,11 +212,11 @@ public class ScreenCaptureFragment extends Base implements Constants {
 		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.stopRecording: recording stopped");
 	}
 
-	private static final Random random = new Random();
 	File getMovieName() {
 		File f;
 		do {
-			f = new File(((Tabulae)getActivity()).getMoviesDir(), "capture_" + random.nextLong() + ".mp4");
+			ISODATEFORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+			f = new File(((Tabulae)getActivity()).getMoviesDir(), ISODATEFORMAT.format(new Date()) + "-capture.mp4");
 		}
 		while (f.exists());
 		if (DEBUG) Log.d(TAG, "getMovieName f=" + f);
