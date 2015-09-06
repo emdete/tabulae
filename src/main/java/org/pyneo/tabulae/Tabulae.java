@@ -129,7 +129,7 @@ public class Tabulae extends Activity implements Constants {
 				}
 				double latitude = extra.getDouble(LATITUDE, 0);
 				double longitude = extra.getDouble(LONGITUDE, 0);
-				long id = Poi.storePointPosition(this, jid, name, latitude, longitude, true);
+				String id = Poi.storePointPosition(this, jid, name, latitude, longitude, true);
 				Log.w(TAG, "onCreate.ACTION_CONVERSATIONS_SHOW id=" + id);
 			}
 			else

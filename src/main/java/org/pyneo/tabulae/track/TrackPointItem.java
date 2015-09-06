@@ -1,9 +1,10 @@
 package org.pyneo.tabulae.track;
 
-import org.pyneo.tabulae.storage.ItemBase;
 import java.util.Date;
+import co.uk.rushorm.core.RushObject;
 
-public class TrackPointItem extends ItemBase {
+public class TrackPointItem extends RushObject implements Constants {
+	// @Unique @NotNull
 	int sequence;
 	long trackid;
 	double latitude;
@@ -12,9 +13,9 @@ public class TrackPointItem extends ItemBase {
 	double speed;
 	Date timestamp;
 	int attribute;
+	TrackItem track;
 
 	public TrackPointItem() {
-		super(-1);
 	}
 
 	public int getSequence() {

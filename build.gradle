@@ -13,6 +13,9 @@ apply plugin: 'com.android.application'
 repositories {
 	jcenter()
 	mavenCentral()
+	maven {
+		url "http://maven.rushorm.com"
+	}
 }
 
 apply from: "../pyneo.org.gradle"
@@ -30,6 +33,7 @@ dependencies {
 	compile 'com.android.support:support-v13:22.2.1'
 	compile 'org.mapsforge:mapsforge-map-android:0.5.2-rc2'
 	compile ('com.googlecode.json-simple:json-simple:1.1.1') { exclude module: 'junit' }
+	compile 'co.uk.rushorm:rushandroid:1.1.9'
 }
 
 android {

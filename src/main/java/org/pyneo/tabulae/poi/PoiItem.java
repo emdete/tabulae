@@ -1,24 +1,40 @@
 package org.pyneo.tabulae.poi;
 
-import org.pyneo.tabulae.storage.Item;
+import co.uk.rushorm.core.RushObject;
 
-public class PoiItem extends Item implements Constants {
+public class PoiItem extends RushObject implements Constants {
+	// @Unique @NotNull
+	String name;
+	String description;
 	double latitude;
 	double longitude;
 	boolean visible;
 
-	public PoiItem(int id_, String name, String description, double latitude, double longitude, boolean visible) {
-		super(id_, name, description);
+	public PoiItem() {
+	}
+
+	public PoiItem(String name, String description, double latitude, double longitude, boolean visible) {
+		this.name = name;
+		this.description = description;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.visible = visible;
 	}
 
-	public PoiItem(String name, String description, double latitude, double longitude, boolean visible) {
-		super(name, description);
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.visible = visible;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public double getLatitude() {

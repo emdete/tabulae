@@ -1,11 +1,15 @@
 package org.pyneo.tabulae.track;
 
-import org.pyneo.tabulae.storage.Item;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import co.uk.rushorm.core.RushObject;
+import co.uk.rushorm.core.annotations.RushList;
 
-public class TrackItem extends Item {
+public class TrackItem extends RushObject implements Constants {
+	// @Unique @NotNull
+	String name;
+	String description;
 	Date timestamp;
 	boolean visible;
 	int pointcount;
@@ -15,14 +19,31 @@ public class TrackItem extends Item {
 	int activityid;
 	int cropto;
 	int cropfrom;
-	List<TrackPointItem> trackPoints = new ArrayList<TrackPointItem>();
+	@RushList(classType = TrackPointItem.class)
+	List<TrackPointItem> trackPoints = new ArrayList<>();
 
-	public TrackItem(int id_, String name, String description) {
-		super(id_, name, description);
+	public TrackItem() {
 	}
 
 	public TrackItem(String name, String description) {
-		super(name, description);
+		this.name = name;
+		this.description = description;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public List<TrackPointItem> getTrackPoints() {
