@@ -31,7 +31,7 @@ dependencies {
 	compile 'com.android.support:support-v4:22.2.1'
 	compile 'com.android.support:appcompat-v7:22.2.1'
 	compile 'com.android.support:support-v13:22.2.1'
-	compile 'org.mapsforge:mapsforge-map-android:0.5.2-rc2'
+	compile 'org.mapsforge:mapsforge-map-android:0.5.2-rc3'
 	compile ('com.googlecode.json-simple:json-simple:1.1.1') { exclude module: 'junit' }
 	compile 'co.uk.rushorm:rushandroid:1.1.9'
 }

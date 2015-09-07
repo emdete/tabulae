@@ -17,7 +17,6 @@ import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
 import java.util.ArrayList;
 import java.util.List;
-
 import co.uk.rushorm.core.RushSearch;
 
 public class Poi extends Base implements Constants {
@@ -87,7 +86,25 @@ public class Poi extends Base implements Constants {
 	}
 
 	static public String storePointPosition(Tabulae activity, String name, String description, double latitude, double longitude, boolean visible) {
-		PoiItem item = new PoiItem(name, description, latitude, longitude, visible);
+		PoiItem item = null;
+		List<PoiItem> items = new RushSearch().whereEqual("name", name).find(PoiItem.class);
+		switch (items.size()) {
+			case 0:
+				if (DEBUG) Log.d(TAG, "Poi.storePointPosition new item name=" + name);
+				item = new PoiItem(name, description, latitude, longitude, visible);
+			break;
+			case 1:
+				if (DEBUG) Log.d(TAG, "Poi.storePointPosition update item name=" + name);
+				item = items.get(0);
+				item.setDescription(description);
+				item.setLatitude(latitude);
+				item.setLongitude(longitude);
+				item.setVisible(visible);
+			break;
+			default:
+				Log.e(TAG, "Poi.storePointPosition poiItem not unique! name=" + name);
+				throw new RuntimeException("Not unique by name");
+		}
 		item.save();
 		return item.getId();
 	}

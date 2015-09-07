@@ -67,7 +67,7 @@ public class Map extends Base implements Constants {
 	@Override public void onCreate(Bundle bundle) {
 		if (DEBUG) Log.d(TAG, "Map.onCreate bundle=" + bundle);
 		super.onCreate(bundle);
-		AndroidGraphicFactory.createInstance(getActivity().getApplication());
+		// AndroidGraphicFactory.createInstance(getActivity().getApplication());
 		mapView = new MapView(getActivity()) {
 			@Override public boolean onTouchEvent(MotionEvent motionEvent) {
 				Bundle extra = new Bundle();
