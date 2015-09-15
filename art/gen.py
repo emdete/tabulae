@@ -14,10 +14,10 @@ from gi.repository import Rsvg# cairo
 # baseline at 72x72 px, and the x-high density (XHDPI) asset should be 2x the
 # baseline at 96x96 px, and so on.
 SIZES = (
-		(16, 'xxxh', ),
-		(12, 'xxh', ),
-		(8, 'xh', ),
-		(6, 'h', ),
+		#(16, 'xxxh', ),
+		#(12, 'xxh', ),
+		#(8, 'xh', ),
+		#(6, 'h', ),
 		(4, 'm', ),
 		#(3, 'l', ),
 	)
