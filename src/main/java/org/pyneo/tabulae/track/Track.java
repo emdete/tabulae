@@ -3,10 +3,8 @@ package org.pyneo.tabulae.track;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-
 import java.io.File;
 import java.util.List;
-
 import org.mapsforge.core.model.BoundingBox;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.core.model.MapPosition;
@@ -17,57 +15,17 @@ import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.Tabulae;
 import org.pyneo.tabulae.R;
 
+import co.uk.rushorm.core.RushSearch;
+
 public class Track extends Base implements Constants {
 	AlternatingLine polyline;
-
-	public void inform(int event, Bundle extra) {
-		//if (DEBUG) Log.d(TAG, "Track.inform event=" + event + ", extra=" + extra);
-		switch (event) {
-			case R.id.event_track_list: {
-				try {
-					List<LatLong> latLongs = polyline.getLatLongs();
-					if (latLongs.isEmpty()) {
-						double minLatitude = 222;
-						double minLongitude = 222;
-						double maxLatitude = -222;
-						double maxLongitude = -222;
-						for (TrackGpxParser.TrackPoint trackPoint : new TrackGpxParser(
-							new File(((Tabulae)getActivity()).getGpxDir(), "sample.gpx"))) {
-							//if (DEBUG) Log.d(TAG, "Track.inform trackPoint=" + trackPoint);
-							if (trackPoint.latitude > maxLatitude) maxLatitude = trackPoint.latitude;
-							if (trackPoint.latitude < minLatitude) minLatitude = trackPoint.latitude;
-							if (trackPoint.longitude > maxLongitude) maxLongitude = trackPoint.longitude;
-							if (trackPoint.longitude < minLongitude) minLongitude = trackPoint.longitude;
-							latLongs.add(trackPoint);
-						}
-						MapView mapView = ((Tabulae)getActivity()).getMapView();
-						BoundingBox bb = new BoundingBox(minLatitude, minLongitude, maxLatitude, maxLongitude);
-						//if (DEBUG) Log.d(TAG, "Track.inform bb=" + bb);
-						extra = new Bundle();
-						extra.putBoolean("autofollow", false);
-						((Tabulae)getActivity()).inform(R.id.event_autofollow, extra);
-						mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(
-							bb.getCenterPoint(),
-							LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb,
-							mapView.getModel().displayModel.getTileSize())));
-					}
-					else {
-						latLongs.clear();
-					}
-				}
-				catch (Exception e) {
-					Log.e(TAG, "Track.inform", e);
-				}
-			}
-			break;
-		}
-	}
 
 	@Override
 	public void onCreate(Bundle bundle) {
 		if (DEBUG) Log.d(TAG, "Track.onCreate");
 		super.onCreate(bundle);
 		polyline = new AlternatingLine(AndroidGraphicFactory.INSTANCE);
+		// showVisibleTracks();
 	}
 
 	@Override public void onResume() {
@@ -83,5 +41,46 @@ public class Track extends Base implements Constants {
 		polyline.getLatLongs().clear();
 		MapView mapView = ((Tabulae)getActivity()).getMapView();
 		mapView.getLayerManager().getLayers().remove(polyline);
+	}
+
+	void showVisibleTracks() {
+		MapView mapView = ((Tabulae)getActivity()).getMapView();
+		for (TrackItem trackItem: new RushSearch().whereEqual("visible", true).find(TrackItem.class)) {
+			List<LatLong> latLongs = trackItem.getTrackLatLongs();
+			polyline.setLatLongs(latLongs);
+			//BoundingBox bb = new BoundingBox(latLongs);
+			//mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(bb.getCenterPoint(), LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb, mapView.getModel().displayModel.getTileSize())));
+			mapView.getModel().mapViewPosition.setCenter(latLongs.get(0));
+			Bundle extra = new Bundle();
+			extra.putBoolean("autofollow", false);
+			((Tabulae)getActivity()).inform(R.id.event_autofollow, extra);
+			return;
+		}
+	}
+
+	public void inform(int event, Bundle extra) {
+		//if (DEBUG) Log.d(TAG, "Track.inform event=" + event + ", extra=" + extra);
+		switch (event) {
+			case R.id.event_track_list: {
+				File[] gpxs = ((Tabulae)getActivity()).getGpxDir().listFiles();
+				if (gpxs != null) for (File gpx: gpxs) {
+					if (gpx.isFile() && gpx.toString().endsWith(".gpx")) {
+						try {
+							if (DEBUG) Log.d(TAG, "Track.inform import gpx=" + gpx);
+							TrackGpxParser track = new TrackGpxParser(gpx);
+							if (new RushSearch().whereEqual("name", track.trackItem.getName()).count(TrackItem.class) == 0) {
+								track.trackItem.save();
+								if (DEBUG) Log.d(TAG, "Track.inform stored name=" + track.trackItem.getName());
+							}
+						}
+						catch (Exception e) {
+							Log.e(TAG, "Track.inform", e);
+						}
+					}
+				}
+				showVisibleTracks();
+			}
+			break;
+		}
 	}
 }

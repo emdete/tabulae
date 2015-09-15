@@ -1,7 +1,10 @@
 package org.pyneo.tabulae.track;
 
+import co.uk.rushorm.core.RushSearch;
+import org.mapsforge.core.model.LatLong;
 import java.util.ArrayList;
 import java.util.List;
+import co.uk.rushorm.core.annotations.RushIgnore;
 import java.util.Date;
 import co.uk.rushorm.core.RushObject;
 import co.uk.rushorm.core.annotations.RushList;
@@ -10,17 +13,26 @@ public class TrackItem extends RushObject implements Constants {
 	// @Unique @NotNull
 	String name;
 	String description;
+	String comment;
 	Date timestamp;
-	boolean visible;
-	int pointcount;
-	long duration;
-	long distance;
-	int categoryid;
-	int activityid;
-	int cropto;
-	int cropfrom;
-	@RushList(classType = TrackPointItem.class)
-	List<TrackPointItem> trackPoints = new ArrayList<>();
+	boolean visible = true;
+	int pointcount = -1;
+	long duration = -1;
+	long distance = -1;
+	int categoryid = -1;
+	int activityid = -1;
+	int cropto = -1;
+	int cropfrom = -1;
+	//@RushList(classType = TrackPointItem.class)
+	@RushIgnore List<TrackPointItem> trackPointItems;// = new ArrayList<>();
+
+	public static class LatLongTagged extends LatLong {
+		public TrackPointItem trackPointItem;
+		public LatLongTagged(TrackPointItem trackPointItem) {
+			super(trackPointItem.latitude, trackPointItem.longitude);
+			this.trackPointItem = trackPointItem;
+		}
+	}
 
 	public TrackItem() {
 	}
@@ -46,8 +58,39 @@ public class TrackItem extends RushObject implements Constants {
 		this.description = description;
 	}
 
-	public List<TrackPointItem> getTrackPoints() {
-		return trackPoints;
+	void add(TrackPointItem trackPointItem) {
+		//trackPointItem.track = this;
+		getTrackPointItems().add(trackPointItem);
+		if (getId() != null) {
+			trackPointItem.trackId = getId();
+			trackPointItem.save();
+		}
+	}
+
+	public List<TrackPointItem> getTrackPointItems() {
+		if (trackPointItems == null) {
+			trackPointItems = new RushSearch().whereEqual("trackId", getId()).find(TrackPointItem.class);
+		}
+		return trackPointItems;
+	}
+
+	public void save() {
+		boolean create = getId() == null;
+		super.save();
+		if (create && trackPointItems != null) {
+			for (TrackPointItem trackPointItem: getTrackPointItems()) {
+				trackPointItem.trackId = getId();
+				trackPointItem.save();
+			}
+		}
+	}
+
+	public List<LatLong> getTrackLatLongs() {
+		List<LatLong> list = new ArrayList<LatLong>();
+		for (TrackPointItem trackPointItem: getTrackPointItems()) {
+			list.add(new LatLongTagged(trackPointItem));
+		}
+		return list;
 	}
 
 	public Date getTimestamp() {
@@ -120,5 +163,13 @@ public class TrackItem extends RushObject implements Constants {
 
 	public void setCropfrom(int cropfrom) {
 		this.cropfrom = cropfrom;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

@@ -15,10 +15,19 @@ import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.layer.overlay.Polyline;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 class AlternatingLine extends Polyline implements Constants {
+	Paint[] paints = new Paint[1];
+
 	public AlternatingLine(GraphicFactory graphicFactory) {
 		super(null, graphicFactory);
+		for (int i=0;i<paints.length;i++) {
+			paints[i] = AndroidGraphicFactory.INSTANCE.createPaint();
+			paints[i].setStrokeWidth(16);
+			paints[i].setStyle(Style.STROKE);
+			paints[i].setColor(AndroidGraphicFactory.INSTANCE.createColor(Color.BLUE)); // TODO: different colors
+		}
 	}
 
 	@Override public synchronized void draw(BoundingBox boundingBox, byte zoomLevel, Canvas canvas, Point topLeftPoint) {
@@ -51,24 +60,10 @@ class AlternatingLine extends Polyline implements Constants {
 	}
 
 	synchronized Paint getPaintStroke(LatLong from, LatLong to) {
-		Paint paint = AndroidGraphicFactory.INSTANCE.createPaint();
-		paint.setStrokeWidth(16);
-		paint.setStyle(Style.STROKE);
-		paint.setColor(AndroidGraphicFactory.INSTANCE.createColor(Color.BLUE));
-		return paint;
+		return paints[0]; // TODO
 	}
 
-	static class BB extends BoundingBox {
-		public BB(double minLatitude, double minLongitude, double maxLatitude, double maxLongitude) {
-			super(minLatitude, minLongitude, maxLatitude, maxLongitude);
-		}
-
-		public BoundingBox extend(LatLong latLong) {
-			return new BB(
-				Math.min(minLatitude, latLong.latitude),
-				Math.min(minLongitude, latLong.longitude),
-				Math.max(maxLatitude, latLong.latitude),
-				Math.max(maxLongitude, latLong.longitude));
-		}
+	void setLatLongs(List<LatLong> list) {
+		getLatLongs().addAll(list);
 	}
 }
