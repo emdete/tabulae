@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.Executors;
+
+import android.content.Context;
+import android.os.PowerManager;
+import android.view.WindowManager;
 import android.widget.Toast;
 import android.app.ActivityManager;
 import android.net.Uri;
@@ -45,6 +49,7 @@ public class Tabulae extends Activity implements Constants {
 				finish();
 			}
 		});
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.tabulae);
 		fragments = new Base[]{
 			new Map(),
