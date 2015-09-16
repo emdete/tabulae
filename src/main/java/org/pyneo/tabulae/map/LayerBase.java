@@ -1,5 +1,6 @@
 package org.pyneo.tabulae.map;
 
+import android.util.Log;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
@@ -10,7 +11,6 @@ import org.mapsforge.map.layer.cache.TwoLevelTileCache;
 import org.mapsforge.map.layer.TileLayer;
 import org.mapsforge.map.layer.download.TileDownloadLayer;
 import org.pyneo.tabulae.Tabulae;
-
 import java.io.File;
 
 /**
@@ -25,7 +25,9 @@ abstract class LayerBase implements Constants {
 	LayerBase(Tabulae activity, MapView mapView, boolean persistant) {
 		this.mapView = mapView;
 		if (persistant) {
-			memCache = new InMemoryTileCache(10);
+			int size = AndroidUtil.getMinimumCacheSize(activity, mapView.getModel().displayModel.getTileSize(), mapView.getModel().frameBufferModel.getOverdrawFactor(), .9f);
+			if (DEBUG) Log.d(TAG, "LayerBase.LayerBase minmal cache size=" + size);
+			memCache = new InMemoryTileCache(size);
 			tileCache = new TwoLevelTileCache(
 				memCache,
 				new FileSystemTileCache(99999, new File(activity.getTilesDir(), getId()), AndroidGraphicFactory.INSTANCE, true)
