@@ -25,7 +25,7 @@ abstract class LayerBase implements Constants {
 	LayerBase(Tabulae activity, MapView mapView, boolean persistant) {
 		this.mapView = mapView;
 		if (persistant) {
-			int size = AndroidUtil.getMinimumCacheSize(activity, mapView.getModel().displayModel.getTileSize(), mapView.getModel().frameBufferModel.getOverdrawFactor(), .9f);
+			int size = AndroidUtil.getMinimumCacheSize(activity, mapView.getModel().displayModel.getTileSize(), mapView.getModel().frameBufferModel.getOverdrawFactor(), 1f);
 			if (DEBUG) Log.d(TAG, "LayerBase.LayerBase minmal cache size=" + size);
 			memCache = new InMemoryTileCache(size);
 			tileCache = new TwoLevelTileCache(
@@ -35,7 +35,7 @@ abstract class LayerBase implements Constants {
 		}
 		else {
 			tileCache = AndroidUtil.createTileCache(activity, getId(), mapView.getModel().displayModel.getTileSize(),
-				.9f, mapView.getModel().frameBufferModel.getOverdrawFactor());
+				1f, mapView.getModel().frameBufferModel.getOverdrawFactor());
 		}
 	}
 
