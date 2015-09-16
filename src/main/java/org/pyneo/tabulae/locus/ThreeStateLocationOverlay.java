@@ -253,7 +253,9 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 			}
 		}
 		myLocationEnabled = result;
-		onLocationChanged(lastLocation);
+		if (lastLocation != null) {
+			onLocationChanged(lastLocation);
+		}
 		return result;
 	}
 
