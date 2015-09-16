@@ -20,12 +20,12 @@
 		android:title="@string/menu_map_list"
 		>
 		<menu>
-			<item android:id="@id/event_map_vector" android:title="Maps forge" />
-			<item android:id="@id/event_map_openandromaps" android:title="Andro maps" />
-			<item android:id="@id/event_map_bing_satellite" android:title="Bing satellite" />
-			<item android:id="@id/event_map_google_satellite" android:title="Google satellite" />
-			<item android:id="@id/event_map_mapquest" android:title="Mapquest" />
-			<item android:id="@id/event_map_outdoor_active" android:title="Outdoor active" />
+			<item android:id="@id/event_map_vector" android:title="Maps Forge" />
+			<item android:id="@id/event_map_openandromaps" android:title="Open Andro Maps" />
+			<item android:id="@id/event_map_bing_satellite" android:title="Bing Satellite" />
+			<item android:id="@id/event_map_google_satellite" android:title="Google Satellite" />
+			<item android:id="@id/event_map_mapquest" android:title="Map Quest" />
+			<item android:id="@id/event_map_outdoor_active" android:title="Outdoor Active" />
 		</menu>
 	</item>
 	<item

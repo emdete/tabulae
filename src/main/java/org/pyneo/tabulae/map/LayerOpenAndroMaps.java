@@ -36,6 +36,7 @@ class LayerOpenAndroMaps extends LayerBase {
 		}
 		tileLayer = new TileRendererLayer(tileCache, multiMapDataStore,
 			mapView.getModel().mapViewPosition, false, true, AndroidGraphicFactory.INSTANCE);
+		boolean success = false;
 		File themesDir = new File(mapsDir, "themes");
 		File theme = new File(themesDir, "andromaps_light.xml");
 //		File[] themes = themes.listFiles();
@@ -45,13 +46,16 @@ class LayerOpenAndroMaps extends LayerBase {
 					((TileRendererLayer)tileLayer).setXmlRenderTheme(new ExternalRenderTheme(theme));
 					if (DEBUG) Log.d(TAG, "LayerOpenAndroMaps loaded theme=" + theme);
 //					break;
+					success = true;
 				}
 				catch (FileNotFoundException e) {
 					Log.e(TAG, "LayerOpenAndroMaps error theme=" + theme, e);
-					((TileRendererLayer)tileLayer).setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
 				}
 			}
 //		}
+		if (!success) {
+			((TileRendererLayer)tileLayer).setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
+		}
 		mapView.getLayerManager().getLayers().add(0, tileLayer);
 		setVisible(false);
 	}
