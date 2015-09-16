@@ -41,9 +41,9 @@ android {
 	buildToolsVersion "21.1.2"
 	defaultConfig {
 		minSdkVersion 16 // JELLY_BEAN
-		targetSdkVersion 22
-		versionCode 20001
-		versionName "2.0.1"
+		targetSdkVersion 23
+		versionCode 20002
+		versionName "2.alpha.two"
 	}
 	lintOptions {
 		abortOnError false
