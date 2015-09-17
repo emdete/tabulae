@@ -42,8 +42,8 @@ android {
 	defaultConfig {
 		minSdkVersion 16 // JELLY_BEAN
 		targetSdkVersion 23
-		versionCode 20002
-		versionName "2.alpha.two"
+		versionCode 20003
+		versionName "2.alpha.fgau"
 	}
 	lintOptions {
 		abortOnError false

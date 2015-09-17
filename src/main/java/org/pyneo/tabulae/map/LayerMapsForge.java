@@ -22,6 +22,7 @@ class LayerMapsForge extends LayerBase {
 		super(activity, mapView, false);
 		MultiMapDataStore multiMapDataStore = new MultiMapDataStore(MultiMapDataStore.DataPolicy.RETURN_ALL);
 		File mapsDir = new File(activity.getMapsDir(), ID);
+		if (DEBUG) Log.d(TAG, "LayerMapsForge searching in mapsDir=" + mapsDir);
 		File[] maps = mapsDir.listFiles();
 		if (maps != null) for (File map: maps) {
 			if (map.isFile()) {
