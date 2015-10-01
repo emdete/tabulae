@@ -2,9 +2,11 @@
 <resources>
 	<!-- material theme colors: -->
 	<color name="primaryDark" type="color">#000000</color>
-	<color name="primaryMdt" type="color">#ee9900</color>
-	<color name="primaryFgau" type="color">#009988</color>
-	<color name="primary" type="color">@color/primaryMdt</color>
+	<!-- emdete color name="primary" type="color">#ee9900</color -->
+	<!-- droeselwitz --><color name="primary" type="color">#660066</color>
+	<!-- fgau color name="primary" type="color">#009988</color -->
+	<!-- ... color name="primary" type="color">#ff5500</color -->
+	<!-- arndt color name="primary" type="color">#bb7733</color -->
 	<color name="textPrimary" type="color">#ffffff</color>
 	<color name="accent" type="color">#555555</color>
 	<color name="windowBackground" type="color">#bbbbbb</color>
