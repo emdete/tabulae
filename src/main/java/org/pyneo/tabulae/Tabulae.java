@@ -1,5 +1,6 @@
 package org.pyneo.tabulae;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -109,13 +110,18 @@ public class Tabulae extends Activity implements Constants {
 			if (DEBUG) Log.d(TAG, "Tabulae.onCreate package_=" + package_ + ", activity=" + activity);
 			Bundle extra = queryIntent.getExtras();
 			MapView mapView = getMapView();
-			LatLong location = mapView.getModel().mapViewPosition.getCenter(); // TODO defere location determination?
-			Intent result = new Intent();
-			result.putExtra(LATITUDE, location.latitude);
-			result.putExtra(LONGITUDE, location.longitude);
-			//result.putExtra(ALTITUDE, .getAltitude());
-			//result.putExtra(ACCURACY, .getAccuracy());
-			setResult(Activity.RESULT_OK, result);
+			if (mapView == null) {
+				setResult(Activity.RESULT_CANCELED, null);
+			}
+			else {
+				LatLong location = mapView.getModel().mapViewPosition.getCenter(); // TODO defere location determination?
+				Intent result = new Intent();
+				result.putExtra(LATITUDE, location.latitude);
+				result.putExtra(LONGITUDE, location.longitude);
+				//result.putExtra(ALTITUDE, .getAltitude());
+				//result.putExtra(ACCURACY, .getAccuracy());
+				setResult(Activity.RESULT_OK, result);
+			}
 			finish();
 		}
 		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
@@ -134,7 +140,7 @@ public class Tabulae extends Activity implements Constants {
 				}
 				double latitude = extra.getDouble(LATITUDE, 0);
 				double longitude = extra.getDouble(LONGITUDE, 0);
-				String id = Poi.storePointPosition(this, jid, name, latitude, longitude, true);
+				String id = Poi.storePointPosition(this, jid, name + ", on " + new Date(), latitude, longitude, true);
 				Log.w(TAG, "onCreate.ACTION_CONVERSATIONS_SHOW id=" + id);
 			}
 			else
