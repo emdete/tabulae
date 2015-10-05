@@ -40,7 +40,7 @@ android {
 	compileSdkVersion 23
 	buildToolsVersion "21.1.2"
 	defaultConfig {
-		minSdkVersion 22
+		minSdkVersion 16
 		targetSdkVersion 23
 		versionCode 20004
 		versionName "2.alpha.droeselwitz"
