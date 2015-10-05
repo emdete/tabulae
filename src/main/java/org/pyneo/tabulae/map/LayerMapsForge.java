@@ -42,6 +42,10 @@ class LayerMapsForge extends LayerBase {
 		setVisible(false);
 	}
 
+	byte getZoomLevelMin() {
+		return 8;
+	}
+
 	String getId() {
 		return ID;
 	}
