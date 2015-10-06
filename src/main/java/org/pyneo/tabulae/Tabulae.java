@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.Executors;
-
+import android.os.Build;
 import android.content.Context;
 import android.os.PowerManager;
 import android.view.WindowManager;
@@ -80,15 +80,23 @@ public class Tabulae extends Activity implements Constants {
 		long baseStorageSpace = 0;
 		if (baseStorageFile == null) {
 			// look for the largest storage to begin with
-			for (File dir: getApplicationContext().getExternalFilesDirs(null)) {
-				Log.d(TAG, "Tabulae.onCreate getExternalFilesDirs baseStorage=" + baseStorage);
-				if (dir != null && Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
-					long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
-					if (dirSpace > baseStorageSpace) {
-						baseStorageFile = dir;
-						baseStorageSpace = dirSpace;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				for (File dir: getApplicationContext().getExternalFilesDirs(null)) {
+					Log.d(TAG, "Tabulae.onCreate getExternalFilesDirs baseStorage=" + baseStorage);
+					if (dir != null && Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
+						long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
+						if (dirSpace > baseStorageSpace) {
+							baseStorageFile = dir;
+							baseStorageSpace = dirSpace;
+						}
 					}
 				}
+			}
+			else {
+				File dir = getApplicationContext().getExternalFilesDir(null);
+				long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
+				baseStorageFile = dir;
+				baseStorageSpace = dirSpace;
 			}
 			Editor editor = preferences.edit();
 			editor.putString("baseStorage", baseStorage);
