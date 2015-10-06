@@ -234,7 +234,7 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	*/
 	public synchronized void setSnapToLocationEnabled(boolean snapToLocationEnabled) {
 		this.snapToLocationEnabled = snapToLocationEnabled;
-		if (snapToLocationEnabled) {
+		if (snapToLocationEnabled && lastLocation != null) {
 			onLocationChanged(lastLocation);
 		}
 	}
