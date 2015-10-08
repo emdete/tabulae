@@ -24,7 +24,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.SystemClock;
-
+import android.os.Build;
 import org.mapsforge.core.graphics.Canvas;
 import org.mapsforge.core.graphics.GraphicFactory;
 import org.mapsforge.core.graphics.Paint;
@@ -162,7 +162,9 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 
 	@Override public void onLocationChanged(Location location) {
 		synchronized (this) {
-			long age = (SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()) / 1000000000;
+			long age = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1?
+				(SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()) / 1000000000:
+				(System.currentTimeMillis() - location.getTime()) / 1000;
 			if (age > 3 || !location.hasAccuracy() || location.getAccuracy() == 0) {
 				//if (DEBUG) Log.d(TAG, "ThreeStateLocationOverlay.onLocationChanged off: age=" + age);
 				marker = map_needle_off;
@@ -282,11 +284,18 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 			if (location.containsKey("accuracy")) {
 				ret.setAccuracy((float)location.getDouble("accuracy"));
 			}
-			if (location.containsKey("altitude")) ret.setAltitude(location.getDouble("altitude"));
+			if (location.containsKey("altitude")) {
+				ret.setAltitude(location.getDouble("altitude"));
+			}
 			if (location.containsKey("bearing")) {
 				ret.setBearing((float)location.getDouble("bearing"));
 			}
-			ret.setElapsedRealtimeNanos(location.getLong("elapsed"));
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+				ret.setElapsedRealtimeNanos(location.getLong("elapsed"));
+			}
+			else {
+				ret.setTime(location.getLong("elapsed") * 1000000);
+			}
 			ret.setLatitude(location.getDouble("latitude"));
 			ret.setLongitude(location.getDouble("longitude"));
 			if (location.containsKey("speed")) ret.setSpeed((float)location.getDouble("speed"));
@@ -305,7 +314,12 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 			}
 			if (location.hasAltitude()) ret.putDouble("altitude", location.getAltitude());
 			if (location.hasBearing()) ret.putDouble("bearing", location.getBearing());
-			ret.putLong("elapsed", location.getElapsedRealtimeNanos());
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+				ret.putLong("elapsed", location.getElapsedRealtimeNanos());
+			}
+			else {
+				ret.putLong("elapsed", location.getTime() * 1000000);
+			}
 			ret.putDouble("latitude", location.getLatitude());
 			ret.putDouble("longitude", location.getLongitude());
 			if (location.hasSpeed()) ret.putDouble("speed", location.getSpeed());
@@ -322,10 +336,18 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 				return null;
 			else
 				return l1;
-		if (Math.abs(l1.getElapsedRealtimeNanos() - l2.getElapsedRealtimeNanos()) < 3E9 && l1.hasAccuracy() && l2.hasAccuracy()) {
-			return l1.getAccuracy() < l2.getAccuracy()? l1: l2;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			if (Math.abs(l1.getElapsedRealtimeNanos() - l2.getElapsedRealtimeNanos()) < 3E9 && l1.hasAccuracy() && l2.hasAccuracy()) {
+				return l1.getAccuracy() < l2.getAccuracy()? l1: l2;
+			}
+			if (l1.getElapsedRealtimeNanos() < l2.getElapsedRealtimeNanos()) return l2;
 		}
-		if (l1.getElapsedRealtimeNanos() < l2.getElapsedRealtimeNanos()) return l2;
+		else {
+			if (Math.abs(l1.getTime() - l2.getTime()) < 3E9 && l1.hasAccuracy() && l2.hasAccuracy()) {
+				return l1.getAccuracy() < l2.getAccuracy()? l1: l2;
+			}
+			if (l1.getTime() < l2.getTime()) return l2;
+		}
 		return l1;
 	}
 }

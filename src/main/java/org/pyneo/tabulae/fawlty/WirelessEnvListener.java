@@ -146,7 +146,12 @@ public class WirelessEnvListener extends PhoneStateListener implements Constants
 					location.setLongitude(longitude);
 					location.setAccuracy((float)accuracy);
 					location.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
-					location.setTime(System.currentTimeMillis());
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+						location.setElapsedRealtimeNanos(SystemClock.elapsedRealtime());
+					}
+					else {
+						location.setTime(System.currentTimeMillis());
+					}
 					Bundle extra = new Bundle();
 					extra.putDouble("latitude_tower", ident_location.getDouble("latitude_tower"));
 					extra.putDouble("longitude_tower", ident_location.getDouble("longitude_tower"));

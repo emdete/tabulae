@@ -61,11 +61,11 @@ public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<T
 			if (value.hasBearing()) {
 				map.put("bearing", value.getBearing());
 			}
-			try {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
 				map.put("age_nanos", SystemClock.elapsedRealtimeNanos() - value.getElapsedRealtimeNanos());
 			}
-			catch (java.lang.NoSuchMethodError e) {
-				map.put("age_nanos", -1l);
+			else {
+				map.put("age_nanos", (SystemClock.elapsedRealtime() - value.getTime()) * 1000000);
 			}
 			map.put("provider", value.getProvider());
 			if (value.hasSpeed()) {

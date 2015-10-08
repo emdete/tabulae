@@ -142,7 +142,9 @@ public class Map extends Base implements Constants {
 			break;
 			case R.id.event_zoom_out: {
 				MapViewPosition mvp = mapView.getModel().mapViewPosition;
-				mvp.setZoomLevel((byte)(mvp.getZoomLevel() - 1));
+				if (mvp.getZoomLevel() > 0) {
+					mvp.setZoomLevel((byte)(mvp.getZoomLevel() - 1));
+				}
 				announceZoom();
 			}
 			break;
