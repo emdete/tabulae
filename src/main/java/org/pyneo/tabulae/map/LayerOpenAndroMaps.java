@@ -55,6 +55,7 @@ class LayerOpenAndroMaps extends LayerBase {
 			}
 //		}
 		if (!success) {
+			if (DEBUG) Log.d(TAG, "LayerOpenAndroMaps fallback to default theme");
 			((TileRendererLayer)tileLayer).setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
 		}
 		mapView.getLayerManager().getLayers().add(0, tileLayer);

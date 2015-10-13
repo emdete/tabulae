@@ -1,9 +1,8 @@
 package org.pyneo.tabulae.map;
 
 import android.util.Log;
-
 import java.io.File;
-
+import org.mapsforge.map.rendertheme.ExternalRenderTheme;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
@@ -11,6 +10,7 @@ import org.mapsforge.map.reader.MapFile;
 import org.mapsforge.map.reader.MultiMapDataStore;
 import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import org.pyneo.tabulae.Tabulae;
+import java.io.FileNotFoundException;
 
 /**
  * Default vector bases layer
@@ -37,7 +37,27 @@ class LayerMapsForge extends LayerBase {
 		}
 		tileLayer = new TileRendererLayer(tileCache, multiMapDataStore,
 			mapView.getModel().mapViewPosition, false, true, AndroidGraphicFactory.INSTANCE);
-		((TileRendererLayer)tileLayer).setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
+		boolean success = false;
+		File themesDir = new File(mapsDir, "themes");
+		File theme = new File(themesDir, "theme.xml");
+//		File[] themes = themes.listFiles();
+//		for (File theme: themes) {
+			if (theme.isFile() && theme.getPath().endsWith(".xml")) {
+				try {
+					((TileRendererLayer)tileLayer).setXmlRenderTheme(new ExternalRenderTheme(theme));
+					if (DEBUG) Log.d(TAG, "LayerMapsForge loaded theme=" + theme);
+//					break;
+					success = true;
+				}
+				catch (FileNotFoundException e) {
+					Log.e(TAG, "LayerMapsForge error theme=" + theme, e);
+				}
+			}
+//		}
+		if (!success) {
+			if (DEBUG) Log.d(TAG, "LayerMapsForge fallback to default theme");
+			((TileRendererLayer)tileLayer).setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
+		}
 		mapView.getLayerManager().getLayers().add(0, tileLayer);
 		setVisible(false);
 	}
