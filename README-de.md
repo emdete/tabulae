@@ -88,6 +88,36 @@ Zur Planung einer Strecke kann diese vorab erfasst und vermessen werden.
 Die App kann die aktuelle Position mit einem Chatprogramm teilen (siehe
 "[Conversations](market://search?q=pname:eu.siacs.conversations)").
 
+Map Download
+------------
+
+Zur Vereinfachung des Installierens von Karten stellt pyneo rechteckige Karten
+zum Download bereit. Sie sind unter
+
+	[maps](https://pyneo.org/maps/)
+
+verfügbar. Die Namen der Rechtecke werden aus lat/lon der unteren, linken Ecke
+gebildet. Die Größe ist 1°. Später sollen diese Dateien von der App direkt
+geladen werden (darum Rechtecke und Namen, die ein Program einfacher bestimmen
+kann als "bremen.map" aus gegebener lat/lon). Im moment müssen diese manuell
+heruntergeladen werden und and die richtige Stelle installiert werden. Tabulae
+nutzt das Verzeichnis, das getExternalFilesDirs() zurückgibt. Initial wird
+dasjenige Verzeichnis gewählt, das am meisten freien Platz bereitstellt. In
+einem Gerät mit eingelegter zweiten SD müssen die map-Dateien für mapsforge
+dann in
+
+	/storage/sdcard1/Android/data/org.pyneo.tabulae/files/maps/mapsforge
+
+installiert werden. Diejenigen für openandromaps (siehe
+[openandromaps](http://www.openandromaps.org/)) entsprechend in
+
+	/storage/sdcard1/Android/data/org.pyneo.tabulae/files/maps/openandromaps
+
+Da diese map-Dateien eigene Themes benötigen, müssen auch diese installiert
+werden. Der Pfad dahin ist dann:
+
+	/storage/sdcard1/Android/data/org.pyneo.tabulae/files/maps/openandromaps/themes
+
 Fehlersuche
 -----------
 
