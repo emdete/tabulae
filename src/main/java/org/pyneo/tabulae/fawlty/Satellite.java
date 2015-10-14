@@ -1,12 +1,15 @@
 package org.pyneo.tabulae.fawlty;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
+
 import java.util.Iterator;
 
 public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<TheDictionary> {
@@ -55,7 +58,7 @@ public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<T
 				map.put("accuracy", (double)value.getAccuracy());
 			}
 			if (value.hasAltitude()) {
-				map.put("altitude", (double)value.getAltitude());
+				map.put("altitude", value.getAltitude());
 			}
 			map.put("time", value.getTime());
 			if (value.hasBearing()) {
@@ -90,9 +93,13 @@ public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<T
 		int b = 0;
 		int c = 0;
 		//if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-		for (TheDictionary o: new Satellite(((LocationManager)context.getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER))) {
-			a++;
-			if (DEBUG) Log.d(TAG, "got: " + o);
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+		|| context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+		&& context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			for (TheDictionary o : new Satellite(((LocationManager) context.getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER))) {
+				a++;
+				if (DEBUG) Log.d(TAG, "got: " + o);
+			}
 		}
 		return "counts: " + a + '/' + b + '/' + c;
 	}

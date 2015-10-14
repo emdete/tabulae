@@ -1,6 +1,7 @@
 package org.pyneo.tabulae;
 
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+
 import co.uk.rushorm.android.AndroidInitializeConfig;
 import co.uk.rushorm.core.RushCore;
 

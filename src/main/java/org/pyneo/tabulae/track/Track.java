@@ -1,19 +1,17 @@
 package org.pyneo.tabulae.track;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
-import java.io.File;
-import java.util.List;
-import org.mapsforge.core.model.BoundingBox;
+
 import org.mapsforge.core.model.LatLong;
-import org.mapsforge.core.model.MapPosition;
-import org.mapsforge.core.util.LatLongUtils;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.Base;
-import org.pyneo.tabulae.Tabulae;
 import org.pyneo.tabulae.R;
+import org.pyneo.tabulae.Tabulae;
+
+import java.io.File;
+import java.util.List;
 
 import co.uk.rushorm.core.RushSearch;
 

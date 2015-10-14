@@ -1,11 +1,9 @@
 package org.pyneo.tabulae.fawlty;
 
-import android.util.Log;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
-import org.json.simple.JSONStreamAware;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
 
 import java.io.IOException;
 import java.io.Writer;

@@ -1,13 +1,14 @@
 package org.pyneo.tabulae.fawlty;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.json.simple.JSONObject;
 import org.json.simple.JSONAware;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -37,12 +38,13 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 		return this.map.containsValue(o);
 	}
 
+	@NonNull
 	@Override
 	public Set<Entry<String,Object>> entrySet() {
 		return this.map.entrySet();
 	}
 
-	public Object pop(Object o) {
+	public Object pop(String o) {
 		Object r = this.map.get(o);
 		this.map.remove(o);
 		return r;
@@ -58,6 +60,7 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 		return this.map.isEmpty();
 	}
 
+	@NonNull
 	@Override
 	public Set<String> keySet() {
 		return this.map.keySet();
@@ -68,7 +71,7 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 	}
 
 	@Override
-	public void putAll(Map<? extends String, ?> map) {
+	public void putAll(@NonNull Map<? extends String, ?> map) {
 		if (map != null) {
 			this.map.putAll(map);
 		}
@@ -90,6 +93,7 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 		return this.map.size();
 	}
 
+	@NonNull
 	public Collection<Object> values() {
 		return this.map.values();
 	}

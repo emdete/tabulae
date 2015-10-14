@@ -6,6 +6,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.util.Log;
+
 import java.util.Iterator;
 import java.util.List;
 

@@ -1,12 +1,13 @@
 package org.pyneo.tabulae.locus;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.location.Location;
+
 import org.mapsforge.map.android.view.MapView;
+import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
-import org.pyneo.tabulae.Base;
 
 public class Locus extends Base implements Constants {
 	private ThreeStateLocationOverlay myLocationOverlay;

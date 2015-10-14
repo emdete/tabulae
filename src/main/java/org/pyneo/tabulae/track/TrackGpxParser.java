@@ -1,21 +1,20 @@
 package org.pyneo.tabulae.track;
 
+import android.util.Log;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import android.util.Log;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import org.mapsforge.core.model.LatLong;
-import org.xml.sax.Attributes;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.SAXException;
 
 /* parse xml like:
 * <gpx ...><name>...</name><desc /><trk><trkseg><trkpt lon="..." lat="..."><ele>..</ele><time>2015-08-11T00:00:00Z</time>...

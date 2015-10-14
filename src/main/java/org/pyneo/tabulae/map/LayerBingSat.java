@@ -62,11 +62,10 @@ class LayerBingSat extends LayerBase {
 		}
 
 		@Override public URL getTileUrl(Tile tile) throws MalformedURLException {
-			StringBuilder stringBuilder = new StringBuilder()
-				.append(getBaseUrl())
-				.append(encodeQuadTree(tile.zoomLevel, tile.tileX, tile.tileY))
-				.append(getExtension());
-			URL url = new URL(getProtocol(), getHostName(), port, stringBuilder.toString());
+			URL url = new URL(getProtocol(), getHostName(), port, getBaseUrl() +
+				encodeQuadTree(tile.zoomLevel, tile.tileX, tile.tileY) +
+				getExtension()
+				);
 			//Log.d(TAG, "getTileUrl url=" + url);
 			return url;
 		}

@@ -1,41 +1,39 @@
 package org.pyneo.tabulae;
 
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.Executors;
-import android.os.Build;
-import android.content.Context;
-import android.os.PowerManager;
-import android.view.WindowManager;
-import android.widget.Toast;
-import android.app.ActivityManager;
-import android.net.Uri;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import java.io.File;
-import android.content.Intent;
-import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+import android.view.WindowManager;
+import android.widget.Toast;
+
 import org.mapsforge.core.model.LatLong;
+import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.fawlty.Fawlty;
-import org.pyneo.tabulae.locus.Locus;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
+import org.pyneo.tabulae.locus.Locus;
+import org.pyneo.tabulae.map.Map;
 import org.pyneo.tabulae.poi.Poi;
 import org.pyneo.tabulae.screencapture.ScreenCaptureFragment;
 import org.pyneo.tabulae.track.Track;
-import org.pyneo.tabulae.map.Map;
+
+import java.io.File;
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 public class Tabulae extends Activity implements Constants {
 	protected Base[] fragments;
@@ -62,6 +60,7 @@ public class Tabulae extends Activity implements Constants {
 			new Dashboard(),
 			new ScreenCaptureFragment(),
 			};
+		//noinspection StatementWithEmptyBody
 		if (savedInstanceState != null) {
 			// .. = savedInstanceState.getString("..", null);
 		}
@@ -80,23 +79,15 @@ public class Tabulae extends Activity implements Constants {
 		long baseStorageSpace = 0;
 		if (baseStorageFile == null) {
 			// look for the largest storage to begin with
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-				for (File dir: getApplicationContext().getExternalFilesDirs(null)) {
-					Log.d(TAG, "Tabulae.onCreate getExternalFilesDirs baseStorage=" + baseStorage);
-					if (dir != null && Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
-						long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
-						if (dirSpace > baseStorageSpace) {
-							baseStorageFile = dir;
-							baseStorageSpace = dirSpace;
-						}
+			for (File dir: getApplicationContext().getExternalFilesDirs(null)) {
+				Log.d(TAG, "Tabulae.onCreate getExternalFilesDirs baseStorage=" + baseStorage);
+				if (dir != null && Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
+					long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
+					if (dirSpace > baseStorageSpace) {
+						baseStorageFile = dir;
+						baseStorageSpace = dirSpace;
 					}
 				}
-			}
-			else {
-				File dir = getApplicationContext().getExternalFilesDir(null);
-				long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
-				baseStorageFile = dir;
-				baseStorageSpace = dirSpace;
 			}
 			Editor editor = preferences.edit();
 			editor.putString("baseStorage", baseStorage);
@@ -109,6 +100,7 @@ public class Tabulae extends Activity implements Constants {
 		final Intent queryIntent = getIntent();
 		final String queryAction = queryIntent.getAction();
 		if (DEBUG) Log.d(TAG, "Tabulae.onCreate process intent=" + queryIntent + ", action=" + queryAction);
+		//noinspection StatementWithEmptyBody
 		if (Intent.ACTION_MAIN.equals(queryAction)) {
 			// nothing more to do
 		}
@@ -116,7 +108,7 @@ public class Tabulae extends Activity implements Constants {
 			String package_ = getCallingPackage();
 			String activity = getCallingActivity().flattenToString();
 			if (DEBUG) Log.d(TAG, "Tabulae.onCreate package_=" + package_ + ", activity=" + activity);
-			Bundle extra = queryIntent.getExtras();
+			//Bundle extra = queryIntent.getExtras();
 			MapView mapView = getMapView();
 			if (mapView == null) {
 				setResult(Activity.RESULT_CANCELED, null);
@@ -264,6 +256,7 @@ public class Tabulae extends Activity implements Constants {
 	*/
 	public File getGpxDir() {
 		File ret = new File(baseStorageFile, "gpx");
+		//noinspection ResultOfMethodCallIgnored
 		ret.mkdirs();
 		return ret;
 	}
@@ -273,6 +266,7 @@ public class Tabulae extends Activity implements Constants {
 	*/
 	public File getTilesDir() {
 		File ret = new File(baseStorageFile, "tiles");
+		//noinspection ResultOfMethodCallIgnored
 		ret.mkdirs();
 		return ret;
 	}
@@ -282,6 +276,7 @@ public class Tabulae extends Activity implements Constants {
 	*/
 	public File getMapsDir() {
 		File ret = new File(baseStorageFile, "maps");
+		//noinspection ResultOfMethodCallIgnored
 		ret.mkdirs();
 		return ret;
 	}
@@ -291,6 +286,7 @@ public class Tabulae extends Activity implements Constants {
 	*/
 	public File getMoviesDir() {
 		File ret = new File(baseStorageFile, "movies");
+		//noinspection ResultOfMethodCallIgnored
 		ret.mkdirs();
 		return ret;
 	}
@@ -318,7 +314,7 @@ public class Tabulae extends Activity implements Constants {
 	}
 
 	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory(){
-		@Override public Thread newThread(Runnable r) {
+		@Override public Thread newThread(@NonNull Runnable r) {
 			return new Thread(r, "inform");
 		}
 	});

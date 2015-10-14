@@ -28,9 +28,8 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:support-v4:23.0.1'
-	compile 'com.android.support:appcompat-v7:23.0.1'
-	compile 'com.android.support:support-v13:23.0.1'
+	compile 'com.android.support:support-annotations:22.2.0' // https://sites.google.com/a/android.com/tools/tech-docs/support-annotations
+	// compile 'com.android.support:support-v23:0.0.1' // https://developer.android.com/tools/support-library/features.html
 	compile 'org.mapsforge:mapsforge-map-android:0.5.2-rc3'
 	compile ('com.googlecode.json-simple:json-simple:1.1.1') { exclude module: 'junit' }
 	compile 'co.uk.rushorm:rushandroid:1.1.9'
@@ -40,10 +39,10 @@ android {
 	compileSdkVersion 23
 	buildToolsVersion "21.1.2"
 	defaultConfig {
-		minSdkVersion 16
+		minSdkVersion 21
 		targetSdkVersion 23
-		versionCode 20005
-		versionName "2.alpha.arndt"
+		versionCode 20006
+		versionName "2.alpha.emdete"
 	}
 	lintOptions {
 		abortOnError false

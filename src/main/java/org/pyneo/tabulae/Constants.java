@@ -10,15 +10,15 @@ public interface Constants {
 	byte MAX_ZOOM = (byte)21;
 	// static { DEBUG = Log.isLoggable("org.pyneo.android", Log.DEBUG); }
 	float USER_FONT_FACTOR = 1.3f; // TODO: determine sp/dp factor somehow
-	public static final String ACTION_CONVERSATIONS_REQUEST = "eu.siacs.conversations.location.request";
-	public static final String ACTION_CONVERSATIONS_SHOW = "eu.siacs.conversations.location.show";
-	public static final String GEO = "geo";
-	public static final String LATITUDE = "latitude";
-	public static final String LONGITUDE = "longitude";
-	public static final String ALTITUDE = "altitude";
-	public static final String ACCURACY = "accuracy";
-	public static final String JID = "jid";
-	public static final String NAME = "name";
-	public static final String DESCRIPTION = "description";
-	public static final SimpleDateFormat ISODATEFORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z+0000'", Locale.UK); // ISO8601
+	String ACTION_CONVERSATIONS_REQUEST = "eu.siacs.conversations.location.request";
+	String ACTION_CONVERSATIONS_SHOW = "eu.siacs.conversations.location.show";
+	String GEO = "geo";
+	String LATITUDE = "latitude";
+	String LONGITUDE = "longitude";
+	String ALTITUDE = "altitude";
+	String ACCURACY = "accuracy";
+	String JID = "jid";
+	String NAME = "name";
+	String DESCRIPTION = "description";
+	SimpleDateFormat ISODATEFORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z+0000'", Locale.UK); // ISO8601
 }

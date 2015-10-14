@@ -1,9 +1,11 @@
 package org.pyneo.tabulae.track;
 
-import co.uk.rushorm.core.RushSearch;
 import org.mapsforge.core.model.LatLong;
+
 import java.util.Date;
+
 import co.uk.rushorm.core.RushObject;
+import co.uk.rushorm.core.RushSearch;
 
 public class TrackPointItem extends RushObject implements Constants {
 	// @Unique @NotNull

@@ -1,13 +1,14 @@
 package org.pyneo.tabulae.fawlty;
 
 import android.content.Context;
-import android.telephony.CellLocation;
 import android.os.Build;
+import android.telephony.CellLocation;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Itera
 	public CellIdPre17API(TelephonyManager telephonyManager, CellLocation cellLocation, List<NeighboringCellInfo> neighboringCellInfoList) {
 		if (DEBUG) Log.d(TAG, "CellIdPre17API:");
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-			this.fallback_pre17api = true;
+			fallback_pre17api = true;
 		}
 		this.cellLocation = cellLocation;
 		this.neighboringCellInfoList = neighboringCellInfoList;

@@ -7,29 +7,34 @@
 		style="@style/buttonstyle"
 		android:visibility="invisible"
 		android:src="@drawable/ic_compass"
+		android:contentDescription="Compass"
 		/>
 	<ImageButton
 		android:id="@+id/event_dummy1"
 		style="@style/buttonstyle"
 		android:visibility="invisible"
 		android:src="@drawable/ic_dummy"
+		android:contentDescription="Dummy"
 		/>
 	<ImageButton
 		android:id="@+id/event_dummy2"
 		style="@style/buttonstyle"
 		android:visibility="invisible"
 		android:src="@drawable/ic_dummy"
+		android:contentDescription="Dummy"
 		/>
 	<ImageButton
 		android:id="@+id/event_dummy3"
 		style="@style/buttonstyle"
 		android:visibility="invisible"
 		android:src="@drawable/ic_dummy"
+		android:contentDescription="Dummy"
 		/>
 	<ImageButton
 		android:id="@+id/event_dummy4"
 		style="@style/buttonstyle"
 		android:visibility="invisible"
 		android:src="@drawable/ic_dummy"
+		android:contentDescription="Dummy"
 		/>
 </merge>

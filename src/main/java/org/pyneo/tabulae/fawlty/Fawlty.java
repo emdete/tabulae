@@ -4,19 +4,14 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-import org.mapsforge.core.graphics.Color;
+
+import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.graphics.Paint;
 import org.mapsforge.core.graphics.Style;
-import org.mapsforge.map.android.util.MapViewerTemplate;
-import org.mapsforge.map.layer.overlay.Circle;
-import org.mapsforge.core.graphics.Bitmap;
-import org.mapsforge.core.model.BoundingBox;
 import org.mapsforge.core.model.LatLong;
-import org.mapsforge.core.model.MapPosition;
 import org.mapsforge.core.model.Point;
-import org.mapsforge.map.layer.overlay.FixedPixelCircle;
-import org.mapsforge.core.util.LatLongUtils;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+import org.mapsforge.map.layer.overlay.Circle;
 import org.mapsforge.map.layer.overlay.Marker;
 import org.mapsforge.map.view.MapView;
 import org.pyneo.tabulae.Base;
@@ -139,7 +134,8 @@ public class Fawlty extends Base implements Constants {
 					return d < getRadius();
 				}
 			};
-			bitmap = AndroidGraphicFactory.convertToBitmap(getResources().getDrawable(R.drawable.poi_red, null));
+			bitmap = AndroidGraphicFactory.convertToBitmap(
+					getResources().getDrawable(R.drawable.poi_red, null));
 			bitmap.incrementRefCount();
 			marker = new Marker(new LatLong(0, 0), bitmap, 0, -bitmap.getHeight() / 2);
 			marker.setVisible(false);

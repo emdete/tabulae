@@ -1,20 +1,19 @@
 package org.pyneo.tabulae.map;
 
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.net.Uri;
 import android.view.MotionEvent;
 import android.view.View;
-import android.content.SharedPreferences;
 import android.view.ViewGroup;
-import android.content.SharedPreferences.Editor;
-import java.util.HashMap;
+
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.AndroidPreferences;
-import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.model.DisplayModel;
 import org.mapsforge.map.model.MapViewPosition;
@@ -169,7 +168,7 @@ public class Map extends Base implements Constants {
 			case R.id.event_view_location: {
 				final MapViewPosition mvp = mapView.getModel().mapViewPosition;
 				final String label = "";
-				final byte zoom = mvp.getZoomLevel();
+				//final byte zoom = mvp.getZoomLevel();
 				final LatLong latLong = mvp.getCenter();
 				final Intent intent = new Intent(Intent.ACTION_VIEW);
 				intent.setData(Uri.parse("geo:"

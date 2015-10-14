@@ -15,7 +15,7 @@ import java.net.URL;
  */
 class LayerGoogleSat extends LayerBase {
 	static final String ID = "google_sat";
-	static final String strGalileo = new String("Galileo");
+	static final String strGalileo = "Galileo";
 
 	LayerGoogleSat(Tabulae activity, MapView mapView) {
 		super(activity, mapView, true);
@@ -49,16 +49,15 @@ class LayerGoogleSat extends LayerBase {
 
 		@Override public URL getTileUrl(Tile tile) throws MalformedURLException {
 			int servernum = (tile.tileX + 2 * tile.tileY) % 4;
-			return new URL(getProtocol(), String.format(getHostName(), servernum), port, new StringBuilder()
-				.append(getBaseUrl())
-				.append("&hl=").append("en")
-				.append("&src=").append("app")
-				.append("&x=").append(tile.tileX)
-				.append("&y=").append(tile.tileY)
-				.append("&z=").append(tile.zoomLevel)
-				.append("&scale=").append(true)
-				.append("&s=").append(strGalileo.substring(0, (tile.tileX * 3 + tile.tileY) % 8))
-				.toString());
+			return new URL(getProtocol(), String.format(getHostName(), servernum), port, getBaseUrl() +
+				"&hl=" + "en" +
+				"&src=" + "app" +
+				"&x=" + tile.tileX +
+				"&y=" + tile.tileY +
+				"&z=" + tile.zoomLevel +
+				"&scale=" + true +
+				"&s=" + strGalileo.substring(0, (tile.tileX * 3 + tile.tileY) % 8)
+				);
 		}
 	}
 }

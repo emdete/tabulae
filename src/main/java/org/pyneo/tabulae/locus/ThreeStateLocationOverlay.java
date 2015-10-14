@@ -17,14 +17,17 @@
  */
 package org.pyneo.tabulae.locus;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.os.Build;
+
 import org.mapsforge.core.graphics.Canvas;
 import org.mapsforge.core.graphics.GraphicFactory;
 import org.mapsforge.core.graphics.Paint;
@@ -61,6 +64,7 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	protected final RotatingMarker map_needle;
 	protected boolean myLocationEnabled;
 	protected boolean snapToLocationEnabled;
+	protected Context context;
 
 	/**
 	* Constructs a new {@code ThreeStateLocationOverlay} with the default circle paints.
@@ -70,6 +74,7 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	*/
 	public ThreeStateLocationOverlay(Context context, MapViewPosition mapViewPosition) {
 		this(context, mapViewPosition, getDefaultCircleFill(), getDefaultCircleStroke());
+
 	}
 
 	/**
@@ -162,9 +167,7 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 
 	@Override public void onLocationChanged(Location location) {
 		synchronized (this) {
-			long age = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1?
-				(SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()) / 1000000000:
-				(System.currentTimeMillis() - location.getTime()) / 1000;
+			long age = (SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos()) / 1000000000;
 			if (age > 3 || !location.hasAccuracy() || location.getAccuracy() == 0) {
 				//if (DEBUG) Log.d(TAG, "ThreeStateLocationOverlay.onLocationChanged off: age=" + age);
 				marker = map_needle_off;
@@ -242,21 +245,25 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 	}
 
 	protected synchronized boolean enableLocationProvider() {
-		disable();
-		for (String provider : locationManager.getProviders(true)) {
-			Location pl = locationManager.getLastKnownLocation(provider);
-			lastLocation = betterLocation(lastLocation, pl);
-		}
 		boolean result = false;
-		for (String provider : locationManager.getProviders(true)) {
-			if (LocationManager.GPS_PROVIDER.equals(provider) || LocationManager.NETWORK_PROVIDER.equals(provider)) {
-				result = true;
-				locationManager.requestLocationUpdates(provider, minTime, minDistance, this);
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+		|| context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+		&& context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			disable();
+			for (String provider : locationManager.getProviders(true)) {
+				Location pl = locationManager.getLastKnownLocation(provider);
+				lastLocation = betterLocation(lastLocation, pl);
 			}
-		}
-		myLocationEnabled = result;
-		if (lastLocation != null) {
-			onLocationChanged(lastLocation);
+			for (String provider : locationManager.getProviders(true)) {
+				if (LocationManager.GPS_PROVIDER.equals(provider) || LocationManager.NETWORK_PROVIDER.equals(provider)) {
+					locationManager.requestLocationUpdates(provider, minTime, minDistance, this);
+					result = true;
+				}
+			}
+			myLocationEnabled = result;
+			if (lastLocation != null) {
+				onLocationChanged(lastLocation);
+			}
 		}
 		return result;
 	}
@@ -282,20 +289,15 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 		if (location != null) {
 			ret = new Location(location.getString("provider"));
 			if (location.containsKey("accuracy")) {
-				ret.setAccuracy((float)location.getDouble("accuracy"));
+				ret.setAccuracy((float) location.getDouble("accuracy"));
 			}
 			if (location.containsKey("altitude")) {
 				ret.setAltitude(location.getDouble("altitude"));
 			}
 			if (location.containsKey("bearing")) {
-				ret.setBearing((float)location.getDouble("bearing"));
+				ret.setBearing((float) location.getDouble("bearing"));
 			}
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-				ret.setElapsedRealtimeNanos(location.getLong("elapsed"));
-			}
-			else {
-				ret.setTime(location.getLong("elapsed") * 1000000);
-			}
+			ret.setElapsedRealtimeNanos(location.getLong("elapsed"));
 			ret.setLatitude(location.getDouble("latitude"));
 			ret.setLongitude(location.getDouble("longitude"));
 			if (location.containsKey("speed")) ret.setSpeed((float)location.getDouble("speed"));
@@ -314,12 +316,7 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 			}
 			if (location.hasAltitude()) ret.putDouble("altitude", location.getAltitude());
 			if (location.hasBearing()) ret.putDouble("bearing", location.getBearing());
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-				ret.putLong("elapsed", location.getElapsedRealtimeNanos());
-			}
-			else {
-				ret.putLong("elapsed", location.getTime() * 1000000);
-			}
+			ret.putLong("elapsed", location.getElapsedRealtimeNanos());
 			ret.putDouble("latitude", location.getLatitude());
 			ret.putDouble("longitude", location.getLongitude());
 			if (location.hasSpeed()) ret.putDouble("speed", location.getSpeed());
@@ -332,22 +329,14 @@ class ThreeStateLocationOverlay extends Layer implements LocationListener, Const
 		if (l1 == null) return l2;
 		if (l2 == null) return null;
 		if (l2.isFromMockProvider())
-			if (l1.isFromMockProvider())
-				return null;
-			else
-				return l1;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-			if (Math.abs(l1.getElapsedRealtimeNanos() - l2.getElapsedRealtimeNanos()) < 3E9 && l1.hasAccuracy() && l2.hasAccuracy()) {
-				return l1.getAccuracy() < l2.getAccuracy()? l1: l2;
-			}
-			if (l1.getElapsedRealtimeNanos() < l2.getElapsedRealtimeNanos()) return l2;
+		if (l1.isFromMockProvider())
+			return null;
+		else
+			return l1;
+		if (Math.abs(l1.getElapsedRealtimeNanos() - l2.getElapsedRealtimeNanos()) < 3E9 && l1.hasAccuracy() && l2.hasAccuracy()) {
+			return l1.getAccuracy() < l2.getAccuracy()? l1: l2;
 		}
-		else {
-			if (Math.abs(l1.getTime() - l2.getTime()) < 3E9 && l1.hasAccuracy() && l2.hasAccuracy()) {
-				return l1.getAccuracy() < l2.getAccuracy()? l1: l2;
-			}
-			if (l1.getTime() < l2.getTime()) return l2;
-		}
+		if (l1.getElapsedRealtimeNanos() < l2.getElapsedRealtimeNanos()) return l2;
 		return l1;
 	}
 }

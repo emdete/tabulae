@@ -9,25 +9,17 @@ import android.media.MediaRecorder;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Surface;
-import android.view.SurfaceView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+
+import java.io.File;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class ScreenCaptureFragment extends Base implements Constants {
 	private static final String STATE_ENABLED = "screencapture_enabled";

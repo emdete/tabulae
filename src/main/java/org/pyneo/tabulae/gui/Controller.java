@@ -1,6 +1,5 @@
 package org.pyneo.tabulae.gui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;

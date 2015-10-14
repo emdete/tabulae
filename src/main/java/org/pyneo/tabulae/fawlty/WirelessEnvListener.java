@@ -2,37 +2,18 @@ package org.pyneo.tabulae.fawlty;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.telephony.cdma.CdmaCellLocation;
-import android.telephony.CellIdentityCdma;
-import android.os.Build;
 import android.telephony.CellInfo;
-import android.telephony.CellInfoGsm;
-import android.telephony.CellInfoLte;
-import android.telephony.CellInfoWcdma;
 import android.telephony.CellLocation;
-import android.telephony.CellSignalStrengthCdma;
-import android.telephony.CellSignalStrengthGsm;
-import android.telephony.CellSignalStrengthLte;
-import android.telephony.CellSignalStrengthWcdma;
-import android.telephony.gsm.GsmCellLocation;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.lang.Runnable;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Arrays;
-import java.util.Collection;
+
+import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.List;
 
 public class WirelessEnvListener extends PhoneStateListener implements Constants, Runnable {
 	ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
@@ -100,7 +81,7 @@ public class WirelessEnvListener extends PhoneStateListener implements Constants
 					public void run() {
 						try {
 							if (DEBUG) Log.d(TAG, "WirelessEnvListener.onCellInfoChanged: request=" + cellapi2_request);
-							Location location = constructLocation(CellAPI2.retrieveLocation(meta_map, cellapi2_request, "single"));
+							Location location = constructLocation(CellAPI2.retrieveLocation(meta_map, cellapi2_request, "estimate"));
 							if (DEBUG) Log.d(TAG, "WirelessEnvListener.onCellInfoChanged: response=" + location);
 							if (location != null) {
 								onLocationChanged(location, last_ident);

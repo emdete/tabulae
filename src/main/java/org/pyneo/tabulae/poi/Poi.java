@@ -3,6 +3,7 @@ package org.pyneo.tabulae.poi;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
 import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.model.BoundingBox;
 import org.mapsforge.core.model.LatLong;
@@ -15,8 +16,10 @@ import org.mapsforge.map.view.MapView;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import co.uk.rushorm.core.RushSearch;
 
 public class Poi extends Base implements Constants {
@@ -59,7 +62,7 @@ public class Poi extends Base implements Constants {
 			}
 		}
 	}
-	protected List<PointAd> pointsAd = new ArrayList<PointAd>();
+	protected List<PointAd> pointsAd = new ArrayList<>();
 
 	@Override public void onCreate(Bundle bundle) {
 		if (DEBUG) Log.d(TAG, "Poi.onCreate");
@@ -69,7 +72,7 @@ public class Poi extends Base implements Constants {
 	@Override public void onResume() {
 		super.onResume();
 		if (DEBUG) Log.d(TAG, "Poi.onResume");
-		MapView mapView = ((Tabulae)getActivity()).getMapView();
+		//MapView mapView = ((Tabulae)getActivity()).getMapView();
 		for (PoiItem poiItem: new RushSearch().whereEqual("visible", true).find(PoiItem.class)) {
 			Log.d(TAG, "Poi.onResume poiItem=" + poiItem);
 			pointsAd.add(new PointAd(poiItem));

@@ -1,16 +1,18 @@
 package org.pyneo.tabulae.map;
 
 import android.util.Log;
+
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
+import org.mapsforge.map.layer.TileLayer;
 import org.mapsforge.map.layer.cache.FileSystemTileCache;
 import org.mapsforge.map.layer.cache.InMemoryTileCache;
 import org.mapsforge.map.layer.cache.TileCache;
 import org.mapsforge.map.layer.cache.TwoLevelTileCache;
-import org.mapsforge.map.layer.TileLayer;
 import org.mapsforge.map.layer.download.TileDownloadLayer;
 import org.pyneo.tabulae.Tabulae;
+
 import java.io.File;
 
 /**

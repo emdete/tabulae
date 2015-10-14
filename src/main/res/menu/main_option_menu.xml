@@ -21,12 +21,12 @@
 		android:title="@string/menu_map_list"
 		>
 		<menu>
-			<item android:id="@id/event_map_vector" android:title="Maps Forge" />
-			<item android:id="@id/event_map_openandromaps" android:title="Open Andro Maps" />
-			<item android:id="@id/event_map_bing_satellite" android:title="Bing Satellite" />
-			<item android:id="@id/event_map_google_satellite" android:title="Google Satellite" />
-			<item android:id="@id/event_map_mapquest" android:title="Map Quest" />
-			<item android:id="@id/event_map_outdoor_active" android:title="Outdoor Active" />
+			<item android:id="@id/event_map_vector" android:title="@string/map_mapsforge" />
+			<item android:id="@id/event_map_openandromaps" android:title="@string/map_openandromap" />
+			<item android:id="@id/event_map_bing_satellite" android:title="@string/map_bing_satellite" />
+			<item android:id="@id/event_map_google_satellite" android:title="@string/map_google_satellite" />
+			<item android:id="@id/event_map_mapquest" android:title="@string/map_mapquest" />
+			<item android:id="@id/event_map_outdoor_active" android:title="@string/map_openactive" />
 		</menu>
 	</item>
 	<item
@@ -37,14 +37,14 @@
 		/>
 	<item
 		android:id="@+id/event_fawlty"
-		android:title="Serving cell"
+		android:title="@string/serving_cell"
 		android:visible="false"
 		android:checkable="true"
 		/>
 	<item
 		android:id="@+id/event_screencapture"
 		android:icon="@drawable/ic_videocam"
-		android:title="Capture screen"
+		android:title="@string/capture_screen"
 		android:visible="false"
 		android:checkable="true"
 		/>
@@ -57,11 +57,11 @@
 		/>
 	<item
 		android:id="@+id/event_view_location"
-		android:title="View location"
+		android:title="@string/view_location"
 		/>
 	<item
 		android:id="@+id/event_send_location"
 		android:icon="@drawable/ic_share"
-		android:title="Send location"
+		android:title="@string/send_location"
 		/>
 </menu>
