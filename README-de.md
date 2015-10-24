@@ -1,7 +1,7 @@
 Tabulae
 =======
 
-![screenshots](https://raw.githubusercontent.com/emdete/Tabulae/master/function.jpg)
+![screenshots](https://raw.githubusercontent.com/emdete/Tabulae/master/art/function.jpg)
 
 Übersicht
 ---------
@@ -38,8 +38,8 @@ Tabulae enthält keine Werbung.
 
 Die Quelltexte des Programms sind für jeden einsehbar und damit überprüfbar.
 
-![screenshot main](https://raw.githubusercontent.com/emdete/Tabulae/master/screenshot.png)
-![screenshot statistics](https://raw.githubusercontent.com/emdete/Tabulae/master/screenshot-statistic.png)
+![screenshot main](https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot.png)
+![screenshot statistics](https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-statistic.png)
 
 Bedienung
 ---------
