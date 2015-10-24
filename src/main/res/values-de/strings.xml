@@ -14,4 +14,10 @@
 	<string name="title_satellite">Satelliten</string>
 	<string name="title_speed">Geschwindigkeit</string>
 	<string name="title_zoom">Vergrößerung</string>
+	<string name="capture_screen">Bildschirmmitschnitt</string>
+	<string name="remote_service_started">Standortempfänger</string>
+	<string name="send_location">Standort senden</string>
+	<string name="serving_cell">Aktive Zelle</string>
+	<string name="title_current_time">Aktuelle Zeit</string>
+	<string name="view_location">Standort anzeigen</string>
 </resources>

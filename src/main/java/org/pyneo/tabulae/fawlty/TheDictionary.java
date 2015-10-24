@@ -2,19 +2,17 @@ package org.pyneo.tabulae.fawlty;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
-import org.json.simple.JSONAware;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import org.json.simple.JSONAware;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
 
-public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map<String,Object> {
-	private Map<String,Object> map = new JSONObject();
+public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map<String, Object> {
+	private Map<String, Object> map = new JSONObject();
 
 	public TheDictionary() {
 	}
@@ -40,7 +38,7 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 
 	@NonNull
 	@Override
-	public Set<Entry<String,Object>> entrySet() {
+	public Set<Entry<String, Object>> entrySet() {
 		return this.map.entrySet();
 	}
 
@@ -101,13 +99,13 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 	public boolean getBoolean(String key) {
 		if (!this.map.containsKey(key))
 			return false;
-		return (Boolean)this.map.get(key);
+		return (Boolean) this.map.get(key);
 	}
 
 	public long getLong(String key) {
 		if (!this.map.containsKey(key))
 			return 0;
-		return (Long)this.map.get(key);
+		return (Long) this.map.get(key);
 	}
 
 	public double getDouble(String key) {
@@ -115,7 +113,7 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 			return Double.NaN;
 		Object o = this.map.get(key);
 		if (o instanceof Double) {
-			return (Double)o;
+			return (Double) o;
 		}
 		return Double.NaN;
 	}
@@ -124,47 +122,46 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 		if (!this.map.containsKey(key))
 			return "";
 		Object obj = this.map.get(key);
-		return obj == null? null: obj.toString();
+		return obj == null ? null : obj.toString();
 	}
 
 	public String getIdent() {
 		String ident = null;
 		if (containsKey("ident")) {
 			ident = getString("ident");
-		}
-		else {
+		} else {
 			char type = getString("type").charAt(0);
 			switch (type) {
-			case '\0':
-				// dummy null value, no ident
-			break;
-			case '1':
-			case '2':
-				if (containsKey("mcc") && containsKey("mnc") && containsKey("lac") && containsKey("cid")) {
-					ident = getString("type") + ":" + getString("mcc") + "." + getString("mnc") + "." + getString("lac") + "." + getString("cid");
-				}
-			break;
-			case '3':
-				if (containsKey("mcc") && containsKey("mnc") && containsKey("lac") && containsKey("rncid") && containsKey("cid")) {
-					ident = getString("type") + ":" + getString("mcc") + "." + getString("mnc") + "." + getString("lac") + "." + getString("rncid") + "." + getString("cid");
-				}
-			break;
-			case '4':
-				if (containsKey("mcc") && containsKey("mnc") && containsKey("tac") && containsKey("ci")) {
-					ident = getString("type") + ":" + getString("mcc") + "." + getString("mnc") + "." + getString("tac") + "." + getString("ci");
-				}
-			break;
-			case 'w':
-				if (containsKey("bssid")) {
-					ident = getString("type") + ":" + getString("bssid");
-				}
-			break;
-			case 'm':
-				ident = getString("type") + ":";
-			break;
-			default:
-				Log.e(TAG, "getIdent: type=" + type);
-			break;
+				case '\0':
+					// dummy null value, no ident
+					break;
+				case '1':
+				case '2':
+					if (containsKey("mcc") && containsKey("mnc") && containsKey("lac") && containsKey("cid")) {
+						ident = getString("type") + ":" + getString("mcc") + "." + getString("mnc") + "." + getString("lac") + "." + getString("cid");
+					}
+					break;
+				case '3':
+					if (containsKey("mcc") && containsKey("mnc") && containsKey("lac") && containsKey("rncid") && containsKey("cid")) {
+						ident = getString("type") + ":" + getString("mcc") + "." + getString("mnc") + "." + getString("lac") + "." + getString("rncid") + "." + getString("cid");
+					}
+					break;
+				case '4':
+					if (containsKey("mcc") && containsKey("mnc") && containsKey("tac") && containsKey("ci")) {
+						ident = getString("type") + ":" + getString("mcc") + "." + getString("mnc") + "." + getString("tac") + "." + getString("ci");
+					}
+					break;
+				case 'w':
+					if (containsKey("bssid")) {
+						ident = getString("type") + ":" + getString("bssid");
+					}
+					break;
+				case 'm':
+					ident = getString("type") + ":";
+					break;
+				default:
+					Log.e(TAG, "getIdent: type=" + type);
+					break;
 			}
 			put("ident", ident);
 		}
@@ -204,13 +201,13 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 			return "No data.";
 		}
 		return "The id-position is " +
-			(int)getDouble("distance") + "m away from your position (which is accurate by " +
-			(int)getDouble("accuracy") + "m) while the radius is " +
-			(int)getDouble("radius") + "m.";
+				(int) getDouble("distance") + "m away from your position (which is accurate by " +
+				(int) getDouble("accuracy") + "m) while the radius is " +
+				(int) getDouble("radius") + "m.";
 	}
 
 	public String toJSONString() {
-		return ((JSONObject)this.map).toJSONString();
+		return ((JSONObject) this.map).toJSONString();
 	}
 
 	public String toString() {
@@ -218,6 +215,6 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 	}
 
 	public void writeJSONString(Writer out) throws IOException {
-		((JSONObject)this.map).writeJSONString(out);
+		((JSONObject) this.map).writeJSONString(out);
 	}
 }

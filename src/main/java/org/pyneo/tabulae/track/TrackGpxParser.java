@@ -1,20 +1,17 @@
 package org.pyneo.tabulae.track;
 
 import android.util.Log;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /* parse xml like:
 * <gpx ...><name>...</name><desc /><trk><trkseg><trkpt lon="..." lat="..."><ele>..</ele><time>2015-08-11T00:00:00Z</time>...
@@ -22,23 +19,16 @@ import javax.xml.parsers.SAXParserFactory;
 * see http://www.topografix.com/GPX/1/1/
 */
 class TrackGpxParser implements Constants {
-	static SAXParserFactory factory = SAXParserFactory.newInstance();
 	static final SimpleDateFormat[] simpleDateFormats = new SimpleDateFormat[]{
-		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US),
-		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),
-		new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ", Locale.US),
-		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
-		new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ", Locale.US),
-		new SimpleDateFormat("yyyy-MM-dd HH:mmZ", Locale.US),
-		new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US),
-		new SimpleDateFormat("yyyy-MM-dd", Locale.US),
-		};
-	static {
-		final TimeZone UTC = TimeZone.getTimeZone("UTC");
-		for (SimpleDateFormat sdf: simpleDateFormats) {
-			sdf.setTimeZone(UTC);
-		}
-	}
+			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US),
+			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),
+			new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ", Locale.US),
+			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US),
+			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ", Locale.US),
+			new SimpleDateFormat("yyyy-MM-dd HH:mmZ", Locale.US),
+			new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US),
+			new SimpleDateFormat("yyyy-MM-dd", Locale.US),
+	};
 	private static final String CMT = "cmt";
 	private static final String DESC = "desc";
 	private static final String ELE = "ele";
@@ -49,6 +39,15 @@ class TrackGpxParser implements Constants {
 	private static final String TRKPT = "trkpt";
 	private static final String TRK = "trk";
 	private static final String WPT = "wpt";
+	static SAXParserFactory factory = SAXParserFactory.newInstance();
+
+	static {
+		final TimeZone UTC = TimeZone.getTimeZone("UTC");
+		for (SimpleDateFormat sdf : simpleDateFormats) {
+			sdf.setTimeZone(UTC);
+		}
+	}
+
 	SimpleDateFormat successSdf = simpleDateFormats[0];
 	TrackItem trackItem;
 
@@ -61,7 +60,7 @@ class TrackGpxParser implements Constants {
 		try { // try the last successful format to parse
 			return successSdf.parse(str);
 		}
-		catch (ParseException e) {
+		catch (ParseException ignore) {
 		}
 		for (SimpleDateFormat sdf : simpleDateFormats) {
 			try {
@@ -92,18 +91,16 @@ class TrackGpxParser implements Constants {
 			if (localName.equalsIgnoreCase(TRKPT)) {
 				if (trackPointItem != null) Log.e(TAG, "trkpt in trkpt");
 				trackPointItem = new TrackPointItem(
-					Double.parseDouble(attributes.getValue(LAT)), // latitude
-					Double.parseDouble(attributes.getValue(LON)) // longitude
-					);
-			}
-			else if (localName.equalsIgnoreCase("gpx")) {
-				if (DEBUG) Log.d(TAG, "start gpx version=" + attributes.getValue("version") + ", creator=" + attributes.getValue("creator"));
+						Double.parseDouble(attributes.getValue(LAT)), // latitude
+						Double.parseDouble(attributes.getValue(LON)) // longitude
+				);
+			} else if (localName.equalsIgnoreCase("gpx")) {
+				if (DEBUG)
+					Log.d(TAG, "start gpx version=" + attributes.getValue("version") + ", creator=" + attributes.getValue("creator"));
 				trackItem = new TrackItem();
-			}
-			else if (localName.equalsIgnoreCase("rte")) {
+			} else if (localName.equalsIgnoreCase("rte")) {
 				if (DEBUG) Log.d(TAG, "This is probably a route file");
-			}
-			else if (localName.equalsIgnoreCase(WPT)) {
+			} else if (localName.equalsIgnoreCase(WPT)) {
 				if (DEBUG) Log.d(TAG, "This is probably a way point file");
 			}
 			super.startElement(uri, localName, name, attributes);
@@ -114,25 +111,20 @@ class TrackGpxParser implements Constants {
 			if (trackItem != null) { // we need a TRK tag around
 				if (localName.equalsIgnoreCase(NAME)) {
 					trackItem.setName(cdata.toString().trim());
-				}
-				else if (localName.equalsIgnoreCase(CMT)) {
+				} else if (localName.equalsIgnoreCase(CMT)) {
 					trackItem.setComment(cdata.toString().trim());
-				}
-				else if (localName.equalsIgnoreCase(DESC)) {
+				} else if (localName.equalsIgnoreCase(DESC)) {
 					trackItem.setDescription(cdata.toString().trim());
 				}
 			}
 			if (trackPointItem != null) { // we need a TRKPT tag around
 				if (localName.equalsIgnoreCase(ELE)) {
-					trackPointItem.setAltitude((int)Double.parseDouble(cdata.toString().trim()));
-				}
-				else if (localName.equalsIgnoreCase(TIME)) {
+					trackPointItem.setAltitude((int) Double.parseDouble(cdata.toString().trim()));
+				} else if (localName.equalsIgnoreCase(TIME)) {
 					trackPointItem.setTimestamp(parseDate(cdata.toString().trim()));
-				}
-				else if (localName.equalsIgnoreCase("sym")) {
+				} else if (localName.equalsIgnoreCase("sym")) {
 					trackPointItem.setAttribute(Integer.parseInt(cdata.toString().trim()));
-				}
-				else if (localName.equalsIgnoreCase(TRKPT)) {
+				} else if (localName.equalsIgnoreCase(TRKPT)) {
 					trackItem.add(trackPointItem);
 					trackPointItem = null;
 				}

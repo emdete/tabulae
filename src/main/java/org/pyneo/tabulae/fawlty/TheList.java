@@ -1,13 +1,12 @@
 package org.pyneo.tabulae.fawlty;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Iterator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Iterator;
 
 public class TheList implements Constants, JSONStreamAware, JSONAware, Iterable<TheDictionary> {
 	private java.util.AbstractList<TheDictionary> list = new JSONArray();
@@ -16,8 +15,8 @@ public class TheList implements Constants, JSONStreamAware, JSONAware, Iterable<
 	}
 
 	public TheList(JSONArray arr) {
-		for (Object obj: arr) {
-			this.list.add(new TheDictionary((JSONObject)obj));
+		for (Object obj : arr) {
+			this.list.add(new TheDictionary((JSONObject) obj));
 		}
 	}
 
@@ -35,7 +34,7 @@ public class TheList implements Constants, JSONStreamAware, JSONAware, Iterable<
 	}
 
 	public String toJSONString() {
-		return ((JSONArray)this.list).toJSONString();
+		return ((JSONArray) this.list).toJSONString();
 	}
 
 	public String toString() {
@@ -43,6 +42,6 @@ public class TheList implements Constants, JSONStreamAware, JSONAware, Iterable<
 	}
 
 	public void writeJSONString(Writer out) throws IOException {
-		((JSONArray)this.list).writeJSONString(out);
+		((JSONArray) this.list).writeJSONString(out);
 	}
 }

@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.location.Location;
 import android.util.AttributeSet;
 import android.view.View;
 import org.pyneo.tabulae.R;
@@ -23,6 +22,7 @@ public class ChartView extends View {
 	private static final int MAX_INTERVALS = 5;
 	private final Paint borderPaint = new Paint();
 	private final Paint gridPaint = new Paint();
+	private final Paint[] graphPaint = {null, null};
 	private int bottomBorder = 0;
 	private int leftBorder = 0;
 	private int rightBorder = 0;
@@ -32,7 +32,6 @@ public class ChartView extends View {
 	private int effectiveWidth = 0;
 	private int effectiveHeight = 0;
 	private Path[] path = {new Path(), new Path()};
-	private final Paint[] graphPaint = {null, null};
 	private Path[] path_transformed = {null, null};
 
 	public ChartView(Context context, AttributeSet attrs) {
@@ -40,27 +39,32 @@ public class ChartView extends View {
 		final float density = getContext().getResources().getDisplayMetrics().density;
 		final Resources res = getResources();
 		borderPaint.setStyle(Style.STROKE);
+		//noinspection deprecation
 		borderPaint.setColor(res.getColor(R.color.black));
 		//borderPaint.setAntiAlias(true);
 		gridPaint.setStyle(Style.STROKE);
-		gridPaint.setPathEffect(new DashPathEffect(new float[]{density*3, density*9}, 0));
+		gridPaint.setPathEffect(new DashPathEffect(new float[]{density * 3, density * 9}, 0));
 		gridPaint.setColor(Color.WHITE);
 		//gridPaint.setAntiAlias(false);
 		graphPaint[0] = new Paint();
+		//noinspection deprecation
 		graphPaint[0].setColor(res.getColor(R.color.blue));
 		graphPaint[0].setStyle(Style.STROKE);
-		graphPaint[0].setStrokeWidth(Math.max(1, (int)(density * .6)));
+		graphPaint[0].setStrokeWidth(Math.max(1, (int) (density * .6)));
 		//graphPaint[0].setAntiAlias(true);
 		//graphPaint[0].setAlpha(180);
 		graphPaint[0].setStrokeCap(Paint.Cap.ROUND);
+		//noinspection deprecation
 		graphPaint[0].setShadowLayer(10.0f, 0, 0, res.getColor(R.color.blue));
 		graphPaint[1] = new Paint(graphPaint[0]);
+		//noinspection deprecation
 		graphPaint[1].setColor(res.getColor(R.color.green));
+		//noinspection deprecation
 		graphPaint[1].setShadowLayer(10.0f, 0, 0, res.getColor(R.color.green));
-		leftBorder = (int)(density * LEFT_BORDER);
-		rightBorder = (int)(density * RIGHT_BORDER);
-		bottomBorder = (int)(density * BOTTOM_BORDER);
-		topBorder = (int)(density * TOP_BORDER);
+		leftBorder = (int) (density * LEFT_BORDER);
+		rightBorder = (int) (density * RIGHT_BORDER);
+		bottomBorder = (int) (density * BOTTOM_BORDER);
+		topBorder = (int) (density * TOP_BORDER);
 	}
 
 	public ChartView(Context context) {
@@ -90,11 +94,11 @@ public class ChartView extends View {
 		}
 		*/
 		final Matrix m = new Matrix();
-		m.setTranslate(0, (float)-minSpeed);
+		m.setTranslate(0, (float) -minSpeed);
 		path[0].transform(m);
 		m.setScale(1, -1);
 		path[0].transform(m);
-		m.setTranslate(0, (float)-minAlt);
+		m.setTranslate(0, (float) -minAlt);
 		path[1].transform(m);
 		m.setScale(1, -1);
 		path[1].transform(m);
@@ -109,7 +113,7 @@ public class ChartView extends View {
 			effectiveWidth = Math.max(0, lastWidth - (leftBorder + rightBorder));
 			effectiveHeight = Math.max(0, lastHeight - (topBorder + bottomBorder));
 			//setUpPath();
-			for (int i=0;i<path.length;i++) {
+			for (int i = 0; i < path.length; i++) {
 				RectF r = new RectF();
 				final Matrix m = new Matrix();
 				path_transformed[i] = new Path(path[i]);
@@ -121,7 +125,7 @@ public class ChartView extends View {
 			}
 		}
 		canvas.save();
-		for (int i=0;i<path.length;i++) {
+		for (int i = 0; i < path.length; i++) {
 			canvas.drawPath(path_transformed[i], graphPaint[i]);
 		}
 		canvas.drawLine(leftBorder, effectiveHeight + bottomBorder, effectiveWidth + leftBorder, effectiveHeight + bottomBorder, borderPaint);

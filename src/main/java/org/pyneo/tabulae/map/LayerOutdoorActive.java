@@ -24,16 +24,16 @@ class LayerOutdoorActive extends LayerBase {
 	}
 
 	byte getZoomLevelMin() {
-		return (byte)8;
+		return (byte) 8;
 	}
 
 	byte getZoomLevelMax() {
-		return (byte)17;
+		return (byte) 17;
 	}
 
 	static class Source extends OnlineTileSource {
 		Source() {
-			super(new String[]{"s3.outdooractive.com", }, 80);
+			super(new String[]{"s3.outdooractive.com",}, 80);
 			setAlpha(false);
 			setBaseUrl("/portal/map/");
 			setExtension("png");

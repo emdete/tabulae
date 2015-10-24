@@ -24,7 +24,7 @@ class LayerMapQuest extends LayerBase {
 	}
 
 	byte getZoomLevelMax() {
-		return (byte)18;
+		return (byte) 18;
 	}
 
 	static class Source extends OnlineTileSource {

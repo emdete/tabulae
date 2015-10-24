@@ -23,7 +23,8 @@ class RotatingMarker extends Marker {
 		super(latLong, bitmap, horizontalOffset, verticalOffset);
 	}
 
-	@Override public synchronized void draw(BoundingBox boundingBox, byte zoomLevel, Canvas canvas, Point topLeftPoint) {
+	@Override
+	public synchronized void draw(BoundingBox boundingBox, byte zoomLevel, Canvas canvas, Point topLeftPoint) {
 		if (getLatLong() == null || getBitmap() == null) {
 			return;
 		}

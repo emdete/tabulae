@@ -1,5 +1,6 @@
 package org.pyneo.tabulae.fawlty;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.telephony.CellLocation;
@@ -8,18 +9,18 @@ import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
-
 import java.util.Iterator;
 import java.util.List;
 
+@TargetApi(Build.VERSION_CODES.BASE)
 public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Iterable<TheDictionary> {
+	public static boolean fallback_pre17api = false;
 	private int mcc = NeighboringCellInfo.UNKNOWN_CID; // NeighboringCellInfo.UNKNOWN_CID == -1
 	private int mnc = NeighboringCellInfo.UNKNOWN_CID;
 	private int type = NeighboringCellInfo.UNKNOWN_CID;
 	private CellLocation cellLocation;
 	private List<NeighboringCellInfo> neighboringCellInfoList;
 	private int i;
-	public static boolean fallback_pre17api = false;
 
 	public CellIdPre17API(TelephonyManager telephonyManager, CellLocation cellLocation, List<NeighboringCellInfo> neighboringCellInfoList) {
 		if (DEBUG) Log.d(TAG, "CellIdPre17API:");
@@ -30,20 +31,34 @@ public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Itera
 		this.neighboringCellInfoList = neighboringCellInfoList;
 		if (cellLocation != null) {
 			this.i = -1;
-		}
-		else {
+		} else {
 			this.i = 0;
 		}
 		String mccmnc = telephonyManager.getNetworkOperator();
 		if (mccmnc != null && mccmnc.length() >= 5 && mccmnc.length() <= 6) {
 			mcc = Integer.parseInt(mccmnc.substring(0, 3));
 			mnc = Integer.parseInt(mccmnc.substring(3));
-		}
-		else {
+		} else {
 			Log.e(TAG, "CellIdPre17API: wrong legnth (5-6) for mccmnc=" + mccmnc);
 		}
 		type = telephonyManager.getNetworkType();
-		if (DEBUG) Log.d(TAG, "CellIdPre17API: mcc=" + mcc + ", mnc=" + mnc + ", type=" + type + " cellLocation=" + cellLocation + ", neighboringCellInfoList=" + neighboringCellInfoList);
+		if (DEBUG)
+			Log.d(TAG, "CellIdPre17API: mcc=" + mcc + ", mnc=" + mnc + ", type=" + type + " cellLocation=" + cellLocation + ", neighboringCellInfoList=" + neighboringCellInfoList);
+	}
+
+	///////////////////// test
+	static public String test(Context context) {
+		TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		int a = 0;
+		int b = 0;
+		int c = 0;
+		//noinspection deprecation
+		for (TheDictionary o : new CellIdPre17API(telephonyManager, telephonyManager.getCellLocation(),
+				telephonyManager.getNeighboringCellInfo())) {
+			a++;
+			if (DEBUG) Log.d(TAG, "got: " + o);
+		}
+		return "counts: " + a + '/' + b + '/' + c;
 	}
 
 	void determine_type(TheDictionary map) {
@@ -63,7 +78,7 @@ public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Itera
 			case TelephonyManager.NETWORK_TYPE_HSPAP:
 			case TelephonyManager.NETWORK_TYPE_HSUPA: {
 				map.put("type", "3");
-				Integer i = (Integer)map.get("cid");
+				Integer i = (Integer) map.get("cid");
 				if (i != null) {
 					map.put("cid", i % 0x10000);
 					map.put("rncid", i / 0x10000);
@@ -72,11 +87,11 @@ public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Itera
 			break;
 			case TelephonyManager.NETWORK_TYPE_LTE: {
 				map.put("type", "4");
-				Integer i = (Integer)map.pop("lac");
+				Integer i = (Integer) map.pop("lac");
 				if (i != null) {
 					map.put("tac", i);
 				}
-				i = (Integer)map.pop("cid");
+				i = (Integer) map.pop("cid");
 				if (i != null) {
 					map.put("ci", i);
 				}
@@ -114,17 +129,14 @@ public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Itera
 		try {
 			if (i < 0) {
 				if (cellLocation instanceof GsmCellLocation) {
-					fill(map, ((GsmCellLocation)cellLocation));
-				}
-				else if (cellLocation instanceof CdmaCellLocation) {
-					fill(map, ((CdmaCellLocation)cellLocation));
-				}
-				else {
+					fill(map, ((GsmCellLocation) cellLocation));
+				} else if (cellLocation instanceof CdmaCellLocation) {
+					fill(map, ((CdmaCellLocation) cellLocation));
+				} else {
 					map.put("class", cellLocation.getClass().getName());
 					map.put("string", cellLocation.toString());
 				}
-			}
-			else {
+			} else {
 				fill(map, neighboringCellInfoList.get(i));
 			}
 		}
@@ -147,10 +159,14 @@ public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Itera
 			map.put("mcc", mcc);
 			map.put("mnc", mnc);
 			int i;
-			i = value.getPsc(); if (i != NeighboringCellInfo.UNKNOWN_CID) map.put("psc", i);
-			i = value.getRssi(); if (i != NeighboringCellInfo.UNKNOWN_CID) map.put("rssi", i);
-			i = value.getLac(); if (i != NeighboringCellInfo.UNKNOWN_CID) map.put("lac", i);
-			i = value.getCid(); if (i != NeighboringCellInfo.UNKNOWN_CID) map.put("cid", i);
+			i = value.getPsc();
+			if (i != NeighboringCellInfo.UNKNOWN_CID) map.put("psc", i);
+			i = value.getRssi();
+			if (i != NeighboringCellInfo.UNKNOWN_CID) map.put("rssi", i);
+			i = value.getLac();
+			if (i != NeighboringCellInfo.UNKNOWN_CID) map.put("lac", i);
+			i = value.getCid();
+			if (i != NeighboringCellInfo.UNKNOWN_CID) map.put("cid", i);
 			map.put("registered", false);
 			determine_type(map);
 		}
@@ -180,18 +196,5 @@ public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Itera
 			map.put("registered", true);
 			determine_type(map);
 		}
-	}
-
-	///////////////////// test
-	static public String test(Context context) {
-		TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-		int a = 0;
-		int b = 0;
-		int c = 0;
-		for (TheDictionary o: new CellIdPre17API(telephonyManager, telephonyManager.getCellLocation(), telephonyManager.getNeighboringCellInfo())) {
-			a++;
-			if (DEBUG) Log.d(TAG, "got: " + o);
-		}
-		return "counts: " + a + '/' + b + '/' + c;
 	}
 }

@@ -6,7 +6,6 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.util.Log;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +16,19 @@ public class WifiId implements Constants, Iterator<TheDictionary>, Iterable<TheD
 	public WifiId(List<ScanResult> scanResults) {
 		this.scanResults = scanResults;
 		this.i = 0;
+	}
+
+	///////////////////// test
+	static public String test(Context context) {
+		WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		int a = 0;
+		int b = 0;
+		int c = 0;
+		for (TheDictionary o : new WifiId(wifiManager.getScanResults())) {
+			a++;
+			if (DEBUG) Log.d(TAG, "got: " + o);
+		}
+		return "counts: " + a + '/' + b + '/' + c;
 	}
 
 	///////////////////////// enumerator stuff
@@ -68,18 +80,5 @@ public class WifiId implements Constants, Iterator<TheDictionary>, Iterable<TheD
 			fill_API17(map, value);
 		}
 		map.put("level", value.level);
-	}
-
-	///////////////////// test
-	static public String test(Context context) {
-		WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-		int a = 0;
-		int b = 0;
-		int c = 0;
-		for (TheDictionary o: new WifiId(wifiManager.getScanResults())) {
-			a++;
-			if (DEBUG) Log.d(TAG, "got: " + o);
-		}
-		return "counts: " + a + '/' + b + '/' + c;
 	}
 }

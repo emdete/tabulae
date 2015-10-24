@@ -9,7 +9,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
-
 import java.util.Iterator;
 
 public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<TheDictionary> {
@@ -17,6 +16,61 @@ public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<T
 
 	public Satellite(Location location) {
 		this.location = location;
+	}
+
+	/////////////////////
+	public static void fill(TheDictionary map, Location value) throws Exception {
+		if (value != null) {
+			map.put("type", "g");
+			map.put("latitude", value.getLatitude());
+			map.put("longitude", value.getLongitude());
+			if (value.hasAccuracy()) {
+				map.put("accuracy", (double) value.getAccuracy());
+			}
+			if (value.hasAltitude()) {
+				map.put("altitude", value.getAltitude());
+			}
+			map.put("time", value.getTime());
+			if (value.hasBearing()) {
+				map.put("bearing", value.getBearing());
+			}
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+				map.put("age_nanos", SystemClock.elapsedRealtimeNanos() - value.getElapsedRealtimeNanos());
+			} else {
+				map.put("age_nanos", (SystemClock.elapsedRealtime() - value.getTime()) * 1000000);
+			}
+			map.put("provider", value.getProvider());
+			if (value.hasSpeed()) {
+				map.put("speed", (double) value.getSpeed());
+			}
+			try {
+				map.put("fromMockProvider", value.isFromMockProvider());
+			}
+			catch (java.lang.NoSuchMethodError e) {
+				// I/dalvikvm(12043): Could not find method
+				// android.location.Location.isFromMockProvider, referenced from
+				// method com.vodafone.proprorep.Engine.toMap
+				map.put("fromMockProvider", false);
+			}
+		}
+	}
+
+	///////////////////// test
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+	public static String test(Context context) {
+		int a = 0;
+		int b = 0;
+		int c = 0;
+		//if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+				|| context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+				&& context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			for (TheDictionary o : new Satellite(((LocationManager) context.getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER))) {
+				a++;
+				if (DEBUG) Log.d(TAG, "got: " + o);
+			}
+		}
+		return "counts: " + a + '/' + b + '/' + c;
 	}
 
 	///////////////////////// enumerator stuff
@@ -46,62 +100,6 @@ public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<T
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
-	}
-
-	/////////////////////
-	public static void fill(TheDictionary map, Location value) throws Exception {
-		if (value != null) {
-			map.put("type", "g");
-			map.put("latitude", value.getLatitude());
-			map.put("longitude", value.getLongitude());
-			if (value.hasAccuracy()) {
-				map.put("accuracy", (double)value.getAccuracy());
-			}
-			if (value.hasAltitude()) {
-				map.put("altitude", value.getAltitude());
-			}
-			map.put("time", value.getTime());
-			if (value.hasBearing()) {
-				map.put("bearing", value.getBearing());
-			}
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-				map.put("age_nanos", SystemClock.elapsedRealtimeNanos() - value.getElapsedRealtimeNanos());
-			}
-			else {
-				map.put("age_nanos", (SystemClock.elapsedRealtime() - value.getTime()) * 1000000);
-			}
-			map.put("provider", value.getProvider());
-			if (value.hasSpeed()) {
-				map.put("speed", (double)value.getSpeed());
-			}
-			try {
-				map.put("fromMockProvider", value.isFromMockProvider());
-			}
-			catch (java.lang.NoSuchMethodError e) {
-				// I/dalvikvm(12043): Could not find method
-				// android.location.Location.isFromMockProvider, referenced from
-				// method com.vodafone.proprorep.Engine.toMap
-				map.put("fromMockProvider", false);
-			}
-		}
-	}
-
-	///////////////////// test
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-	public static String test(Context context) {
-		int a = 0;
-		int b = 0;
-		int c = 0;
-		//if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-		|| context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-		&& context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			for (TheDictionary o : new Satellite(((LocationManager) context.getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER))) {
-				a++;
-				if (DEBUG) Log.d(TAG, "got: " + o);
-			}
-		}
-		return "counts: " + a + '/' + b + '/' + c;
 	}
 }
 

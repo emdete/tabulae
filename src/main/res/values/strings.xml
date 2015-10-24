@@ -19,14 +19,17 @@
 	<string name="unit_kmh" translatable="false">km/h</string>
 	<string name="unit_m" translatable="false">m</string>
 	<string name="unit_zoom" translatable="false">×</string>
-	<string name="map_mapsforge">Maps Forge</string>
-	<string name="map_openandromap">Open Andro Maps</string>
-	<string name="map_bing_satellite">Bing Satellite</string>
-	<string name="map_google_satellite">Google Satellite</string>
-	<string name="map_mapquest">Map Quest</string>
-	<string name="map_openactive">Outdoor Active</string>
+	<string name="map_mapsforge" translatable="false">Maps Forge</string>
+	<string name="map_openandromap" translatable="false">Open Andro Maps</string>
+	<string name="map_bing_satellite" translatable="false">Bing Satellite</string>
+	<string name="map_google_satellite" translatable="false">Google Satellite</string>
+	<string name="map_mapquest" translatable="false">Map Quest</string>
+	<string name="map_openactive" translatable="false">Outdoor Active</string>
 	<string name="serving_cell">Serving cell</string>
 	<string name="capture_screen">Capture screen</string>
 	<string name="view_location">View location</string>
 	<string name="send_location">Send location</string>
+	<string name="title_current_time">Current time</string>
+	<string name="app_label" translatable="false">Tabulae</string>
+	<string name="remote_service_started">Location listener</string>
 </resources>

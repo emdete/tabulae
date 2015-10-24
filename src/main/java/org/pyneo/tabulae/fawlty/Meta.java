@@ -9,7 +9,6 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,34 +20,6 @@ public class Meta implements Constants, Iterator<TheDictionary>, Iterable<TheDic
 
 	public Meta(TelephonyManager telephonyManager) {
 		this.telephonyManager = telephonyManager;
-	}
-
-	///////////////////////// enumerator stuff
-	@Override
-	public Iterator<TheDictionary> iterator() {
-		return this;
-	}
-
-	@Override
-	public boolean hasNext() {
-		return telephonyManager != null;
-	}
-
-	@Override
-	public TheDictionary next() {
-		TheDictionary map = new TheDictionary();
-		try {
-			fill(map, this.telephonyManager);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		telephonyManager = null;
-		return map;
-	}
-
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
 	}
 
 	static String phone_type_text(int i) {
@@ -177,15 +148,18 @@ public class Meta implements Constants, Iterator<TheDictionary>, Iterable<TheDic
 				map.put("android_version", Build.VERSION.SDK_INT);
 				try {
 					map.put("imei", value.getDeviceId().substring(0, 8));
-				} catch (Exception e) {
+				}
+				catch (Exception ignore) {
 				}
 				try {
 					map.put("network_operator", value.getNetworkOperator());
-				} catch (Exception e) {
+				}
+				catch (Exception ignore) {
 				}
 				try {
 					map.put("sim_operator", value.getSimOperator());
-				} catch (Exception e) {
+				}
+				catch (Exception ignore) {
 				}
 				if (CellIdPre17API.fallback_pre17api) {
 					map.put("android_pre17api", CellIdPre17API.fallback_pre17api);
@@ -193,92 +167,114 @@ public class Meta implements Constants, Iterator<TheDictionary>, Iterable<TheDic
 				if (SEND_P2) {
 					try {
 						map.put("imei", value.getDeviceId());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("msisdn", value.getLine1Number());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("imsi", value.getSubscriberId());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_call_state", call_state_text(value.getCallState()));
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_data_activity", data_activity_text(value.getDataActivity()));
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_data_state", data_state_text(value.getDataState()));
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_device_software_version", value.getDeviceSoftwareVersion());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_group_id_level1", value.getGroupIdLevel1());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_network_country_iso", value.getNetworkCountryIso());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_network_operator_name", value.getNetworkOperatorName());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_network_type", network_type_text(value.getNetworkType()));
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_phone_type", phone_type_text(value.getPhoneType()));
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_sim_country_iso", value.getSimCountryIso());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_sim_operator_name", value.getSimOperatorName());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_sim_serial_number", value.getSimSerialNumber());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_sim_state", sim_state_text(value.getSimState()));
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_voice_mail_alpha_tag", value.getVoiceMailAlphaTag());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_voice_mail_number", value.getVoiceMailNumber());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_icc_card", value.hasIccCard());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					try {
 						map.put("android_network_roaming", value.isNetworkRoaming());
-					} catch (Exception e) {
+					}
+					catch (Exception ignore) {
 					}
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 						try {
 							map.put("android_mms_ua_prof_url", value.getMmsUAProfUrl());
-						} catch (Exception e) {
+						}
+						catch (Exception ignore) {
 						}
 						try {
 							map.put("android_mms_user_agent", value.getMmsUserAgent());
-						} catch (Exception e) {
+						}
+						catch (Exception ignore) {
 						}
 					}
 				}
@@ -306,35 +302,65 @@ public class Meta implements Constants, Iterator<TheDictionary>, Iterable<TheDic
 			}
 		}
 		TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		//noinspection deprecation
 		for (TheDictionary o : new CellIdPre17API(telephonyManager, telephonyManager.getCellLocation(), telephonyManager.getNeighboringCellInfo())) {
 			pre17cells++;
 			if (DEBUG) Log.d(TAG, "got: " + o);
 			arr.add(o);
 		}
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-		|| context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-		&& context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+				|| context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+				&& context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			for (TheDictionary o : new Satellite(((LocationManager) context.getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER))) {
 				gps++;
 				if (DEBUG) Log.d(TAG, "got: " + o);
 				arr.add(o);
 			}
 		}
-		for (TheDictionary o: new WifiId(((WifiManager)context.getSystemService(Context.WIFI_SERVICE)).getScanResults())) {
+		for (TheDictionary o : new WifiId(((WifiManager) context.getSystemService(Context.WIFI_SERVICE)).getScanResults())) {
 			wlans++;
 			if (DEBUG) Log.d(TAG, "got: " + o);
 			arr.add(o);
 		}
-		for (TheDictionary o: new Meta((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE))) {
+		for (TheDictionary o : new Meta((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE))) {
 			mobiles++;
 			if (DEBUG) Log.d(TAG, "got: " + o);
 			arr.add(o);
 		}
 		if (DEBUG) Log.d(TAG, "json=" + arr.toString());
 		return "post17cells=" + post17cells + '\n' +
-			"pre17cells=" + pre17cells + '\n' +
-			"gps=" + gps + '\n' +
-			"wlans=" + wlans + '\n' +
-			"mobiles=" + mobiles + '\n';
+				"pre17cells=" + pre17cells + '\n' +
+				"gps=" + gps + '\n' +
+				"wlans=" + wlans + '\n' +
+				"mobiles=" + mobiles + '\n';
+	}
+
+	///////////////////////// enumerator stuff
+	@Override
+	public Iterator<TheDictionary> iterator() {
+		return this;
+	}
+
+	@Override
+	public boolean hasNext() {
+		return telephonyManager != null;
+	}
+
+	@Override
+	public TheDictionary next() {
+		TheDictionary map = new TheDictionary();
+		try {
+			fill(map, this.telephonyManager);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		telephonyManager = null;
+		return map;
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
 	}
 }

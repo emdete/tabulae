@@ -1,15 +1,15 @@
 package org.pyneo.tabulae.fawlty;
 
 import android.util.Log;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import javax.net.ssl.HttpsURLConnection;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
 
 public class CellAPI2 implements Constants {
 	private static final String user = "pyneo";
@@ -19,7 +19,7 @@ public class CellAPI2 implements Constants {
 	static public TheList retrieveLocation(TheDictionary meta, TheList list, String resolve) throws Exception {
 		//if (DEBUG) Log.d(TAG, "retrieveLocation: retrieve list=" + list);
 		TheList ret = null;
-		Map<String,TheDictionary> map = new HashMap<>();
+		Map<String, TheDictionary> map = new HashMap<>();
 		String correlation_id = Long.toString(random.nextLong());
 		meta.put("version", 2);
 		meta.put("user", user);
@@ -27,7 +27,7 @@ public class CellAPI2 implements Constants {
 		meta.put("tower", 1);
 		list.add(meta);
 		if (DEBUG) Log.d(TAG, "retrieveLocation: request list=" + list);
-		HttpsURLConnection connection = (HttpsURLConnection)new URL(url).openConnection();
+		HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
 		try {
 			connection.setUseCaches(false);
 			connection.setDoOutput(true);
@@ -55,16 +55,19 @@ public class CellAPI2 implements Constants {
 			//if (DEBUG) Log.d(TAG, "retrieveLocation: ret=" + ret);
 		}
 		finally {
-			try { connection.disconnect(); } catch (Exception ignore) { }
+			try {
+				connection.disconnect();
+			}
+			catch (Exception ignore) {
+			}
 		}
 		if ("estimate".equals(resolve)) {
 			list = ret;
-		}
-		else {
-			for (TheDictionary entry: ret) {
+		} else {
+			for (TheDictionary entry : ret) {
 				map.put(entry.getIdent(), entry);
 			}
-			for (TheDictionary entry: list) {
+			for (TheDictionary entry : list) {
 				TheDictionary r = map.get(entry.getIdent());
 				entry.putAll(r);
 			}

@@ -16,7 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
-
+import java.io.File;
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
@@ -29,21 +33,35 @@ import org.pyneo.tabulae.poi.Poi;
 import org.pyneo.tabulae.screencapture.ScreenCaptureFragment;
 import org.pyneo.tabulae.track.Track;
 
-import java.io.File;
-import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-
 public class Tabulae extends Activity implements Constants {
 	protected Base[] fragments;
 	protected File baseStorageFile = null;
+	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory() {
+		@Override
+		public Thread newThread(@NonNull Runnable r) {
+			return new Thread(r, "inform");
+		}
+	});
 
-	@Override public void onCreate(Bundle savedInstanceState) {
+	static private String deKay(long l) {
+		double d = l;
+		final String[] fs = new String[]{"%.2fB", "%.2fKB", "%.2fMB", "%.2fGB",};
+		for (String f : fs) {
+			if (d < 1024.0) {
+				return String.format(f, d);
+			}
+			d /= 1024.0;
+		}
+		return String.format("%.2fTB", d);
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (DEBUG) Log.d(TAG, "Tabulae.onCreate");
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-			@Override public void uncaughtException(Thread thread, Throwable e) {
+			@Override
+			public void uncaughtException(Thread thread, Throwable e) {
 				Log.e(TAG, "error e=" + e, e);
 				finish();
 			}
@@ -51,15 +69,15 @@ public class Tabulae extends Activity implements Constants {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.tabulae);
 		fragments = new Base[]{
-			new Map(),
-			new Track(),
-			new Poi(),
-			new Fawlty(),
-			new Locus(),
-			new Controller(),
-			new Dashboard(),
-			new ScreenCaptureFragment(),
-			};
+				new Map(),
+				new Track(),
+				new Poi(),
+				new Fawlty(),
+				new Locus(),
+				new Controller(),
+				new Dashboard(),
+				new ScreenCaptureFragment(),
+		};
 		//noinspection StatementWithEmptyBody
 		if (savedInstanceState != null) {
 			// .. = savedInstanceState.getString("..", null);
@@ -79,7 +97,7 @@ public class Tabulae extends Activity implements Constants {
 		long baseStorageSpace = 0;
 		if (baseStorageFile == null) {
 			// look for the largest storage to begin with
-			for (File dir: getApplicationContext().getExternalFilesDirs(null)) {
+			for (File dir : getApplicationContext().getExternalFilesDirs(null)) {
 				Log.d(TAG, "Tabulae.onCreate getExternalFilesDirs baseStorage=" + baseStorage);
 				if (dir != null && Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
 					long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
@@ -92,28 +110,27 @@ public class Tabulae extends Activity implements Constants {
 			Editor editor = preferences.edit();
 			editor.putString("baseStorage", baseStorage);
 			editor.commit();
-		}
-		else {
+		} else {
 			baseStorageSpace = new StatFs(baseStorageFile.getPath()).getAvailableBytes();
 		}
 		Log.d(TAG, "Tabulae.onCreate using baseStorageFile=" + baseStorageFile + ", baseStorageSpace=" + deKay(baseStorageSpace));
 		final Intent queryIntent = getIntent();
 		final String queryAction = queryIntent.getAction();
-		if (DEBUG) Log.d(TAG, "Tabulae.onCreate process intent=" + queryIntent + ", action=" + queryAction);
+		if (DEBUG)
+			Log.d(TAG, "Tabulae.onCreate process intent=" + queryIntent + ", action=" + queryAction);
 		//noinspection StatementWithEmptyBody
 		if (Intent.ACTION_MAIN.equals(queryAction)) {
 			// nothing more to do
-		}
-		else if (ACTION_CONVERSATIONS_REQUEST.equals(queryAction)) {
+		} else if (ACTION_CONVERSATIONS_REQUEST.equals(queryAction)) {
 			String package_ = getCallingPackage();
 			String activity = getCallingActivity().flattenToString();
-			if (DEBUG) Log.d(TAG, "Tabulae.onCreate package_=" + package_ + ", activity=" + activity);
+			if (DEBUG)
+				Log.d(TAG, "Tabulae.onCreate package_=" + package_ + ", activity=" + activity);
 			//Bundle extra = queryIntent.getExtras();
 			MapView mapView = getMapView();
 			if (mapView == null) {
 				setResult(Activity.RESULT_CANCELED, null);
-			}
-			else {
+			} else {
 				LatLong location = mapView.getModel().mapViewPosition.getCenter(); // TODO defere location determination?
 				Intent result = new Intent();
 				result.putExtra(LATITUDE, location.latitude);
@@ -123,8 +140,7 @@ public class Tabulae extends Activity implements Constants {
 				setResult(Activity.RESULT_OK, result);
 			}
 			finish();
-		}
-		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
+		} else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
 			Bundle extra = queryIntent.getExtras();
 			if (extra.containsKey(LONGITUDE) && extra.containsKey(LATITUDE)) {
 				String jid = extra.getString(JID);
@@ -132,8 +148,7 @@ public class Tabulae extends Activity implements Constants {
 				if (name == null || name.length() == 0) {
 					if (jid != null && jid.length() > 0) {
 						name = jid.split("@")[0]; // TODO avoid regex
-					}
-					else {
+					} else {
 						name = "Jabber";
 						jid = "@xmpp";
 					}
@@ -142,11 +157,9 @@ public class Tabulae extends Activity implements Constants {
 				double longitude = extra.getDouble(LONGITUDE, 0);
 				String id = Poi.storePointPosition(this, jid, name + ", on " + new Date(), latitude, longitude, true);
 				Log.w(TAG, "onCreate.ACTION_CONVERSATIONS_SHOW id=" + id);
-			}
-			else
+			} else
 				Log.w(TAG, "onCreate conversations intent recceived with no latitude/longitude");
-		}
-		else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
+		} else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
 			try {
 				//List<ActivityManager.RecentTaskInfo> recentTasks = ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).getRecentTasks(99, ActivityManager.RECENT_WITH_EXCLUDED);
 				Uri uri = queryIntent.getData();
@@ -166,22 +179,24 @@ public class Tabulae extends Activity implements Constants {
 				Log.e(TAG, "Tabulae.onCreate", e);
 				// Toast?
 			}
-		}
-		else
+		} else
 			Log.e(TAG, "Tabulae.onCreate no fit action=" + queryAction);
 	}
 
-	@Override protected void onStart() {
+	@Override
+	protected void onStart() {
 		super.onStart();
 		if (DEBUG) Log.d(TAG, "Tabulae.onStart");
 	}
 
-	@Override protected void onRestart() {
+	@Override
+	protected void onRestart() {
 		super.onRestart();
 		if (DEBUG) Log.d(TAG, "Tabulae.onRestart");
 	}
 
-	@Override protected void onResume() {
+	@Override
+	protected void onResume() {
 		super.onResume();
 		if (DEBUG) Log.d(TAG, "Tabulae.onResume");
 		FragmentManager fragmentManager = getFragmentManager();
@@ -193,14 +208,17 @@ public class Tabulae extends Activity implements Constants {
 		}
 	}
 
-	@Override public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-		if (DEBUG) Log.d(TAG, "Tabulae.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode);
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+		if (DEBUG)
+			Log.d(TAG, "Tabulae.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode);
 		for (Base b : fragments) {
 			b.onActivityResult(requestCode, resultCode, resultData);
 		}
 	}
 
-	@Override protected void onPause() {
+	@Override
+	protected void onPause() {
 		super.onPause();
 		if (DEBUG) Log.d(TAG, "Tabulae.onPause");
 		FragmentManager fragmentManager = getFragmentManager();
@@ -211,18 +229,21 @@ public class Tabulae extends Activity implements Constants {
 		tx.commit();
 	}
 
-	@Override protected void onStop() {
+	@Override
+	protected void onStop() {
 		super.onStop();
 		if (DEBUG) Log.d(TAG, "Tabulae.onStop");
 	}
 
-	@Override protected void onDestroy() {
+	@Override
+	protected void onDestroy() {
 		super.onDestroy();
 		if (DEBUG) Log.d(TAG, "Tabulae.onDestroy");
 		AndroidGraphicFactory.clearResourceMemoryCache();
 	}
 
-	@Override public boolean onCreateOptionsMenu(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.main_option_menu, menu);
 		if (DEBUG) {
@@ -232,28 +253,30 @@ public class Tabulae extends Activity implements Constants {
 		return true;
 	}
 
-	@Override public boolean onOptionsItemSelected(MenuItem item) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 		inform(item.getItemId(), null);
 		return true;
 	}
 
-	@Override protected void onSaveInstanceState(Bundle bundle) {
+	@Override
+	protected void onSaveInstanceState(Bundle bundle) {
 		super.onSaveInstanceState(bundle);
 		Log.d(TAG, "Tabulae.onSaveInstanceState bundle=" + bundle);
 		// bundle.putString("..", ..);
 	}
 
 	/**
-	* directory for storage
-	*/
+	 * directory for storage
+	 */
 	public File getBaseDir() {
 		return baseStorageFile;
 	}
 
 	/**
-	* directory for gpx exchange
-	*/
+	 * directory for gpx exchange
+	 */
 	public File getGpxDir() {
 		File ret = new File(baseStorageFile, "gpx");
 		//noinspection ResultOfMethodCallIgnored
@@ -262,8 +285,8 @@ public class Tabulae extends Activity implements Constants {
 	}
 
 	/**
-	* directory for the tiles(cache)
-	*/
+	 * directory for the tiles(cache)
+	 */
 	public File getTilesDir() {
 		File ret = new File(baseStorageFile, "tiles");
 		//noinspection ResultOfMethodCallIgnored
@@ -272,8 +295,8 @@ public class Tabulae extends Activity implements Constants {
 	}
 
 	/**
-	* directory for the mapsforge map files
-	*/
+	 * directory for the mapsforge map files
+	 */
 	public File getMapsDir() {
 		File ret = new File(baseStorageFile, "maps");
 		//noinspection ResultOfMethodCallIgnored
@@ -282,8 +305,8 @@ public class Tabulae extends Activity implements Constants {
 	}
 
 	/**
-	* directory for the screen movies
-	*/
+	 * directory for the screen movies
+	 */
 	public File getMoviesDir() {
 		File ret = new File(baseStorageFile, "movies");
 		//noinspection ResultOfMethodCallIgnored
@@ -292,19 +315,7 @@ public class Tabulae extends Activity implements Constants {
 	}
 
 	public MapView getMapView() {
-		return ((Map)fragments[0]).getMapView();
-	}
-
-	static private final String deKay(long l) {
-		double d = l;
-		final String[] fs = new String[]{"%.2fB", "%.2fKB", "%.2fMB", "%.2fGB", };
-		for (String f: fs) {
-			if (d < 1024.0) {
-				return String.format(f, d);
-			}
-			d /= 1024.0;
-		}
-		return String.format("%.2fTB", d);
+		return ((Map) fragments[0]).getMapView();
 	}
 
 	public void inform(final int event, final Bundle extra) {
@@ -313,11 +324,6 @@ public class Tabulae extends Activity implements Constants {
 		}
 	}
 
-	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory(){
-		@Override public Thread newThread(@NonNull Runnable r) {
-			return new Thread(r, "inform");
-		}
-	});
 	public void asyncInform(final int event, final Bundle extra) {
 		this.mThreadPool.execute(new Runnable() {
 			public void run() {

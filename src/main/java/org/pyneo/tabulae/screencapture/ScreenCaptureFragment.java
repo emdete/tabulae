@@ -12,14 +12,12 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
-
-import org.pyneo.tabulae.Base;
-import org.pyneo.tabulae.R;
-import org.pyneo.tabulae.Tabulae;
-
 import java.io.File;
 import java.util.Date;
 import java.util.TimeZone;
+import org.pyneo.tabulae.Base;
+import org.pyneo.tabulae.R;
+import org.pyneo.tabulae.Tabulae;
 
 public class ScreenCaptureFragment extends Base implements Constants {
 	private static final String STATE_ENABLED = "screencapture_enabled";
@@ -31,12 +29,13 @@ public class ScreenCaptureFragment extends Base implements Constants {
 	protected int mScreenDensity;
 	protected MediaProjectionManager mMediaProjectionManager;
 	protected MediaProjection mMediaProjection;
-	private int mResultCode;
-	private Intent mResultData;
 	protected VirtualDisplay mVirtualDisplay;
 	protected MediaRecorder mMediaRecorder;
+	private int mResultCode;
+	private Intent mResultData;
 
-	@Override public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onCreate");
 		if (savedInstanceState != null) {
@@ -46,25 +45,29 @@ public class ScreenCaptureFragment extends Base implements Constants {
 		}
 	}
 
-	@Override public void onActivityCreated(Bundle savedInstanceState) {
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityCreated enabled=" + enabled + ", mVirtualDisplay=" + mVirtualDisplay);
+		if (DEBUG)
+			Log.d(TAG, "ScreenCaptureFragment.onActivityCreated enabled=" + enabled + ", mVirtualDisplay=" + mVirtualDisplay);
 		Activity activity = getActivity();
 		DisplayMetrics mDisplayMetrics = new DisplayMetrics();
 		activity.getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
 		mScreenDensity = mDisplayMetrics.densityDpi;
 		mScreenWidth = mDisplayMetrics.widthPixels;
 		mScreenHeight = mDisplayMetrics.heightPixels;
-		mMediaProjectionManager = (MediaProjectionManager)activity.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+		mMediaProjectionManager = (MediaProjectionManager) activity.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
 		mMediaRecorder = new MediaRecorder();
 		if (enabled && mVirtualDisplay == null) {
 			go();
 		}
 	}
 
-	@Override public void onSaveInstanceState(Bundle outState) {
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onSaveInstanceState mResultData=" + mResultData + ", mResultCode=" + mResultCode);
+		if (DEBUG)
+			Log.d(TAG, "ScreenCaptureFragment.onSaveInstanceState mResultData=" + mResultData + ", mResultCode=" + mResultCode);
 		outState.putBoolean(STATE_ENABLED, enabled);
 		if (mResultData != null) {
 			outState.putInt(STATE_RESULT_CODE, mResultCode);
@@ -72,8 +75,10 @@ public class ScreenCaptureFragment extends Base implements Constants {
 		}
 	}
 
-	@Override public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode + ", resultData=" + resultData);
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+		if (DEBUG)
+			Log.d(TAG, "ScreenCaptureFragment.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode + ", resultData=" + resultData);
 		switch (requestCode) {
 			case R.id.allow_screen_capture: {
 				switch (resultCode) {
@@ -81,14 +86,16 @@ public class ScreenCaptureFragment extends Base implements Constants {
 						enabled = true;
 						mResultCode = resultCode;
 						mResultData = resultData;
-						if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityResult: permission granted enabled=" + enabled);
+						if (DEBUG)
+							Log.d(TAG, "ScreenCaptureFragment.onActivityResult: permission granted enabled=" + enabled);
 						if (getActivity() != null) {
 							go();
 						}
 					}
 					break;
 					default:
-						if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityResult: permission denied");
+						if (DEBUG)
+							Log.d(TAG, "ScreenCaptureFragment.onActivityResult: permission denied");
 						stopRecording();
 						Toast.makeText(getActivity(), "User canceled", Toast.LENGTH_SHORT).show();
 				}
@@ -98,7 +105,8 @@ public class ScreenCaptureFragment extends Base implements Constants {
 		}
 	}
 
-	@Override public void onDestroy() {
+	@Override
+	public void onDestroy() {
 		super.onDestroy();
 		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onDestroy");
 		if (mMediaProjection != null) {
@@ -114,43 +122,48 @@ public class ScreenCaptureFragment extends Base implements Constants {
 		}
 	}
 
-	@Override public void onPause() {
+	@Override
+	public void onPause() {
 		super.onPause();
 		stopRecording();
 	}
 
 	protected void go() {
-		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.go mResultData=" + mResultData + ", mResultCode=" + mResultCode);
+		if (DEBUG)
+			Log.d(TAG, "ScreenCaptureFragment.go mResultData=" + mResultData + ", mResultCode=" + mResultCode);
 		if (getActivity() != null) {
 			if (mResultData != null && mMediaProjection == null) {
 				mMediaProjection = mMediaProjectionManager.getMediaProjection(mResultCode, mResultData);
 				// mMediaProjection.registerCallback(...
 			}
-			if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.go mMediaProjection=" + mMediaProjection);
+			if (DEBUG)
+				Log.d(TAG, "ScreenCaptureFragment.go mMediaProjection=" + mMediaProjection);
 			if (mMediaProjection != null && mVirtualDisplay == null) {
 				try {
-					if (DEBUG) Log.d(TAG, "mScreenWidth=" + mScreenWidth + ", mScreenHeight=" + mScreenHeight);
+					if (DEBUG)
+						Log.d(TAG, "mScreenWidth=" + mScreenWidth + ", mScreenHeight=" + mScreenHeight);
 					mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 					// mMediaRecorder.setVideoEncodingBitRate(128 * 1000);
 					// mMediaRecorder.setVideoFrameRate(12);
 					mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
 					mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-					mScreenWidth = ((mScreenWidth+15)/16) * 16; // round up to multiple of 16
+					mScreenWidth = ((mScreenWidth + 15) / 16) * 16; // round up to multiple of 16
 					mMediaRecorder.setVideoSize(mScreenWidth, mScreenHeight);
 					mMediaRecorder.setOutputFile(getMovieName().getPath());
 					mMediaRecorder.prepare();
 					mMediaRecorder.start();
 					mVirtualDisplay = mMediaProjection.createVirtualDisplay(
-						getClass().getSimpleName(),
-						mScreenWidth,
-						mScreenHeight,
-						mScreenDensity,
-						DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-						mMediaRecorder.getSurface(),
-						null, // Callbacks
-						null // Handler
-						);
-					if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityResult: recording started");
+							getClass().getSimpleName(),
+							mScreenWidth,
+							mScreenHeight,
+							mScreenDensity,
+							DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+							mMediaRecorder.getSurface(),
+							null, // Callbacks
+							null // Handler
+					);
+					if (DEBUG)
+						Log.d(TAG, "ScreenCaptureFragment.onActivityResult: recording started");
 					Toast.makeText(getActivity(), "Recording started", Toast.LENGTH_SHORT).show();
 				}
 				catch (Exception e) {
@@ -169,9 +182,9 @@ public class ScreenCaptureFragment extends Base implements Constants {
 		if (mMediaProjection == null) {
 			getActivity().startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), R.id.allow_screen_capture);
 			enabled = true;
-			if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.startRecording: ask for permission enabled=" + enabled);
-		}
-		else {
+			if (DEBUG)
+				Log.d(TAG, "ScreenCaptureFragment.startRecording: ask for permission enabled=" + enabled);
+		} else {
 			go();
 		}
 	}
@@ -208,7 +221,7 @@ public class ScreenCaptureFragment extends Base implements Constants {
 		File f;
 		do {
 			ISODATEFORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
-			f = new File(((Tabulae)getActivity()).getMoviesDir(), ISODATEFORMAT.format(new Date()) + "-capture.mp4");
+			f = new File(((Tabulae) getActivity()).getMoviesDir(), ISODATEFORMAT.format(new Date()) + "-capture.mp4");
 		}
 		while (f.exists());
 		if (DEBUG) Log.d(TAG, "getMovieName f=" + f);
@@ -221,8 +234,7 @@ public class ScreenCaptureFragment extends Base implements Constants {
 				if (enabled) {
 					stopRecording();
 					Toast.makeText(getActivity(), "Recording stopped", Toast.LENGTH_SHORT).show();
-				}
-				else {
+				} else {
 					startRecording();
 				}
 			}

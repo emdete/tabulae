@@ -1,5 +1,7 @@
 package org.pyneo.tabulae.track;
 
+import java.util.Iterator;
+import java.util.List;
 import org.mapsforge.core.graphics.Canvas;
 import org.mapsforge.core.graphics.Color;
 import org.mapsforge.core.graphics.GraphicFactory;
@@ -12,15 +14,12 @@ import org.mapsforge.core.util.MercatorProjection;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.layer.overlay.Polyline;
 
-import java.util.Iterator;
-import java.util.List;
-
 class AlternatingLine extends Polyline implements Constants {
 	Paint[] paints = new Paint[1];
 
 	public AlternatingLine(GraphicFactory graphicFactory) {
 		super(null, graphicFactory);
-		for (int i=0;i<paints.length;i++) {
+		for (int i = 0; i < paints.length; i++) {
 			paints[i] = AndroidGraphicFactory.INSTANCE.createPaint();
 			paints[i].setStrokeWidth(16);
 			paints[i].setStyle(Style.STROKE);
@@ -28,7 +27,8 @@ class AlternatingLine extends Polyline implements Constants {
 		}
 	}
 
-	@Override public synchronized void draw(BoundingBox boundingBox, byte zoomLevel, Canvas canvas, Point topLeftPoint) {
+	@Override
+	public synchronized void draw(BoundingBox boundingBox, byte zoomLevel, Canvas canvas, Point topLeftPoint) {
 		int count = 0;
 		if (!getLatLongs().isEmpty()) {
 			Iterator<LatLong> iterator = getLatLongs().iterator();

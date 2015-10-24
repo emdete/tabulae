@@ -1,14 +1,12 @@
 package org.pyneo.tabulae.track;
 
-import org.mapsforge.core.model.LatLong;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import co.uk.rushorm.core.RushObject;
 import co.uk.rushorm.core.RushSearch;
 import co.uk.rushorm.core.annotations.RushIgnore;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import org.mapsforge.core.model.LatLong;
 
 public class TrackItem extends RushObject implements Constants {
 	// @Unique @NotNull
@@ -25,15 +23,8 @@ public class TrackItem extends RushObject implements Constants {
 	int cropto = -1;
 	int cropfrom = -1;
 	//@RushList(classType = TrackPointItem.class)
-	@RushIgnore List<TrackPointItem> trackPointItems;// = new ArrayList<>();
-
-	public static class LatLongTagged extends LatLong {
-		public TrackPointItem trackPointItem;
-		public LatLongTagged(TrackPointItem trackPointItem) {
-			super(trackPointItem.latitude, trackPointItem.longitude);
-			this.trackPointItem = trackPointItem;
-		}
-	}
+	@RushIgnore
+	List<TrackPointItem> trackPointItems;// = new ArrayList<>();
 
 	public TrackItem() {
 	}
@@ -79,7 +70,7 @@ public class TrackItem extends RushObject implements Constants {
 		boolean create = getId() == null;
 		super.save();
 		if (create && trackPointItems != null) {
-			for (TrackPointItem trackPointItem: getTrackPointItems()) {
+			for (TrackPointItem trackPointItem : getTrackPointItems()) {
 				trackPointItem.trackId = getId();
 				trackPointItem.save();
 			}
@@ -88,7 +79,7 @@ public class TrackItem extends RushObject implements Constants {
 
 	public List<LatLong> getTrackLatLongs() {
 		List<LatLong> list = new ArrayList<>();
-		for (TrackPointItem trackPointItem: getTrackPointItems()) {
+		for (TrackPointItem trackPointItem : getTrackPointItems()) {
 			list.add(new LatLongTagged(trackPointItem));
 		}
 		return list;
@@ -172,5 +163,14 @@ public class TrackItem extends RushObject implements Constants {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public static class LatLongTagged extends LatLong {
+		public TrackPointItem trackPointItem;
+
+		public LatLongTagged(TrackPointItem trackPointItem) {
+			super(trackPointItem.latitude, trackPointItem.longitude);
+			this.trackPointItem = trackPointItem;
+		}
 	}
 }

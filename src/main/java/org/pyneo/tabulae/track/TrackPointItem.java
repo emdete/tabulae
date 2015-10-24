@@ -1,11 +1,9 @@
 package org.pyneo.tabulae.track;
 
-import org.mapsforge.core.model.LatLong;
-
-import java.util.Date;
-
 import co.uk.rushorm.core.RushObject;
 import co.uk.rushorm.core.RushSearch;
+import java.util.Date;
+import org.mapsforge.core.model.LatLong;
 
 public class TrackPointItem extends RushObject implements Constants {
 	// @Unique @NotNull
@@ -31,12 +29,12 @@ public class TrackPointItem extends RushObject implements Constants {
 		return sequence;
 	}
 
-	public TrackItem getMeta() {
-		return new RushSearch().whereId(trackId).findSingle(TrackItem.class);
-	}
-
 	public void setSequence(int sequence) {
 		this.sequence = sequence;
+	}
+
+	public TrackItem getMeta() {
+		return new RushSearch().whereId(trackId).findSingle(TrackItem.class);
 	}
 
 	public double getLatitude() {

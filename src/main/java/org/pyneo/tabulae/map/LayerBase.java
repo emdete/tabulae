@@ -1,7 +1,7 @@
 package org.pyneo.tabulae.map;
 
 import android.util.Log;
-
+import java.io.File;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
@@ -12,8 +12,6 @@ import org.mapsforge.map.layer.cache.TileCache;
 import org.mapsforge.map.layer.cache.TwoLevelTileCache;
 import org.mapsforge.map.layer.download.TileDownloadLayer;
 import org.pyneo.tabulae.Tabulae;
-
-import java.io.File;
 
 /**
  * Base of the layers, adds features like proper hide, force zoom limits, ...
@@ -28,16 +26,15 @@ abstract class LayerBase implements Constants {
 		this.mapView = mapView;
 		if (persistant) {
 			int size = AndroidUtil.getMinimumCacheSize(activity, mapView.getModel().displayModel.getTileSize(), mapView.getModel().frameBufferModel.getOverdrawFactor(), 1f);
-			if (DEBUG) Log.d(TAG, "LayerBase.LayerBase minmal cache size=" + size);
+			//if (DEBUG) Log.d(TAG, "LayerBase.LayerBase minmal cache size=" + size);
 			memCache = new InMemoryTileCache(size);
 			tileCache = new TwoLevelTileCache(
-				memCache,
-				new FileSystemTileCache(99999, new File(activity.getTilesDir(), getId()), AndroidGraphicFactory.INSTANCE, true)
-				);
-		}
-		else {
+					memCache,
+					new FileSystemTileCache(99999, new File(activity.getTilesDir(), getId()), AndroidGraphicFactory.INSTANCE, true)
+			);
+		} else {
 			tileCache = AndroidUtil.createTileCache(activity, getId(), mapView.getModel().displayModel.getTileSize(),
-				1f, mapView.getModel().frameBufferModel.getOverdrawFactor());
+					1f, mapView.getModel().frameBufferModel.getOverdrawFactor());
 		}
 	}
 
@@ -56,8 +53,7 @@ abstract class LayerBase implements Constants {
 		if (visible) {
 			mapView.getModel().mapViewPosition.setZoomLevelMin(getZoomLevelMin());
 			mapView.getModel().mapViewPosition.setZoomLevelMax(getZoomLevelMax());
-		}
-		else {
+		} else {
 			if (memCache != null) memCache.purge();
 		}
 	}
@@ -70,11 +66,11 @@ abstract class LayerBase implements Constants {
 
 	public void onPause() {
 		if (tileLayer instanceof TileDownloadLayer)
-			((TileDownloadLayer)tileLayer).onPause();
+			((TileDownloadLayer) tileLayer).onPause();
 	}
 
 	public void onResume() {
 		if (tileLayer instanceof TileDownloadLayer)
-			((TileDownloadLayer)tileLayer).onResume();
+			((TileDownloadLayer) tileLayer).onResume();
 	}
 }

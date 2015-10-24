@@ -15,4 +15,10 @@
 	<item name="event_scroll" type="id" />
 	<item name="event_zoom" type="id"/>
 	<item name="location" type="id" />
+	<item name="event_current_time" type="id" />
+	<item name="msg_register_client" type="id" />
+	<item name="msg_unregister_client" type="id" />
+	<item name="msg_set_value" type="id" />
+	<item name="notification_id" type="id" />
+	<item name="autofollow" type="id" />
 </resources>

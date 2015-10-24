@@ -5,9 +5,9 @@ import java.util.Locale;
 
 public interface Constants {
 	String TAG = "org.pyneo.tabulae";
-	boolean DEBUG = true;
-	byte MIN_ZOOM = (byte)4;
-	byte MAX_ZOOM = (byte)21;
+	boolean DEBUG = BuildConfig.DEBUG;
+	byte MIN_ZOOM = (byte) 4;
+	byte MAX_ZOOM = (byte) 21;
 	// static { DEBUG = Log.isLoggable("org.pyneo.android", Log.DEBUG); }
 	float USER_FONT_FACTOR = 1.3f; // TODO: determine sp/dp factor somehow
 	String ACTION_CONVERSATIONS_REQUEST = "eu.siacs.conversations.location.request";
