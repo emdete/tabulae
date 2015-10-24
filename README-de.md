@@ -38,11 +38,11 @@ Tabulae enthält keine Werbung.
 
 Die Quelltexte des Programms sind für jeden einsehbar und damit überprüfbar.
 
-<img alt="screenshot main" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot.png" height="800px" width="600px">
+<img alt="screenshot main" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot.png" height="800px" width="450px">
 
-<img alt="screenshot statistics" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-statistic.png" height="800px" width="600px">
+<img alt="screenshot statistics" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-statistic.png" height="800px" width="450px">
 
-<img alt="screenshot portrait" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-portrait.png" height="400px" width="600px">
+<img alt="screenshot portrait" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-portrait.png" height="450px" width="800px">
 
 Bedienung
 ---------
