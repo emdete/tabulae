@@ -105,7 +105,7 @@ Map Download
 Zur Vereinfachung des Installierens von Karten stellt pyneo rechteckige Karten
 zum Download bereit. Sie sind unter
 
-	[maps](https://pyneo.org/maps/)
+[maps](https://pyneo.org/maps/)
 
 verfügbar (Maps nach Ländergrenzen können von
 [mapsforge](http://download.mapsforge.org/) bezogen werden). Die Namen der
@@ -144,9 +144,9 @@ nächstes Kapitel) logged mehr Informationen.
 Selbst Compilieren
 ------------------
 
-Die Quellen von Tabulae lassen sich von
+Die Quellen von Tabulae lassen sich per
 
-	https://github.com/emdete/tabulae
+	git clone https://github.com/emdete/tabulae
 
 herunterladen und mit dem Befehl
 
