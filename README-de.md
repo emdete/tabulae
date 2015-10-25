@@ -6,59 +6,56 @@ Tabulae
 Übersicht
 ---------
 
-Tabulae ist eine App zum Anzeigen von verschiedensten Karten. Es zeigt
-darauf die eigene Position, POIs, aufgezeichnete oder importierte
-Wegstrecken und Streckenplanungen.
+Tabulae ist eine App zum Anzeigen von verschiedensten Karten. Es zeigt darauf
+die eigene Position, POIs, aufgezeichnete oder importierte Wegstrecken und
+Streckenplanungen.
 
 Es ist mit Gesten steuerbar (zoomen mit zwei Fingern) aber wesentlich wurde
 Wert auf die Einhandbedienung gelegt um die Nutzung beim Sport zu vereinfachen.
 
-Die Karten können vorab heruntergeladen werden, was die Nutzung in
-Gegenden mit schlecher Netzabdeckung erlaubt. Die heruntergeladenen
-Karten werden gespeichert um Bandbreite zu sparen. Kartenanbieter können
-frei definiert werden, einige Beispiele sind vorkonfiguriert. Darüber
-hinaus können eigene Karten direkt aus Dateien verwendet werden.
+Die Karten können vorab heruntergeladen werden, was die Nutzung in Gegenden mit
+schlecher Netzabdeckung erlaubt. Die heruntergeladenen Karten werden
+gespeichert um Bandbreite zu sparen. Kartenanbieter können frei definiert
+werden, einige Beispiele sind vorkonfiguriert. Darüber hinaus können eigene
+Karten direkt aus Dateien verwendet werden.
 
 Auf verschiedene Weise können Positionen mit anderen Apps und Nutzern geteilt
 oder angezeigt werden. Die Wegstrecken und POIs können als gpx und kml im- und
 exportiert werden.
 
-Tabulae benötigt keinen Account zu irgendeinem Dienst, speichert keine
-Daten welcher Art auch immer im Internet. Das Zurverfügung-Stellen von
-Daten liegt in der Kontrolle des Benutzers. Tabulae erlaubt das Senden
-und Empfangen dieser Daten, der Nutzer jedoch bestimmt, wo diese
-weiterverarbeitet werden.
+Tabulae benötigt keinen Account zu irgendeinem Dienst, speichert keine Daten
+welcher Art auch immer im Internet. Das Zurverfügung-Stellen von Daten liegt in
+der Kontrolle des Benutzers. Tabulae erlaubt das Senden und Empfangen dieser
+Daten, der Nutzer jedoch bestimmt, wo diese weiterverarbeitet werden.
 
-Tabulae meldet keine privaten Informationen des Nutzers zu einem
-zentralen Server. Die einzige Möglichkeit, private Daten von Nutzern zu
-erhalten wäre aus den heruntergeladenen Kartenteile die grobe Position
-des Nuzters zu ermitteln.
+Tabulae meldet keine privaten Informationen des Nutzers zu einem zentralen
+Server. Die einzige Möglichkeit, private Daten von Nutzern zu erhalten wäre aus
+den heruntergeladenen Kartenteile die grobe Position des Nuzters zu ermitteln.
 
 Tabulae enthält keine Werbung.
 
 Die Quelltexte des Programms sind für jeden einsehbar und damit überprüfbar.
 
+#### Hauptbildschirm
+
 <img alt="screenshot main" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot.png" height="800px" width="450px">
 
+#### Track Statistik
+
 <img alt="screenshot statistics" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-statistic.png" height="800px" width="450px">
+
+#### Querformat
 
 <img alt="screenshot portrait" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-portrait.png" height="450px" width="800px">
 
 Bedienung
 ---------
 
-### Instrumentenbrett
-
-Das Instrumentenbrett (Anzeige von verschiedensten Werten über der Karte) kann
-über das Menu ab- und angeschaltet werden. Auch jedes einzelne Element kann
-entfernt und neue hinzugefügt werden (lange auf ein Element klicken) und die
-Art des Wertes ausgewählt werden.
-
 ### Kartenauswahl
 
-Der Anbieter der Karte kann aus einem Menü gewählt werden. Viele Anbieter sind
+Der Anbieter der Karte kann aus einem Menü gewählt werden. Einige Anbieter sind
 vorkonfiguriert und es können Strassekarten, Topographische Karten,
-Stellitenbilder und andere ausgewählt werden.
+Satellitenbilder und andere ausgewählt werden.
 
 Dem Benutzer obligt zu prüfen, ob der ausgewählte Kartenanbieter der Nutzung
 zustimmt.
@@ -67,8 +64,19 @@ zustimmt.
 
 Die App nutzt wo es geht Vector-Grafiken. Alle Icons sind Vectoren (die aus
 SVGs konvertiert werden) um die leidige DPI Abhängigkeit zu umgehen
-(https://developer.android.com/training/material/drawables.html). Auch
-Vektorkarten werden genutzt (mapsforge).
+(https://developer.android.com/training/material/drawables.html). Unterstützung
+älterer Android Verionen wurde darum fallengelassen.
+
+Auch Vektorkarten werden genutzt (mapsforge). In "Map Download" wird
+beschrieben wie diese installiert werden.
+
+### Instrumentenbrett
+
+Das Instrumentenbrett (Anzeige von verschiedensten Werten über der Karte) kann
+über das Menu ab- und angeschaltet werden.
+
+Auch jedes einzelne Element kann entfernt und neue hinzugefügt werden (lange
+auf ein Element klicken) und die Art des Wertes ausgewählt werden.
 
 ### Wegstrecke
 
@@ -99,15 +107,16 @@ zum Download bereit. Sie sind unter
 
 	[maps](https://pyneo.org/maps/)
 
-verfügbar. Die Namen der Rechtecke werden aus lat/lon der unteren, linken Ecke
-gebildet. Die Größe ist 1°. Später sollen diese Dateien von der App direkt
-geladen werden (darum Rechtecke und Namen, die ein Program einfacher bestimmen
-kann als "bremen.map" aus gegebener lat/lon). Im moment müssen diese manuell
-heruntergeladen werden und and die richtige Stelle installiert werden. Tabulae
-nutzt das Verzeichnis, das getExternalFilesDirs() zurückgibt. Initial wird
-dasjenige Verzeichnis gewählt, das am meisten freien Platz bereitstellt. In
-einem Gerät mit eingelegter zweiten SD müssen die map-Dateien für mapsforge
-dann in
+verfügbar (Maps nach Ländergrenzen können von
+[mapsforge](http://download.mapsforge.org/) bezogen werden). Die Namen der
+Rechtecke werden aus lat/lon der unteren, linken Ecke gebildet. Die Größe ist
+1°. Später sollen diese Dateien von der App direkt geladen werden (darum
+Rechtecke und Namen, die ein Program einfacher bestimmen kann als "bremen.map"
+aus gegebener lat/lon). Im moment müssen diese manuell heruntergeladen werden
+und and die richtige Stelle installiert werden. Tabulae nutzt das Verzeichnis,
+das getExternalFilesDirs() zurückgibt. Initial wird dasjenige Verzeichnis
+gewählt, das am meisten freien Platz bereitstellt. In einem Gerät mit
+eingelegter zweiten SD müssen die map-Dateien für mapsforge dann in
 
 	/storage/sdcard1/Android/data/org.pyneo.tabulae/files/maps/mapsforge
 
@@ -124,12 +133,10 @@ werden. Der Pfad dahin ist dann:
 Fehlersuche
 -----------
 
-Stürzt Tabulae ab, kann ein Fehlerbericht beim nächsten Start erzeugt
-und versendet werden.
+Stürzt Tabulae ab, logged es den Fehler. Tabulae logged mit den üblichen
+Android Board-Mitteln. Mit dem Befehl:
 
-Tabulae logged mit den üblichen Android Board-Mitteln. Mit dem Befehl:
-
-	adb logcat -v time -s org.pyneo.maps
+	adb logcat -v time -s org.pyneo.tabulae
 
 lässt sich beobachten, was Tabulae zu sagen hat. Ein Debug-Build (siehe
 nächstes Kapitel) logged mehr Informationen.
