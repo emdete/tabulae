@@ -18,15 +18,6 @@ repositories {
 	}
 }
 
-apply from: "../pyneo.org.gradle"
-android {
-	signingConfigs {
-		release {
-			storeFile file("../pyneo.org.keystore")
-		}
-	}
-}
-
 dependencies {
 	compile 'com.android.support:support-annotations:22.2.0' // https://sites.google.com/a/android.com/tools/tech-docs/support-annotations
 	// compile 'com.android.support:support-v23:0.0.1' // https://developer.android.com/tools/support-library/features.html
@@ -36,6 +27,32 @@ dependencies {
 }
 
 android {
+	//
+	// To sign release builds, create the file `~/.gradle/gradle.properties`
+	// (or in your project directory) with this content:
+	//
+	// mStoreFile=/path/to/key.store
+	// mStorePassword=xxx
+	// mKeyAlias=alias
+	// mKeyPassword=xxx
+	//
+	if (project.hasProperty('mStoreFile') &&
+			project.hasProperty('mStorePassword') &&
+			project.hasProperty('mKeyAlias') &&
+			project.hasProperty('mKeyPassword')) {
+		signingConfigs {
+			release {
+				storeFile file(mStoreFile)
+					storePassword mStorePassword
+					keyAlias mKeyAlias
+					keyPassword mKeyPassword
+			}
+		}
+		buildTypes.release.signingConfig = signingConfigs.release
+	} else {
+		buildTypes.release.signingConfig = null
+	}
+
 	compileSdkVersion 23
 	buildToolsVersion "21.1.2"
 	defaultConfig {
