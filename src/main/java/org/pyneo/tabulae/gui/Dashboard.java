@@ -56,7 +56,7 @@ public class Dashboard extends Base implements Constants {
 		}
 	}
 
-	static class DashboardItem {
+	class DashboardItem {
 		int event;
 		String value_key;
 		TextView textView;
@@ -82,7 +82,12 @@ public class Dashboard extends Base implements Constants {
 				if (value.length() > 8) {
 					value = value.substring(0, 8);
 				}
-				textView.setText(value);
+				final String v = value;
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						textView.setText(v);
+					}
+				});
 			}
 		}
 	}
