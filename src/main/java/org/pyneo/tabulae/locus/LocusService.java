@@ -108,12 +108,14 @@ public class LocusService extends Service implements LocationListener, Constants
 	@Override
 	public void onLocationChanged(Location location) {
 		Log.d(TAG, "LocusService.onLocationChanged location=" + location);
-		for (int i = mClients.size() - 1; i >= 0; i--) {
-			try {
-				mClients.get(i).send(Message.obtain(null, R.id.msg_set_value, R.id.location, 0, toBundle(location)));
-			}
-			catch (RemoteException e) {
-				mClients.remove(i);
+		if (location != null) {
+			for (int i = mClients.size() - 1; i >= 0; i--) {
+				try {
+					mClients.get(i).send(Message.obtain(null, R.id.msg_set_value, R.id.location, 0, toBundle(location)));
+				}
+				catch (RemoteException e) {
+					mClients.remove(i);
+				}
 			}
 		}
 	}
