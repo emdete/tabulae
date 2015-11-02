@@ -40,20 +40,18 @@ public class WirelessEnvListener extends PhoneStateListener implements Constants
 				if (rcd / 1000 == 2) {
 					double latitude = ident_location.getDouble("latitude");
 					double longitude = ident_location.getDouble("longitude");
-					double accuracy = 5000.0;
-					if (rcd != 2010 && ident_location.containsKey("radius")) { // radius given
-						accuracy = ident_location.getDouble("radius");
+					float accuracy = (float)5000.0;
+					if (rcd == 2000 && ident_location.containsKey("radius")) { // radius given
+						accuracy = (float)ident_location.getLong("radius");
 					}
 					location = new Location("cellapi2");
 					location.setLatitude(latitude);
 					location.setLongitude(longitude);
-					location.setAccuracy((float) accuracy);
-					location.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
+					location.setAccuracy(accuracy);
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-						location.setElapsedRealtimeNanos(SystemClock.elapsedRealtime());
-					} else {
-						location.setTime(System.currentTimeMillis());
+						location.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
 					}
+					location.setTime(System.currentTimeMillis());
 					Bundle extra = new Bundle();
 					extra.putDouble("latitude_tower", ident_location.getDouble("latitude_tower"));
 					extra.putDouble("longitude_tower", ident_location.getDouble("longitude_tower"));
@@ -120,11 +118,9 @@ public class WirelessEnvListener extends PhoneStateListener implements Constants
 				executor.execute(new Runnable() {
 					public void run() {
 						try {
-							if (DEBUG)
-								Log.d(TAG, "WirelessEnvListener.onCellInfoChanged: request=" + cellapi2_request);
+							if (DEBUG) Log.d(TAG, "WirelessEnvListener.onCellInfoChanged: request=" + cellapi2_request);
 							Location location = constructLocation(CellAPI2.retrieveLocation(meta_map, cellapi2_request, "estimate"));
-							if (DEBUG)
-								Log.d(TAG, "WirelessEnvListener.onCellInfoChanged: response=" + location);
+							if (DEBUG) Log.d(TAG, "WirelessEnvListener.onCellInfoChanged: response=" + location);
 							if (location != null) {
 								onLocationChanged(location, last_ident);
 							}

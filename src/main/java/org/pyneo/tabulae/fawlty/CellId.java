@@ -127,7 +127,7 @@ public class CellId implements Constants, Iterator<TheDictionary>, Iterable<TheD
 			i = value.getPci();
 			if (i != Integer.MAX_VALUE && i > 0) map.put("pci", i);
 			i = value.getCi();
-			if (i != Integer.MAX_VALUE && i > 0) map.put("ci", i);
+			if (i != Integer.MAX_VALUE && i > 0) map.put("cid", i);
 		}
 	}
 

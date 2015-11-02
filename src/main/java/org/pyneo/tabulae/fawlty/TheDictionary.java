@@ -147,8 +147,8 @@ public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map
 					}
 					break;
 				case '4':
-					if (containsKey("mcc") && containsKey("mnc") && containsKey("tac") && containsKey("ci")) {
-						ident = getString("type") + ":" + getString("mcc") + "." + getString("mnc") + "." + getString("tac") + "." + getString("ci");
+					if (containsKey("mcc") && containsKey("mnc") && containsKey("tac") && containsKey("cid")) {
+						ident = getString("type") + ":" + getString("mcc") + "." + getString("mnc") + "." + getString("tac") + "." + getString("cid");
 					}
 					break;
 				case 'w':

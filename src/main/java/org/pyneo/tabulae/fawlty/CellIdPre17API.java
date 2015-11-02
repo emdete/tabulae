@@ -91,10 +91,6 @@ public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Itera
 				if (i != null) {
 					map.put("tac", i);
 				}
-				i = (Integer) map.pop("cid");
-				if (i != null) {
-					map.put("ci", i);
-				}
 			}
 			break;
 			case TelephonyManager.NETWORK_TYPE_EHRPD:

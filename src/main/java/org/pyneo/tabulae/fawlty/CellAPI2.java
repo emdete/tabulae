@@ -23,7 +23,7 @@ public class CellAPI2 implements Constants {
 		String correlation_id = Long.toString(random.nextLong());
 		meta.put("version", 2);
 		meta.put("user", user);
-		meta.put("resolve", resolve);
+		meta.put("method", resolve);
 		meta.put("tower", 1);
 		list.add(meta);
 		if (DEBUG) Log.d(TAG, "retrieveLocation: request list=" + list);
