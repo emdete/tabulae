@@ -13,7 +13,7 @@ import org.json.simple.JSONValue;
 
 public class CellAPI2 implements Constants {
 	private static final String user = "pyneo";
-	private static final String url = "https://x.vfnet.de/cellapi/v2/_/" + user;
+	private static final String url = "https://cellsit.vfnet.de/cellapi/v2/_/" + user;
 	private static final Random random = new Random();
 
 	static public TheList retrieveLocation(TheDictionary meta, TheList list, String resolve) throws Exception {
@@ -33,8 +33,8 @@ public class CellAPI2 implements Constants {
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			connection.setReadTimeout(5000);
-			connection.setRequestProperty("Content-Type", "text/json");
-			connection.setRequestProperty("User-Agent", "proprorep");
+			connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+			connection.setRequestProperty("User-Agent", "Tabulae " + org.pyneo.tabulae.BuildConfig.VERSION_NAME);
 			connection.setRequestProperty("X-Correlation-Id", correlation_id);
 			connection.setRequestProperty("Authorization", "Basic cHluZW86YU4zUGVpdjY=");
 			connection.setRequestMethod("POST");
