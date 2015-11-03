@@ -56,10 +56,11 @@ public class Dashboard extends Base implements Constants {
 		}
 	}
 
-	class DashboardItem {
+	static class DashboardItem {
 		int event;
 		String value_key;
 		TextView textView;
+		Activity activity;
 
 		DashboardItem(Activity activity, ViewGroup viewGroup, int event, String header, String value_key, String unit) {
 			View item = LayoutInflater.from(activity).inflate(R.layout.dashboard_item, viewGroup, false);
@@ -69,6 +70,7 @@ public class Dashboard extends Base implements Constants {
 			textView = ((TextView) item.findViewById(R.id.data_value));
 			this.value_key = value_key;
 			this.event = event;
+			this.activity = activity;
 			textView.setText("---");
 		}
 
@@ -83,7 +85,7 @@ public class Dashboard extends Base implements Constants {
 					value = value.substring(0, 8);
 				}
 				final String v = value;
-				getActivity().runOnUiThread(new Runnable() {
+				activity.runOnUiThread(new Runnable() {
 					public void run() {
 						textView.setText(v);
 					}
