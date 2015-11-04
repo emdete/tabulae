@@ -58,8 +58,8 @@ android {
 	defaultConfig {
 		minSdkVersion 21
 		targetSdkVersion 23
-		versionCode 20007
-		versionName "2.alpha.blue"
+		versionCode 20008
+		versionName "2.alpha.pink"
 	}
 	lintOptions {
 		abortOnError false
