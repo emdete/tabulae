@@ -7,7 +7,8 @@
 	<!-- fgau ><color name="primary" type="color">#009988</color -->
 	<!-- orange ><color name="primary" type="color">#ff5500</color -->
 	<!-- pyneo ><color name="primary" type="color">#ee9900</color -->
-	<!-- blue --><color name="primary" type="color">#9999ff</color>
+	<!-- blue ><color name="primary" type="color">#9999ff</color -->
+	<!-- pink --><color name="primary" type="color">#ffaaaa</color>
 	<color name="textPrimary" type="color">#ffffff</color>
 	<color name="accent" type="color">#555555</color>
 	<color name="windowBackground" type="color">#bbbbbb</color>

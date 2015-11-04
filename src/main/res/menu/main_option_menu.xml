@@ -64,4 +64,8 @@
 		android:icon="@drawable/ic_share"
 		android:title="@string/send_location"
 		/>
+	<item
+		android:id="@+id/event_help"
+		android:title="@string/help"
+		/>
 </menu>

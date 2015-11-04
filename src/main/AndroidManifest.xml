@@ -38,12 +38,8 @@
 			android:launchMode="singleInstance"
 			>
 			<intent-filter>
-				<action
-					android:name="android.intent.action.MAIN"
-					/>
-				<category
-					android:name="android.intent.category.LAUNCHER"
-					/>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
@@ -60,7 +56,65 @@
 				<action android:name="eu.siacs.conversations.location.show" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
+			<!-- android matches non-greedy : http://stackoverflow.com/questions/3400072/pathpattern-to-match-file-extension-does-not-work-if-a-period-exists-elsewhere-i-->
+			<!-- mimeType&host are both needed or you will either have unwanted matching or no match when needed
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.kml" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\.kml" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\.kml" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\.kml" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.kml" />
+			</intent-filter>
+			<intent-filter>
+				<data android:scheme="http" />
+				<data android:scheme="https" />
+				<data android:host="maps.google.com" />
+				<data android:host="maps.yandex.ru" />
+				<data android:host="maps.yandex.com" />
+				<data android:host="www.openstreetmap.org" />
+				<data android:host="openstreetmap.org" />
+				<data android:host="osm.org" />
+				<data android:host="map.baidu.cn" />
+				<data android:host="map.baidu.com" />
+				<data android:host="wb.amap.com" />
+				<data android:host="www.amap.com" />
+				<data android:host="here.com" />
+				<data android:host="www.here.com" />
+				<data android:host="share.here.com" />
+				<data android:host="map.wap.qq.com" />
+				<data android:host="map.qq.com" />
+				<data android:host="maps.apple.com" />
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+			</intent-filter>
+			<intent-filter>
+				<data android:scheme="http" android:host="www.google.com" android:pathPrefix="/maps" />
+				<data android:scheme="https" android:host="www.google.com" android:pathPrefix="/maps" />
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+			</intent-filter>
+			<intent-filter>
+				<data android:scheme="http" android:host="openstreetmap.de" android:pathPrefix="/karte" />
+				<data android:scheme="https" android:host="openstreetmap.de" android:pathPrefix="/karte" />
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+			</intent-filter>
+			-->
 		</activity>
+		<activity
+			android:name=".gui.DocumentAvtivity"
+			android:exported="false"
+			/>
 		<service
 			android:name=".locus.LocusService"
 			android:exported="false"

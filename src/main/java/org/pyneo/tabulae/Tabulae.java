@@ -27,6 +27,7 @@ import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.fawlty.Fawlty;
 import org.pyneo.tabulae.gui.Controller;
 import org.pyneo.tabulae.gui.Dashboard;
+import org.pyneo.tabulae.gui.DocumentAvtivity;
 import org.pyneo.tabulae.locus.Locus;
 import org.pyneo.tabulae.map.Map;
 import org.pyneo.tabulae.poi.Poi;
@@ -319,8 +320,14 @@ public class Tabulae extends Activity implements Constants {
 	}
 
 	public void inform(final int event, final Bundle extra) {
-		for (Base b : fragments) {
-			b.inform(event, extra);
+		switch (event) {
+		case R.id.event_help:
+			startActivity(new Intent(this, DocumentAvtivity.class));
+		break;
+		default:
+			for (Base b : fragments) {
+				b.inform(event, extra);
+			}
 		}
 	}
 

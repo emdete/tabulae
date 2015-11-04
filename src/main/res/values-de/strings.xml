@@ -20,4 +20,5 @@
 	<string name="serving_cell">Aktive Zelle</string>
 	<string name="title_current_time">Aktuelle Zeit</string>
 	<string name="view_location">Standort anzeigen</string>
+	<string name="help">Dokumentation</string>
 </resources>
