@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import java.io.File;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -264,7 +265,7 @@ public class Tabulae extends Activity implements Constants {
 	@Override
 	protected void onSaveInstanceState(Bundle bundle) {
 		super.onSaveInstanceState(bundle);
-		Log.d(TAG, "Tabulae.onSaveInstanceState bundle=" + bundle);
+		if (DEBUG) Log.d(TAG, "Tabulae.onSaveInstanceState bundle=" + bundle);
 		// bundle.putString("..", ..);
 	}
 
@@ -322,7 +323,13 @@ public class Tabulae extends Activity implements Constants {
 	public void inform(final int event, final Bundle extra) {
 		switch (event) {
 		case R.id.event_help:
-			startActivity(new Intent(this, DocumentAvtivity.class));
+			Intent intent = new Intent(this, DocumentAvtivity.class);
+			String lang = getResources().getConfiguration().locale.getLanguage();
+			Bundle extras = new Bundle();
+			// TODO check if exists and fallback
+			extras.putString("url", "file:///android_asset/documents-" + lang + "/index.html");
+			intent.putExtras(extras);
+			startActivity(intent);
 		break;
 		default:
 			for (Base b : fragments) {
