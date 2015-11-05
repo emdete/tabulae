@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -326,8 +328,17 @@ public class Tabulae extends Activity implements Constants {
 			Intent intent = new Intent(this, DocumentAvtivity.class);
 			String lang = getResources().getConfiguration().locale.getLanguage();
 			Bundle extras = new Bundle();
+			String path = "documents-" + lang;
+			try {
+				if (getResources().getAssets().list(path).length == 0) {
+					throw new IOException();
+				}
+			}
+			catch (IOException ignore) {
+				path = "documents";
+			}
 			// TODO check if exists and fallback
-			extras.putString("url", "file:///android_asset/documents-" + lang + "/index.html");
+			extras.putString("url", "file:///android_asset/" + path + "/index.html");
 			intent.putExtras(extras);
 			startActivity(intent);
 		break;
