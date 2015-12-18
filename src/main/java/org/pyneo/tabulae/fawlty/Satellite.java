@@ -36,20 +36,18 @@ public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<T
 			}
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
 				map.put("age_nanos", SystemClock.elapsedRealtimeNanos() - value.getElapsedRealtimeNanos());
-			} else {
+			}
+			else {
 				map.put("age_nanos", (SystemClock.elapsedRealtime() - value.getTime()) * 1000000);
 			}
 			map.put("provider", value.getProvider());
 			if (value.hasSpeed()) {
-				map.put("speed", (double) value.getSpeed());
+				map.put("speed", (double) value.getSpeed() * 3600);
 			}
-			try {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
 				map.put("fromMockProvider", value.isFromMockProvider());
 			}
-			catch (java.lang.NoSuchMethodError e) {
-				// I/dalvikvm(12043): Could not find method
-				// android.location.Location.isFromMockProvider, referenced from
-				// method com.vodafone.proprorep.Engine.toMap
+			else {
 				map.put("fromMockProvider", false);
 			}
 		}

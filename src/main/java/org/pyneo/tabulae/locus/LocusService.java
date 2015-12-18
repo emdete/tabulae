@@ -88,8 +88,8 @@ public class LocusService extends Service implements LocationListener, Constants
 				&& context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			disable();
 			for (String provider : locationManager.getProviders(true)) {
-				Location pl = locationManager.getLastKnownLocation(provider);
-				lastLocation = betterLocation(lastLocation, pl);
+				Location location = locationManager.getLastKnownLocation(provider);
+				lastLocation = betterLocation(lastLocation, location);
 			}
 			for (String provider : locationManager.getProviders(true)) {
 				if (LocationManager.GPS_PROVIDER.equals(provider) || LocationManager.NETWORK_PROVIDER.equals(provider)) {
@@ -184,7 +184,7 @@ public class LocusService extends Service implements LocationListener, Constants
 			ret.putDouble("longitude", location.getLongitude());
 			ret.putLong("time", location.getTime());
 			if (location.hasSpeed()) {
-				ret.putDouble("speed", location.getSpeed());
+				ret.putDouble("speed", location.getSpeed() * 3600);
 			}
 			if (location.hasAccuracy() && location.getAccuracy() != 0) {
 				ret.putDouble("accuracy", location.getAccuracy());
