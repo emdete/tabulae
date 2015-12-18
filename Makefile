@@ -2,7 +2,7 @@
 .PHONY: all run clean doc dist dbg art gradle
 
 all: src/main/res/values/strings_news.xml
-	./gradlew -q assembleRelease
+	./gradlew --quiet --offline assembleRelease
 
 run: src/main/res/values/strings_news.xml
 	./gradlew --quiet assembleDebug
