@@ -7,7 +7,7 @@ import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
 import org.mapsforge.map.reader.MapFile;
-import org.mapsforge.map.reader.MultiMapDataStore;
+import org.mapsforge.map.datastore.MultiMapDataStore;
 import org.mapsforge.map.rendertheme.ExternalRenderTheme;
 import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import org.pyneo.tabulae.Tabulae;
@@ -27,8 +27,9 @@ class LayerMapsForge extends LayerBase {
 		if (maps != null) for (File map : maps) {
 			if (map.isFile()) {
 				try {
-					multiMapDataStore.addMapDataStore(new MapFile(map), true, true);
-					if (DEBUG) Log.d(TAG, "LayerMapsForge loaded map=" + map);
+					MapFile mapfile = new MapFile(map);
+					multiMapDataStore.addMapDataStore(mapfile, true, true);
+					if (DEBUG) Log.d(TAG, "LayerMapsForge loaded map=" + map + ", bb=" + mapfile.boundingBox());
 				}
 				catch (Exception e) {
 					Log.e(TAG, "LayerMapsForge error map=" + map, e);

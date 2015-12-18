@@ -84,7 +84,7 @@ public class Poi extends Base implements Constants {
 		for (PointAd pointAd : pointsAd) {
 			PoiItem poiItem = pointAd.poiItem;
 			latLong = new LatLong(poiItem.getLatitude(), poiItem.getLongitude());
-			bb = bb.extend(new BoundingBox(latLong.latitude, latLong.longitude, latLong.latitude, latLong.longitude)); // TODO use extend with LatLong
+			bb = bb.extendCoordinates(latLong);
 		}
 		try {
 			byte zoom = LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb, mapView.getModel().displayModel.getTileSize());

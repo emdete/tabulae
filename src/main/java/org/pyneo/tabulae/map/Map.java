@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import org.mapsforge.core.model.LatLong;
-import org.mapsforge.map.android.AndroidPreferences;
+import org.mapsforge.map.android.util.AndroidPreferences;
 import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.model.DisplayModel;
 import org.mapsforge.map.model.MapViewPosition;
@@ -96,6 +96,7 @@ public class Map extends Base implements Constants {
 		mapView.getMapScaleBar().setVisible(false);
 		mapView.getModel().mapViewPosition.setZoomLevelMin((byte) 4);
 		mapView.getModel().mapViewPosition.setZoomLevelMax((byte) 20);
+		mapView.getModel();
 		mapView.setBuiltInZoomControls(false);
 		mapView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 		DisplayModel displayModel = mapView.getModel().displayModel;
