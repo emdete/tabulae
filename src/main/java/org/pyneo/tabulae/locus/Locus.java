@@ -64,7 +64,7 @@ public class Locus extends Base implements Constants {
 			ret.setLongitude(location.getDouble("longitude"));
 			ret.setTime(location.getLong("time"));
 			if (location.containsKey("speed")) {
-				ret.setSpeed((float) (location.getDouble("speed") / 3600.0));
+				ret.setSpeed((float) (location.getDouble("speed") / 3.6));
 			}
 			if (location.containsKey("accuracy")) {
 				ret.setAccuracy((float) location.getDouble("accuracy"));

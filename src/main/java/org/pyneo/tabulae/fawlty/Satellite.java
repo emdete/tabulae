@@ -42,7 +42,7 @@ public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<T
 			}
 			map.put("provider", value.getProvider());
 			if (value.hasSpeed()) {
-				map.put("speed", (double) value.getSpeed() * 3600);
+				map.put("speed", (double) value.getSpeed() * 3.6);
 			}
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
 				map.put("fromMockProvider", value.isFromMockProvider());
