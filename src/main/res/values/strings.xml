@@ -13,10 +13,12 @@
 	<string name="title_provider">Provider</string>
 	<string name="title_satellite">Satellites</string>
 	<string name="title_speed">Speed</string>
+	<string name="title_pace">Pace</string>
 	<string name="title_zoom">Zoom</string>
 	<string name="unit_degree" translatable="false">°</string>
 	<string name="unit_empty" translatable="false"/>
 	<string name="unit_kmh" translatable="false">km/h</string>
+	<string name="unit_minkm" translatable="false">min/km</string>
 	<string name="unit_m" translatable="false">m</string>
 	<string name="unit_zoom" translatable="false">×</string>
 	<string name="map_mapsforge" translatable="false">Maps Forge</string>

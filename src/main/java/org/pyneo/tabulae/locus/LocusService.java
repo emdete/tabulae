@@ -184,7 +184,11 @@ public class LocusService extends Service implements LocationListener, Constants
 			ret.putDouble("longitude", location.getLongitude());
 			ret.putLong("time", location.getTime());
 			if (location.hasSpeed()) {
-				ret.putDouble("speed", location.getSpeed() * 3.6);
+				double speed = location.getSpeed() * 3.6;
+				ret.putDouble("speed", speed);
+				if (speed != 0) {
+					ret.putDouble("pace", 60 / speed);
+				}
 			}
 			if (location.hasAccuracy() && location.getAccuracy() != 0) {
 				ret.putDouble("accuracy", location.getAccuracy());

@@ -32,6 +32,7 @@ public class Dashboard extends Base implements Constants {
 				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_bearing), "bearing", getString(R.string.unit_degree)),
 				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
 				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),
+				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_pace), "pace", getString(R.string.unit_minkm)),
 				new DashboardItem(getActivity(), viewGroup, R.id.event_zoom, getString(R.string.title_zoom), "zoom_level", getString(R.string.unit_zoom)),
 				new DashboardItem(getActivity(), viewGroup, R.id.cell_ident, "Cell Identifier", "cell_ident", ""),
 				new DashboardItem(getActivity(), viewGroup, R.id.location, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
