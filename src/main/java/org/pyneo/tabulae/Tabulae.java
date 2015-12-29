@@ -176,7 +176,7 @@ public class Tabulae extends Activity implements Constants {
 					extra.putString(NAME, "poi");
 					extra.putString(DESCRIPTION, "shared poi");
 					if (DEBUG) Log.d(TAG, "Tabulae.onCreate new poi extra=" + extra);
-					inform(R.id.event_poi_new, extra);
+					asyncInform(R.id.event_poi_new, extra);
 				}
 			}
 			catch (Exception e) {

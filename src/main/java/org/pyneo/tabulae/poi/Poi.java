@@ -98,16 +98,6 @@ public class Poi extends Base implements Constants {
 		}
 	}
 
-	public void inform(int event, Bundle extra) {
-		switch (event) {
-			case R.id.event_poi_list: {
-				if (DEBUG) Log.d(TAG, "Poi.inform event=" + event + ", extra=" + extra);
-				center();
-			}
-			break;
-		}
-	}
-
 	class PointAd {
 		protected PoiItem poiItem;
 		protected Marker marker;
@@ -146,6 +136,27 @@ public class Poi extends Base implements Constants {
 				marker.onDestroy();
 				marker = null;
 			}
+		}
+	}
+
+	public void inform(int event, Bundle extra) {
+		switch (event) {
+			case R.id.event_poi_new: {
+				if (DEBUG) Log.d(TAG, "Poi.inform event=event_poi_new, extra=" + extra);
+				storePointPosition((Tabulae) getActivity(),
+					extra.getString("name"),
+					extra.getString("description"),
+					extra.getDouble("latitude"),
+					extra.getDouble("longitude"),
+					true);
+				center();
+			}
+			break;
+			case R.id.event_poi_list: {
+				if (DEBUG) Log.d(TAG, "Poi.inform event=event_poi_list, extra=" + extra);
+				center();
+			}
+			break;
 		}
 	}
 }
