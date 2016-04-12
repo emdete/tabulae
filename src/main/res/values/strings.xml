@@ -26,7 +26,8 @@
 	<string name="map_bing_satellite" translatable="false">Bing Satellite</string>
 	<string name="map_google_satellite" translatable="false">Google Satellite</string>
 	<string name="map_mapquest" translatable="false">Map Quest</string>
-	<string name="map_openactive" translatable="false">Outdoor Active</string>
+	<string name="map_outdoor_active" translatable="false">Outdoor Active</string>
+	<string name="map_wanderreitkarte" translatable="false">Wanderreitkarte</string>
 	<string name="serving_cell">Serving cell</string>
 	<string name="capture_screen">Capture screen</string>
 	<string name="view_location">View location</string>

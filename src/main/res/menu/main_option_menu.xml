@@ -26,7 +26,8 @@
 			<item android:id="@id/event_map_bing_satellite" android:title="@string/map_bing_satellite" />
 			<item android:id="@id/event_map_google_satellite" android:title="@string/map_google_satellite" />
 			<item android:id="@id/event_map_mapquest" android:title="@string/map_mapquest" />
-			<item android:id="@id/event_map_outdoor_active" android:title="@string/map_openactive" />
+			<item android:id="@id/event_map_outdoor_active" android:title="@string/map_outdoor_active" />
+			<item android:id="@id/event_map_wanderreitkarte" android:title="@string/map_wanderreitkarte" />
 		</menu>
 	</item>
 	<item
