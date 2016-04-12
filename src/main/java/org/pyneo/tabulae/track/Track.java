@@ -1,8 +1,8 @@
 package org.pyneo.tabulae.track;
 
+import org.pyneo.thinstore.StoreObject;
 import android.os.Bundle;
 import android.util.Log;
-import co.uk.rushorm.core.RushSearch;
 import java.io.File;
 import java.util.List;
 import org.mapsforge.core.model.LatLong;
@@ -11,6 +11,7 @@ import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import android.database.sqlite.SQLiteDatabase;
 
 public class Track extends Base implements Constants {
 	AlternatingLine polyline;
@@ -42,16 +43,23 @@ public class Track extends Base implements Constants {
 
 	void showVisibleTracks() {
 		MapView mapView = ((Tabulae) getActivity()).getMapView();
-		for (TrackItem trackItem : new RushSearch().whereEqual("visible", true).find(TrackItem.class)) {
-			List<LatLong> latLongs = trackItem.getTrackLatLongs();
-			polyline.setLatLongs(latLongs);
-			//BoundingBox bb = new BoundingBox(latLongs);
-			//mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(bb.getCenterPoint(), LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb, mapView.getModel().displayModel.getTileSize())));
-			mapView.getModel().mapViewPosition.setCenter(latLongs.get(0));
-			Bundle extra = new Bundle();
-			extra.putBoolean("autofollow", false);
-			((Tabulae) getActivity()).inform(R.id.event_autofollow, extra);
-			if (DEBUG) return;
+		SQLiteDatabase db = ((Tabulae)getActivity()).getDatabase();
+		try {
+			for (StoreObject item : StoreObject.query(((Tabulae)getActivity()).getDatabase(), TrackItem.class).where("visible").equal(true).fetchAll()) {
+				TrackItem trackItem = (TrackItem)item;
+				List<LatLong> latLongs = trackItem.getTrackLatLongs(db);
+				polyline.setLatLongs(latLongs);
+				//BoundingBox bb = new BoundingBox(latLongs);
+				//mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(bb.getCenterPoint(), LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb, mapView.getModel().displayModel.getTileSize())));
+				mapView.getModel().mapViewPosition.setCenter(latLongs.get(0));
+				Bundle extra = new Bundle();
+				extra.putBoolean("autofollow", false);
+				((Tabulae) getActivity()).inform(R.id.event_autofollow, extra);
+				if (DEBUG) return;
+			}
+		}
+		catch (Exception e) {
+			Log.e(TAG, "Track.showVisibleTracks e=" + e, e);
 		}
 	}
 
@@ -64,11 +72,11 @@ public class Track extends Base implements Constants {
 					if (gpx.isFile() && gpx.toString().endsWith(".gpx")) {
 						try {
 							if (DEBUG) Log.d(TAG, "Track.inform import gpx=" + gpx);
-							TrackGpxParser track = new TrackGpxParser(gpx);
-							if (new RushSearch().whereEqual("name", track.trackItem.getName()).count(TrackItem.class) == 0) {
-								track.trackItem.save();
-								if (DEBUG)
-									Log.d(TAG, "Track.inform stored name=" + track.trackItem.getName());
+							SQLiteDatabase db = ((Tabulae)getActivity()).getDatabase();
+							TrackGpxParser track = new TrackGpxParser(gpx, db);
+							if (StoreObject.query(db, TrackItem.class).where("name").equal(track.trackItem.getName()).count() == 0) {
+								track.trackItem.insert(db);
+								if (DEBUG) Log.d(TAG, "Track.inform stored name=" + track.trackItem.getName());
 							}
 						}
 						catch (Exception e) {

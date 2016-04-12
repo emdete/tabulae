@@ -1,11 +1,11 @@
 package org.pyneo.tabulae.track;
 
-import co.uk.rushorm.core.RushObject;
-import co.uk.rushorm.core.RushSearch;
+import android.database.sqlite.SQLiteDatabase;
 import java.util.Date;
+import org.pyneo.thinstore.StoreObject;
 import org.mapsforge.core.model.LatLong;
 
-public class TrackPointItem extends RushObject implements Constants {
+public class TrackPointItem extends StoreObject implements Constants {
 	// @Unique @NotNull
 	int sequence;
 	Date timestamp;
@@ -14,7 +14,7 @@ public class TrackPointItem extends RushObject implements Constants {
 	double altitude;
 	double speed;
 	int attribute;
-	String trackId;
+	long trackId;
 	//TrackItem track;
 
 	public TrackPointItem() {
@@ -33,8 +33,8 @@ public class TrackPointItem extends RushObject implements Constants {
 		this.sequence = sequence;
 	}
 
-	public TrackItem getMeta() {
-		return new RushSearch().whereId(trackId).findSingle(TrackItem.class);
+	public TrackItem getMeta(SQLiteDatabase db) throws Exception {
+		return (TrackItem)query(db, TrackItem.class).where("id").equal(trackId).fetchOne();
 	}
 
 	public double getLatitude() {

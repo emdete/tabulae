@@ -1,6 +1,8 @@
 ToDos / known Bugs
 ------------------
 
+- add no media tagging
+
 - add https://de.wikipedia.org/wiki/Rettungspunkt
 
 - fix bug displaying multiple stored tracks on different zooms

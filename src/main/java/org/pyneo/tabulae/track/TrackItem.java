@@ -1,14 +1,13 @@
 package org.pyneo.tabulae.track;
 
-import co.uk.rushorm.core.RushObject;
-import co.uk.rushorm.core.RushSearch;
-import co.uk.rushorm.core.annotations.RushIgnore;
+import android.database.sqlite.SQLiteDatabase;
+import org.pyneo.thinstore.StoreObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.mapsforge.core.model.LatLong;
 
-public class TrackItem extends RushObject implements Constants {
+public class TrackItem extends StoreObject implements Constants {
 	// @Unique @NotNull
 	String name;
 	String description;
@@ -22,9 +21,7 @@ public class TrackItem extends RushObject implements Constants {
 	int activityid = -1;
 	int cropto = -1;
 	int cropfrom = -1;
-	//@RushList(classType = TrackPointItem.class)
-	@RushIgnore
-	List<TrackPointItem> trackPointItems;// = new ArrayList<>();
+	volatile List<TrackPointItem> trackPointItems;
 
 	public TrackItem() {
 	}
@@ -50,36 +47,37 @@ public class TrackItem extends RushObject implements Constants {
 		this.description = description;
 	}
 
-	void add(TrackPointItem trackPointItem) {
+	void add(SQLiteDatabase db, TrackPointItem trackPointItem) throws Exception {
 		//trackPointItem.track = this;
-		getTrackPointItems().add(trackPointItem);
-		if (getId() != null) {
+		getTrackPointItems(db).add(trackPointItem);
+		if (getId() >= 0) {
 			trackPointItem.trackId = getId();
-			trackPointItem.save();
+			trackPointItem.insert(db);
 		}
 	}
 
-	public List<TrackPointItem> getTrackPointItems() {
+	public List<TrackPointItem> getTrackPointItems(SQLiteDatabase db) throws Exception {
 		if (trackPointItems == null) {
-			trackPointItems = new RushSearch().whereEqual("trackId", getId()).find(TrackPointItem.class);
+			trackPointItems = (List)query(db, TrackPointItem.class).where("trackId").equal(getId()).fetchAll();
 		}
 		return trackPointItems;
 	}
 
-	public void save() {
-		boolean create = getId() == null;
-		super.save();
+	public StoreObject insert(SQLiteDatabase db) throws Exception {
+		boolean create = getId() < 0;
+		super.insert(db);
 		if (create && trackPointItems != null) {
-			for (TrackPointItem trackPointItem : getTrackPointItems()) {
+			for (TrackPointItem trackPointItem : getTrackPointItems(db)) {
 				trackPointItem.trackId = getId();
-				trackPointItem.save();
+				trackPointItem.insert(db);
 			}
 		}
+		return this;
 	}
 
-	public List<LatLong> getTrackLatLongs() {
+	public List<LatLong> getTrackLatLongs(SQLiteDatabase db) throws Exception {
 		List<LatLong> list = new ArrayList<>();
-		for (TrackPointItem trackPointItem : getTrackPointItems()) {
+		for (TrackPointItem trackPointItem : getTrackPointItems(db)) {
 			list.add(new LatLongTagged(trackPointItem));
 		}
 		return list;

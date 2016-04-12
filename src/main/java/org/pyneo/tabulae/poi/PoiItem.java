@@ -1,8 +1,8 @@
 package org.pyneo.tabulae.poi;
 
-import co.uk.rushorm.core.RushObject;
+import org.pyneo.thinstore.StoreObject;
 
-public class PoiItem extends RushObject implements Constants {
+public class PoiItem extends StoreObject implements Constants {
 	// @Unique @NotNull
 	String name;
 	String description;

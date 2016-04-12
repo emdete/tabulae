@@ -1,7 +1,10 @@
 package org.pyneo.tabulae;
 
+import org.pyneo.thinstore.StoreObject;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +39,9 @@ import org.pyneo.tabulae.map.Map;
 import org.pyneo.tabulae.poi.Poi;
 import org.pyneo.tabulae.screencapture.ScreenCaptureFragment;
 import org.pyneo.tabulae.track.Track;
+import org.pyneo.tabulae.poi.PoiItem;
+import org.pyneo.tabulae.track.TrackItem;
+import org.pyneo.tabulae.track.TrackPointItem;
 
 public class Tabulae extends Activity implements Constants {
 	protected Base[] fragments;
@@ -46,6 +52,7 @@ public class Tabulae extends Activity implements Constants {
 			return new Thread(r, "inform");
 		}
 	});
+	SQLiteOpenHelper dbHelper;
 
 	static private String deKay(long l) {
 		double d = l;
@@ -70,6 +77,16 @@ public class Tabulae extends Activity implements Constants {
 				finish();
 			}
 		});
+        dbHelper = new SQLiteOpenHelper(getApplicationContext(), "tabulae.db", null, 1){
+			@Override public void onCreate(SQLiteDatabase db) {
+				//Log.d(TAG, "create=" +
+				StoreObject.create(db, PoiItem.class);
+				StoreObject.create(db, TrackItem.class);
+				StoreObject.create(db, TrackPointItem.class);
+			}
+			@Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			}
+		};
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(R.layout.tabulae);
 		fragments = new Base[]{
@@ -159,7 +176,7 @@ public class Tabulae extends Activity implements Constants {
 				}
 				double latitude = extra.getDouble(LATITUDE, 0);
 				double longitude = extra.getDouble(LONGITUDE, 0);
-				String id = Poi.storePointPosition(this, jid, name + ", on " + new Date(), latitude, longitude, true);
+				long id = Poi.storePointPosition(this, jid, name + ", on " + new Date(), latitude, longitude, true);
 				Log.w(TAG, "onCreate.ACTION_CONVERSATIONS_SHOW id=" + id);
 			} else
 				Log.w(TAG, "onCreate conversations intent recceived with no latitude/longitude");
@@ -316,6 +333,10 @@ public class Tabulae extends Activity implements Constants {
 		//noinspection ResultOfMethodCallIgnored
 		ret.mkdirs();
 		return ret;
+	}
+
+	public SQLiteDatabase getDatabase() {
+		return dbHelper.getWritableDatabase();
 	}
 
 	public MapView getMapView() {

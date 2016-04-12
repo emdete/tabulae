@@ -12,6 +12,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import android.database.sqlite.SQLiteDatabase;
 
 /* parse xml like:
 * <gpx ...><name>...</name><desc /><trk><trkseg><trkpt lon="..." lat="..."><ele>..</ele><time>2015-08-11T00:00:00Z</time>...
@@ -48,10 +49,11 @@ class TrackGpxParser implements Constants {
 		}
 	}
 
+	SQLiteDatabase db;
 	SimpleDateFormat successSdf = simpleDateFormats[0];
 	TrackItem trackItem;
 
-	public TrackGpxParser(File file) throws Exception {
+	public TrackGpxParser(File file, SQLiteDatabase db) throws Exception {
 		SAXParser parser = factory.newSAXParser();
 		parser.parse(file, new Handler());
 	}
@@ -125,7 +127,12 @@ class TrackGpxParser implements Constants {
 				} else if (localName.equalsIgnoreCase("sym")) {
 					trackPointItem.setAttribute(Integer.parseInt(cdata.toString().trim()));
 				} else if (localName.equalsIgnoreCase(TRKPT)) {
-					trackItem.add(trackPointItem);
+					try {
+						trackItem.add(db, trackPointItem);
+					}
+					catch (Exception e) {
+						throw new SAXException(e.toString(), e);
+					}
 					trackPointItem = null;
 				}
 			}
