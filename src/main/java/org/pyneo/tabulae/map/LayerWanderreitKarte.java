@@ -9,10 +9,10 @@ import org.pyneo.tabulae.Tabulae;
 /**
  * Map Quest based layer
  */
-class LayerMapQuest extends LayerBase {
-	static final String ID = "mapquest";
+class LayerWanderreitKarte extends LayerBase {
+	static final String ID = "wanderreitkarte";
 
-	LayerMapQuest(Tabulae activity, MapView mapView) {
+	LayerWanderreitKarte(Tabulae activity, MapView mapView) {
 		super(activity, mapView, true);
 		tileLayer = new TileDownloadLayer(tileCache, mapView.getModel().mapViewPosition, new Source(), AndroidGraphicFactory.INSTANCE);
 		mapView.getLayerManager().getLayers().add(0, tileLayer);
@@ -24,14 +24,14 @@ class LayerMapQuest extends LayerBase {
 	}
 
 	byte getZoomLevelMax() {
-		return (byte) 18;
+		return (byte) 19;
 	}
 
 	static class Source extends OnlineTileSource {
 		Source() {
-			super(new String[]{"otile1.mqcdn.com", "otile2.mqcdn.com", "otile3.mqcdn.com", "otile4.mqcdn.com"}, 80);
+			super(new String[]{"www.wanderreitkarte.de"}, 80);
 			setAlpha(false);
-			setBaseUrl("/tiles/1.0.0/map/");
+			setBaseUrl("/topo/");
 			setExtension("png");
 			setName(ID);
 			setParallelRequestsLimit(8);
