@@ -58,6 +58,9 @@ public class Map extends Base implements Constants {
 				case 5:
 					layer = new LayerOutdoorActive((Tabulae) getActivity(), mapView);
 					break;
+				case 6:
+					layer = new LayerWanderreitKarte((Tabulae) getActivity(), mapView);
+					break;
 			}
 			Bundle extra = new Bundle();
 			if (layer != null) {
@@ -244,6 +247,9 @@ public class Map extends Base implements Constants {
 				break;
 			case R.id.event_map_outdoor_active:
 				activateLayer(5);
+				break;
+			case R.id.event_map_wanderreitkarte:
+				activateLayer(6);
 				break;
 		}
 	}
