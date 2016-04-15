@@ -1,5 +1,6 @@
 package org.pyneo.tabulae;
 
+import org.pyneo.tabulae.traffic.Traffic;
 import org.pyneo.thinstore.StoreObject;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -345,6 +346,25 @@ public class Tabulae extends Activity implements Constants {
 
 	public void inform(final int event, final Bundle extra) {
 		switch (event) {
+		case R.id.event_traffic:
+			try {
+				final File cache_dir = new File(getBaseDir(), "cache");
+				cache_dir.mkdirs();
+				mThreadPool.execute(new Runnable() {
+					public void run() {
+						try {
+							Traffic.go(cache_dir);
+						}
+						catch (Exception e) {
+							Log.d(TAG, "traffic load e=" + e);
+						}
+					}
+				});
+			}
+			catch (Exception e) {
+				Log.d(TAG, "traffic load e=" + e);
+			}
+		break;
 		case R.id.event_help:
 			Intent intent = new Intent(this, DocumentAvtivity.class);
 			String lang = getResources().getConfiguration().locale.getLanguage();

@@ -36,4 +36,5 @@
 	<string name="app_label" translatable="false">Tabulae</string>
 	<string name="remote_service_started">Location listener</string>
 	<string name="help">Documentation</string>
+	<string name="traffic">Traffic Report</string>
 </resources>
