@@ -2,6 +2,7 @@ package org.pyneo.tabulae.map;
 
 import android.util.Log;
 import java.io.File;
+import java.net.HttpURLConnection;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.view.MapView;
@@ -21,6 +22,10 @@ abstract class LayerBase implements Constants {
 	protected TileLayer tileLayer;
 	protected TileCache tileCache;
 	protected InMemoryTileCache memCache;
+	static {
+		HttpURLConnection.setFollowRedirects(false);
+		// TODO: use con.setInstanceFollowRedirects(false);
+	}
 
 	LayerBase(Tabulae activity, MapView mapView, boolean persistant) {
 		this.mapView = mapView;
