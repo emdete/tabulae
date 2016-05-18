@@ -8,6 +8,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.GpsSatellite;
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,15 +20,17 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.location.GpsStatus.Listener;
 import android.util.Log;
 import java.util.ArrayList;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
 
-public class LocusService extends Service implements LocationListener, Constants {
+public class LocusService extends Service implements LocationListener, GpsStatus.Listener, Constants {
 	final Messenger mMessenger = new Messenger(new IncomingHandler());
 	NotificationManager mNotificationManager;
 	ArrayList<Messenger> mClients = new ArrayList<>();
+	GpsStatus gpsStatus;
 	LocationManager locationManager;
 	boolean myLocationEnabled;
 	Context context;
@@ -99,6 +103,7 @@ public class LocusService extends Service implements LocationListener, Constants
 			if (lastLocation != null) {
 				onLocationChanged(lastLocation);
 			}
+			locationManager.addGpsStatusListener(this);
 		}
 		return result;
 	}
@@ -110,13 +115,54 @@ public class LocusService extends Service implements LocationListener, Constants
 		if (location != null) {
 			for (int i = mClients.size() - 1; i >= 0; i--) {
 				try {
-					mClients.get(i).send(Message.obtain(null, R.id.message_locus_set_value, R.id.event_notify_location, 0, toBundle(location)));
+					Bundle b = toBundle(location);
+					if (LocationManager.GPS_PROVIDER.equals(location.getProvider()) && gpsStatus != null) {
+						toBundle(b, gpsStatus);
+					}
+					mClients.get(i).send(Message.obtain(null, R.id.message_locus_set_value, R.id.event_notify_location, 0, b));
 				}
 				catch (RemoteException e) {
 					mClients.remove(i);
 				}
 			}
 		}
+	}
+
+	private Bundle toBundle(Bundle ret, GpsStatus gpsStatus) {
+		int count_seen = 0;
+		int count_fix = 0;
+		for (GpsSatellite s: gpsStatus.getSatellites()) {
+			count_seen++;
+			if (s.usedInFix()) {
+				count_fix++;
+			}
+		}
+		ret.putInt("satellites", count_fix);
+		ret.putInt("satellites_seen", count_seen);
+		return ret;
+	}
+
+	// GpsStatus.Listener:
+	@Override public void onGpsStatusChanged(int event) {
+		gpsStatus = locationManager.getGpsStatus(gpsStatus);
+		switch (event) {
+		case GpsStatus.GPS_EVENT_STARTED:
+		case GpsStatus.GPS_EVENT_FIRST_FIX:
+		case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+		case GpsStatus.GPS_EVENT_STOPPED:
+		}
+		int count_seen = 0;
+		int count_fix = 0;
+		for (GpsSatellite s: gpsStatus.getSatellites()) {
+			count_seen++;
+			if (s.usedInFix())
+				count_fix++;
+			// Log.d(TAG, "getSnr=" + s.getSnr());
+		}
+		// Log.d(TAG, "LocusService.onGpsStatusChanged event=" + event
+			// + ", satellites=" + count_fix + "/" + count_seen + "/" + gpsStatus.getMaxSatellites()
+			// + ", timeToFirstFix=" + gpsStatus.getTimeToFirstFix()
+			// );
 	}
 
 	@Override
