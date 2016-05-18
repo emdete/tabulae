@@ -23,8 +23,9 @@ import java.net.URL;
 import java.util.Map;
 import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
+import static org.pyneo.tabulae.traffic.Constants.*;
 
-public class Traffic implements Constants {
+public class Traffic {
 	private static int TIMEOUT_CONNECT = 5000;
 	private static int TIMEOUT_READ = 10000;
 	private static int CACHE_TIME = 999999;

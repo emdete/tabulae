@@ -11,9 +11,10 @@ import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import java.util.Iterator;
 import java.util.List;
+import static org.pyneo.tabulae.fawlty.Constants.*;
 
 @TargetApi(Build.VERSION_CODES.BASE)
-public class CellIdPre17API implements Constants, Iterator<TheDictionary>, Iterable<TheDictionary> {
+public class CellIdPre17API implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 	public static boolean fallback_pre17api = false;
 	private int mcc = NeighboringCellInfo.UNKNOWN_CID; // NeighboringCellInfo.UNKNOWN_CID == -1
 	private int mnc = NeighboringCellInfo.UNKNOWN_CID;

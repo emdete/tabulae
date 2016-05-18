@@ -10,8 +10,9 @@ import java.util.Random;
 import javax.net.ssl.HttpsURLConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
+import static org.pyneo.tabulae.fawlty.Constants.*;
 
-public class CellAPI2 implements Constants {
+public class CellAPI2 {
 	private static final String user = "pyneo";
 	private static final String url = "https://cellsit.vfnet.de/cellapi/v2/_/" + user;
 	private static final Random random = new Random();

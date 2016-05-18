@@ -42,8 +42,9 @@ import org.pyneo.tabulae.map.Map;
 import org.pyneo.tabulae.poi.Poi;
 import org.pyneo.tabulae.screencapture.ScreenCaptureFragment;
 import org.pyneo.tabulae.track.Track;
+import static org.pyneo.tabulae.gui.Constants.*;
 
-public class DocumentAvtivity extends Activity implements Constants {
+public class DocumentAvtivity extends Activity {
 	Context context;
 	HtmlViewer browser;
 	String url;

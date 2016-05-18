@@ -11,6 +11,7 @@ import org.mapsforge.map.datastore.MultiMapDataStore;
 import org.mapsforge.map.rendertheme.ExternalRenderTheme;
 import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.map.Constants.*;
 
 /**
  * Default vector bases layer

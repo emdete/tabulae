@@ -13,13 +13,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import android.database.sqlite.SQLiteDatabase;
+import static org.pyneo.tabulae.track.Constants.*;
 
-/* parse xml like:
-* <gpx ...><name>...</name><desc /><trk><trkseg><trkpt lon="..." lat="..."><ele>..</ele><time>2015-08-11T00:00:00Z</time>...
-* see https://de.wikipedia.org/wiki/GPS_Exchange_Format
-* see http://www.topografix.com/GPX/1/1/
-*/
-class TrackGpxParser implements Constants {
+class TrackGpxParser {
+	/* parse xml like:
+	* <gpx ...><name>...</name><desc /><trk><trkseg><trkpt lon="..." lat="..."><ele>..</ele><time>2015-08-11T00:00:00Z</time>...
+	* see https://de.wikipedia.org/wiki/GPS_Exchange_Format
+	* see http://www.topografix.com/GPX/1/1/
+	*/
 	static final SimpleDateFormat[] simpleDateFormats = new SimpleDateFormat[]{
 			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US),
 			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US),

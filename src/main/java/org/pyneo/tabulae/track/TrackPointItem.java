@@ -4,8 +4,9 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.Date;
 import org.pyneo.thinstore.StoreObject;
 import org.mapsforge.core.model.LatLong;
+import static org.pyneo.tabulae.track.Constants.*;
 
-public class TrackPointItem extends StoreObject implements Constants {
+public class TrackPointItem extends StoreObject {
 	// @Unique @NotNull
 	int sequence;
 	Date timestamp;

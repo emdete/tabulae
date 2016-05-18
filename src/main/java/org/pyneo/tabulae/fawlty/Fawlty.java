@@ -16,8 +16,9 @@ import org.mapsforge.map.view.MapView;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.fawlty.Constants.*;
 
-public class Fawlty extends Base implements Constants {
+public class Fawlty extends Base {
 	private static final String STATE_ENABLED = "fawlty_enabled";
 	protected boolean enabled;
 	protected WirelessEnvListener wirelessEnvListener;

@@ -13,11 +13,12 @@ import org.mapsforge.map.layer.cache.TileCache;
 import org.mapsforge.map.layer.cache.TwoLevelTileCache;
 import org.mapsforge.map.layer.download.TileDownloadLayer;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.map.Constants.*;
 
 /**
  * Base of the layers, adds features like proper hide, force zoom limits, ...
  */
-abstract class LayerBase implements Constants {
+abstract class LayerBase {
 	protected MapView mapView;
 	protected TileLayer tileLayer;
 	protected TileCache tileCache;

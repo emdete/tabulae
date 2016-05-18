@@ -19,8 +19,9 @@ import java.util.TimeZone;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.screencapture.Constants.*;
 
-public class ScreenCaptureFragment extends Base implements Constants {
+public class ScreenCaptureFragment extends Base {
 	private static final String STATE_ENABLED = "screencapture_enabled";
 	private static final String STATE_RESULT_CODE = "screencapture_result_code";
 	private static final String STATE_RESULT_DATA = "screencapture_result_data";

@@ -10,8 +10,9 @@ import java.util.Set;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
+import static org.pyneo.tabulae.fawlty.Constants.*;
 
-public class TheDictionary implements Constants, JSONStreamAware, JSONAware, Map<String, Object> {
+public class TheDictionary implements JSONStreamAware, JSONAware, Map<String, Object> {
 	private Map<String, Object> map = new JSONObject();
 
 	public TheDictionary() {

@@ -13,8 +13,9 @@ import android.util.Log;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import static org.pyneo.tabulae.fawlty.Constants.*;
 
-public class WirelessEnvListener extends PhoneStateListener implements Constants, Runnable {
+public class WirelessEnvListener extends PhoneStateListener implements Runnable {
 	ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
 	long intervalSecs = 5000;
 	TelephonyManager telephonyManager;

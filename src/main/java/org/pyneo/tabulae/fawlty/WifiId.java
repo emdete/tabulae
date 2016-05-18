@@ -8,8 +8,9 @@ import android.os.Build;
 import android.util.Log;
 import java.util.Iterator;
 import java.util.List;
+import static org.pyneo.tabulae.fawlty.Constants.*;
 
-public class WifiId implements Constants, Iterator<TheDictionary>, Iterable<TheDictionary> {
+public class WifiId implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 	private List<ScanResult> scanResults;
 	private int i;
 

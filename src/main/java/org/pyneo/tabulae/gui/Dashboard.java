@@ -10,8 +10,9 @@ import android.widget.TextView;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.gui.Constants.*;
 
-public class Dashboard extends Base implements Constants {
+public class Dashboard extends Base {
 	protected DashboardItem[] dashboardItems;
 	protected boolean enabled = true;
 

@@ -20,8 +20,9 @@ import org.mapsforge.map.model.common.PreferencesFacade;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.map.Constants.*;
 
-public class Map extends Base implements Constants {
+public class Map extends Base {
 	// get one from http://download.mapsforge.org/maps/ and adapt path to your needs:
 	protected MapView mapView;
 	protected int currentMap = -1;

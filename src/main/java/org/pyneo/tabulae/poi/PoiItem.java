@@ -1,8 +1,9 @@
 package org.pyneo.tabulae.poi;
 
 import org.pyneo.thinstore.StoreObject;
+import static org.pyneo.tabulae.poi.Constants.*;
 
-public class PoiItem extends StoreObject implements Constants {
+public class PoiItem extends StoreObject {
 	// @Unique @NotNull
 	String name;
 	String description;

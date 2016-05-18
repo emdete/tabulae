@@ -13,8 +13,9 @@ import org.mapsforge.core.model.Point;
 import org.mapsforge.core.util.MercatorProjection;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.layer.overlay.Polyline;
+import static org.pyneo.tabulae.track.Constants.*;
 
-class AlternatingLine extends Polyline implements Constants {
+class AlternatingLine extends Polyline {
 	Paint[] paints = new Paint[1];
 
 	public AlternatingLine(GraphicFactory graphicFactory) {

@@ -19,8 +19,9 @@ import org.mapsforge.map.view.MapView;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.poi.Constants.*;
 
-public class Poi extends Base implements Constants {
+public class Poi extends Base {
 	protected List<PointAd> pointsAd = new ArrayList<>();
 
 	@Override

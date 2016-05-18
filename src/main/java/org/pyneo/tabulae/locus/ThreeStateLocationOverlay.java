@@ -35,11 +35,12 @@ import org.mapsforge.map.layer.Layer;
 import org.mapsforge.map.layer.overlay.Circle;
 import org.mapsforge.map.layer.overlay.Marker;
 import org.pyneo.tabulae.R;
+import static org.pyneo.tabulae.locus.Constants.*;
 
 /**
  * A thread-safe {@link Layer} implementation to display the current location.
  */
-class ThreeStateLocationOverlay extends Layer implements Constants {
+class ThreeStateLocationOverlay extends Layer {
 	protected static final GraphicFactory GRAPHIC_FACTORY = AndroidGraphicFactory.INSTANCE;
 	protected final Circle circle;
 	protected final Marker map_needle_pinned;

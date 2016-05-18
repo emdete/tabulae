@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<item name="activity_result_id_screencapture" type="id"/>
+	<!-- ids for results of activities -->
+	<item name="activity_result_id_screencapture" type="id" />
+	<!-- event to do something -->
 	<item name="event_do_attribute_blue" type="id" />
 	<item name="event_do_attribute_green" type="id" />
 	<item name="event_do_attribute_red" type="id" />
@@ -11,17 +13,17 @@
 	<item name="event_do_dashboard" type="id" />
 	<item name="event_do_fawlty" type="id" />
 	<item name="event_do_help" type="id" />
-	<item name="event_do_map_bing_satellite" type="id"/>
-	<item name="event_do_map_google_satellite" type="id"/>
+	<item name="event_do_map_bing_satellite" type="id" />
+	<item name="event_do_map_google_satellite" type="id" />
 	<item name="event_do_map_list" type="id" />
-	<item name="event_do_map_mapquest" type="id"/>
-	<item name="event_do_map_openandromaps" type="id"/>
-	<item name="event_do_map_outdoor_active" type="id"/>
-	<item name="event_do_map_vector" type="id"/>
-	<item name="event_do_map_wanderreitkarte" type="id"/>
+	<item name="event_do_map_mapquest" type="id" />
+	<item name="event_do_map_openandromaps" type="id" />
+	<item name="event_do_map_outdoor_active" type="id" />
+	<item name="event_do_map_vector" type="id" />
+	<item name="event_do_map_wanderreitkarte" type="id" />
 	<item name="event_do_overlay" type="id" />
 	<item name="event_do_poi_list" type="id" />
-	<item name="event_do_poi_new" type="id"/>
+	<item name="event_do_poi_new" type="id" />
 	<item name="event_do_pre_load" type="id" />
 	<item name="event_do_scale_end" type="id" />
 	<item name="event_do_scale" type="id" />
@@ -32,22 +34,26 @@
 	<item name="event_do_view_location" type="id" />
 	<item name="event_do_zoom_in" type="id" />
 	<item name="event_do_zoom_out" type="id" />
+	<!-- event to notify about a state change -->
 	<item name="event_notify_autofollow" type="id" />
-	<item name="event_notify_cell" type="id"/>
+	<item name="event_notify_cell" type="id" />
 	<item name="event_notify_location" type="id" />
-	<item name="event_notify_map" type="id"/>
+	<item name="event_notify_map" type="id" />
 	<item name="event_notify_scroll" type="id" />
 	<item name="event_notify_time" type="id" />
-	<item name="event_notify_zoom" type="id"/>
+	<item name="event_notify_zoom" type="id" />
+	<!-- event to request a state (should trigger a notify) -->
 	<item name="event_request_autofollow" type="id" />
-	<item name="event_request_cell" type="id"/>
+	<item name="event_request_cell" type="id" />
 	<item name="event_request_location" type="id" />
-	<item name="event_request_map" type="id"/>
+	<item name="event_request_map" type="id" />
 	<item name="event_request_scroll" type="id" />
 	<item name="event_request_time" type="id" />
-	<item name="event_request_zoom" type="id"/>
+	<item name="event_request_zoom" type="id" />
+	<!-- ids for messages -->
 	<item name="message_locus_register_client" type="id" />
 	<item name="message_locus_set_value" type="id" />
 	<item name="message_locus_unregister_client" type="id" />
+	<!-- ids for service notification -->
 	<item name="service_notification_id_location" type="id" />
 </resources>

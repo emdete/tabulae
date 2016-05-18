@@ -25,8 +25,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.locus.Constants.*;
 
-public class LocusService extends Service implements LocationListener, GpsStatus.Listener, Constants {
+public class LocusService extends Service implements LocationListener, GpsStatus.Listener {
 	final Messenger mMessenger = new Messenger(new IncomingHandler());
 	NotificationManager mNotificationManager;
 	ArrayList<Messenger> mClients = new ArrayList<>();
@@ -146,10 +147,11 @@ public class LocusService extends Service implements LocationListener, GpsStatus
 	@Override public void onGpsStatusChanged(int event) {
 		gpsStatus = locationManager.getGpsStatus(gpsStatus);
 		switch (event) {
-		case GpsStatus.GPS_EVENT_STARTED:
-		case GpsStatus.GPS_EVENT_FIRST_FIX:
-		case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-		case GpsStatus.GPS_EVENT_STOPPED:
+			case GpsStatus.GPS_EVENT_STARTED:
+			case GpsStatus.GPS_EVENT_FIRST_FIX:
+			case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+			case GpsStatus.GPS_EVENT_STOPPED:
+			default:
 		}
 		int count_seen = 0;
 		int count_fix = 0;

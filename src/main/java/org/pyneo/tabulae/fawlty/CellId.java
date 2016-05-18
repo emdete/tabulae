@@ -20,9 +20,10 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import java.util.Iterator;
 import java.util.List;
+import static org.pyneo.tabulae.fawlty.Constants.*;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-public class CellId implements Constants, Iterator<TheDictionary>, Iterable<TheDictionary> {
+public class CellId implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 	private List<CellInfo> cellInfoList;
 	private int i = 0;
 

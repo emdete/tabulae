@@ -19,8 +19,9 @@ import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
 import android.database.sqlite.SQLiteDatabase;
+import static org.pyneo.tabulae.track.Constants.*;
 
-public class Track extends Base implements Constants {
+public class Track extends Base {
 	AlternatingLine polyline;
 	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory() {
 		@Override

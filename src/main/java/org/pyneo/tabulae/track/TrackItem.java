@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.mapsforge.core.model.LatLong;
+import static org.pyneo.tabulae.track.Constants.*;
 
-public class TrackItem extends StoreObject implements Constants {
+public class TrackItem extends StoreObject {
 	// @Unique @NotNull
 	String name;
 	String description;

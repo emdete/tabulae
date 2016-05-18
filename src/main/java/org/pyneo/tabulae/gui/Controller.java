@@ -12,8 +12,9 @@ import android.widget.ImageButton;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.gui.Constants.*;
 
-public class Controller extends Base implements Constants {
+public class Controller extends Base {
 	private Animation popOutAnimation;
 	private Animation popInAnimation;
 	private boolean optionsOut;

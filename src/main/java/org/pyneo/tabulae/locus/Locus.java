@@ -16,8 +16,9 @@ import org.mapsforge.map.android.view.MapView;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.locus.Constants.*;
 
-public class Locus extends Base implements Constants {
+public class Locus extends Base {
 	Messenger mService = null;
 	boolean mIsBound;
 	ServiceConnection mConnection = new ServiceConnection() {

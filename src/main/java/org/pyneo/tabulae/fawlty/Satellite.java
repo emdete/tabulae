@@ -10,8 +10,9 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 import java.util.Iterator;
+import static org.pyneo.tabulae.fawlty.Constants.*;
 
-public class Satellite implements Constants, Iterator<TheDictionary>, Iterable<TheDictionary> {
+public class Satellite implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 	private Location location;
 
 	public Satellite(Location location) {

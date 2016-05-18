@@ -42,8 +42,9 @@ import org.pyneo.tabulae.track.Track;
 import org.pyneo.tabulae.poi.PoiItem;
 import org.pyneo.tabulae.track.TrackItem;
 import org.pyneo.tabulae.track.TrackPointItem;
+import static org.pyneo.tabulae.Constants.*;
 
-public class Tabulae extends Activity implements Constants {
+public class Tabulae extends Activity {
 	protected Base[] fragments;
 	protected File baseStorageFile = null;
 	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory() {

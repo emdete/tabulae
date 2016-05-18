@@ -12,8 +12,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import static org.pyneo.tabulae.fawlty.Constants.*;
 
-public class Meta implements Constants, Iterator<TheDictionary>, Iterable<TheDictionary> {
+public class Meta implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 	static final private boolean SEND_P1 = true;
 	static final private boolean SEND_P2 = false;
 	private TelephonyManager telephonyManager;
