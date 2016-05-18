@@ -1,6 +1,6 @@
 package org.pyneo.tabulae;
 
-import org.pyneo.tabulae.traffic.Traffic;
+import android.os.Build;
 import org.pyneo.thinstore.StoreObject;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -22,7 +22,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -60,11 +59,11 @@ public class Tabulae extends Activity implements Constants {
 		final String[] fs = new String[]{"%.2fB", "%.2fKB", "%.2fMB", "%.2fGB",};
 		for (String f : fs) {
 			if (d < 1024.0) {
-				return String.format(f, d);
+				return String.format(Locale.US, f, d);
 			}
 			d /= 1024.0;
 		}
-		return String.format("%.2fTB", d);
+		return String.format(Locale.US, "%.2fTB", d);
 	}
 
 	@Override
@@ -78,14 +77,19 @@ public class Tabulae extends Activity implements Constants {
 				finish();
 			}
 		});
-        dbHelper = new SQLiteOpenHelper(getApplicationContext(), "tabulae.db", null, 1){
+        dbHelper = new SQLiteOpenHelper(getApplicationContext(), "tabulae.db", null, 2){
 			@Override public void onCreate(SQLiteDatabase db) {
+				if (DEBUG) Log.d(TAG, "Tabulae.onCreate.SQLiteOpenHelper.onCreate");
 				//Log.d(TAG, "create=" +
 				StoreObject.create(db, PoiItem.class);
 				StoreObject.create(db, TrackItem.class);
 				StoreObject.create(db, TrackPointItem.class);
 			}
 			@Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+				if (DEBUG) Log.d(TAG, "Tabulae.onCreate.SQLiteOpenHelper.onUpgrade");
+				StoreObject.alter(db, PoiItem.class);
+				StoreObject.alter(db, TrackItem.class);
+				StoreObject.alter(db, TrackPointItem.class);
 			}
 		};
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -109,11 +113,13 @@ public class Tabulae extends Activity implements Constants {
 		Log.d(TAG, "Tabulae.onCreate preferences baseStorage=" + baseStorage);
 		if (baseStorage != null) {
 			baseStorageFile = new File(baseStorage);
-			if (!Environment.getExternalStorageState(baseStorageFile).equals(Environment.MEDIA_MOUNTED)) {
-				Log.e(TAG, "Tabulae.onCreate not mounted: baseStorage=" + baseStorage);
-				Toast.makeText(this, "Storage gone! Please reinsert SD.", Toast.LENGTH_LONG).show();
-				// TODO: ask for different storage
-				finish();
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				if (!Environment.getExternalStorageState(baseStorageFile).equals(Environment.MEDIA_MOUNTED)) {
+					Log.e(TAG, "Tabulae.onCreate not mounted: baseStorage=" + baseStorage);
+					Toast.makeText(this, "Storage gone! Please reinsert SD.", Toast.LENGTH_LONG).show();
+					// TODO: ask for different storage
+					finish();
+				}
 			}
 		}
 		long baseStorageSpace = 0;
@@ -121,7 +127,8 @@ public class Tabulae extends Activity implements Constants {
 			// look for the largest storage to begin with
 			for (File dir : getApplicationContext().getExternalFilesDirs(null)) {
 				Log.d(TAG, "Tabulae.onCreate getExternalFilesDirs baseStorage=" + baseStorage);
-				if (dir != null && Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+				|| dir != null && Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
 					long dirSpace = new StatFs(dir.getPath()).getAvailableBytes();
 					if (dirSpace > baseStorageSpace) {
 						baseStorageFile = dir;
@@ -131,7 +138,7 @@ public class Tabulae extends Activity implements Constants {
 			}
 			Editor editor = preferences.edit();
 			editor.putString("baseStorage", baseStorage);
-			editor.commit();
+			editor.apply();
 		} else {
 			baseStorageSpace = new StatFs(baseStorageFile.getPath()).getAvailableBytes();
 		}
@@ -194,7 +201,7 @@ public class Tabulae extends Activity implements Constants {
 					extra.putString(NAME, "poi");
 					extra.putString(DESCRIPTION, "shared poi");
 					if (DEBUG) Log.d(TAG, "Tabulae.onCreate new poi extra=" + extra);
-					asyncInform(R.id.event_poi_new, extra);
+					asyncInform(R.id.event_do_poi_new, extra);
 				}
 			}
 			catch (Exception e) {
@@ -269,8 +276,8 @@ public class Tabulae extends Activity implements Constants {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.main_option_menu, menu);
 		if (DEBUG) {
-			menu.findItem(R.id.event_screencapture).setVisible(true);
-			menu.findItem(R.id.event_fawlty).setVisible(true);
+			menu.findItem(R.id.event_do_screencapture).setVisible(true);
+			menu.findItem(R.id.event_do_fawlty).setVisible(true);
 		}
 		return true;
 	}
@@ -346,26 +353,7 @@ public class Tabulae extends Activity implements Constants {
 
 	public void inform(final int event, final Bundle extra) {
 		switch (event) {
-		case R.id.event_traffic:
-			try {
-				final File cache_dir = new File(getBaseDir(), "cache");
-				cache_dir.mkdirs();
-				mThreadPool.execute(new Runnable() {
-					public void run() {
-						try {
-							Traffic.go(cache_dir);
-						}
-						catch (Exception e) {
-							Log.d(TAG, "traffic load e=" + e);
-						}
-					}
-				});
-			}
-			catch (Exception e) {
-				Log.d(TAG, "traffic load e=" + e);
-			}
-		break;
-		case R.id.event_help:
+		case R.id.event_do_help:
 			Intent intent = new Intent(this, DocumentAvtivity.class);
 			String lang = getResources().getConfiguration().locale.getLanguage();
 			Bundle extras = new Bundle();

@@ -24,10 +24,10 @@ public class Locus extends Base implements Constants {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			mService = new Messenger(service);
 			try {
-				Message msg = Message.obtain(null, R.id.msg_register_client);
+				Message msg = Message.obtain(null, R.id.message_locus_register_client);
 				msg.replyTo = mMessenger;
 				mService.send(msg);
-				msg = Message.obtain(null, R.id.msg_set_value, this.hashCode(), 0, new Bundle());
+				msg = Message.obtain(null, R.id.message_locus_set_value, this.hashCode(), 0, new Bundle());
 				mService.send(msg);
 			}
 			catch (RemoteException ignore) {
@@ -45,7 +45,7 @@ public class Locus extends Base implements Constants {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-				case R.id.msg_set_value:
+				case R.id.message_locus_set_value:
 					//if (DEBUG) Log.d(TAG, "Locus.handleMessage event=" + msg.arg1 + ", extra=" + msg.obj);
 					((Tabulae) getActivity()).inform(msg.arg1, (Bundle) msg.obj);
 					break;
@@ -116,7 +116,7 @@ public class Locus extends Base implements Constants {
 			mIsBound = false;
 			if (mService != null) {
 				try {
-					Message msg = Message.obtain(null, R.id.msg_unregister_client);
+					Message msg = Message.obtain(null, R.id.message_locus_unregister_client);
 					msg.replyTo = mMessenger;
 					mService.send(msg);
 				}
@@ -130,7 +130,7 @@ public class Locus extends Base implements Constants {
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Locus.inform event=" + event + ", extra=" + extra);
 		switch (event) {
-			case R.id.location: {
+			case R.id.event_notify_location: {
 				//if (DEBUG) Log.d(TAG, "Locus.inform event=" + event + ", extra=" + extra);
 				if (myLocationOverlay != null) {
 					myLocationOverlay.onLocationChanged(toLocation(extra));

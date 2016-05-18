@@ -47,14 +47,14 @@ public class Controller extends Base implements Constants {
 				R.id.event_attribute_white,
 				R.id.event_attribute_yellow,
 				R.id.event_attribute,
-				R.id.event_autofollow,
+				R.id.event_set_autofollow,
 				R.id.event_overlay,
 				R.id.event_zoom_in,
 				R.id.event_zoom_out,
 		}) {
 			view.findViewById(resourceId).setOnClickListener(clickListener);
 		}
-		view.findViewById(R.id.event_autofollow).setVisibility(
+		view.findViewById(R.id.event_set_autofollow).setVisibility(
 			tempAuto ? View.INVISIBLE : View.VISIBLE);
 		return view;
 	}
@@ -94,14 +94,14 @@ public class Controller extends Base implements Constants {
 			case R.id.event_overlay:
 			case R.id.event_zoom_in:
 			case R.id.event_zoom_out:
-			case R.id.event_autofollow:
+			case R.id.event_set_autofollow:
 				break;
-			case R.id.autofollow: {
+			case R.id.event_notify_autofollow: {
 				if (getActivity() == null) {
 					tempAuto = extra.getBoolean("autofollow");
 				}
 				else {
-					getActivity().findViewById(R.id.event_autofollow).setVisibility(
+					getActivity().findViewById(R.id.event_set_autofollow).setVisibility(
 						extra.getBoolean("autofollow") ? View.INVISIBLE : View.VISIBLE);
 				}
 			}

@@ -8,7 +8,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Icon;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -47,7 +46,7 @@ public class LocusService extends Service implements LocationListener, Constants
 				.setSmallIcon(R.drawable.ic_service)
 				// .setLargeIcon(Icon.createWithResource(this, R.drawable.ic_service))
 				.setTicker(text)
-				.setColor(getResources().getColor(R.color.primary))
+				// .setColor(getResources().getColor(R.color.primary)) // KITKAT
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(getText(R.string.app_label))
 				.setContentText(text)
@@ -58,14 +57,14 @@ public class LocusService extends Service implements LocationListener, Constants
 				.setOngoing(true)
 				.setAutoCancel(false)
 			.build();
-		mNotificationManager.notify(R.id.notification_id, notification);
+		mNotificationManager.notify(R.id.service_notification_id_location, notification);
 		myLocationEnabled = enable();
 	}
 
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "LocusService.onDestroy");
-		mNotificationManager.cancel(R.id.notification_id);
+		mNotificationManager.cancel(R.id.service_notification_id_location);
 		disable();
 	}
 
@@ -111,7 +110,7 @@ public class LocusService extends Service implements LocationListener, Constants
 		if (location != null) {
 			for (int i = mClients.size() - 1; i >= 0; i--) {
 				try {
-					mClients.get(i).send(Message.obtain(null, R.id.msg_set_value, R.id.location, 0, toBundle(location)));
+					mClients.get(i).send(Message.obtain(null, R.id.message_locus_set_value, R.id.event_notify_location, 0, toBundle(location)));
 				}
 				catch (RemoteException e) {
 					mClients.remove(i);
@@ -139,14 +138,14 @@ public class LocusService extends Service implements LocationListener, Constants
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-				case R.id.msg_register_client:
+				case R.id.message_locus_register_client:
 					mClients.add(msg.replyTo);
 					onLocationChanged(lastLocation);
 					break;
-				case R.id.msg_unregister_client:
+				case R.id.message_locus_unregister_client:
 					mClients.remove(msg.replyTo);
 					break;
-				case R.id.msg_set_value:
+				case R.id.message_locus_set_value:
 					break;
 				default:
 					super.handleMessage(msg);

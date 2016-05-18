@@ -20,6 +20,7 @@ package org.pyneo.tabulae.locus;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationProvider;
+import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 import org.mapsforge.core.graphics.Canvas;
@@ -57,12 +58,22 @@ class ThreeStateLocationOverlay extends Layer implements Constants {
 	 */
 	public ThreeStateLocationOverlay(Context context) {
 		super();
-		map_needle_pinned = new Marker(null, AndroidGraphicFactory.convertToBitmap(
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			map_needle_pinned = new Marker(null, AndroidGraphicFactory.convertToBitmap(
 				context.getResources().getDrawable(R.drawable.map_needle_pinned, null)), 0, 0);
-		map_needle = new RotatingMarker(null, AndroidGraphicFactory.convertToBitmap(
+			map_needle = new RotatingMarker(null, AndroidGraphicFactory.convertToBitmap(
 				context.getResources().getDrawable(R.drawable.map_needle, null)), 0, 0);
-		map_needle_off = new Marker(null, AndroidGraphicFactory.convertToBitmap(
+			map_needle_off = new Marker(null, AndroidGraphicFactory.convertToBitmap(
 				context.getResources().getDrawable(R.drawable.map_needle_off, null)), 0, 0);
+		}
+		else {
+			map_needle_pinned = new Marker(null, AndroidGraphicFactory.convertToBitmap(
+				context.getResources().getDrawable(R.drawable.map_needle_pinned)), 0, 0);
+			map_needle = new RotatingMarker(null, AndroidGraphicFactory.convertToBitmap(
+				context.getResources().getDrawable(R.drawable.map_needle)), 0, 0);
+			map_needle_off = new Marker(null, AndroidGraphicFactory.convertToBitmap(
+				context.getResources().getDrawable(R.drawable.map_needle_off)), 0, 0);
+		}
 		marker = map_needle_off;
 		Paint circleFill = getPaint(GRAPHIC_FACTORY.createColor(48, 0, 0, 255), 0, Style.FILL);
 		Paint circleStroke = getPaint(GRAPHIC_FACTORY.createColor(160, 0, 0, 255), 2, Style.STROKE);
@@ -135,7 +146,7 @@ class ThreeStateLocationOverlay extends Layer implements Constants {
 					}
 				}
 			}
-			LatLong latLong = new LatLong(location.getLatitude(), location.getLongitude(), true);
+			LatLong latLong = new LatLong(location.getLatitude(), location.getLongitude());
 			marker.setLatLong(latLong);
 			circle.setLatLong(latLong);
 			requestRedraw();

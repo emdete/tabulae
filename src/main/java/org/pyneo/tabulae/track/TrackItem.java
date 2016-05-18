@@ -29,6 +29,7 @@ public class TrackItem extends StoreObject implements Constants {
 	public TrackItem(String name, String description) {
 		this.name = name;
 		this.description = description;
+		this.trackPointItems = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -47,12 +48,14 @@ public class TrackItem extends StoreObject implements Constants {
 		this.description = description;
 	}
 
-	void add(SQLiteDatabase db, TrackPointItem trackPointItem) throws Exception {
+	public void add(SQLiteDatabase db, TrackPointItem trackPointItem) throws Exception {
 		//trackPointItem.track = this;
 		getTrackPointItems(db).add(trackPointItem);
 		if (getId() >= 0) {
 			trackPointItem.trackId = getId();
-			trackPointItem.insert(db);
+			if (db != null) {
+				trackPointItem.insert(db);
+			}
 		}
 	}
 
@@ -68,6 +71,9 @@ public class TrackItem extends StoreObject implements Constants {
 		super.insert(db);
 		if (create && trackPointItems != null) {
 			for (TrackPointItem trackPointItem : getTrackPointItems(db)) {
+				if (trackPointItem.trackId < 0) {
+					throw new Exception("assertion failed trackId=" + trackPointItem.trackId);
+				}
 				trackPointItem.trackId = getId();
 				trackPointItem.insert(db);
 			}

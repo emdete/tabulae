@@ -29,7 +29,7 @@
 		android:contentDescription="Dummy"
 		/>
 	<ImageButton
-		android:id="@+id/event_autofollow"
+		android:id="@+id/event_set_autofollow"
 		style="@style/buttonstyle"
 		android:visibility="visible"
 		android:src="@drawable/ic_autofollow"

@@ -133,7 +133,7 @@ public class Poi extends Base implements Constants {
 		catch (Exception e) {
 			Log.e(TAG, "Poi.storePointPosition e=" + e, e);
 		}
-		return -1l;
+		return -1L;
 	}
 
 	void hideAll() {
@@ -147,7 +147,7 @@ public class Poi extends Base implements Constants {
 		MapView mapView = ((Tabulae) getActivity()).getMapView();
 		Bundle extra = new Bundle();
 		extra.putBoolean("autofollow", false);
-		((Tabulae) getActivity()).inform(R.id.event_autofollow, extra);
+		((Tabulae) getActivity()).inform(R.id.event_set_autofollow, extra);
 		LatLong latLong = mapView.getModel().mapViewPosition.getMapPosition().latLong;
 		BoundingBox bb = new BoundingBox(latLong.latitude, latLong.longitude, latLong.latitude, latLong.longitude);
 		for (PointAd pointAd : pointsAd) {
@@ -169,7 +169,7 @@ public class Poi extends Base implements Constants {
 
 	public void inform(int event, Bundle extra) {
 		switch (event) {
-			case R.id.event_poi_new: {
+			case R.id.event_do_poi_new: {
 				if (DEBUG) Log.d(TAG, "Poi.inform event=event_poi_new, extra=" + extra);
 				storePointPosition((Tabulae) getActivity(),
 					extra.getString("name"),
@@ -180,7 +180,7 @@ public class Poi extends Base implements Constants {
 				center();
 			}
 			break;
-			case R.id.event_poi_list: {
+			case R.id.event_do_poi_list: {
 				if (DEBUG) Log.d(TAG, "Poi.inform event=event_poi_list, extra=" + extra);
 				hideAll();
 			}

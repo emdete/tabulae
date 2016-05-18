@@ -84,7 +84,7 @@ public class Fawlty extends Base implements Constants {
 					//if (DEBUG) Log.d(TAG, "location set");
 					Bundle extra = new Bundle();
 					extra.putString("cell_ident", ident);
-					((Tabulae) getActivity()).inform(R.id.cell_ident, extra);
+					((Tabulae) getActivity()).inform(R.id.event_notify_cell, extra);
 				}
 			}
 		};
@@ -167,7 +167,7 @@ public class Fawlty extends Base implements Constants {
 
 	public void inform(int event, Bundle extra) {
 		switch (event) {
-			case R.id.event_fawlty: {
+			case R.id.event_do_fawlty: {
 				if (enabled) {
 					disable();
 					enabled = false;

@@ -37,7 +37,7 @@ class LayerMapsForge extends LayerBase {
 			}
 		}
 		tileLayer = new TileRendererLayer(tileCache, multiMapDataStore,
-				mapView.getModel().mapViewPosition, false, true, AndroidGraphicFactory.INSTANCE);
+				mapView.getModel().mapViewPosition, false, true, true, AndroidGraphicFactory.INSTANCE);
 		boolean success = false;
 		File themesDir = new File(mapsDir, "themes");
 		File theme = new File(themesDir, "theme.xml");

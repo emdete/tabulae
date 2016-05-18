@@ -222,6 +222,15 @@ public class StoreObject {
 		}
 		return ret;
 	}
+	/**
+	 * alter the table in the database to fit class. warning: total data loss!
+	 * TODO not implemented properly yet: drops&creates for now
+	 */
+	public static String alter(SQLiteDatabase db, Class clazz) {
+		drop(db, clazz);
+		create(db, clazz);
+		return null;
+	}
 
 	/**
 	 * insert this record into the database.

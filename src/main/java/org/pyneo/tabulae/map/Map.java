@@ -66,7 +66,7 @@ public class Map extends Base implements Constants {
 			if (layer != null) {
 				extra.putString("current_map", layer.getId());
 			}
-			((Tabulae) getActivity()).inform(R.id.event_current_map, extra);
+			((Tabulae) getActivity()).inform(R.id.event_notify_map, extra);
 			if (id != -1) {
 				Editor editor = preferences.edit();
 				editor.putInt("currentMap", currentMap); // TODO do not put a resource id into preferences
@@ -88,7 +88,7 @@ public class Map extends Base implements Constants {
 				if (snapToLocationEnabled) {
 					Bundle extra = new Bundle();
 					extra.putBoolean("autofollow", false);
-					((Tabulae) getActivity()).inform(R.id.autofollow, extra);
+					((Tabulae) getActivity()).inform(R.id.event_notify_autofollow, extra);
 				}
 				return super.onTouchEvent(motionEvent);
 			}
@@ -124,7 +124,7 @@ public class Map extends Base implements Constants {
 		}
 		Bundle extra = new Bundle();
 		extra.putBoolean("autofollow", snapToLocationEnabled);
-		((Tabulae) getActivity()).inform(R.id.autofollow, extra);
+		((Tabulae) getActivity()).inform(R.id.event_notify_autofollow, extra);
 		activateLayer(currentMap);
 	}
 
@@ -144,7 +144,7 @@ public class Map extends Base implements Constants {
 	void announceZoom() {
 		Bundle extra = new Bundle();
 		extra.putInt("zoom_level", mapView.getModel().mapViewPosition.getZoomLevel());
-		((Tabulae) getActivity()).inform(R.id.event_zoom, extra);
+		((Tabulae) getActivity()).inform(R.id.event_notify_zoom, extra);
 	}
 
 	void centerIfFollow() {
@@ -157,14 +157,14 @@ public class Map extends Base implements Constants {
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Map.inform event=" + event + ", extra=" + extra);
 		switch (event) {
-			case R.id.event_autofollow: {
+			case R.id.event_set_autofollow: {
 				//if (DEBUG) Log.d(TAG, "Map.inform event=event_autofollow, extra=" + extra);
 				extra = new Bundle();
 				extra.putBoolean("autofollow", !snapToLocationEnabled);
-				((Tabulae) getActivity()).inform(R.id.autofollow, extra);
+				((Tabulae) getActivity()).inform(R.id.event_notify_autofollow, extra);
 			}
 			break;
-			case R.id.autofollow: {
+			case R.id.event_notify_autofollow: {
 				//if (DEBUG) Log.d(TAG, "Map.inform event=autofollow, extra=" + extra);
 				boolean newValue = extra.getBoolean("autofollow");
 				if (newValue != snapToLocationEnabled) {
@@ -176,7 +176,7 @@ public class Map extends Base implements Constants {
 				}
 			}
 			break;
-			case R.id.location: {
+			case R.id.event_notify_location: {
 				//if (DEBUG) Log.d(TAG, "Map.inform event=location, extra=" + extra);
 				lastLocation = toLatLong(extra);
 				//if (DEBUG) Log.d(TAG, "Map.inform lastLocation=" + lastLocation);
@@ -197,7 +197,7 @@ public class Map extends Base implements Constants {
 				announceZoom();
 			}
 			break;
-			case R.id.event_send_location: {
+			case R.id.event_do_send_location: {
 				final MapViewPosition mvp = mapView.getModel().mapViewPosition;
 				final String label = "";
 				final byte zoom = mvp.getZoomLevel();
@@ -215,7 +215,7 @@ public class Map extends Base implements Constants {
 				startActivity(intent);
 			}
 			break;
-			case R.id.event_view_location: {
+			case R.id.event_do_view_location: {
 				final MapViewPosition mvp = mapView.getModel().mapViewPosition;
 				final String label = "";
 				//final byte zoom = mvp.getZoomLevel();
@@ -230,25 +230,25 @@ public class Map extends Base implements Constants {
 				startActivity(intent);
 			}
 			break;
-			case R.id.event_map_vector:
+			case R.id.event_do_map_vector:
 				activateLayer(0);
 				break;
-			case R.id.event_map_openandromaps:
+			case R.id.event_do_map_openandromaps:
 				activateLayer(1);
 				break;
-			case R.id.event_map_bing_satellite:
+			case R.id.event_do_map_bing_satellite:
 				activateLayer(2);
 				break;
-			case R.id.event_map_google_satellite:
+			case R.id.event_do_map_google_satellite:
 				activateLayer(3);
 				break;
-			case R.id.event_map_mapquest:
+			case R.id.event_do_map_mapquest:
 				activateLayer(4);
 				break;
-			case R.id.event_map_outdoor_active:
+			case R.id.event_do_map_outdoor_active:
 				activateLayer(5);
 				break;
-			case R.id.event_map_wanderreitkarte:
+			case R.id.event_do_map_wanderreitkarte:
 				activateLayer(6);
 				break;
 		}

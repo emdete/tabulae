@@ -3,75 +3,75 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	>
 	<item
-		android:id="@+id/event_track_list"
+		android:id="@id/event_do_track_list"
 		android:icon="@drawable/ic_menu_track_list"
 		android:showAsAction="always"
 		android:title="@string/menu_track_list"
 		/>
 	<item
-		android:id="@+id/event_poi_list"
+		android:id="@id/event_do_poi_list"
 		android:icon="@drawable/ic_menu_poi_list"
 		android:showAsAction="ifRoom"
 		android:title="@string/menu_poi_list"
 		/>
 	<item
-		android:id="@+id/event_map_list"
+		android:id="@id/event_do_map_list"
 		android:icon="@drawable/ic_menu_map_list"
 		android:showAsAction="always"
 		android:title="@string/menu_map_list"
 		>
 		<menu>
-			<item android:id="@id/event_map_vector" android:title="@string/map_mapsforge" />
-			<item android:id="@id/event_map_openandromaps" android:title="@string/map_openandromap" />
-			<item android:id="@id/event_map_bing_satellite" android:title="@string/map_bing_satellite" />
-			<item android:id="@id/event_map_google_satellite" android:title="@string/map_google_satellite" />
-			<item android:id="@id/event_map_mapquest" android:title="@string/map_mapquest" />
-			<item android:id="@id/event_map_outdoor_active" android:title="@string/map_outdoor_active" />
-			<item android:id="@id/event_map_wanderreitkarte" android:title="@string/map_wanderreitkarte" />
+			<item android:id="@id/event_do_map_vector" android:title="@string/map_mapsforge" />
+			<item android:id="@id/event_do_map_openandromaps" android:title="@string/map_openandromap" />
+			<item android:id="@id/event_do_map_bing_satellite" android:title="@string/map_bing_satellite" />
+			<item android:id="@id/event_do_map_google_satellite" android:title="@string/map_google_satellite" />
+			<item android:id="@id/event_do_map_mapquest" android:title="@string/map_mapquest" />
+			<item android:id="@id/event_do_map_outdoor_active" android:title="@string/map_outdoor_active" />
+			<item android:id="@id/event_do_map_wanderreitkarte" android:title="@string/map_wanderreitkarte" />
 		</menu>
 	</item>
 	<item
-		android:id="@+id/event_pre_load"
+		android:id="@id/event_do_pre_load"
 		android:icon="@drawable/ic_menu_preload"
 		android:showAsAction="ifRoom"
 		android:title="@string/menu_pre_load"
 		/>
 	<item
-		android:id="@+id/event_traffic"
+		android:id="@id/event_do_traffic"
 		android:title="@string/traffic"
 		android:checkable="true"
 		/>
 	<item
-		android:id="@+id/event_fawlty"
+		android:id="@id/event_do_fawlty"
 		android:title="@string/serving_cell"
 		android:visible="false"
 		android:checkable="true"
 		/>
 	<item
-		android:id="@+id/event_screencapture"
+		android:id="@id/event_do_screencapture"
 		android:icon="@drawable/ic_videocam"
 		android:title="@string/capture_screen"
 		android:visible="false"
 		android:checkable="true"
 		/>
 	<item
-		android:id="@+id/event_dashboard"
+		android:id="@id/event_do_dashboard"
 		android:icon="@drawable/ic_menu_dashboard"
 		android:title="@string/menu_dashboard"
 		android:showAsAction="ifRoom"
 		android:checkable="true"
 		/>
 	<item
-		android:id="@+id/event_view_location"
+		android:id="@id/event_do_view_location"
 		android:title="@string/view_location"
 		/>
 	<item
-		android:id="@+id/event_send_location"
+		android:id="@id/event_do_send_location"
 		android:icon="@drawable/ic_share"
 		android:title="@string/send_location"
 		/>
 	<item
-		android:id="@+id/event_help"
+		android:id="@id/event_do_help"
 		android:title="@string/help"
 		/>
 </menu>

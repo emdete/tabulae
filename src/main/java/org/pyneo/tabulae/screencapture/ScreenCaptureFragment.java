@@ -2,6 +2,7 @@ package org.pyneo.tabulae.screencapture;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
@@ -56,7 +57,12 @@ public class ScreenCaptureFragment extends Base implements Constants {
 		mScreenDensity = mDisplayMetrics.densityDpi;
 		mScreenWidth = mDisplayMetrics.widthPixels;
 		mScreenHeight = mDisplayMetrics.heightPixels;
-		mMediaProjectionManager = (MediaProjectionManager) activity.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			mMediaProjectionManager = (MediaProjectionManager) activity.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+		}
+		else {
+			; // TODO
+		}
 		mMediaRecorder = new MediaRecorder();
 		if (enabled && mVirtualDisplay == null) {
 			go();
@@ -80,7 +86,7 @@ public class ScreenCaptureFragment extends Base implements Constants {
 		if (DEBUG)
 			Log.d(TAG, "ScreenCaptureFragment.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode + ", resultData=" + resultData);
 		switch (requestCode) {
-			case R.id.allow_screen_capture: {
+			case R.id.activity_result_id_screencapture: {
 				switch (resultCode) {
 					case Activity.RESULT_OK: {
 						enabled = true;
@@ -180,7 +186,7 @@ public class ScreenCaptureFragment extends Base implements Constants {
 			stopRecording();
 		}
 		if (mMediaProjection == null) {
-			getActivity().startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), R.id.allow_screen_capture);
+			getActivity().startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), R.id.activity_result_id_screencapture);
 			enabled = true;
 			if (DEBUG)
 				Log.d(TAG, "ScreenCaptureFragment.startRecording: ask for permission enabled=" + enabled);
@@ -230,7 +236,7 @@ public class ScreenCaptureFragment extends Base implements Constants {
 
 	public void inform(int event, Bundle extra) {
 		switch (event) {
-			case R.id.event_screencapture: {
+			case R.id.event_do_screencapture: {
 				if (enabled) {
 					stopRecording();
 					Toast.makeText(getActivity(), "Recording stopped", Toast.LENGTH_SHORT).show();
