@@ -5,6 +5,7 @@ import org.mapsforge.map.android.view.MapView;
 import org.mapsforge.map.layer.download.TileDownloadLayer;
 import org.mapsforge.map.layer.download.tilesource.OnlineTileSource;
 import org.pyneo.tabulae.Tabulae;
+import static org.pyneo.tabulae.map.Constants.*;
 
 /**
  * Map Quest based layer
@@ -30,6 +31,7 @@ class LayerWanderreitKarte extends LayerBase {
 	static class Source extends OnlineTileSource {
 		Source() {
 			super(new String[]{"www.wanderreitkarte.de"}, 80);
+			userAgent = USER_AGENT;
 			setAlpha(false);
 			setBaseUrl("/topo/");
 			setExtension("png");

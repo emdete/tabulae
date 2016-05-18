@@ -5,6 +5,7 @@ import java.util.Locale;
 
 public interface Constants {
 	String TAG = "org.pyneo.tabulae";
+	String USER_AGENT = "Tabulae/2.0 (Android)";
 	boolean DEBUG = BuildConfig.DEBUG;
 	byte MIN_ZOOM = (byte) 4;
 	byte MAX_ZOOM = (byte) 21;
