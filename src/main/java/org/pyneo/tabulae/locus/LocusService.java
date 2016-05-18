@@ -249,7 +249,6 @@ public class LocusService extends Service implements LocationListener, GpsStatus
 			}
 			Bundle extras = location.getExtras();
 			if (extras != null) {
-				Log.d(TAG, "toBundle extra=" + extras);
 				ret.putInt("satellites", extras.getInt("satellites", 0));
 			}
 		}
