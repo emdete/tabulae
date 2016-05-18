@@ -32,6 +32,7 @@ class LayerWanderreitKarte extends LayerBase {
 		Source() {
 			super(new String[]{"www.wanderreitkarte.de"}, 80);
 			userAgent = USER_AGENT;
+			followRedirects = false;
 			setAlpha(false);
 			setBaseUrl("/topo/");
 			setExtension("png");
