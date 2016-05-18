@@ -10,7 +10,6 @@
 		android:id="@+id/dashboard_list_scroller"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
-
 		>
 		<LinearLayout
 			android:id="@+id/dashboard_list"
