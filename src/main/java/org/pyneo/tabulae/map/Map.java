@@ -79,6 +79,21 @@ public class Map extends Base implements Constants {
 		}
 	}
 
+	void informSnapToLocation(boolean newValue) {
+		if (newValue != snapToLocationEnabled) {
+			snapToLocationEnabled = newValue;
+			Bundle extra = new Bundle();
+			extra.putBoolean("autofollow", snapToLocationEnabled);
+			((Tabulae) getActivity()).inform(R.id.event_notify_autofollow, extra);
+			Editor editor = preferences.edit();
+			editor.putBoolean("autoFollow", snapToLocationEnabled);
+			editor.commit();
+			if (snapToLocationEnabled) {
+				centerIfFollow();
+			}
+		}
+	}
+
 	@Override public void onCreate(Bundle bundle) {
 		if (DEBUG) Log.d(TAG, "Map.onCreate bundle=" + bundle);
 		super.onCreate(bundle);
@@ -86,9 +101,7 @@ public class Map extends Base implements Constants {
 		mapView = new MapView(getActivity()) {
 			@Override public boolean onTouchEvent(MotionEvent motionEvent) {
 				if (snapToLocationEnabled) {
-					Bundle extra = new Bundle();
-					extra.putBoolean("autofollow", false);
-					((Tabulae) getActivity()).inform(R.id.event_notify_autofollow, extra);
+					informSnapToLocation(false);
 				}
 				return super.onTouchEvent(motionEvent);
 			}
@@ -118,13 +131,10 @@ public class Map extends Base implements Constants {
 		preferencesFacade = new AndroidPreferences(preferences);
 		mapView.getModel().init(preferencesFacade);
 		announceZoom();
-		snapToLocationEnabled = preferences.getBoolean("autoFollow", false);
+		informSnapToLocation(preferences.getBoolean("autoFollow", false));
 		if (snapToLocationEnabled) { // if snapToLocationEnabled was on map-center is the last location
 			lastLocation = mapView.getModel().mapViewPosition.getCenter();
 		}
-		Bundle extra = new Bundle();
-		extra.putBoolean("autofollow", snapToLocationEnabled);
-		((Tabulae) getActivity()).inform(R.id.event_notify_autofollow, extra);
 		activateLayer(currentMap);
 	}
 
@@ -157,23 +167,15 @@ public class Map extends Base implements Constants {
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Map.inform event=" + event + ", extra=" + extra);
 		switch (event) {
-			case R.id.event_set_autofollow: {
+			case R.id.event_do_autofollow: {
 				//if (DEBUG) Log.d(TAG, "Map.inform event=event_autofollow, extra=" + extra);
-				extra = new Bundle();
-				extra.putBoolean("autofollow", !snapToLocationEnabled);
-				((Tabulae) getActivity()).inform(R.id.event_notify_autofollow, extra);
+				informSnapToLocation(!snapToLocationEnabled);
 			}
 			break;
-			case R.id.event_notify_autofollow: {
-				//if (DEBUG) Log.d(TAG, "Map.inform event=autofollow, extra=" + extra);
-				boolean newValue = extra.getBoolean("autofollow");
-				if (newValue != snapToLocationEnabled) {
-					snapToLocationEnabled = newValue;
-					Editor editor = preferences.edit();
-					editor.putBoolean("autoFollow", snapToLocationEnabled);
-					editor.commit();
-					centerIfFollow();
-				}
+			case R.id.event_request_autofollow: {
+				Bundle b = new Bundle();
+				b.putBoolean("autofollow", snapToLocationEnabled);
+				((Tabulae) getActivity()).inform(R.id.event_notify_autofollow, b);
 			}
 			break;
 			case R.id.event_notify_location: {
@@ -183,13 +185,13 @@ public class Map extends Base implements Constants {
 				centerIfFollow();
 			}
 			break;
-			case R.id.event_zoom_in: {
+			case R.id.event_do_zoom_in: {
 				MapViewPosition mvp = mapView.getModel().mapViewPosition;
 				mvp.setZoomLevel((byte) (mvp.getZoomLevel() + 1));
 				announceZoom();
 			}
 			break;
-			case R.id.event_zoom_out: {
+			case R.id.event_do_zoom_out: {
 				MapViewPosition mvp = mapView.getModel().mapViewPosition;
 				if (mvp.getZoomLevel() > 0) {
 					mvp.setZoomLevel((byte) (mvp.getZoomLevel() - 1));

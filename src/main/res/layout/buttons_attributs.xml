@@ -3,27 +3,27 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	>
 	<ImageButton
-		android:id="@+id/event_attribute_red"
+		android:id="@id/event_do_attribute_red"
 		android:src="@drawable/attribute_red"
 		style="@style/buttonstyle"
 		/>
 	<ImageButton
-		android:id="@+id/event_attribute_yellow"
+		android:id="@id/event_do_attribute_yellow"
 		android:src="@drawable/attribute_yellow"
 		style="@style/buttonstyle"
 		/>
 	<ImageButton
-		android:id="@+id/event_attribute_green"
+		android:id="@id/event_do_attribute_green"
 		style="@style/buttonstyle"
 		android:src="@drawable/attribute_green"
 		/>
 	<ImageButton
-		android:id="@+id/event_attribute_blue"
+		android:id="@id/event_do_attribute_blue"
 		style="@style/buttonstyle"
 		android:src="@drawable/attribute_blue"
 		/>
 	<ImageButton
-		android:id="@+id/event_attribute_white"
+		android:id="@id/event_do_attribute_white"
 		style="@style/buttonstyle"
 		android:src="@drawable/attribute_white"
 		android:visibility="visible"

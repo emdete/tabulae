@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<item name="activity_result_id_screencapture" type="id"/>
+	<item name="event_do_attribute_blue" type="id" />
+	<item name="event_do_attribute_green" type="id" />
+	<item name="event_do_attribute_red" type="id" />
+	<item name="event_do_attribute" type="id" />
+	<item name="event_do_attribute_white" type="id" />
+	<item name="event_do_attribute_yellow" type="id" />
+	<item name="event_do_autofollow" type="id" />
 	<item name="event_do_dashboard" type="id" />
 	<item name="event_do_fawlty" type="id" />
 	<item name="event_do_help" type="id" />
@@ -12,6 +19,7 @@
 	<item name="event_do_map_outdoor_active" type="id"/>
 	<item name="event_do_map_vector" type="id"/>
 	<item name="event_do_map_wanderreitkarte" type="id"/>
+	<item name="event_do_overlay" type="id" />
 	<item name="event_do_poi_list" type="id" />
 	<item name="event_do_poi_new" type="id"/>
 	<item name="event_do_pre_load" type="id" />
@@ -22,6 +30,8 @@
 	<item name="event_do_track_list" type="id" />
 	<item name="event_do_traffic" type="id" />
 	<item name="event_do_view_location" type="id" />
+	<item name="event_do_zoom_in" type="id" />
+	<item name="event_do_zoom_out" type="id" />
 	<item name="event_notify_autofollow" type="id" />
 	<item name="event_notify_cell" type="id"/>
 	<item name="event_notify_location" type="id" />
@@ -40,9 +50,4 @@
 	<item name="message_locus_set_value" type="id" />
 	<item name="message_locus_unregister_client" type="id" />
 	<item name="service_notification_id_location" type="id" />
-	<item name="event_zoom_in" type="id" />
-	<item name="event_zoom_out" type="id" />
-	<item name="event_attribute" type="id" />
-	<item name="event_overlay" type="id" />
-	<item name="event_set_autofollow" type="id" />
 </resources>

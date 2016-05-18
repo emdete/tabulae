@@ -67,7 +67,7 @@ public class Track extends Base implements Constants {
 				mapView.getModel().mapViewPosition.setCenter(latLongs.get(0));
 				Bundle extra = new Bundle();
 				extra.putBoolean("autofollow", false);
-				((Tabulae) getActivity()).inform(R.id.event_set_autofollow, extra);
+				((Tabulae) getActivity()).inform(R.id.event_do_autofollow, extra);
 				if (DEBUG) return;
 			}
 		}

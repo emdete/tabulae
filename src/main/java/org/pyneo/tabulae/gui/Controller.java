@@ -1,5 +1,6 @@
 package org.pyneo.tabulae.gui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ public class Controller extends Base implements Constants {
 	private Animation popOutAnimation;
 	private Animation popInAnimation;
 	private boolean optionsOut;
-	private boolean tempAuto;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class Controller extends Base implements Constants {
 				int e = view.getId();
 				// if (DEBUG) Log.d(TAG, "Controller.onClick e=" + e);
 				switch (e) {
-					case R.id.event_attribute: {
+					case R.id.event_do_attribute: {
 						if (!optionsOut) {
 							getActivity().findViewById(R.id.attributes).startAnimation(popOutAnimation);
 							optionsOut = true;
@@ -41,21 +41,19 @@ public class Controller extends Base implements Constants {
 			}
 		};
 		for (int resourceId : new int[]{
-				R.id.event_attribute_blue,
-				R.id.event_attribute_green,
-				R.id.event_attribute_red,
-				R.id.event_attribute_white,
-				R.id.event_attribute_yellow,
-				R.id.event_attribute,
-				R.id.event_set_autofollow,
-				R.id.event_overlay,
-				R.id.event_zoom_in,
-				R.id.event_zoom_out,
+				R.id.event_do_attribute_blue,
+				R.id.event_do_attribute_green,
+				R.id.event_do_attribute_red,
+				R.id.event_do_attribute_white,
+				R.id.event_do_attribute_yellow,
+				R.id.event_do_attribute,
+				R.id.event_do_autofollow,
+				R.id.event_do_overlay,
+				R.id.event_do_zoom_in,
+				R.id.event_do_zoom_out,
 		}) {
 			view.findViewById(resourceId).setOnClickListener(clickListener);
 		}
-		view.findViewById(R.id.event_set_autofollow).setVisibility(
-			tempAuto ? View.INVISIBLE : View.VISIBLE);
 		return view;
 	}
 
@@ -65,44 +63,43 @@ public class Controller extends Base implements Constants {
 		if (DEBUG) Log.d(TAG, "Controller.onActivityCreated");
 		popOutAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.attributes_open);
 		popInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.attributes_close);
+		((Tabulae)getActivity()).inform(R.id.event_request_autofollow, null);
 	}
 
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Controller.inform event=" + event + ", extra=" + extra);
 		switch (event) {
-			case R.id.event_attribute_red: {
-				((ImageButton) getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_red);
+			case R.id.event_do_attribute_red: {
+				((ImageButton) getActivity().findViewById(R.id.event_do_attribute)).setImageResource(R.drawable.attribute_red);
 			}
 			break;
-			case R.id.event_attribute_yellow: {
-				((ImageButton) getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_yellow);
+			case R.id.event_do_attribute_yellow: {
+				((ImageButton) getActivity().findViewById(R.id.event_do_attribute)).setImageResource(R.drawable.attribute_yellow);
 			}
 			break;
-			case R.id.event_attribute_green: {
-				((ImageButton) getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_green);
+			case R.id.event_do_attribute_green: {
+				((ImageButton) getActivity().findViewById(R.id.event_do_attribute)).setImageResource(R.drawable.attribute_green);
 			}
 			break;
-			case R.id.event_attribute_blue: {
-				((ImageButton) getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_blue);
+			case R.id.event_do_attribute_blue: {
+				((ImageButton) getActivity().findViewById(R.id.event_do_attribute)).setImageResource(R.drawable.attribute_blue);
 			}
 			break;
-			case R.id.event_attribute_white: {
-				((ImageButton) getActivity().findViewById(R.id.event_attribute)).setImageResource(R.drawable.attribute_white);
+			case R.id.event_do_attribute_white: {
+				((ImageButton) getActivity().findViewById(R.id.event_do_attribute)).setImageResource(R.drawable.attribute_white);
 			}
 			break;
-			case R.id.event_attribute:
-			case R.id.event_overlay:
-			case R.id.event_zoom_in:
-			case R.id.event_zoom_out:
-			case R.id.event_set_autofollow:
+			case R.id.event_do_attribute:
+			case R.id.event_do_overlay:
+			case R.id.event_do_zoom_in:
+			case R.id.event_do_zoom_out:
+			case R.id.event_do_autofollow:
 				break;
 			case R.id.event_notify_autofollow: {
-				if (getActivity() == null) {
-					tempAuto = extra.getBoolean("autofollow");
-				}
-				else {
-					getActivity().findViewById(R.id.event_set_autofollow).setVisibility(
-						extra.getBoolean("autofollow") ? View.INVISIBLE : View.VISIBLE);
+				Activity activity = getActivity();
+				if (activity != null) {
+					activity.findViewById(R.id.event_do_autofollow).setVisibility(
+						extra.getBoolean("autofollow")? View.INVISIBLE : View.VISIBLE);
 				}
 			}
 			break;

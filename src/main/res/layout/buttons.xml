@@ -3,33 +3,33 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	>
 	<ImageButton
-		android:id="@id/event_zoom_in"
+		android:id="@id/event_do_zoom_in"
 		style="@style/buttonstyle"
 		android:src="@drawable/ic_zoom_in"
 		android:contentDescription="Zoom in"
 		/>
 	<ImageButton
-		android:id="@id/event_zoom_out"
+		android:id="@id/event_do_zoom_out"
 		style="@style/buttonstyle"
 		android:src="@drawable/ic_zoom_out"
 		android:contentDescription="Zoom out"
 		/>
 	<ImageButton
-		android:id="@id/event_attribute"
+		android:id="@id/event_do_attribute"
 		style="@style/buttonstyle"
 		android:visibility="invisible"
 		android:src="@drawable/attribute_white"
 		android:contentDescription="Attribute white"
 		/>
 	<ImageButton
-		android:id="@id/event_overlay"
+		android:id="@id/event_do_overlay"
 		style="@style/buttonstyle"
 		android:visibility="invisible"
 		android:src="@drawable/ic_overlays"
 		android:contentDescription="Dummy"
 		/>
 	<ImageButton
-		android:id="@id/event_set_autofollow"
+		android:id="@id/event_do_autofollow"
 		style="@style/buttonstyle"
 		android:visibility="visible"
 		android:src="@drawable/ic_autofollow"

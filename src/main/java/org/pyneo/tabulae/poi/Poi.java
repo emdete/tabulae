@@ -147,7 +147,7 @@ public class Poi extends Base implements Constants {
 		MapView mapView = ((Tabulae) getActivity()).getMapView();
 		Bundle extra = new Bundle();
 		extra.putBoolean("autofollow", false);
-		((Tabulae) getActivity()).inform(R.id.event_set_autofollow, extra);
+		((Tabulae) getActivity()).inform(R.id.event_do_autofollow, extra);
 		LatLong latLong = mapView.getModel().mapViewPosition.getMapPosition().latLong;
 		BoundingBox bb = new BoundingBox(latLong.latitude, latLong.longitude, latLong.latitude, latLong.longitude);
 		for (PointAd pointAd : pointsAd) {
