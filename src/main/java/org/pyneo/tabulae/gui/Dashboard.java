@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import org.pyneo.tabulae.Base;
 import org.pyneo.tabulae.R;
+import org.pyneo.tabulae.Tabulae;
 
 public class Dashboard extends Base implements Constants {
 	protected DashboardItem[] dashboardItems;
@@ -24,22 +25,32 @@ public class Dashboard extends Base implements Constants {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		if (DEBUG) Log.d(TAG, "Dashboard.onActivityCreated");
-		ViewGroup viewGroup = (ViewGroup) getActivity().findViewById(R.id.dashboard).findViewById(R.id.dashboard_list);
+		Activity a = getActivity();
+		ViewGroup viewGroup = (ViewGroup)a.findViewById(R.id.dashboard).findViewById(R.id.dashboard_list);
 		viewGroup.removeAllViews();
 		dashboardItems = new DashboardItem[]{
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_location, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_location, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_location, getString(R.string.title_bearing), "bearing", getString(R.string.unit_degree)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_location, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_location, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_location, getString(R.string.title_pace), "pace", getString(R.string.unit_minkm)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_zoom, getString(R.string.title_zoom), "zoom_level", getString(R.string.unit_zoom)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_cell, "Cell Identifier", "cell_ident", ""),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_location, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_location, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_map, getString(R.string.title_current_map), "current_map", getString(R.string.unit_empty)),
-				new DashboardItem(getActivity(), viewGroup, R.id.event_notify_time, getString(R.string.title_current_time), "current_time", getString(R.string.unit_empty)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_bearing), "bearing", getString(R.string.unit_degree)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_pace), "pace", getString(R.string.unit_minkm)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_zoom, getString(R.string.title_zoom), "zoom_level", getString(R.string.unit_zoom)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_cell, "Cell Identifier", "cell_ident", ""),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_map, getString(R.string.title_current_map), "current_map", getString(R.string.unit_empty)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_time, getString(R.string.title_current_time), "current_time", getString(R.string.unit_empty)),
 		};
+		for (int e: new int[]{
+			R.id.event_request_cell,
+			R.id.event_request_location,
+			R.id.event_request_map,
+			R.id.event_request_time,
+			R.id.event_request_zoom,
+			}) {
+			((Tabulae)a).inform(e, null);
+		}
 	}
 
 	public void inform(int event, Bundle extra) {

@@ -62,11 +62,7 @@ public class Map extends Base implements Constants {
 					layer = new LayerWanderreitKarte((Tabulae) getActivity(), mapView);
 					break;
 			}
-			Bundle extra = new Bundle();
-			if (layer != null) {
-				extra.putString("current_map", layer.getId());
-			}
-			((Tabulae) getActivity()).inform(R.id.event_notify_map, extra);
+			announceMap();
 			if (id != -1) {
 				Editor editor = preferences.edit();
 				editor.putInt("currentMap", currentMap); // TODO do not put a resource id into preferences
@@ -151,6 +147,14 @@ public class Map extends Base implements Constants {
 		return mapView;
 	}
 
+	void announceMap() {
+		if (layer != null) {
+			Bundle b = new Bundle();
+			b.putString("current_map", layer.getId());
+			((Tabulae) getActivity()).inform(R.id.event_notify_map, b);
+		}
+	}
+
 	void announceZoom() {
 		Bundle extra = new Bundle();
 		extra.putInt("zoom_level", mapView.getModel().mapViewPosition.getZoomLevel());
@@ -197,6 +201,14 @@ public class Map extends Base implements Constants {
 					mvp.setZoomLevel((byte) (mvp.getZoomLevel() - 1));
 				}
 				announceZoom();
+			}
+			break;
+			case R.id.event_request_zoom: {
+				announceZoom();
+			}
+			break;
+			case R.id.event_request_map: {
+				announceMap();
 			}
 			break;
 			case R.id.event_do_send_location: {

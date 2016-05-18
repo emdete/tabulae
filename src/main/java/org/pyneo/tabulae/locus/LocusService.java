@@ -188,6 +188,9 @@ public class LocusService extends Service implements LocationListener, Constants
 				if (speed != 0) {
 					ret.putDouble("pace", 60 / speed);
 				}
+				else {
+					ret.putDouble("pace", Double.POSITIVE_INFINITY);
+				}
 			}
 			if (location.hasAccuracy() && location.getAccuracy() != 0) {
 				ret.putDouble("accuracy", location.getAccuracy());
@@ -197,6 +200,11 @@ public class LocusService extends Service implements LocationListener, Constants
 			}
 			if (location.hasBearing()) {
 				ret.putDouble("bearing", location.getBearing());
+			}
+			Bundle extras = location.getExtras();
+			if (extras != null) {
+				Log.d(TAG, "toBundle extra=" + extras);
+				ret.putInt("satellites", extras.getInt("satellites", 0));
 			}
 		}
 		return ret;
