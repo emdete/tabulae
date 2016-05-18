@@ -19,7 +19,7 @@
 		/>
 	<TextView
 		android:id="@+id/data_value"
-		android:layout_below="@+id/data_header"
+		android:layout_below="@id/data_header"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:textColor="@color/textPrimary"
@@ -31,9 +31,9 @@
 		android:id="@+id/data_unit"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignTop="@+id/data_value"
+		android:layout_alignTop="@id/data_value"
 		android:textColor="@color/textPrimary"
-		android:layout_toRightOf="@+id/data_value"
+		android:layout_toRightOf="@id/data_value"
 		android:textSize="9sp"
 		android:maxLines="1"
 		android:paddingLeft="1sp"

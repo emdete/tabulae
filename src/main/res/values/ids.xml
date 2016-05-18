@@ -40,4 +40,9 @@
 	<item name="message_locus_set_value" type="id" />
 	<item name="message_locus_unregister_client" type="id" />
 	<item name="service_notification_id_location" type="id" />
+	<item name="event_zoom_in" type="id" />
+	<item name="event_zoom_out" type="id" />
+	<item name="event_attribute" type="id" />
+	<item name="event_overlay" type="id" />
+	<item name="event_set_autofollow" type="id" />
 </resources>
