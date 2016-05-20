@@ -66,17 +66,21 @@ public class Dashboard extends Base {
 		}
 		switch (event) {
 			case R.id.event_request_dashboard: {
-				Bundle b = new Bundle();
-				b.putBoolean("enabled", enabled);
-				((Tabulae)getActivity()).inform(R.id.event_notify_dashboard, b);
+				if (getActivity() != null) {
+					Bundle b = new Bundle();
+					b.putBoolean("enabled", enabled);
+					((Tabulae)getActivity()).inform(R.id.event_notify_dashboard, b);
+				}
 			}
 			break;
 			case R.id.event_do_dashboard: {
 				enabled = !enabled;
 				getActivity().findViewById(R.id.dashboard_list).setVisibility(enabled ? View.VISIBLE : View.GONE);
-				Bundle b = new Bundle();
-				b.putBoolean("enabled", enabled);
-				((Tabulae)getActivity()).inform(R.id.event_notify_dashboard, b);
+				if (getActivity() != null) {
+					Bundle b = new Bundle();
+					b.putBoolean("enabled", enabled);
+					((Tabulae)getActivity()).inform(R.id.event_notify_dashboard, b);
+				}
 			}
 			break;
 		}
