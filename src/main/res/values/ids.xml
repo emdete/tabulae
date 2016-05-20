@@ -37,18 +37,26 @@
 	<!-- event to notify about a state change -->
 	<item name="event_notify_autofollow" type="id" />
 	<item name="event_notify_cell" type="id" />
+	<item name="event_notify_dashboard" type="id" />
+	<item name="event_notify_fawlty" type="id" />
 	<item name="event_notify_location" type="id" />
 	<item name="event_notify_map" type="id" />
+	<item name="event_notify_screencapture" type="id" />
 	<item name="event_notify_scroll" type="id" />
 	<item name="event_notify_time" type="id" />
+	<item name="event_notify_traffic" type="id" />
 	<item name="event_notify_zoom" type="id" />
 	<!-- event to request a state (should trigger a notify) -->
 	<item name="event_request_autofollow" type="id" />
 	<item name="event_request_cell" type="id" />
+	<item name="event_request_dashboard" type="id" />
+	<item name="event_request_fawlty" type="id" />
 	<item name="event_request_location" type="id" />
 	<item name="event_request_map" type="id" />
+	<item name="event_request_screencapture" type="id" />
 	<item name="event_request_scroll" type="id" />
 	<item name="event_request_time" type="id" />
+	<item name="event_request_traffic" type="id" />
 	<item name="event_request_zoom" type="id" />
 	<!-- ids for messages -->
 	<item name="message_locus_register_client" type="id" />

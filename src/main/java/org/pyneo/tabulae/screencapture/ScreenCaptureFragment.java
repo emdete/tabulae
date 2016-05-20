@@ -50,8 +50,7 @@ public class ScreenCaptureFragment extends Base {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		if (DEBUG)
-			Log.d(TAG, "ScreenCaptureFragment.onActivityCreated enabled=" + enabled + ", mVirtualDisplay=" + mVirtualDisplay);
+		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityCreated enabled=" + enabled + ", mVirtualDisplay=" + mVirtualDisplay);
 		Activity activity = getActivity();
 		DisplayMetrics mDisplayMetrics = new DisplayMetrics();
 		activity.getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
@@ -73,8 +72,7 @@ public class ScreenCaptureFragment extends Base {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if (DEBUG)
-			Log.d(TAG, "ScreenCaptureFragment.onSaveInstanceState mResultData=" + mResultData + ", mResultCode=" + mResultCode);
+		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onSaveInstanceState mResultData=" + mResultData + ", mResultCode=" + mResultCode);
 		outState.putBoolean(STATE_ENABLED, enabled);
 		if (mResultData != null) {
 			outState.putInt(STATE_RESULT_CODE, mResultCode);
@@ -84,8 +82,7 @@ public class ScreenCaptureFragment extends Base {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-		if (DEBUG)
-			Log.d(TAG, "ScreenCaptureFragment.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode + ", resultData=" + resultData);
+		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode + ", resultData=" + resultData);
 		switch (requestCode) {
 			case R.id.activity_result_id_screencapture: {
 				switch (resultCode) {
@@ -93,16 +90,14 @@ public class ScreenCaptureFragment extends Base {
 						enabled = true;
 						mResultCode = resultCode;
 						mResultData = resultData;
-						if (DEBUG)
-							Log.d(TAG, "ScreenCaptureFragment.onActivityResult: permission granted enabled=" + enabled);
+						if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityResult: permission granted enabled=" + enabled);
 						if (getActivity() != null) {
 							go();
 						}
 					}
 					break;
 					default:
-						if (DEBUG)
-							Log.d(TAG, "ScreenCaptureFragment.onActivityResult: permission denied");
+						if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityResult: permission denied");
 						stopRecording();
 						Toast.makeText(getActivity(), "User canceled", Toast.LENGTH_SHORT).show();
 				}
@@ -136,19 +131,16 @@ public class ScreenCaptureFragment extends Base {
 	}
 
 	protected void go() {
-		if (DEBUG)
-			Log.d(TAG, "ScreenCaptureFragment.go mResultData=" + mResultData + ", mResultCode=" + mResultCode);
+		if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.go mResultData=" + mResultData + ", mResultCode=" + mResultCode);
 		if (getActivity() != null) {
 			if (mResultData != null && mMediaProjection == null) {
 				mMediaProjection = mMediaProjectionManager.getMediaProjection(mResultCode, mResultData);
 				// mMediaProjection.registerCallback(...
 			}
-			if (DEBUG)
-				Log.d(TAG, "ScreenCaptureFragment.go mMediaProjection=" + mMediaProjection);
+			if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.go mMediaProjection=" + mMediaProjection);
 			if (mMediaProjection != null && mVirtualDisplay == null) {
 				try {
-					if (DEBUG)
-						Log.d(TAG, "mScreenWidth=" + mScreenWidth + ", mScreenHeight=" + mScreenHeight);
+					if (DEBUG) Log.d(TAG, "mScreenWidth=" + mScreenWidth + ", mScreenHeight=" + mScreenHeight);
 					mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 					// mMediaRecorder.setVideoEncodingBitRate(128 * 1000);
 					// mMediaRecorder.setVideoFrameRate(12);
@@ -169,8 +161,7 @@ public class ScreenCaptureFragment extends Base {
 							null, // Callbacks
 							null // Handler
 					);
-					if (DEBUG)
-						Log.d(TAG, "ScreenCaptureFragment.onActivityResult: recording started");
+					if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.onActivityResult: recording started");
 					Toast.makeText(getActivity(), "Recording started", Toast.LENGTH_SHORT).show();
 				}
 				catch (Exception e) {
@@ -189,8 +180,10 @@ public class ScreenCaptureFragment extends Base {
 		if (mMediaProjection == null) {
 			getActivity().startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), R.id.activity_result_id_screencapture);
 			enabled = true;
-			if (DEBUG)
-				Log.d(TAG, "ScreenCaptureFragment.startRecording: ask for permission enabled=" + enabled);
+			Bundle extra = new Bundle();
+			extra.putBoolean("enabled", enabled);
+			((Tabulae)getActivity()).inform(R.id.event_notify_screencapture, extra);
+			if (DEBUG) Log.d(TAG, "ScreenCaptureFragment.startRecording: ask for permission enabled=" + enabled);
 		} else {
 			go();
 		}
@@ -198,6 +191,9 @@ public class ScreenCaptureFragment extends Base {
 
 	protected void stopRecording() {
 		enabled = false;
+		Bundle extra = new Bundle();
+		extra.putBoolean("enabled", enabled);
+		((Tabulae)getActivity()).inform(R.id.event_notify_screencapture, extra);
 		if (mVirtualDisplay != null) {
 			try {
 				mVirtualDisplay.release();
@@ -237,6 +233,12 @@ public class ScreenCaptureFragment extends Base {
 
 	public void inform(int event, Bundle extra) {
 		switch (event) {
+			case R.id.event_request_screencapture: {
+				Bundle b = new Bundle();
+				b.putBoolean("enabled", enabled);
+				((Tabulae)getActivity()).inform(R.id.event_notify_screencapture, b);
+			}
+			break;
 			case R.id.event_do_screencapture: {
 				if (enabled) {
 					stopRecording();
@@ -245,6 +247,7 @@ public class ScreenCaptureFragment extends Base {
 					startRecording();
 				}
 			}
+			break;
 		}
 	}
 }

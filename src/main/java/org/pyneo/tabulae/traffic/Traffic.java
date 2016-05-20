@@ -1,7 +1,10 @@
 package org.pyneo.tabulae.traffic;
 
 import android.location.Location;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -23,9 +29,14 @@ import java.net.URL;
 import java.util.Map;
 import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
+import org.pyneo.tabulae.Base;
+import org.pyneo.tabulae.R;
+import org.pyneo.tabulae.Tabulae;
+import org.pyneo.tabulae.track.TrackItem;
+import org.pyneo.tabulae.track.TrackPointItem;
 import static org.pyneo.tabulae.traffic.Constants.*;
 
-public class Traffic {
+public class Traffic extends Base {
 	private static int TIMEOUT_CONNECT = 5000;
 	private static int TIMEOUT_READ = 10000;
 	private static int CACHE_TIME = 999999;
@@ -34,6 +45,13 @@ public class Traffic {
 	private static boolean follow_redirects = false;
 	private static final String NDR_TRAFFIC = "http://www.ndr.de/nachrichten/verkehr/verkehrsdaten100-extapponly.json";
 	private static final SimpleDateFormat HUMAN_READABLE_TIMESTAMP = new SimpleDateFormat("dd.MM.yyyy', 'HH:mm' Uhr'", Locale.US);
+	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory() {
+		@Override
+		public Thread newThread(@NonNull Runnable r) {
+			return new Thread(r, "inform");
+		}
+	});
+	protected boolean enabled = false;
 
 	/**
 	 * request trafficreport, http level
@@ -258,5 +276,51 @@ public class Traffic {
 			throw new Exception("unknwon base type=" + type);
 		}
 		return incidents;
+	}
+
+	public void inform(int event, Bundle extra) {
+		//if (DEBUG) Log.d(TAG, "Track.inform event=" + event + ", extra=" + extra);
+		switch (event) {
+			case R.id.event_request_traffic: {
+				Bundle b = new Bundle();
+				b.putBoolean("enabled", enabled);
+				((Tabulae)getActivity()).inform(R.id.event_notify_traffic, b);
+			}
+			break;
+			case R.id.event_do_traffic: {
+				try {
+					final File cache_dir = new File(((Tabulae) getActivity()).getBaseDir(), "cache");
+					//noinspection ResultOfMethodCallIgnored
+					cache_dir.mkdirs();
+					mThreadPool.execute(new Runnable() {
+						public void run() {
+							try {
+								Traffic.Incidents incidents = Traffic.go(cache_dir, null);
+								for (Traffic.Incident incident: incidents) {
+									TrackItem trackItem = new TrackItem(incident.getName(), incident.getDescription());
+									Log.d(TAG, "incident=" + incident);
+									for (Location position: incident.getPosition()) {
+										trackItem.add(null, new TrackPointItem(position.getLatitude(), position.getLongitude()));
+									}
+									trackItem.insert(null);
+								}
+								enabled = true;
+								Bundle b = new Bundle();
+								b.putBoolean("enabled", enabled);
+								((Tabulae)getActivity()).inform(R.id.event_notify_traffic, b);
+							}
+							catch (Exception e) {
+								Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+								Log.d(TAG, "traffic load e=" + e, e);
+							}
+						}
+					});
+				}
+				catch (Exception e) {
+					Log.d(TAG, "traffic load e=" + e);
+				}
+			}
+			break;
+		}
 	}
 }

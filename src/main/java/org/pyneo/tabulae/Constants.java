@@ -2,10 +2,11 @@ package org.pyneo.tabulae;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import android.os.Build;
 
 public interface Constants {
 	String TAG = "org.pyneo.tabulae";
-	String USER_AGENT = "Tabulae/2.0 (Android)";
+	String USER_AGENT = "Tabulae/" + BuildConfig.VERSION_NAME + " (Android " + Build.VERSION.RELEASE + ")";
 	boolean DEBUG = BuildConfig.DEBUG;
 	byte MIN_ZOOM = (byte) 4;
 	byte MAX_ZOOM = (byte) 21;

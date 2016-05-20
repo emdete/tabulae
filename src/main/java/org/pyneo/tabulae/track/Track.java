@@ -23,12 +23,6 @@ import static org.pyneo.tabulae.track.Constants.*;
 
 public class Track extends Base {
 	AlternatingLine polyline;
-	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory() {
-		@Override
-		public Thread newThread(@NonNull Runnable r) {
-			return new Thread(r, "inform");
-		}
-	});
 
 	@Override
 	public void onCreate(Bundle bundle) {
@@ -100,35 +94,6 @@ public class Track extends Base {
 				}
 				showVisibleTracks();
 			}
-			break;
-			case R.id.event_do_traffic:
-				try {
-					final File cache_dir = new File(((Tabulae) getActivity()).getBaseDir(), "cache");
-					//noinspection ResultOfMethodCallIgnored
-					cache_dir.mkdirs();
-					mThreadPool.execute(new Runnable() {
-						public void run() {
-							try {
-								Traffic.Incidents incidents = Traffic.go(cache_dir, null);
-								for (Traffic.Incident incident: incidents) {
-									TrackItem trackItem = new TrackItem(incident.getName(), incident.getDescription());
-									Log.d(TAG, "incident=" + incident);
-									for (Location position: incident.getPosition()) {
-										trackItem.add(null, new TrackPointItem(position.getLatitude(), position.getLongitude()));
-									}
-									trackItem.insert(null);
-								}
-							}
-							catch (Exception e) {
-								Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-								Log.d(TAG, "traffic load e=" + e, e);
-							}
-						}
-					});
-				}
-				catch (Exception e) {
-					Log.d(TAG, "traffic load e=" + e);
-				}
 			break;
 		}
 	}

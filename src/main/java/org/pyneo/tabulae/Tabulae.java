@@ -36,6 +36,7 @@ import org.pyneo.tabulae.gui.Dashboard;
 import org.pyneo.tabulae.gui.DocumentAvtivity;
 import org.pyneo.tabulae.locus.Locus;
 import org.pyneo.tabulae.map.Map;
+import org.pyneo.tabulae.traffic.Traffic;
 import org.pyneo.tabulae.poi.Poi;
 import org.pyneo.tabulae.screencapture.ScreenCaptureFragment;
 import org.pyneo.tabulae.track.Track;
@@ -46,6 +47,7 @@ import static org.pyneo.tabulae.Constants.*;
 
 public class Tabulae extends Activity {
 	protected Base[] fragments;
+	protected Menu menu;
 	protected File baseStorageFile = null;
 	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory() {
 		@Override
@@ -104,6 +106,7 @@ public class Tabulae extends Activity {
 				new Controller(),
 				new Dashboard(),
 				new ScreenCaptureFragment(),
+				new Traffic(),
 		};
 		//noinspection StatementWithEmptyBody
 		if (savedInstanceState != null) {
@@ -276,9 +279,19 @@ public class Tabulae extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.main_option_menu, menu);
+		this.menu = menu;
 		if (DEBUG) {
 			menu.findItem(R.id.event_do_screencapture).setVisible(true);
 			menu.findItem(R.id.event_do_fawlty).setVisible(true);
+			menu.findItem(R.id.event_do_traffic).setVisible(true);
+		}
+		for (int e: new int[]{
+			R.id.event_request_dashboard,
+			R.id.event_request_fawlty,
+			R.id.event_request_screencapture,
+			R.id.event_request_traffic,
+			}) {
+			inform(e, null);
 		}
 		return true;
 	}
@@ -371,6 +384,26 @@ public class Tabulae extends Activity {
 			extras.putString("url", "file:///android_asset/" + path + "/index.html");
 			intent.putExtras(extras);
 			startActivity(intent);
+		break;
+		case R.id.event_notify_screencapture:
+			if (menu != null) {
+				menu.findItem(R.id.event_do_screencapture).setChecked(extra.getBoolean("enabled"));
+			}
+		break;
+		case R.id.event_notify_fawlty:
+			if (menu != null) {
+				menu.findItem(R.id.event_do_fawlty).setChecked(extra.getBoolean("enabled"));
+			}
+		break;
+		case R.id.event_notify_traffic:
+			if (menu != null) {
+				menu.findItem(R.id.event_do_traffic).setChecked(extra.getBoolean("enabled"));
+			}
+		break;
+		case R.id.event_notify_dashboard:
+			if (menu != null) {
+				menu.findItem(R.id.event_do_dashboard).setChecked(extra.getBoolean("enabled"));
+			}
 		break;
 		default:
 			for (Base b : fragments) {
