@@ -405,10 +405,9 @@ public class Tabulae extends Activity {
 				menu.findItem(R.id.event_do_dashboard).setChecked(extra.getBoolean("enabled"));
 			}
 		break;
-		default:
-			for (Base b : fragments) {
-				b.inform(event, extra);
-			}
+		}
+		for (Base b : fragments) {
+			b.inform(event, extra);
 		}
 	}
 
