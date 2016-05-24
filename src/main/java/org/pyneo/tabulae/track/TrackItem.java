@@ -9,7 +9,9 @@ import org.mapsforge.core.model.LatLong;
 import static org.pyneo.tabulae.track.Constants.*;
 
 public class TrackItem extends StoreObject {
-	static public final int CATEGORY_TRAFFIC = 82910;
+	static public final int CATEGORY_IMPORTED = 32122;
+	static public final int CATEGORY_RECORDED = 52813;
+	static public final int CATEGORY_TRAFFIC = 12910;
 	String name; // @Unique @NotNull
 	String description;
 	String comment;
@@ -30,7 +32,7 @@ public class TrackItem extends StoreObject {
 	public TrackItem(String name, String description) {
 		this.name = name;
 		this.description = description;
-		this.trackPointItems = new ArrayList<>();
+		trackPointItems = null;
 	}
 
 	public String getName() {
@@ -71,9 +73,10 @@ public class TrackItem extends StoreObject {
 		super.insert(db);
 		if (trackPointItems != null) {
 			for (TrackPointItem trackPointItem : getTrackPointItems(db)) {
-				if (trackPointItem.trackId != getId()) {
+				if (trackPointItem.trackId >= 0 && trackPointItem.trackId != getId()) {
 					throw new Exception("assertion failed id=" + getId() + ", point.trackId=" + trackPointItem.trackId);
 				}
+				trackPointItem.trackId = getId();
 				trackPointItem.insert(db);
 			}
 		}

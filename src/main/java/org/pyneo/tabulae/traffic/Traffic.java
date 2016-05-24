@@ -4,7 +4,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 import android.database.sqlite.SQLiteDatabase;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -43,13 +42,13 @@ public class Traffic extends Base {
 					mThreadPool.execute(new Runnable() {
 						public void run() {
 							try {
-								SQLiteDatabase db = null; // TODO
+								SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase();
 								TrackItem.deleteCategory(db, TrackItem.CATEGORY_TRAFFIC);
 								ReportRetriever.Incidents incidents = ReportRetriever.go(cache_dir, null);
 								for (ReportRetriever.Incident incident: incidents) {
+									Log.d(TAG, "incident=" + incident);
 									TrackItem trackItem = new TrackItem(incident.getName(), incident.getDescription());
 									trackItem.setCategoryid(TrackItem.CATEGORY_TRAFFIC);
-									Log.d(TAG, "incident=" + incident);
 									for (Location position: incident.getPosition()) {
 										trackItem.add(null, new TrackPointItem(position.getLatitude(), position.getLongitude()));
 									}
@@ -58,11 +57,11 @@ public class Traffic extends Base {
 								enabled = true;
 								Bundle b = new Bundle();
 								b.putBoolean("enabled", enabled);
-								((Tabulae)getActivity()).inform(R.id.event_notify_traffic, b);
+								((Tabulae)getActivity()).asyncInform(R.id.event_notify_traffic, b);
 							}
 							catch (Exception e) {
-								Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
 								Log.d(TAG, "traffic load e=" + e, e);
+								//Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
 							}
 						}
 					});

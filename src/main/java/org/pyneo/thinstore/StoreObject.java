@@ -113,7 +113,7 @@ public class StoreObject {
 		for (Field field: fields) {
 			ret[i++] = field.getName();
 		}
-		Log.d(TAG, "projection=" + Arrays.toString(ret));
+		//Log.d(TAG, "projection=" + Arrays.toString(ret));
 		return ret;
 	}
 
@@ -168,8 +168,8 @@ public class StoreObject {
 		Field[] fields = storedFields(this.getClass());
 		for (int i=0;i<fields.length;i++) {
 			Class clazz = fields[i].getType();
-			if (false)
-				;
+			if (cursor.isNull(i))
+				fields[i].set(this, null);
 			else if (clazz == String.class)
 				fields[i].set(this, cursor.getString(i));
 			else if (clazz == Boolean.TYPE)
@@ -253,6 +253,7 @@ public class StoreObject {
 	 * to control where and order filters.
 	 */
 	public static List<StoreObject> select(SQLiteDatabase db, Class clazz, String where, String[] values, String order) throws Exception {
+		Log.d(TAG, "StoreObject.select select=" + Arrays.toString(getProjection(clazz)) + ", from=" + clazz.getSimpleName() + ", where=" + where + ", values=" + Arrays.toString(values));
         Cursor cursor = db.query(clazz.getSimpleName(),
 			getProjection(clazz),
 			where, // where
@@ -264,6 +265,7 @@ public class StoreObject {
 		while (cursor.moveToNext()) {
 			list.add(((StoreObject)clazz.getConstructor().newInstance()).fromCursor(cursor));
 		}
+		Log.d(TAG, "StoreObject.select list.size=" + list.size());
 		return list;
 	}
 
@@ -346,7 +348,7 @@ public class StoreObject {
 			}
 			list = ((StoreObject)clazz.getConstructor().newInstance()).fromCursor(cursor);
 			if (cursor.moveToNext()) {
-				throw new Exception("did not select one");
+				throw new Exception("not unique");
 			}
 			return list;
 		}
@@ -356,7 +358,7 @@ public class StoreObject {
 		}
 
 		public int delete() throws Exception {
-			return db.delete(clazz.getClass().getSimpleName(), where, values.toArray(new String[0]));
+			return db.delete(clazz.getSimpleName(), where, values.toArray(new String[0]));
 		}
 
 		public long count() {

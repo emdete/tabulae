@@ -25,7 +25,7 @@ import org.json.simple.JSONValue;
 public class ReportRetriever {
 	private static final int TIMEOUT_CONNECT = 5000;
 	private static final int TIMEOUT_READ = 10000;
-	private static final int CACHE_TIME = 999999;
+	private static final int CACHE_TIME = 60 * 60 * 48; // time to keep the once retrieved version
 	private static final String USER_AGENT = Constants.USER_AGENT;
 	private static final String REFERER = "http://www.ndr.de/nachrichten/verkehr/";
 	private static final boolean FOLLOW_REDIRECTS = false;
@@ -71,8 +71,8 @@ public class ReportRetriever {
 	static Map<String, Object> request(File cache_dir) throws Exception {
 		File target = new java.io.File(cache_dir, "verkehrsdaten100-extapponly.json");
 		if (target.exists()) {
-			long filetime = target.lastModified();
-			long currenttime = new Date().getTime();
+			long filetime = target.lastModified() / 1000;
+			long currenttime = new Date().getTime() / 1000;
 			if (currenttime - filetime < CACHE_TIME) {
 				Object obj = JSONValue.parseWithException(new BufferedReader(new InputStreamReader(new FileInputStream(target))));
 				if (obj instanceof JSONObject) {

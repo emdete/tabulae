@@ -15,7 +15,7 @@ public class TrackPointItem extends StoreObject {
 	double altitude;
 	double speed;
 	int attribute;
-	long trackId;
+	long trackId = -1;
 	//TrackItem track;
 
 	public TrackPointItem() {

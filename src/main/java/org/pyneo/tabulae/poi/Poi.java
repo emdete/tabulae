@@ -36,7 +36,7 @@ public class Poi extends Base {
 		if (DEBUG) Log.d(TAG, "Poi.onResume");
 		//MapView mapView = ((Tabulae)getActivity()).getMapView();
 		try {
-			for (StoreObject item: StoreObject.query(((Tabulae)getActivity()).getDatabase(), PoiItem.class).where("visible").equal(true).fetchAll()) {
+			for (StoreObject item: StoreObject.query(((Tabulae)getActivity()).getWritableDatabase(), PoiItem.class).where("visible").equal(true).fetchAll()) {
 				PoiItem poiItem = (PoiItem)item;
 				Log.d(TAG, "Poi.onResume poiItem=" + poiItem);
 				pointsAd.add(new PointAd(poiItem));
@@ -98,7 +98,7 @@ public class Poi extends Base {
 			}
 			poiItem.setVisible(false);
 			try {
-				poiItem.insert(((Tabulae)getActivity()).getDatabase());
+				poiItem.insert(((Tabulae)getActivity()).getWritableDatabase());
 			}
 			catch (Exception e) {
 				Log.e(TAG, "Poi.PointAd.onDestroy e=" + e, e);
@@ -109,7 +109,7 @@ public class Poi extends Base {
 	static public long storePointPosition(Tabulae activity, String name, String description, double latitude, double longitude, boolean visible) {
 		//noinspection UnusedAssignment
 		PoiItem poiItem = null;
-		SQLiteDatabase db = activity.getDatabase();
+		SQLiteDatabase db = activity.getWritableDatabase();
 		try {
 			List<StoreObject> items = StoreObject.query(db, PoiItem.class).where("name").equal(name).fetchAll();
 			switch (items.size()) {

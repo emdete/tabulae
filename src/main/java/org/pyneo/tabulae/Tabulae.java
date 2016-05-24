@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,7 +50,7 @@ public class Tabulae extends Activity {
 	protected File baseStorageFile = null;
 	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory() {
 		@Override
-		public Thread newThread(@NonNull Runnable r) {
+		public Thread newThread(Runnable r) {
 			return new Thread(r, "inform");
 		}
 	});
@@ -80,7 +79,7 @@ public class Tabulae extends Activity {
 				finish();
 			}
 		});
-        dbHelper = new SQLiteOpenHelper(getApplicationContext(), "tabulae.db", null, 2){
+        dbHelper = new SQLiteOpenHelper(getApplicationContext(), "tabulae.db", null, 3){
 			@Override public void onCreate(SQLiteDatabase db) {
 				if (DEBUG) Log.d(TAG, "Tabulae.onCreate.SQLiteOpenHelper.onCreate");
 				//Log.d(TAG, "create=" +
@@ -357,8 +356,12 @@ public class Tabulae extends Activity {
 		return ret;
 	}
 
-	public SQLiteDatabase getDatabase() {
+	public SQLiteDatabase getWritableDatabase() {
 		return dbHelper.getWritableDatabase();
+	}
+
+	public SQLiteDatabase getReadableDatabase() {
+		return dbHelper.getReadableDatabase();
 	}
 
 	public MapView getMapView() {

@@ -1,12 +1,5 @@
 package org.pyneo.tabulae.track;
 
-import android.location.Location;
-import android.support.annotation.NonNull;
-import android.widget.Toast;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import org.pyneo.tabulae.traffic.Traffic;
 import org.pyneo.thinstore.StoreObject;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,20 +43,26 @@ public class Track extends Base {
 	}
 
 	void showVisibleTracks() {
+		if (DEBUG) Log.d(TAG, "Track.showVisibleTracks");
 		MapView mapView = ((Tabulae) getActivity()).getMapView();
-		SQLiteDatabase db = ((Tabulae)getActivity()).getDatabase();
+		SQLiteDatabase db = ((Tabulae)getActivity()).getReadableDatabase();
 		try {
-			for (StoreObject item : StoreObject.query(((Tabulae)getActivity()).getDatabase(), TrackItem.class).where("visible").equal(true).fetchAll()) {
+			for (StoreObject item : StoreObject.query(db, TrackItem.class).where("visible").equal(true).fetchAll()) {
+				if (DEBUG) Log.d(TAG, "Track.showVisibleTracks item=" + item);
 				TrackItem trackItem = (TrackItem)item;
+				if (DEBUG) Log.d(TAG, "Track.showVisibleTracks size=" + trackItem.getTrackPointItems(db).size());
 				List<LatLong> latLongs = trackItem.getTrackLatLongs(db);
-				polyline.setLatLongs(latLongs);
-				//BoundingBox bb = new BoundingBox(latLongs);
-				//mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(bb.getCenterPoint(), LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb, mapView.getModel().displayModel.getTileSize())));
-				mapView.getModel().mapViewPosition.setCenter(latLongs.get(0));
-				Bundle extra = new Bundle();
-				extra.putBoolean("autofollow", false);
-				((Tabulae) getActivity()).inform(R.id.event_do_autofollow, extra);
-				if (DEBUG) return;
+				if (DEBUG) Log.d(TAG, "Track.showVisibleTracks size=" + latLongs.size());
+				if (latLongs.size() > 0) {
+					polyline.setLatLongs(latLongs);
+					//BoundingBox bb = new BoundingBox(latLongs);
+					//mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(bb.getCenterPoint(), LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb, mapView.getModel().displayModel.getTileSize())));
+					mapView.getModel().mapViewPosition.setCenter(latLongs.get(0));
+					Bundle extra = new Bundle();
+					extra.putBoolean("autofollow", false);
+					((Tabulae) getActivity()).inform(R.id.event_do_autofollow, extra);
+					if (DEBUG) return;
+				}
 			}
 		}
 		catch (Exception e) {
@@ -71,27 +70,30 @@ public class Track extends Base {
 		}
 	}
 
+	public void importGpx() {
+		File[] gpxs = ((Tabulae) getActivity()).getGpxDir().listFiles();
+		if (gpxs != null) for (File gpx : gpxs) {
+			if (gpx.isFile() && gpx.toString().endsWith(".gpx")) {
+				try {
+					if (DEBUG) Log.d(TAG, "Track.inform import gpx=" + gpx);
+					SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase();
+					TrackGpxParser track = new TrackGpxParser(gpx, db);
+					if (StoreObject.query(db, TrackItem.class).where("name").equal(track.trackItem.getName()).count() == 0) {
+						track.trackItem.insert(db);
+						if (DEBUG) Log.d(TAG, "Track.inform stored name=" + track.trackItem.getName());
+					}
+				}
+				catch (Exception e) {
+					Log.e(TAG, "Track.inform", e);
+				}
+			}
+		}
+	}
+
 	public void inform(int event, Bundle extra) {
 		//if (DEBUG) Log.d(TAG, "Track.inform event=" + event + ", extra=" + extra);
 		switch (event) {
 			case R.id.event_do_track_list: {
-				File[] gpxs = ((Tabulae) getActivity()).getGpxDir().listFiles();
-				if (gpxs != null) for (File gpx : gpxs) {
-					if (gpx.isFile() && gpx.toString().endsWith(".gpx")) {
-						try {
-							if (DEBUG) Log.d(TAG, "Track.inform import gpx=" + gpx);
-							SQLiteDatabase db = ((Tabulae)getActivity()).getDatabase();
-							TrackGpxParser track = new TrackGpxParser(gpx, db);
-							if (StoreObject.query(db, TrackItem.class).where("name").equal(track.trackItem.getName()).count() == 0) {
-								track.trackItem.insert(db);
-								if (DEBUG) Log.d(TAG, "Track.inform stored name=" + track.trackItem.getName());
-							}
-						}
-						catch (Exception e) {
-							Log.e(TAG, "Track.inform", e);
-						}
-					}
-				}
 				showVisibleTracks();
 			}
 			break;
