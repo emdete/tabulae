@@ -227,7 +227,11 @@ public class StoreObject {
 	 * TODO not implemented properly yet: drops&creates for now
 	 */
 	public static String alter(SQLiteDatabase db, Class clazz) {
-		drop(db, clazz);
+		try {
+			drop(db, clazz);
+		}
+		catch (android.database.sqlite.SQLiteException e) {
+		}
 		create(db, clazz);
 		return null;
 	}
