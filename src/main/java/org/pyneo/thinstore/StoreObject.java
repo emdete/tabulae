@@ -355,6 +355,10 @@ public class StoreObject {
 			return select(db, clazz, where, values.toArray(new String[0]), order);
 		}
 
+		public int delete() throws Exception {
+			return db.delete(clazz.getClass().getSimpleName(), where, values.toArray(new String[0]));
+		}
+
 		public long count() {
 			return -1l;
 		}
