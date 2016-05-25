@@ -1,9 +1,13 @@
 package org.pyneo.tabulae.track;
 
+import org.mapsforge.core.model.BoundingBox;
+import org.mapsforge.core.model.MapPosition;
+import org.mapsforge.core.util.LatLongUtils;
 import org.pyneo.thinstore.StoreObject;
 import android.os.Bundle;
 import android.util.Log;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
@@ -15,14 +19,14 @@ import android.database.sqlite.SQLiteDatabase;
 import static org.pyneo.tabulae.track.Constants.*;
 
 public class Track extends Base {
-	AlternatingLine polyline;
+	List<AlternatingLine> polylines = new ArrayList<>();
 
 	@Override
 	public void onCreate(Bundle bundle) {
 		if (DEBUG) Log.d(TAG, "Track.onCreate");
 		super.onCreate(bundle);
-		polyline = new AlternatingLine(AndroidGraphicFactory.INSTANCE);
-		// showVisibleTracks();
+		polylines.add(new AlternatingLine(AndroidGraphicFactory.INSTANCE));
+		showVisibleTracks();
 	}
 
 	@Override
@@ -30,40 +34,58 @@ public class Track extends Base {
 		super.onResume();
 		if (DEBUG) Log.d(TAG, "Track.onResume");
 		MapView mapView = ((Tabulae) getActivity()).getMapView();
-		mapView.getLayerManager().getLayers().add(polyline);
+		for (AlternatingLine polyline: polylines) {
+			mapView.getLayerManager().getLayers().add(polyline);
+		}
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		if (DEBUG) Log.d(TAG, "Track.onPause");
-		polyline.getLatLongs().clear();
 		MapView mapView = ((Tabulae) getActivity()).getMapView();
-		mapView.getLayerManager().getLayers().remove(polyline);
+		for (AlternatingLine polyline: polylines) {
+			polyline.getLatLongs().clear();
+			mapView.getLayerManager().getLayers().remove(polyline);
+		}
 	}
 
 	void showVisibleTracks() {
 		if (DEBUG) Log.d(TAG, "Track.showVisibleTracks");
-		MapView mapView = ((Tabulae) getActivity()).getMapView();
-		SQLiteDatabase db = ((Tabulae)getActivity()).getReadableDatabase();
 		try {
-			for (StoreObject item : StoreObject.query(db, TrackItem.class).where("visible").equal(true).fetchAll()) {
-				if (DEBUG) Log.d(TAG, "Track.showVisibleTracks item=" + item);
-				TrackItem trackItem = (TrackItem)item;
-				if (DEBUG) Log.d(TAG, "Track.showVisibleTracks size=" + trackItem.getTrackPointItems(db).size());
-				List<LatLong> latLongs = trackItem.getTrackLatLongs(db);
-				if (DEBUG) Log.d(TAG, "Track.showVisibleTracks size=" + latLongs.size());
-				if (latLongs.size() > 0) {
-					polyline.setLatLongs(latLongs);
-					//BoundingBox bb = new BoundingBox(latLongs);
-					//mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(bb.getCenterPoint(), LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb, mapView.getModel().displayModel.getTileSize())));
-					mapView.getModel().mapViewPosition.setCenter(latLongs.get(0));
-					Bundle extra = new Bundle();
-					extra.putBoolean("autofollow", false);
-					((Tabulae) getActivity()).inform(R.id.event_do_autofollow, extra);
-					if (DEBUG) return;
+			MapView mapView = ((Tabulae) getActivity()).getMapView();
+			for (AlternatingLine polyline: polylines) {
+				mapView.getLayerManager().getLayers().remove(polyline);
+			}
+			polylines.clear();
+			BoundingBox bb = null;
+			try (final SQLiteDatabase db = ((Tabulae)getActivity()).getReadableDatabase()) {
+				for (StoreObject item : StoreObject.query(db, TrackItem.class).where("visible").equal(true).fetchAll()) {
+					if (DEBUG) Log.d(TAG, "Track.showVisibleTracks item.description=" + ((TrackItem)item).getDescription());
+					List<LatLong> latLongs = ((TrackItem)item).getTrackLatLongs(db);
+					// if (DEBUG) Log.d(TAG, "Track.showVisibleTracks size=" + latLongs.size());
+					if (latLongs.size() > 0) {
+						if (bb == null) {
+							bb = new BoundingBox(latLongs);
+						}
+						else {
+							bb = bb.extendBoundingBox(new BoundingBox(latLongs));
+						}
+						AlternatingLine polyline = new AlternatingLine(AndroidGraphicFactory.INSTANCE);
+						polyline.setLatLongs(latLongs);
+						Bundle extra = new Bundle();
+						extra.putBoolean("autofollow", false);
+						((Tabulae) getActivity()).inform(R.id.event_do_autofollow, extra);
+						mapView.getLayerManager().getLayers().add(polyline);
+					}
 				}
 			}
+			// mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(
+			// 	bb.getCenterPoint(),
+			// 	LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(),
+			// 	bb,
+			// 	mapView.getModel().displayModel.getTileSize())));
+			// mapView.getModel().mapViewPosition.setCenter(latLongs.get(0));
 		}
 		catch (Exception e) {
 			Log.e(TAG, "Track.showVisibleTracks e=" + e, e);
@@ -76,11 +98,12 @@ public class Track extends Base {
 			if (gpx.isFile() && gpx.toString().endsWith(".gpx")) {
 				try {
 					if (DEBUG) Log.d(TAG, "Track.inform import gpx=" + gpx);
-					SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase();
-					TrackGpxParser track = new TrackGpxParser(gpx, db);
-					if (StoreObject.query(db, TrackItem.class).where("name").equal(track.trackItem.getName()).count() == 0) {
-						track.trackItem.insert(db);
-						if (DEBUG) Log.d(TAG, "Track.inform stored name=" + track.trackItem.getName());
+					try (final SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase()) {
+						TrackGpxParser track = new TrackGpxParser(gpx, db);
+						if (StoreObject.query(db, TrackItem.class).where("name").equal(track.trackItem.getName()).count() == 0) {
+							track.trackItem.insert(db);
+							if (DEBUG) Log.d(TAG, "Track.inform stored name=" + track.trackItem.getName());
+						}
 					}
 				}
 				catch (Exception e) {

@@ -36,10 +36,12 @@ public class Poi extends Base {
 		if (DEBUG) Log.d(TAG, "Poi.onResume");
 		//MapView mapView = ((Tabulae)getActivity()).getMapView();
 		try {
-			for (StoreObject item: StoreObject.query(((Tabulae)getActivity()).getWritableDatabase(), PoiItem.class).where("visible").equal(true).fetchAll()) {
-				PoiItem poiItem = (PoiItem)item;
-				Log.d(TAG, "Poi.onResume poiItem=" + poiItem);
-				pointsAd.add(new PointAd(poiItem));
+			try (final SQLiteDatabase db = ((Tabulae)getActivity()).getReadableDatabase()) {
+				for (StoreObject item: StoreObject.query(db, PoiItem.class).where("visible").equal(true).fetchAll()) {
+					PoiItem poiItem = (PoiItem)item;
+					Log.d(TAG, "Poi.onResume poiItem=" + poiItem);
+					pointsAd.add(new PointAd(poiItem));
+				}
 			}
 		}
 		catch (Exception e) {
@@ -98,7 +100,9 @@ public class Poi extends Base {
 			}
 			poiItem.setVisible(false);
 			try {
-				poiItem.insert(((Tabulae)getActivity()).getWritableDatabase());
+				try (final SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase()) {
+					poiItem.insert(db);
+				}
 			}
 			catch (Exception e) {
 				Log.e(TAG, "Poi.PointAd.onDestroy e=" + e, e);
@@ -109,9 +113,11 @@ public class Poi extends Base {
 	static public long storePointPosition(Tabulae activity, String name, String description, double latitude, double longitude, boolean visible) {
 		//noinspection UnusedAssignment
 		PoiItem poiItem = null;
-		SQLiteDatabase db = activity.getWritableDatabase();
 		try {
-			List<StoreObject> items = StoreObject.query(db, PoiItem.class).where("name").equal(name).fetchAll();
+			List<StoreObject> items = null;
+			try (final SQLiteDatabase db = activity.getReadableDatabase()) {
+				items = StoreObject.query(db, PoiItem.class).where("name").equal(name).fetchAll();
+			}
 			switch (items.size()) {
 				case 0:
 					if (DEBUG) Log.d(TAG, "Poi.storePointPosition new poiItem name=" + name);
@@ -129,7 +135,9 @@ public class Poi extends Base {
 					Log.e(TAG, "Poi.storePointPosition poiItem not unique! name=" + name);
 					throw new RuntimeException("Not unique by name");
 			}
-			return poiItem.insert(db).getId();
+			try (final SQLiteDatabase db = activity.getWritableDatabase()) {
+				return poiItem.insert(db).getId();
+			}
 		}
 		catch (Exception e) {
 			Log.e(TAG, "Poi.storePointPosition e=" + e, e);

@@ -169,9 +169,11 @@ public class Fawlty extends Base {
 	public void inform(int event, Bundle extra) {
 		switch (event) {
 			case R.id.event_request_fawlty: {
-				Bundle b = new Bundle();
-				b.putBoolean("enabled", enabled);
-				((Tabulae)getActivity()).inform(R.id.event_notify_fawlty, b);
+				if (getActivity() != null) {
+					Bundle b = new Bundle();
+					b.putBoolean("enabled", enabled);
+					((Tabulae)getActivity()).inform(R.id.event_notify_fawlty, b);
+				}
 			}
 			break;
 			case R.id.event_do_fawlty: {

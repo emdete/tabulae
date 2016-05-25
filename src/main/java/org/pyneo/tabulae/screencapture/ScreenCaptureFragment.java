@@ -234,9 +234,11 @@ public class ScreenCaptureFragment extends Base {
 	public void inform(int event, Bundle extra) {
 		switch (event) {
 			case R.id.event_request_screencapture: {
-				Bundle b = new Bundle();
-				b.putBoolean("enabled", enabled);
-				((Tabulae)getActivity()).inform(R.id.event_notify_screencapture, b);
+				if (getActivity() != null) {
+					Bundle b = new Bundle();
+					b.putBoolean("enabled", enabled);
+					((Tabulae)getActivity()).inform(R.id.event_notify_screencapture, b);
+				}
 			}
 			break;
 			case R.id.event_do_screencapture: {

@@ -244,7 +244,7 @@ public class StoreObject {
 			throw new Exception("id=" + id);
 		}
 		id = db.insert(this.getClass().getSimpleName(), "null", toContentValues(new ContentValues()));
-		Log.d(TAG, "new item id=" + id);
+		// Log.d(TAG, "new item id=" + id);
 		return this;
 	}
 
@@ -253,19 +253,20 @@ public class StoreObject {
 	 * to control where and order filters.
 	 */
 	public static List<StoreObject> select(SQLiteDatabase db, Class clazz, String where, String[] values, String order) throws Exception {
-		Log.d(TAG, "StoreObject.select select=" + Arrays.toString(getProjection(clazz)) + ", from=" + clazz.getSimpleName() + ", where=" + where + ", values=" + Arrays.toString(values));
-        Cursor cursor = db.query(clazz.getSimpleName(),
+		//Log.d(TAG, "StoreObject.select select=" + Arrays.toString(getProjection(clazz)) + ", from=" + clazz.getSimpleName() + ", where=" + where + ", values=" + Arrays.toString(values));
+		List<StoreObject> list = new ArrayList();
+        try (final Cursor cursor = db.query(clazz.getSimpleName(),
 			getProjection(clazz),
 			where, // where
 			values, // values
 			null, // group
 			null, // having
-			order); // order
-		List<StoreObject> list = new ArrayList();
-		while (cursor.moveToNext()) {
-			list.add(((StoreObject)clazz.getConstructor().newInstance()).fromCursor(cursor));
+			order)) { // order
+			while (cursor.moveToNext()) {
+				list.add(((StoreObject)clazz.getConstructor().newInstance()).fromCursor(cursor));
+			}
 		}
-		Log.d(TAG, "StoreObject.select list.size=" + list.size());
+		// Log.d(TAG, "StoreObject.select list.size=" + list.size());
 		return list;
 	}
 
@@ -306,8 +307,21 @@ public class StoreObject {
 		}
 
 		public Query equal(Object o) {
-			where += " = ?";
-			values.add(o.toString());
+			where += " = ";
+			if (o instanceof String) {
+				where += '?';
+				values.add(o.toString());
+			}
+			else if (o instanceof Boolean) {
+				where += (Boolean)o?"'true'":"'false'";
+			}
+			else if (o instanceof Date) {
+				where += '?';
+				values.add(ISO_DATE.format((Date)o));
+			}
+			else {
+				where += o;
+			}
 			return this;
 		}
 
@@ -335,22 +349,23 @@ public class StoreObject {
 		}
 
 		public StoreObject fetchOne() throws Exception {
-			Cursor cursor = db.query(clazz.getSimpleName(),
+			StoreObject obj = null;
+			try (final Cursor cursor = db.query(clazz.getSimpleName(),
 				getProjection(clazz),
 				where, // where
 				values.toArray(new String[0]), // values
 				null, // group
 				null, // having
-				order); // order
-			StoreObject list;
-			if (!cursor.moveToNext()) {
-				throw new Exception("none found");
+				order)) { // order
+				if (!cursor.moveToNext()) {
+					throw new Exception("none found");
+				}
+				obj = ((StoreObject)clazz.getConstructor().newInstance()).fromCursor(cursor);
+				if (cursor.moveToNext()) {
+					throw new Exception("not unique");
+				}
 			}
-			list = ((StoreObject)clazz.getConstructor().newInstance()).fromCursor(cursor);
-			if (cursor.moveToNext()) {
-				throw new Exception("not unique");
-			}
-			return list;
+			return obj;
 		}
 
 		public List<StoreObject> fetchAll() throws Exception {

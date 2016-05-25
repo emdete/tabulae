@@ -25,7 +25,7 @@ import org.json.simple.JSONValue;
 public class ReportRetriever {
 	private static final int TIMEOUT_CONNECT = 5000;
 	private static final int TIMEOUT_READ = 10000;
-	private static final int CACHE_TIME = 60 * 60 * 48; // time to keep the once retrieved version
+	private static final int CACHE_TIME = 60 * 3; // time to keep the once retrieved version in seconds
 	private static final String USER_AGENT = Constants.USER_AGENT;
 	private static final String REFERER = "http://www.ndr.de/nachrichten/verkehr/";
 	private static final boolean FOLLOW_REDIRECTS = false;
@@ -57,7 +57,7 @@ public class ReportRetriever {
 		if (!(obj instanceof JSONObject)) {
 			throw new Exception("Unexpected type");
 		}
-		try (java.io.Writer out = new java.io.OutputStreamWriter(new FileOutputStream(target))) {
+		try (final java.io.Writer out = new java.io.OutputStreamWriter(new FileOutputStream(target))) {
 			JSONValue.writeJSONString(obj, out);
 			out.flush();
 		}

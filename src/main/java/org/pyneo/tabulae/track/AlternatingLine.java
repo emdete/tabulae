@@ -16,7 +16,7 @@ import org.mapsforge.map.layer.overlay.Polyline;
 import static org.pyneo.tabulae.track.Constants.*;
 
 class AlternatingLine extends Polyline {
-	Paint[] paints = new Paint[1];
+	Paint[] paints = new Paint[3];
 
 	public AlternatingLine(GraphicFactory graphicFactory) {
 		super(null, graphicFactory);
@@ -24,14 +24,17 @@ class AlternatingLine extends Polyline {
 			paints[i] = AndroidGraphicFactory.INSTANCE.createPaint();
 			paints[i].setStrokeWidth(16);
 			paints[i].setStyle(Style.STROKE);
-			paints[i].setColor(AndroidGraphicFactory.INSTANCE.createColor(Color.BLUE)); // TODO: different colors
 		}
+		paints[0].setColor(AndroidGraphicFactory.INSTANCE.createColor(Color.GREEN));
+		paints[1].setColor(AndroidGraphicFactory.INSTANCE.createColor(255, 255, 255, 0));
+		paints[2].setColor(AndroidGraphicFactory.INSTANCE.createColor(Color.RED));
 	}
 
 	@Override
 	public synchronized void draw(BoundingBox boundingBox, byte zoomLevel, Canvas canvas, Point topLeftPoint) {
-		int count = 0;
 		if (!getLatLongs().isEmpty()) {
+			int bl = getLatLongs().size() / 3 * 2;
+			int index = 0;
 			Iterator<LatLong> iterator = getLatLongs().iterator();
 			if (iterator.hasNext()) {
 				long mapSize = MercatorProjection.getMapSize(zoomLevel, displayModel.getTileSize());
@@ -39,13 +42,13 @@ class AlternatingLine extends Polyline {
 				while (iterator.hasNext()) {
 					LatLong to = iterator.next();
 					if (boundingBox.contains(to) || boundingBox.contains(from)) {
-						Paint paint = getPaintStroke(from, to);
+						Paint paint = getPaintStroke(from, to, index<bl?2:1);
 						int x1 = (int) (MercatorProjection.longitudeToPixelX(from.longitude, mapSize) - topLeftPoint.x);
 						int y1 = (int) (MercatorProjection.latitudeToPixelY(from.latitude, mapSize) - topLeftPoint.y);
 						int x2 = (int) (MercatorProjection.longitudeToPixelX(to.longitude, mapSize) - topLeftPoint.x);
 						int y2 = (int) (MercatorProjection.latitudeToPixelY(to.latitude, mapSize) - topLeftPoint.y);
 						canvas.drawLine(x1, y1, x2, y2, paint);
-						count++;
+						index++;
 					}
 					from = to;
 				}
@@ -58,8 +61,8 @@ class AlternatingLine extends Polyline {
 		throw new RuntimeException("getPaintStroke called with no parms"); // i hate to do that, it's just to validate my code
 	}
 
-	synchronized Paint getPaintStroke(LatLong from, LatLong to) {
-		return paints[0]; // TODO
+	synchronized Paint getPaintStroke(LatLong from, LatLong to, int c) {
+		return paints[c]; // TODO
 	}
 
 	void setLatLongs(List<LatLong> list) {

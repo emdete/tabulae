@@ -64,7 +64,12 @@ public class TrackItem extends StoreObject {
 
 	public List<TrackPointItem> getTrackPointItems(SQLiteDatabase db) throws Exception {
 		if (trackPointItems == null) {
-			trackPointItems = (List)query(db, TrackPointItem.class).where("trackId").equal(getId()).fetchAll();
+			if (getId() >= 0) {
+				trackPointItems = (List)query(db, TrackPointItem.class).where("trackId").equal(getId()).fetchAll();
+			}
+			else {
+				trackPointItems = new ArrayList<>();
+			}
 		}
 		return trackPointItems;
 	}
@@ -171,8 +176,8 @@ public class TrackItem extends StoreObject {
 		this.comment = comment;
 	}
 
-	public static void deleteCategory(SQLiteDatabase db, int categoryid) throws Exception {
-		StoreObject.query(db, TrackItem.class)
+	public static int deleteCategory(SQLiteDatabase db, int categoryid) throws Exception {
+		return StoreObject.query(db, TrackItem.class)
 			.where("categoryid").equal(categoryid)
 			.delete();
 	}

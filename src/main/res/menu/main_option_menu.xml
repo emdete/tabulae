@@ -5,7 +5,7 @@
 	<item
 		android:id="@id/event_do_track_list"
 		android:icon="@drawable/ic_menu_track_list"
-		android:showAsAction="always"
+		android:showAsAction="ifRoom"
 		android:title="@string/menu_track_list"
 		/>
 	<item
@@ -39,6 +39,8 @@
 	<item
 		android:id="@id/event_do_traffic"
 		android:title="@string/traffic"
+		android:icon="@drawable/ic_menu_traffic"
+		android:showAsAction="always"
 		android:checkable="true"
 		/>
 	<item

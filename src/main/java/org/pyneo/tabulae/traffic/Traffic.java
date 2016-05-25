@@ -14,12 +14,22 @@ import org.pyneo.tabulae.R;
 import org.pyneo.tabulae.Tabulae;
 import org.pyneo.tabulae.track.TrackItem;
 import org.pyneo.tabulae.track.TrackPointItem;
-import static org.pyneo.tabulae.traffic.Constants.TAG;
+import static org.pyneo.tabulae.traffic.Constants.*;
 
 public class Traffic extends Base {
+/*
+// see https://developer.android.com/reference/android/os/Handler.html
+	Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override public void run() {
+				Intent intent = new Intent(ActivityName.this, ThirdQuestion.class);
+				startActivity(intent);
+			}
+		}, 2000);
+// see https://developer.android.com/reference/android/app/AlarmManager.html
+*/
 	protected ExecutorService mThreadPool = Executors.newSingleThreadExecutor(new ThreadFactory() {
-		@Override
-		public Thread newThread(@NonNull Runnable r) {
+		@Override public Thread newThread(@NonNull Runnable r) {
 			return new Thread(r, "inform");
 		}
 	});
@@ -29,9 +39,11 @@ public class Traffic extends Base {
 		//if (DEBUG) Log.d(TAG, "Track.inform event=" + event + ", extra=" + extra);
 		switch (event) {
 			case R.id.event_request_traffic: {
-				Bundle b = new Bundle();
-				b.putBoolean("enabled", enabled);
-				((Tabulae)getActivity()).inform(R.id.event_notify_traffic, b);
+				if (getActivity() != null) {
+					Bundle b = new Bundle();
+					b.putBoolean("enabled", enabled);
+					((Tabulae)getActivity()).inform(R.id.event_notify_traffic, b);
+				}
 			}
 			break;
 			case R.id.event_do_traffic: {
@@ -42,22 +54,30 @@ public class Traffic extends Base {
 					mThreadPool.execute(new Runnable() {
 						public void run() {
 							try {
-								SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase();
-								TrackItem.deleteCategory(db, TrackItem.CATEGORY_TRAFFIC);
+								try (final SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase()) {
+									// remove old incidents
+									int count = TrackItem.deleteCategory(db, TrackItem.CATEGORY_TRAFFIC);
+									if (DEBUG) Log.d(TAG, "deleteCategory=" + count);
+								}
+								((Tabulae)getActivity()).asyncInform(R.id.event_do_track_list, null);
+								// retrieve new report
 								ReportRetriever.Incidents incidents = ReportRetriever.go(cache_dir, null);
-								for (ReportRetriever.Incident incident: incidents) {
-									Log.d(TAG, "incident=" + incident);
-									TrackItem trackItem = new TrackItem(incident.getName(), incident.getDescription());
-									trackItem.setCategoryid(TrackItem.CATEGORY_TRAFFIC);
-									for (Location position: incident.getPosition()) {
-										trackItem.add(null, new TrackPointItem(position.getLatitude(), position.getLongitude()));
+								try (final SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase()) {
+									for (ReportRetriever.Incident incident: incidents) {
+										Log.d(TAG, "incident=" + incident);
+										TrackItem trackItem = new TrackItem(incident.getName(), incident.getDescription());
+										trackItem.setCategoryid(TrackItem.CATEGORY_TRAFFIC);
+										for (Location position: incident.getPosition()) {
+											trackItem.add(null, new TrackPointItem(position.getLatitude(), position.getLongitude()));
+										}
+										trackItem.insert(db);
 									}
-									trackItem.insert(db);
 								}
 								enabled = true;
 								Bundle b = new Bundle();
 								b.putBoolean("enabled", enabled);
 								((Tabulae)getActivity()).asyncInform(R.id.event_notify_traffic, b);
+								((Tabulae)getActivity()).asyncInform(R.id.event_do_track_list, null);
 							}
 							catch (Exception e) {
 								Log.d(TAG, "traffic load e=" + e, e);

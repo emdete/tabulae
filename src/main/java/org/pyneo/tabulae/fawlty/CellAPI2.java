@@ -39,7 +39,7 @@ public class CellAPI2 {
 			connection.setRequestProperty("X-Correlation-Id", correlation_id);
 			connection.setRequestProperty("Authorization", "Basic cHluZW86YU4zUGVpdjY=");
 			connection.setRequestMethod("POST");
-			try (java.io.Writer out = new java.io.OutputStreamWriter(connection.getOutputStream())) {
+			try (final java.io.Writer out = new java.io.OutputStreamWriter(connection.getOutputStream())) {
 				list.writeJSONString(out);
 				out.flush();
 			}
@@ -48,7 +48,7 @@ public class CellAPI2 {
 			if (httpResponseCode != 200) {
 				throw new Exception("httpResponseCode=" + httpResponseCode);
 			}
-			try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+			try (final BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
 				Object obj = JSONValue.parseWithException(in);
 				//if (DEBUG) Log.d(TAG, "retrieveLocation: response obj=" + obj);
 				ret = new TheList((JSONArray) obj);
