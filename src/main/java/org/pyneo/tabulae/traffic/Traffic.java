@@ -47,47 +47,50 @@ public class Traffic extends Base {
 			}
 			break;
 			case R.id.event_do_traffic: {
-				try {
-					final File cache_dir = new File(((Tabulae) getActivity()).getBaseDir(), "cache");
-					//noinspection ResultOfMethodCallIgnored
-					cache_dir.mkdirs();
-					mThreadPool.execute(new Runnable() {
-						public void run() {
-							try {
-								try (final SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase()) {
-									// remove old incidents
-									int count = TrackItem.deleteCategory(db, TrackItem.CATEGORY_TRAFFIC);
-									if (DEBUG) Log.d(TAG, "deleteCategory=" + count);
-								}
-								((Tabulae)getActivity()).asyncInform(R.id.event_do_track_list, null);
-								// retrieve new report
-								ReportRetriever.Incidents incidents = ReportRetriever.go(cache_dir, null);
-								try (final SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase()) {
-									for (ReportRetriever.Incident incident: incidents) {
-										Log.d(TAG, "incident=" + incident);
-										TrackItem trackItem = new TrackItem(incident.getName(), incident.getDescription());
-										trackItem.setCategoryid(TrackItem.CATEGORY_TRAFFIC);
-										for (Location position: incident.getPosition()) {
-											trackItem.add(null, new TrackPointItem(position.getLatitude(), position.getLongitude()));
-										}
-										trackItem.insert(db);
+				if (!enabled) {
+					enabled = true;
+					try {
+						final File cache_dir = new File(((Tabulae) getActivity()).getBaseDir(), "cache");
+						//noinspection ResultOfMethodCallIgnored
+						cache_dir.mkdirs();
+						mThreadPool.execute(new Runnable() {
+							public void run() {
+								try {
+									try (final SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase()) {
+										// remove old incidents
+										int count = TrackItem.deleteCategory(db, TrackItem.CATEGORY_TRAFFIC);
+										if (DEBUG) Log.d(TAG, "deleteCategory=" + count);
 									}
+									((Tabulae)getActivity()).asyncInform(R.id.event_do_track_list, null);
+									// retrieve new report
+									ReportRetriever.Incidents incidents = ReportRetriever.go(cache_dir, null);
+									try (final SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase()) {
+										for (ReportRetriever.Incident incident: incidents) {
+											Log.d(TAG, "incident=" + incident);
+											TrackItem trackItem = new TrackItem(incident.getName(), incident.getDescription());
+											trackItem.setCategoryid(TrackItem.CATEGORY_TRAFFIC);
+											for (Location position: incident.getPosition()) {
+												trackItem.add(null, new TrackPointItem(position.getLatitude(), position.getLongitude()));
+											}
+											trackItem.insert(db);
+										}
+									}
+									enabled = false;
+									//Bundle b = new Bundle();
+									//b.putBoolean("enabled", enabled);
+									//((Tabulae)getActivity()).asyncInform(R.id.event_notify_traffic, b);
+									((Tabulae)getActivity()).asyncInform(R.id.event_do_track_list, null);
 								}
-								enabled = true;
-								Bundle b = new Bundle();
-								b.putBoolean("enabled", enabled);
-								((Tabulae)getActivity()).asyncInform(R.id.event_notify_traffic, b);
-								((Tabulae)getActivity()).asyncInform(R.id.event_do_track_list, null);
+								catch (Exception e) {
+									Log.d(TAG, "traffic load e=" + e, e);
+									//Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+								}
 							}
-							catch (Exception e) {
-								Log.d(TAG, "traffic load e=" + e, e);
-								//Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
-							}
-						}
-					});
-				}
-				catch (Exception e) {
-					Log.d(TAG, "traffic load e=" + e);
+						});
+					}
+					catch (Exception e) {
+						Log.d(TAG, "traffic load e=" + e);
+					}
 				}
 			}
 			break;

@@ -1,6 +1,7 @@
 package org.pyneo.tabulae.traffic;
 
 import android.location.Location;
+import android.os.Parcelable;
 import android.util.Log;
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,21 +28,20 @@ public class ReportRetriever {
 	private static final int TIMEOUT_READ = 10000;
 	private static final int CACHE_TIME = 60 * 3; // time to keep the once retrieved version in seconds
 	private static final String USER_AGENT = Constants.USER_AGENT;
-	private static final String REFERER = "http://www.ndr.de/nachrichten/verkehr/";
 	private static final boolean FOLLOW_REDIRECTS = false;
-	private static final String NDR_TRAFFIC = "http://www.ndr.de/nachrichten/verkehr/verkehrsdaten100-extapponly.json";
+	// "http://exporte.wdr.de/WDRVerkehrWebsite/map/all?zoom=6&bbox=6,50,8,51"
 	private static final SimpleDateFormat HUMAN_READABLE_TIMESTAMP = new SimpleDateFormat("dd.MM.yyyy', 'HH:mm' Uhr'", Locale.US);
 
 	/**
 	 * request trafficreport, http level
 	 */
-	static Map<String, Object> request(URL url, File target) throws Exception {
+	static Map<String, Object> request(URL url, File target, String referer) throws Exception {
 		Log.d(Constants.TAG, "request url=" + url);
 		URLConnection urlConnection = url.openConnection();
 		urlConnection.setConnectTimeout(TIMEOUT_CONNECT);
 		urlConnection.setReadTimeout(TIMEOUT_READ);
 		urlConnection.setRequestProperty("User-Agent", USER_AGENT);
-		urlConnection.setRequestProperty("Referer", REFERER);
+		urlConnection.setRequestProperty("Referer", referer);
 		if (urlConnection instanceof HttpURLConnection) {
 			((HttpURLConnection) urlConnection).setInstanceFollowRedirects(FOLLOW_REDIRECTS);
 		}
@@ -68,7 +68,7 @@ public class ReportRetriever {
 	/**
 	 * request trafficreport, cache level
 	 */
-	static Map<String, Object> request(File cache_dir) throws Exception {
+	static Map<String, Object> request(File cache_dir, String url, String referer) throws Exception {
 		File target = new java.io.File(cache_dir, "verkehrsdaten100-extapponly.json");
 		if (target.exists()) {
 			long filetime = target.lastModified() / 1000;
@@ -82,11 +82,11 @@ public class ReportRetriever {
 				target.delete();
 			}
 		}
-		return request(new URL(NDR_TRAFFIC), target);
+		return request(new URL(url), target, referer);
 	}
 
-	static class AppLoc extends Location {
-		AppLoc(double lat, double lon) {
+	static class TrafficLocation extends Location {
+		TrafficLocation(double lat, double lon) {
 			super("");
 			setLatitude(lat);
 			setLongitude(lon);
@@ -190,15 +190,19 @@ public class ReportRetriever {
 		}
 	}
 
-	/** request trafficreport */
-	public static Incidents go(File cache_dir, Incidents incidents) throws Exception {
-		if (incidents == null) {
-			incidents = new Incidents();
-		}
-		else {
-			incidents.clear();
-		}
-		Map<String,Object> base = request(cache_dir);
+	public static Incidents go_wdr(File cache_dir, Incidents incidents) throws Exception {
+		Map<String,Object> base = request(cache_dir,
+			"http://www.ndr.de/nachrichten/verkehr/verkehrsdaten100-extapponly.json",
+			"http://www.ndr.de/nachrichten/verkehr/");
+		String type = (String)base.get("type");
+
+		return incidents;
+	}
+
+	public static Incidents go_ndr(File cache_dir, Incidents incidents) throws Exception {
+		Map<String,Object> base = request(cache_dir,
+			"http://www.ndr.de/nachrichten/verkehr/verkehrsdaten100-extapponly.json",
+			"http://www.ndr.de/nachrichten/verkehr/");
 		Date human_readable_timestamp = HUMAN_READABLE_TIMESTAMP.parse((String)base.get("human_readable_timestamp"));
 		String type = (String)base.get("type");
 		if ("FeatureCollection".equals(type)) {
@@ -229,21 +233,25 @@ public class ReportRetriever {
 						List coordinates = (List)geometry.get("coordinates");
 						for (Object p: coordinates) {
 							List pair = (List)p;
-							position.add(new AppLoc((Double)pair.get(1), (Double)pair.get(0)));
+							position.add(new TrafficLocation((Double)pair.get(1), (Double)pair.get(0)));
 						}
 					}
 					else if ("Point".equals(type_g)) {
 						List pair = (List)geometry.get("coordinates");
-						position.add(new AppLoc((Double)pair.get(1), (Double)pair.get(0)));
+						position.add(new TrafficLocation((Double)pair.get(1), (Double)pair.get(0)));
 					}
 					else {
 						throw new Exception("unknwon geometry type_g=" + type_g);
 					}
 				}
-				if ("traffic_jam".equals(category_id) && ("aroad".equals(street_type) || "m1road".equals(street_type))) {
+				//if ("traffic_jam".equals(category_id) && ("aroad".equals(street_type) || "m1road".equals(street_type))) {
+				if (position.size() > 1) {
 					incidents.add(new Incident(
 						id, category, category_id, description, color,
 						debugUrgency, states, street_type, type_g, position));
+				}
+				else {
+					Log.d(Constants.TAG, "request dropped category_id=" + category_id + ", street_type=" + street_type);
 				}
 			}
 		}
@@ -253,4 +261,16 @@ public class ReportRetriever {
 		return incidents;
 	}
 
+	/** request trafficreports */
+	public static Incidents go(File cache_dir, Incidents incidents) throws Exception {
+		if (incidents == null) {
+			incidents = new Incidents();
+		}
+		else {
+			incidents.clear();
+		}
+		go_ndr(cache_dir, incidents);
+		go_wdr(cache_dir, incidents);
+		return incidents;
+	}
 }
