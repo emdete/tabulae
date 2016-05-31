@@ -3,6 +3,8 @@ package org.pyneo.tabulae.track;
 import org.mapsforge.core.model.BoundingBox;
 import org.mapsforge.core.model.MapPosition;
 import org.mapsforge.core.util.LatLongUtils;
+import org.mapsforge.map.layer.Layer;
+import org.mapsforge.map.layer.Layers;
 import org.pyneo.thinstore.StoreObject;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,24 +21,21 @@ import android.database.sqlite.SQLiteDatabase;
 import static org.pyneo.tabulae.track.Constants.*;
 
 public class Track extends Base {
-	List<AlternatingLine> polylines = new ArrayList<>();
+	List<Layer> polylines = new ArrayList<>();
 
 	@Override
 	public void onCreate(Bundle bundle) {
 		if (DEBUG) Log.d(TAG, "Track.onCreate");
 		super.onCreate(bundle);
-		polylines.add(new AlternatingLine(AndroidGraphicFactory.INSTANCE));
-		showVisibleTracks();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		if (DEBUG) Log.d(TAG, "Track.onResume");
-		MapView mapView = ((Tabulae) getActivity()).getMapView();
-		for (AlternatingLine polyline: polylines) {
-			mapView.getLayerManager().getLayers().add(polyline);
-		}
+		//MapView mapView = ((Tabulae) getActivity()).getMapView();
+		//mapView.getLayerManager().getLayers().addAll(polylines);
+		showVisibleTracks();
 	}
 
 	@Override
@@ -44,20 +43,28 @@ public class Track extends Base {
 		super.onPause();
 		if (DEBUG) Log.d(TAG, "Track.onPause");
 		MapView mapView = ((Tabulae) getActivity()).getMapView();
-		for (AlternatingLine polyline: polylines) {
-			polyline.getLatLongs().clear();
-			mapView.getLayerManager().getLayers().remove(polyline);
+		Layers layers = mapView.getLayerManager().getLayers();
+		for (Layer polyline: polylines) {
+			((AlternatingLine)polyline).getLatLongs().clear();
+			layers.remove(polyline, false);
 		}
+		polylines.clear();
 	}
 
 	void showVisibleTracks() {
 		if (DEBUG) Log.d(TAG, "Track.showVisibleTracks");
 		try {
 			MapView mapView = ((Tabulae) getActivity()).getMapView();
-			for (AlternatingLine polyline: polylines) {
-				mapView.getLayerManager().getLayers().remove(polyline);
+			Layers layers = mapView.getLayerManager().getLayers();
+			if (DEBUG) Log.d(TAG, "showVisibleTracks layers.size=" + layers.size());
+			for (Layer polyline: polylines) {
+				((AlternatingLine)polyline).getLatLongs().clear();
+				if (!layers.remove(polyline, false)) {
+					Log.e(TAG, "showVisibleTracks remove did not remove layer?!?");
+				}
 			}
 			polylines.clear();
+			if (DEBUG) Log.d(TAG, "showVisibleTracks layers.size=" + layers.size());
 			BoundingBox bb = null;
 			try (final SQLiteDatabase db = ((Tabulae)getActivity()).getReadableDatabase()) {
 				for (StoreObject item : StoreObject.query(db, TrackItem.class).where("visible").equal(true).fetchAll()) {
@@ -76,10 +83,12 @@ public class Track extends Base {
 						Bundle extra = new Bundle();
 						extra.putBoolean("autofollow", false);
 						((Tabulae) getActivity()).inform(R.id.event_do_autofollow, extra);
-						mapView.getLayerManager().getLayers().add(polyline);
+						polylines.add(polyline);
 					}
 				}
 			}
+			layers.addAll(polylines);
+			if (DEBUG) Log.d(TAG, "showVisibleTracks layers.size=" + layers.size());
 			// mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(
 			// 	bb.getCenterPoint(),
 			// 	LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(),

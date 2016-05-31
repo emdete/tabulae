@@ -22,12 +22,13 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import static org.pyneo.tabulae.traffic.Constants.*;
 
 public class ReportRetriever {
 	private static final int TIMEOUT_CONNECT = 5000;
 	private static final int TIMEOUT_READ = 10000;
 	private static final int CACHE_TIME = 60 * 3; // time to keep the once retrieved version in seconds
-	private static final String USER_AGENT = Constants.USER_AGENT;
+	// from Constants: private static final String USER_AGENT = ;
 	private static final boolean FOLLOW_REDIRECTS = false;
 	// "http://exporte.wdr.de/WDRVerkehrWebsite/map/all?zoom=6&bbox=6,50,8,51"
 	private static final SimpleDateFormat HUMAN_READABLE_TIMESTAMP = new SimpleDateFormat("dd.MM.yyyy', 'HH:mm' Uhr'", Locale.US);
@@ -36,7 +37,7 @@ public class ReportRetriever {
 	 * request trafficreport, http level
 	 */
 	static Map<String, Object> request(URL url, File target, String referer) throws Exception {
-		Log.d(Constants.TAG, "request url=" + url);
+		if (DEBUG) Log.d(TAG, "request url=" + url);
 		URLConnection urlConnection = url.openConnection();
 		urlConnection.setConnectTimeout(TIMEOUT_CONNECT);
 		urlConnection.setReadTimeout(TIMEOUT_READ);
@@ -61,7 +62,7 @@ public class ReportRetriever {
 			JSONValue.writeJSONString(obj, out);
 			out.flush();
 		}
-		Log.d(Constants.TAG, "request stored target=" + target);
+		if (DEBUG) Log.d(TAG, "request stored target=" + target);
 		return (JSONObject) obj;
 	}
 
@@ -76,7 +77,7 @@ public class ReportRetriever {
 			if (currenttime - filetime < CACHE_TIME) {
 				Object obj = JSONValue.parseWithException(new BufferedReader(new InputStreamReader(new FileInputStream(target))));
 				if (obj instanceof JSONObject) {
-					Log.d(Constants.TAG, "request loaded target=" + target);
+					if (DEBUG) Log.d(TAG, "request loaded target=" + target);
 					return (JSONObject) obj;
 				}
 				target.delete();
@@ -251,7 +252,7 @@ public class ReportRetriever {
 						debugUrgency, states, street_type, type_g, position));
 				}
 				else {
-					Log.d(Constants.TAG, "request dropped category_id=" + category_id + ", street_type=" + street_type);
+					Log.i(TAG, "request dropped category_id=" + category_id + ", street_type=" + street_type);
 				}
 			}
 		}
@@ -270,7 +271,8 @@ public class ReportRetriever {
 			incidents.clear();
 		}
 		go_ndr(cache_dir, incidents);
-		go_wdr(cache_dir, incidents);
+		//go_wdr(cache_dir, incidents);
+		if (DEBUG) Log.d(TAG, "go size=" + incidents.size());
 		return incidents;
 	}
 }

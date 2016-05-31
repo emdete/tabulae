@@ -50,12 +50,12 @@ public class Traffic extends Base {
 				if (!enabled) {
 					enabled = true;
 					try {
-						final File cache_dir = new File(((Tabulae) getActivity()).getBaseDir(), "cache");
-						//noinspection ResultOfMethodCallIgnored
-						cache_dir.mkdirs();
 						mThreadPool.execute(new Runnable() {
 							public void run() {
 								try {
+									final File cache_dir = new File(((Tabulae) getActivity()).getBaseDir(), "cache");
+									//noinspection ResultOfMethodCallIgnored
+									cache_dir.mkdirs();
 									try (final SQLiteDatabase db = ((Tabulae)getActivity()).getWritableDatabase()) {
 										// remove old incidents
 										int count = TrackItem.deleteCategory(db, TrackItem.CATEGORY_TRAFFIC);
