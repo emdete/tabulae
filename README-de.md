@@ -14,19 +14,18 @@ Es ist mit Gesten steuerbar (zoomen mit zwei Fingern) aber wesentlich wurde
 Wert auf die Einhandbedienung gelegt um die Nutzung beim Sport zu vereinfachen.
 
 Die Karten können vorab heruntergeladen werden, was die Nutzung in Gegenden mit
-schlecher Netzabdeckung erlaubt. Die heruntergeladenen Karten werden
-gespeichert um Bandbreite zu sparen. Kartenanbieter können frei definiert
-werden, einige Beispiele sind vorkonfiguriert. Darüber hinaus können eigene
-Karten direkt aus Dateien verwendet werden.
+schlecher Netzabdeckung erlaubt. Auch die nach Bedarf heruntergeladenen Karten
+werden gespeichert um Bandbreite zu sparen.
 
 Auf verschiedene Weise können Positionen mit anderen Apps und Nutzern geteilt
-oder angezeigt werden. Die Wegstrecken und POIs können als gpx und kml im- und
+oder angezeigt werden. Die Wegstrecken und POIs können als gpx im- und
 exportiert werden.
 
 Tabulae benötigt keinen Account zu irgendeinem Dienst, speichert keine Daten
-welcher Art auch immer im Internet. Das Zurverfügung-Stellen von Daten liegt in
-der Kontrolle des Benutzers. Tabulae erlaubt das Senden und Empfangen dieser
-Daten, der Nutzer jedoch bestimmt, wo diese weiterverarbeitet werden.
+welcher Art auch immer im Internet ("in der cloud"). Das Zurverfügung-Stellen
+von Daten liegt in der Kontrolle des Benutzers. Tabulae erlaubt das Senden und
+Empfangen dieser Daten, der Nutzer jedoch bestimmt, mit wem diese geteilt oder
+weiterverarbeitet werden.
 
 Tabulae meldet keine privaten Informationen des Nutzers zu einem zentralen
 Server. Die einzige Möglichkeit, private Daten von Nutzern zu erhalten wäre aus
@@ -40,13 +39,19 @@ Die Quelltexte des Programms sind für jeden einsehbar und damit überprüfbar.
 
 <img alt="screenshot main" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot.png" height="800px" width="450px">
 
+#### Querformat
+
+<img alt="screenshot portrait" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-portrait.png" height="450px" width="800px">
+
 #### Track Statistik
 
 <img alt="screenshot statistics" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-statistic.png" height="800px" width="450px">
 
-#### Querformat
+#### Verkehrsnachrichten / Staureport
 
-<img alt="screenshot portrait" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-portrait.png" height="450px" width="800px">
+Zum Testen der Tracks wurde eine Anzeige von Staureports hinzugefügt:
+
+<img alt="screenshot portrait" src="https://raw.githubusercontent.com/emdete/Tabulae/master/art/screenshot-traffic.png" height="800px" width="450px">
 
 Bedienung
 ---------
@@ -54,21 +59,22 @@ Bedienung
 ### Kartenauswahl
 
 Der Anbieter der Karte kann aus einem Menü gewählt werden. Einige Anbieter sind
-vorkonfiguriert und es können Strassekarten, Topographische Karten,
+verfügbar und es können Strassenkarten, Topographische Karten,
 Satellitenbilder und andere ausgewählt werden.
 
-Dem Benutzer obligt zu prüfen, ob der ausgewählte Kartenanbieter der Nutzung
-zustimmt.
+Hinweis: Dem Benutzer obligt zu prüfen, ob der ausgewählte Kartenanbieter der
+Nutzung zustimmt.
 
-### Vector
+### Vektor
 
-Die App nutzt wo es geht Vector-Grafiken. Alle Icons sind Vectoren (die aus
+Die App nutzt wo es geht Vektor-Grafiken. Alle Icons sind Vektoren (die aus
 SVGs konvertiert werden) um die leidige DPI Abhängigkeit zu umgehen
-(https://developer.android.com/training/material/drawables.html). Unterstützung
-älterer Android Verionen wurde darum fallengelassen.
+(https://developer.android.com/training/material/drawables.html). Dies ist ein
+Grund, warum die Unterstützung älterer Android Verionen fallengelassen wurde.
 
-Auch Vektorkarten werden genutzt (mapsforge). In "Map Download" wird
-beschrieben wie diese installiert werden.
+Auch als Karten werden Vektorkarten genutzt (das Projekt
+[mapsforge](https://github.com/mapsforge/mapsforge/) liefert diese Funktion).
+In "Map Download" wird beschrieben wie diese installiert werden.
 
 ### Instrumentenbrett
 
@@ -130,6 +136,9 @@ werden. Der Pfad dahin ist dann:
 
 	/storage/sdcard1/Android/data/org.pyneo.tabulae/files/maps/openandromaps/themes
 
+Diese Bedingungen kann im Grunde nur ein Android-Entwickler herstellen (upload
+via adb), jeder andere muss sich im Moment mit den Pixeltiles begnügen.
+
 Fehlersuche
 -----------
 
@@ -165,9 +174,9 @@ Danksagungen an:
 Best practices
 --------------
 
-I registered this project at
+Das Projekt wurde unter
 
 [bestpractices](https://bestpractices.coreinfrastructure.org/projects/174)
 
-just to see what this is about.
+registiert, im wesentlichen weil ich neugierig war, wie die Erteilung abläuft.
 
