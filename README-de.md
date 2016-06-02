@@ -162,3 +162,12 @@ Danksagungen an:
 
 	tabulae@pyneo.org
 
+Best practices
+--------------
+
+I registered this project at
+
+[bestpractices](https://bestpractices.coreinfrastructure.org/projects/174)
+
+just to see what this is about.
+
