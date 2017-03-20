@@ -1383,7 +1383,7 @@ def java_out(enabled=False, **argv):
 		print('''		TileSourceFactory.addTileSource(new ParedTileSource("{cat}: {name}", {zoom_minlevel}, {zoom_maxlevel}, {maptile_sizepx}, new String[]{{"{baseurl}", }}));'''.format(**argv))
 
 def main():
-	print('''package org.pyneo.tabulae.map;
+	print('''package de.emdete.tabulae.map;
 
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;

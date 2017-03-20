@@ -124,17 +124,17 @@ das getExternalFilesDirs() zurückgibt. Initial wird dasjenige Verzeichnis
 gewählt, das am meisten freien Platz bereitstellt. In einem Gerät mit
 eingelegter zweiten SD müssen die map-Dateien für mapsforge dann in
 
-	/storage/sdcard1/Android/data/org.pyneo.tabulae/files/maps/mapsforge
+	/storage/sdcard1/Android/data/de.emdete.tabulae/files/maps/mapsforge
 
 installiert werden. Diejenigen für openandromaps (siehe
 [openandromaps](http://www.openandromaps.org/)) entsprechend in
 
-	/storage/sdcard1/Android/data/org.pyneo.tabulae/files/maps/openandromaps
+	/storage/sdcard1/Android/data/de.emdete.tabulae/files/maps/openandromaps
 
 Da diese map-Dateien eigene Themes benötigen, müssen auch diese installiert
 werden. Der Pfad dahin ist dann:
 
-	/storage/sdcard1/Android/data/org.pyneo.tabulae/files/maps/openandromaps/themes
+	/storage/sdcard1/Android/data/de.emdete.tabulae/files/maps/openandromaps/themes
 
 Diese Bedingungen kann im Grunde nur ein Android-Entwickler herstellen (upload
 via adb), jeder andere muss sich im Moment mit den Pixeltiles begnügen.
@@ -145,7 +145,7 @@ Fehlersuche
 Stürzt Tabulae ab, logged es den Fehler. Tabulae logged mit den üblichen
 Android Board-Mitteln. Mit dem Befehl:
 
-	adb logcat -v time -s org.pyneo.tabulae
+	adb logcat -v time -s de.emdete.tabulae
 
 lässt sich beobachten, was Tabulae zu sagen hat. Ein Debug-Build (siehe
 nächstes Kapitel) logged mehr Informationen.

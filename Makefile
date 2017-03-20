@@ -12,7 +12,7 @@ dbg: run
 	#rsync --verbose --archive build/outputs/apk/*-debug.apk littlelun.emdete.de:/var/www/pyneo.org/c/Tabulae-debug.apk
 	#rsync --verbose --archive art/ic_launcher.png littlelun.emdete.de:/var/www/pyneo.org/c/Tabulae-logo.png
 	adb install -r build/outputs/apk/*-debug.apk
-	adb shell am start org.pyneo.tabulae/.Tabulae
+	adb shell am start de.emdete.tabulae/.Tabulae
 
 clean:
 	./gradlew -q clean
