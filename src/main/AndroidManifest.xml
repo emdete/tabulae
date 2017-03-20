@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.pyneo.tabulae"
+	package="de.emdete.tabulae"
 	>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
@@ -23,7 +23,7 @@
 		android:allowBackup="false"
 		android:theme="@style/Theme"
 		android:hardwareAccelerated="true"
-		android:name="Application"
+		android:name="de.emdete.tabulae.Application"
 		>
 		<meta-data android:name="Rush_db_version" android:value="1" />
 		<meta-data android:name="Rush_db_name" android:value="tabulae.db" />
@@ -32,7 +32,7 @@
 		<meta-data android:name="Rush_log" android:value="true" />
 		<activity
 			android:label="Tabulae"
-			android:name="Tabulae"
+			android:name="de.emdete.tabulae.Tabulae"
 			android:alwaysRetainTaskState="true"
 			android:configChanges="keyboardHidden|orientation"
 			android:launchMode="singleInstance"
@@ -55,22 +55,6 @@
 			<intent-filter>
 				<action android:name="eu.siacs.conversations.location.show" />
 				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-			<!-- android matches non-greedy : http://stackoverflow.com/questions/3400072/pathpattern-to-match-file-extension-does-not-work-if-a-period-exists-elsewhere-i-->
-			<!-- mimeType&host are both needed or you will either have unwanted matching or no match when needed
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.gpx" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\.gpx" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\.gpx" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\.gpx" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gpx" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.kml" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\.kml" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\.kml" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\.kml" />
-				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.kml" />
 			</intent-filter>
 			<intent-filter>
 				<data android:scheme="http" />
@@ -95,6 +79,22 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 			</intent-filter>
+			<!-- android matches non-greedy : http://stackoverflow.com/questions/3400072/pathpattern-to-match-file-extension-does-not-work-if-a-period-exists-elsewhere-i-->
+			<!-- mimeType&host are both needed or you will either have unwanted matching or no match when needed
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.gpx" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.kml" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\.kml" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\.kml" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\.kml" />
+				<data android:scheme="file" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\..*\\..*\\..*\\.kml" />
+			</intent-filter>
 			<intent-filter>
 				<data android:scheme="http" android:host="www.google.com" android:pathPrefix="/maps" />
 				<data android:scheme="https" android:host="www.google.com" android:pathPrefix="/maps" />
@@ -112,11 +112,11 @@
 			-->
 		</activity>
 		<activity
-			android:name=".gui.DocumentAvtivity"
+			android:name="de.emdete.tabulae.gui.DocumentAvtivity"
 			android:exported="false"
 			/>
 		<service
-			android:name=".locus.LocusService"
+			android:name="de.emdete.tabulae.locus.LocusService"
 			android:exported="false"
 			/>
 	</application>

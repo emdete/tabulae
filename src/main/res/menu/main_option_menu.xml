@@ -5,12 +5,14 @@
 	<item
 		android:id="@id/event_do_track_list"
 		android:icon="@drawable/ic_menu_track_list"
+		android:visible="false"
 		android:showAsAction="ifRoom"
 		android:title="@string/menu_track_list"
 		/>
 	<item
 		android:id="@id/event_do_poi_list"
 		android:icon="@drawable/ic_menu_poi_list"
+		android:visible="false"
 		android:showAsAction="ifRoom"
 		android:title="@string/menu_poi_list"
 		/>
@@ -21,26 +23,27 @@
 		android:title="@string/menu_map_list"
 		>
 		<menu>
-			<item android:id="@id/event_do_map_vector" android:title="@string/map_mapsforge" />
-			<item android:id="@id/event_do_map_openandromaps" android:title="@string/map_openandromap" />
-			<item android:id="@id/event_do_map_bing_satellite" android:title="@string/map_bing_satellite" />
-			<item android:id="@id/event_do_map_google_satellite" android:title="@string/map_google_satellite" />
-			<item android:id="@id/event_do_map_mapquest" android:title="@string/map_mapquest" />
-			<item android:id="@id/event_do_map_outdoor_active" android:title="@string/map_outdoor_active" />
-			<item android:id="@id/event_do_map_wanderreitkarte" android:title="@string/map_wanderreitkarte" />
+			<item android:id="@id/event_do_map_vector" android:title="@string/map_mapsforge" android:visible="false" />
+			<item android:id="@id/event_do_map_openandromaps" android:title="@string/map_openandromap" android:visible="false" />
+			<item android:id="@id/event_do_map_bing_satellite" android:title="@string/map_bing_satellite" android:visible="false" />
+			<item android:id="@id/event_do_map_google_satellite" android:title="@string/map_google_satellite" android:visible="false" />
+			<item android:id="@id/event_do_map_mapquest" android:title="@string/map_mapquest" android:visible="false" />
+			<item android:id="@id/event_do_map_outdoor_active" android:title="@string/map_outdoor_active" android:visible="false" />
+			<item android:id="@id/event_do_map_wanderreitkarte" android:title="@string/map_wanderreitkarte" android:visible="false" />
 		</menu>
 	</item>
 	<item
 		android:id="@id/event_do_pre_load"
 		android:icon="@drawable/ic_menu_preload"
 		android:showAsAction="ifRoom"
+		android:visible="false"
 		android:title="@string/menu_pre_load"
 		/>
 	<item
 		android:id="@id/event_do_traffic"
 		android:title="@string/traffic"
 		android:icon="@drawable/ic_menu_traffic"
-		android:showAsAction="always"
+		android:visible="false"
 		android:checkable="true"
 		/>
 	<item
