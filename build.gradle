@@ -18,7 +18,7 @@ repositories {
 dependencies {
 	compile 'com.android.support:support-annotations:22.2.0' // https://sites.google.com/a/android.com/tools/tech-docs/support-annotations
 	// compile 'com.android.support:support-v23:0.0.1' // https://developer.android.com/tools/support-library/features.html
-	compile 'org.mapsforge:mapsforge-map-android:0.6.+'
+	compile 'org.mapsforge:mapsforge-map-android:0.8.+'
 	compile ('com.googlecode.json-simple:json-simple:1.1.1') { exclude module: 'junit' }
 }
 
