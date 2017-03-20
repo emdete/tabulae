@@ -4,7 +4,7 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:+'
+		classpath 'com.android.tools.build:gradle:2.3.+'
 	}
 }
 
@@ -13,9 +13,6 @@ apply plugin: 'com.android.application'
 repositories {
 	jcenter()
 	mavenCentral()
-	maven {
-		url "http://maven.rushorm.com"
-	}
 }
 
 dependencies {
@@ -52,11 +49,11 @@ android {
 		buildTypes.release.signingConfig = null
 	}
 
-	compileSdkVersion 23
-	buildToolsVersion "23.0.3"
+	compileSdkVersion 25
+	buildToolsVersion "25.0.0"
 	defaultConfig {
-		minSdkVersion 19
-		targetSdkVersion 23
+		minSdkVersion 25
+		targetSdkVersion 25
 		versionCode 20010
 		versionName "2.alpha.amber"
 	}
