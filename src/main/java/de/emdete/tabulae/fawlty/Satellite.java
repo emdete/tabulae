@@ -35,39 +35,24 @@ public class Satellite implements Iterator<TheDictionary>, Iterable<TheDictionar
 			if (value.hasBearing()) {
 				map.put("bearing", value.getBearing());
 			}
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-				map.put("age_nanos", SystemClock.elapsedRealtimeNanos() - value.getElapsedRealtimeNanos());
-			}
-			else {
-				map.put("age_nanos", (SystemClock.elapsedRealtime() - value.getTime()) * 1000000);
-			}
+			map.put("age_nanos", SystemClock.elapsedRealtimeNanos() - value.getElapsedRealtimeNanos());
 			map.put("provider", value.getProvider());
 			if (value.hasSpeed()) {
 				map.put("speed", (double) value.getSpeed() * 3.6);
 			}
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-				map.put("fromMockProvider", value.isFromMockProvider());
-			}
-			else {
-				map.put("fromMockProvider", false);
-			}
+			map.put("fromMockProvider", value.isFromMockProvider());
 		}
 	}
 
 	///////////////////// test
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public static String test(Context context) {
 		int a = 0;
 		int b = 0;
 		int c = 0;
 		//if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-				|| context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-				&& context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			for (TheDictionary o : new Satellite(((LocationManager) context.getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER))) {
-				a++;
-				if (DEBUG) Log.d(TAG, "got: " + o);
-			}
+		for (TheDictionary o : new Satellite(((LocationManager) context.getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER))) {
+			a++;
+			if (DEBUG) Log.d(TAG, "got: " + o);
 		}
 		return "counts: " + a + '/' + b + '/' + c;
 	}

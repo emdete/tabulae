@@ -1,12 +1,11 @@
 package de.emdete.tabulae.fawlty;
 
 import android.Manifest;
-import android.annotation.TargetApi;
+import android.os.Build;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import java.util.ArrayList;
@@ -266,17 +265,15 @@ public class Meta implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 					}
 					catch (Exception ignore) {
 					}
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-						try {
-							map.put("android_mms_ua_prof_url", value.getMmsUAProfUrl());
-						}
-						catch (Exception ignore) {
-						}
-						try {
-							map.put("android_mms_user_agent", value.getMmsUserAgent());
-						}
-						catch (Exception ignore) {
-						}
+					try {
+						map.put("android_mms_ua_prof_url", value.getMmsUAProfUrl());
+					}
+					catch (Exception ignore) {
+					}
+					try {
+						map.put("android_mms_user_agent", value.getMmsUserAgent());
+					}
+					catch (Exception ignore) {
 					}
 				}
 			}
@@ -284,7 +281,6 @@ public class Meta implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 	}
 
 	///////////////////// test
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	static public String test(Context context) {
 		List<TheDictionary> arr = new ArrayList<>();
 		int post17cells = 0;
@@ -292,15 +288,13 @@ public class Meta implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 		int gps = 0;
 		int wlans = 0;
 		int mobiles = 0;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-			for (TheDictionary o : new CellId(((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getAllCellInfo())) {
-				post17cells++;
-				if (DEBUG) Log.d(TAG, "got: " + o);
-				arr.add(o);
-			}
-			if (post17cells <= 0) {
-				Log.e(TAG, "test: post-17 android, pre-17 api!");
-			}
+		for (TheDictionary o : new CellId(((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getAllCellInfo())) {
+			post17cells++;
+			if (DEBUG) Log.d(TAG, "got: " + o);
+			arr.add(o);
+		}
+		if (post17cells <= 0) {
+			Log.e(TAG, "test: post-17 android, pre-17 api!");
 		}
 		TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		//noinspection deprecation
@@ -309,14 +303,10 @@ public class Meta implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 			if (DEBUG) Log.d(TAG, "got: " + o);
 			arr.add(o);
 		}
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-				|| context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-				&& context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-			for (TheDictionary o : new Satellite(((LocationManager) context.getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER))) {
-				gps++;
-				if (DEBUG) Log.d(TAG, "got: " + o);
-				arr.add(o);
-			}
+		for (TheDictionary o : new Satellite(((LocationManager) context.getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER))) {
+			gps++;
+			if (DEBUG) Log.d(TAG, "got: " + o);
+			arr.add(o);
 		}
 		for (TheDictionary o : new WifiId(((WifiManager) context.getSystemService(Context.WIFI_SERVICE)).getScanResults())) {
 			wlans++;

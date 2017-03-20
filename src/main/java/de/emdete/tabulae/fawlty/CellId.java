@@ -1,8 +1,6 @@
 package de.emdete.tabulae.fawlty;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.telephony.CellIdentityCdma;
 import android.telephony.CellIdentityGsm;
 import android.telephony.CellIdentityLte;
@@ -22,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 import static de.emdete.tabulae.fawlty.Constants.*;
 
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class CellId implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 	private List<CellInfo> cellInfoList;
 	private int i = 0;
@@ -32,7 +29,6 @@ public class CellId implements Iterator<TheDictionary>, Iterable<TheDictionary> 
 	}
 
 	//////////////////////////////// api 17 and younger:
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	public static void fill(TheDictionary map, CellInfo value) throws Exception {
 		if (value != null) {
 			map.put("time_stamp", value.getTimeStamp());
@@ -44,10 +40,8 @@ public class CellId implements Iterator<TheDictionary>, Iterable<TheDictionary> 
 				fill(map, ((CellInfoGsm) value).getCellIdentity());
 				fill(map, ((CellInfoGsm) value).getCellSignalStrength());
 			} else if (value instanceof CellInfoWcdma) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-					fill(map, ((CellInfoWcdma) value).getCellIdentity());
-					fill(map, ((CellInfoWcdma) value).getCellSignalStrength());
-				}
+				fill(map, ((CellInfoWcdma) value).getCellIdentity());
+				fill(map, ((CellInfoWcdma) value).getCellSignalStrength());
 			} else if (value instanceof CellInfoLte) {
 				fill(map, ((CellInfoLte) value).getCellIdentity());
 				fill(map, ((CellInfoLte) value).getCellSignalStrength());
@@ -91,7 +85,6 @@ public class CellId implements Iterator<TheDictionary>, Iterable<TheDictionary> 
 		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	public static void fill(TheDictionary map, CellIdentityWcdma value) throws Exception {
 		if (value != null) {
 			map.put("type", "3");
@@ -152,7 +145,6 @@ public class CellId implements Iterator<TheDictionary>, Iterable<TheDictionary> 
 		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	public static void fill(TheDictionary map, CellSignalStrengthWcdma value) throws Exception {
 		if (value != null) {
 			int i;

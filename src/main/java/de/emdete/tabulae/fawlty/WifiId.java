@@ -1,6 +1,5 @@
 package de.emdete.tabulae.fawlty;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
@@ -66,7 +65,6 @@ public class WifiId implements Iterator<TheDictionary>, Iterable<TheDictionary> 
 		return bssid;
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private void fill_API17(TheDictionary map, ScanResult value) throws Exception {
 		map.put("timestamp", value.timestamp);
 	}

@@ -103,7 +103,9 @@ public class Locus extends Base {
 		super.onPause();
 		if (DEBUG) Log.d(TAG, "Locus.onPause");
 		MapView mapView = ((Tabulae) getActivity()).getMapView();
-		mapView.getLayerManager().getLayers().remove(myLocationOverlay);
+		if (mapView.getLayerManager() != null) {
+			mapView.getLayerManager().getLayers().remove(myLocationOverlay);
+		}
 		doUnbindService();
 	}
 
@@ -132,7 +134,7 @@ public class Locus extends Base {
 		//if (DEBUG) Log.d(TAG, "Locus.inform event=" + event + ", extra=" + extra);
 		switch (event) {
 			case R.id.event_notify_location: {
-				//if (DEBUG) Log.d(TAG, "Locus.inform event=" + event + ", extra=" + extra);
+				if (DEBUG) Log.d(TAG, "Locus.inform event=" + event + ", extra=" + extra);
 				if (myLocationOverlay != null) {
 					myLocationOverlay.onLocationChanged(toLocation(extra));
 				}

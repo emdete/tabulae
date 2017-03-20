@@ -2,7 +2,6 @@ package de.emdete.tabulae.screencapture;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
@@ -55,12 +54,7 @@ public class ScreenCaptureFragment extends Base {
 		mScreenDensity = mDisplayMetrics.densityDpi;
 		mScreenWidth = mDisplayMetrics.widthPixels;
 		mScreenHeight = mDisplayMetrics.heightPixels;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			mMediaProjectionManager = (MediaProjectionManager) activity.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-		}
-		else {
-			; // TODO
-		}
+		mMediaProjectionManager = (MediaProjectionManager) activity.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
 		mMediaRecorder = new MediaRecorder();
 		if (enabled && mVirtualDisplay == null) {
 			go();

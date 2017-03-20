@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Icon;
 import android.location.GpsSatellite;
 import android.location.GnssStatus;
 import android.location.Location;
@@ -30,7 +31,6 @@ public class LocusService extends Service implements LocationListener {
 	final Messenger mMessenger = new Messenger(new IncomingHandler());
 	NotificationManager mNotificationManager;
 	ArrayList<Messenger> mClients = new ArrayList<>();
-	GnssStatus gpsStatus;
 	LocationManager locationManager;
 	boolean myLocationEnabled;
 	Context context;
@@ -47,9 +47,9 @@ public class LocusService extends Service implements LocationListener {
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, Tabulae.class), 0);
 		Notification notification = new Notification.Builder(this)
 				.setSmallIcon(R.drawable.ic_service)
-				// .setLargeIcon(Icon.createWithResource(this, R.drawable.ic_service))
+				.setLargeIcon(Icon.createWithResource(this, R.drawable.ic_service))
 				.setTicker(text)
-				// .setColor(getResources().getColor(R.color.primary)) // KITKAT
+				.setColor(getResources().getColor(R.color.primary))
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(getText(R.string.app_label))
 				.setContentText(text)
@@ -101,11 +101,10 @@ public class LocusService extends Service implements LocationListener {
 			@Override public void onFirstFix(int ttffMillis) {
 			}
 			@Override public void onSatelliteStatusChanged(GnssStatus status) {
-				Bundle b = null;
-				b = toBundle(b, status);
+				Bundle b = toBundle(null, status);
 				for (int i = mClients.size() - 1; i >= 0; i--) {
 					try {
-						mClients.get(i).send(Message.obtain(null, R.id.message_locus_set_value, R.id.event_notify_location, 0, b));
+						mClients.get(i).send(Message.obtain(null, R.id.message_locus_set_value, R.id.event_notify_satellites, 0, b));
 					}
 					catch (RemoteException e) {
 						mClients.remove(i);
@@ -127,9 +126,6 @@ public class LocusService extends Service implements LocationListener {
 		Log.d(Constants.TAG, "LocusService.onLocationChanged location=" + location);
 		if (location != null) {
 			Bundle b = toBundle(null, location);
-			if (LocationManager.GPS_PROVIDER.equals(location.getProvider()) && gpsStatus != null) {
-				toBundle(b, gpsStatus);
-			}
 			for (int i = mClients.size() - 1; i >= 0; i--) {
 				try {
 					mClients.get(i).send(Message.obtain(null, R.id.message_locus_set_value, R.id.event_notify_location, 0, b));
@@ -139,22 +135,6 @@ public class LocusService extends Service implements LocationListener {
 				}
 			}
 		}
-	}
-
-	private Bundle toBundle(Bundle ret, GnssStatus status) {
-		if (ret == null) {
-			ret = new Bundle();
-		}
-		int count_seen = status.getSatelliteCount();
-		int count_fix = 0;
-		for (int i=0;i<count_seen;i++) {
-			if (status.usedInFix(i)) {
-				count_fix++;
-			}
-		}
-		ret.putInt("satellites", count_fix);
-		ret.putInt("satellites_seen", count_seen);
-		return ret;
 	}
 
 	//
@@ -242,6 +222,22 @@ public class LocusService extends Service implements LocationListener {
 				ret.putInt("satellites", extras.getInt("satellites", 0));
 			}
 		}
+		return ret;
+	}
+
+	private Bundle toBundle(Bundle ret, GnssStatus status) {
+		if (ret == null) {
+			ret = new Bundle();
+		}
+		int count_seen = status.getSatelliteCount();
+		int count_fix = 0;
+		for (int i=0;i<count_seen;i++) {
+			if (status.usedInFix(i)) {
+				count_fix++;
+			}
+		}
+		ret.putInt("satellites", count_fix);
+		ret.putInt("satellites_seen", count_seen);
 		return ret;
 	}
 }

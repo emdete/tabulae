@@ -14,22 +14,16 @@
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_SETTINGS" />
-	<uses-feature android:name="android.hardware.location" android:required="false" />
-	<uses-feature android:name="android.hardware.location.gps" android:required="false" />
-	<uses-feature android:name="android.hardware.location.network" android:required="false" />
+	<uses-feature android:name="android.hardware.location" android:required="true" />
+	<uses-feature android:name="android.hardware.location.gps" android:required="true" />
+	<uses-feature android:name="android.hardware.location.network" android:required="true" />
 	<application
 		android:label="@string/app_label"
 		android:icon="@drawable/ic_launcher"
-		android:allowBackup="false"
 		android:theme="@style/Theme"
-		android:hardwareAccelerated="true"
 		android:name="de.emdete.tabulae.Application"
+		android:hardwareAccelerated="true"
 		>
-		<meta-data android:name="Rush_db_version" android:value="1" />
-		<meta-data android:name="Rush_db_name" android:value="tabulae.db" />
-		<meta-data android:name="Rush_debug" android:value="false" />
-		<meta-data android:name="Rush_requires_table_annotation" android:value="false" />
-		<meta-data android:name="Rush_log" android:value="true" />
 		<activity
 			android:label="Tabulae"
 			android:name="de.emdete.tabulae.Tabulae"
@@ -56,6 +50,7 @@
 				<action android:name="eu.siacs.conversations.location.show" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
+			<!-- various: -->
 			<intent-filter>
 				<data android:scheme="http" />
 				<data android:scheme="https" />

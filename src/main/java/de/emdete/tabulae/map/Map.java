@@ -19,6 +19,7 @@ import org.mapsforge.map.model.common.PreferencesFacade;
 import de.emdete.tabulae.Base;
 import de.emdete.tabulae.R;
 import de.emdete.tabulae.Tabulae;
+import static de.emdete.tabulae.map.Constants.*;
 
 public class Map extends Base {
 	// get one from http://download.mapsforge.org/maps/ and adapt path to your needs:
@@ -88,14 +89,12 @@ public class Map extends Base {
 		mapView.setClickable(true);
 		// TODO: consider mapView.setGestureDetector();?
 		mapView.getMapScaleBar().setVisible(false);
-		mapView.getModel().mapViewPosition.setZoomLevelMin((byte) 4);
-		mapView.getModel().mapViewPosition.setZoomLevelMax((byte) 20);
-		mapView.getModel();
+		mapView.getMapZoomControls().setShowMapZoomControls(false);
 		mapView.setBuiltInZoomControls(false);
-		mapView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-		DisplayModel displayModel = mapView.getModel().displayModel;
-		displayModel.setBackgroundColor(0xffbbbbbb);
-		displayModel.setUserScaleFactor(1.5f);
+		//mapView.getModel().mapViewPosition.setZoomLevelMin((byte) 4);
+		//mapView.getModel().mapViewPosition.setZoomLevelMax((byte) 20);
+		//mapView.getModel().displayModel.setBackgroundColor(0xffbbbbbb);
+		//mapView.getModel().displayModel.setUserScaleFactor(1.5f);
 	}
 
 	@Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

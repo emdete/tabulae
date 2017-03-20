@@ -1,8 +1,6 @@
 package de.emdete.tabulae.fawlty;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.telephony.CellLocation;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
@@ -13,7 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import static de.emdete.tabulae.fawlty.Constants.*;
 
-@TargetApi(Build.VERSION_CODES.BASE)
 public class CellIdPre17API implements Iterator<TheDictionary>, Iterable<TheDictionary> {
 	public static boolean fallback_pre17api = false;
 	private int mcc = NeighboringCellInfo.UNKNOWN_CID; // NeighboringCellInfo.UNKNOWN_CID == -1
@@ -25,9 +22,7 @@ public class CellIdPre17API implements Iterator<TheDictionary>, Iterable<TheDict
 
 	public CellIdPre17API(TelephonyManager telephonyManager, CellLocation cellLocation, List<NeighboringCellInfo> neighboringCellInfoList) {
 		if (DEBUG) Log.d(TAG, "CellIdPre17API:");
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-			fallback_pre17api = true;
-		}
+		fallback_pre17api = true;
 		this.cellLocation = cellLocation;
 		this.neighboringCellInfoList = neighboringCellInfoList;
 		if (cellLocation != null) {

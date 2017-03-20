@@ -2,7 +2,6 @@ package de.emdete.tabulae.fawlty;
 
 import android.content.Context;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.telephony.CellInfo;
@@ -49,9 +48,7 @@ public class WirelessEnvListener extends PhoneStateListener implements Runnable 
 					location.setLatitude(latitude);
 					location.setLongitude(longitude);
 					location.setAccuracy(accuracy);
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-						location.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
-					}
+					location.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
 					location.setTime(System.currentTimeMillis());
 					Bundle extra = new Bundle();
 					extra.putDouble("latitude_tower", ident_location.getDouble("latitude_tower"));
@@ -87,13 +84,11 @@ public class WirelessEnvListener extends PhoneStateListener implements Runnable 
 		//if (DEBUG) Log.d(TAG, "WirelessEnvListener.onCellInfoChanged: cellInfos=" + cellInfos);
 		try {
 			Iterable<TheDictionary> cell_ids = null;
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-				if (cellInfos == null) {
-					cellInfos = telephonyManager.getAllCellInfo();
-					//if (DEBUG) Log.e(TAG, "WirelessEnvListener.onCellInfoChanged: from parameter cellInfos=" + cellInfos);
-				}
-				cell_ids = new CellId(cellInfos);
+			if (cellInfos == null) {
+				cellInfos = telephonyManager.getAllCellInfo();
+				//if (DEBUG) Log.e(TAG, "WirelessEnvListener.onCellInfoChanged: from parameter cellInfos=" + cellInfos);
 			}
+			cell_ids = new CellId(cellInfos);
 			if (cellInfos == null) {
 				//if (DEBUG) Log.e(TAG, "WirelessEnvListener.onCellInfoChanged: fallback to Pre17, cellInfos=" + cellInfos);
 				//noinspection deprecation
