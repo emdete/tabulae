@@ -6,5 +6,5 @@ run:
 	inkscape patterns/cemetery.svg
 
 dbg:
-	adb push . /storage/sdcard1/Android/data/org.pyneo.tabulae/files/maps/mapsforge/themes
+	adb push . /storage/sdcard1/Android/data/de.emdete.tabulae/files/maps/mapsforge/themes
 
