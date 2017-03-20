@@ -185,10 +185,12 @@ public class Map extends Base {
 			}
 			break;
 			case R.id.event_notify_location: {
-				//if (DEBUG) Log.d(TAG, "Map.inform event=location, extra=" + extra);
-				lastLocation = toLatLong(extra);
-				//if (DEBUG) Log.d(TAG, "Map.inform lastLocation=" + lastLocation);
-				centerIfFollow();
+				if (extra.containsKey("latitude") && extra.containsKey("longitude")) {
+					//if (DEBUG) Log.d(TAG, "Map.inform event=location, extra=" + extra);
+					lastLocation = toLatLong(extra);
+					//if (DEBUG) Log.d(TAG, "Map.inform lastLocation=" + lastLocation);
+					centerIfFollow();
+				}
 			}
 			break;
 			case R.id.event_do_zoom_in: {
