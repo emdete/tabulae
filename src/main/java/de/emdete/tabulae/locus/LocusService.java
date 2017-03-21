@@ -104,7 +104,7 @@ public class LocusService extends Service implements LocationListener {
 				Bundle b = toBundle(null, status);
 				for (int i = mClients.size() - 1; i >= 0; i--) {
 					try {
-						mClients.get(i).send(Message.obtain(null, R.id.message_locus_set_value, R.id.event_notify_satellites, 0, b));
+						mClients.get(i).send(Message.obtain(null, R.id.message_locus_set_value, R.id.event_notify_location, 0, b));
 					}
 					catch (RemoteException e) {
 						mClients.remove(i);
@@ -123,7 +123,7 @@ public class LocusService extends Service implements LocationListener {
 
 	// LocationListener:
 	@Override public void onLocationChanged(Location location) {
-		Log.d(Constants.TAG, "LocusService.onLocationChanged location=" + location);
+		//Log.d(Constants.TAG, "LocusService.onLocationChanged location=" + location);
 		if (location != null) {
 			Bundle b = toBundle(null, location);
 			for (int i = mClients.size() - 1; i >= 0; i--) {

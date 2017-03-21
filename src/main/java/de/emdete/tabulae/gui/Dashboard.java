@@ -29,7 +29,7 @@ public class Dashboard extends Base {
 		viewGroup.removeAllViews();
 		dashboardItems = new DashboardItem[]{
 				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_provider), "provider", getString(R.string.unit_empty)),
-				new DashboardItem(a, viewGroup, R.id.event_notify_satellites, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_satellite), "satellites", getString(R.string.unit_empty)),
 				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_bearing), "bearing", getString(R.string.unit_degree)),
 				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_accuracy), "accuracy", getString(R.string.unit_m)),
 				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_speed), "speed", getString(R.string.unit_kmh)),

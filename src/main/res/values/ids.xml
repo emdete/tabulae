@@ -40,7 +40,6 @@
 	<item name="event_notify_dashboard" type="id" />
 	<item name="event_notify_fawlty" type="id" />
 	<item name="event_notify_location" type="id" />
-	<item name="event_notify_satellites" type="id" />
 	<item name="event_notify_map" type="id" />
 	<item name="event_notify_screencapture" type="id" />
 	<item name="event_notify_scroll" type="id" />
