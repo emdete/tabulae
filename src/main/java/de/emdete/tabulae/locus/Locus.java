@@ -48,7 +48,9 @@ public class Locus extends Base {
 			switch (msg.what) {
 				case R.id.message_locus_set_value:
 					//if (DEBUG) Log.d(TAG, "Locus.handleMessage event=" + msg.arg1 + ", extra=" + msg.obj);
-					((Tabulae) getActivity()).inform(msg.arg1, (Bundle) msg.obj);
+					if (getActivity() != null) {
+						((Tabulae) getActivity()).inform(msg.arg1, (Bundle) msg.obj);
+					}
 					break;
 				default:
 					super.handleMessage(msg);

@@ -43,6 +43,7 @@ import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.view.MapView;
 import de.emdete.tabulae.map.Map;
 import de.emdete.tabulae.track.Track;
+import static de.emdete.tabulae.Constants.*;
 
 public class Tabulae extends Activity {
 	protected Base[] fragments;
@@ -71,24 +72,24 @@ public class Tabulae extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onCreate");
+		if (DEBUG) Log.d(TAG, "Tabulae.onCreate");
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread thread, Throwable e) {
-				Log.e(Constants.TAG, "error e=" + e, e);
+				Log.e(TAG, "error e=" + e, e);
 				finish();
 			}
 		});
         dbHelper = new SQLiteOpenHelper(getApplicationContext(), "tabulae.db", null, 3){
 			@Override public void onCreate(SQLiteDatabase db) {
-				if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onCreate.SQLiteOpenHelper.onCreate");
+				if (DEBUG) Log.d(TAG, "Tabulae.onCreate.SQLiteOpenHelper.onCreate");
 				//Log.d(TAG, "create=" +
 				StoreObject.create(db, PoiItem.class);
 				StoreObject.create(db, TrackItem.class);
 				StoreObject.create(db, TrackPointItem.class);
 			}
 			@Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-				if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onCreate.SQLiteOpenHelper.onUpgrade");
+				if (DEBUG) Log.d(TAG, "Tabulae.onCreate.SQLiteOpenHelper.onUpgrade");
 				StoreObject.alter(db, PoiItem.class);
 				StoreObject.alter(db, TrackItem.class);
 				StoreObject.alter(db, TrackPointItem.class);
@@ -113,11 +114,11 @@ public class Tabulae extends Activity {
 		}
 		SharedPreferences preferences = getSharedPreferences("map", Context.MODE_PRIVATE);
 		String baseStorage = preferences.getString("baseStorage", null);
-		Log.d(Constants.TAG, "Tabulae.onCreate preferences baseStorage=" + baseStorage);
+		Log.d(TAG, "Tabulae.onCreate preferences baseStorage=" + baseStorage);
 		if (baseStorage != null) {
 			baseStorageFile = new File(baseStorage);
 			if (!Environment.getExternalStorageState(baseStorageFile).equals(Environment.MEDIA_MOUNTED)) {
-				Log.e(Constants.TAG, "Tabulae.onCreate not mounted: baseStorage=" + baseStorage);
+				Log.e(TAG, "Tabulae.onCreate not mounted: baseStorage=" + baseStorage);
 				Toast.makeText(this, "Storage gone! Please reinsert SD.", Toast.LENGTH_LONG).show();
 				// TODO: ask for different storage
 				finish();
@@ -127,7 +128,7 @@ public class Tabulae extends Activity {
 		if (baseStorageFile == null) {
 			// look for the largest storage to begin with
 			for (File dir : getApplicationContext().getExternalFilesDirs(null)) {
-				Log.d(Constants.TAG, "Tabulae.onCreate getExternalFilesDirs baseStorage=" + baseStorage);
+				Log.d(TAG, "Tabulae.onCreate getExternalFilesDirs baseStorage=" + baseStorage);
 				if (dir != null && !Environment.getExternalStorageState(dir).equals(Environment.MEDIA_MOUNTED)) {
 					continue;
 				}
@@ -140,115 +141,125 @@ public class Tabulae extends Activity {
 			Editor editor = preferences.edit();
 			editor.putString("baseStorage", baseStorage);
 			editor.apply();
-		} else {
+		}
+		else {
 			baseStorageSpace = new StatFs(baseStorageFile.getPath()).getAvailableBytes();
 		}
-		Log.d(Constants.TAG, "Tabulae.onCreate using baseStorageFile=" + baseStorageFile + ", baseStorageSpace=" + deKay(baseStorageSpace));
+		Log.d(TAG, "Tabulae.onCreate using baseStorageFile=" + baseStorageFile + ", baseStorageSpace=" + deKay(baseStorageSpace));
 		final Intent queryIntent = getIntent();
 		final String queryAction = queryIntent.getAction();
-		if (Constants.DEBUG)
-			Log.d(Constants.TAG, "Tabulae.onCreate process intent=" + queryIntent + ", action=" + queryAction);
+		if (DEBUG)
+			Log.d(TAG, "Tabulae.onCreate process intent=" + queryIntent + ", action=" + queryAction);
 		//noinspection StatementWithEmptyBody
 		if (Intent.ACTION_MAIN.equals(queryAction)) {
 			// nothing more to do
-		} else if (Constants.ACTION_CONVERSATIONS_REQUEST.equals(queryAction)) {
+		}
+		else if (ACTION_CONVERSATIONS_REQUEST.equals(queryAction)) {
 			{
 				String package_ = getCallingPackage();
 				ComponentName name = getCallingActivity();
 				String activity = name==null?null:name.flattenToString();
-				if (Constants.DEBUG)
-					Log.d(Constants.TAG, "Tabulae.onCreate package_=" + package_ + ", activity=" + activity);
+				if (DEBUG)
+					Log.d(TAG, "Tabulae.onCreate package_=" + package_ + ", activity=" + activity);
 			}
 			//Bundle extra = queryIntent.getExtras();
 			MapView mapView = getMapView();
 			if (mapView == null) {
 				setResult(Activity.RESULT_CANCELED, null);
-			} else {
+			}
+			else {
 				LatLong location = mapView.getModel().mapViewPosition.getCenter(); // TODO defere location determination?
 				Intent result = new Intent();
-				result.putExtra(Constants.LATITUDE, location.latitude);
-				result.putExtra(Constants.LONGITUDE, location.longitude);
+				result.putExtra(LATITUDE, location.latitude);
+				result.putExtra(LONGITUDE, location.longitude);
 				//result.putExtra(ALTITUDE, .getAltitude());
 				//result.putExtra(ACCURACY, .getAccuracy());
 				setResult(Activity.RESULT_OK, result);
 			}
 			finish();
-		} else if (Constants.ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
+		}
+		else if (ACTION_CONVERSATIONS_SHOW.equals(queryAction)) {
 			Bundle extra = queryIntent.getExtras();
-			if (extra.containsKey(Constants.LONGITUDE) && extra.containsKey(Constants.LATITUDE)) {
-				String jid = extra.getString(Constants.JID);
-				String name = extra.getString(Constants.NAME);
+			if (extra.containsKey(LONGITUDE) && extra.containsKey(LATITUDE)) {
+				String jid = extra.getString(JID);
+				String name = extra.getString(NAME);
 				if (name == null || name.length() == 0) {
 					if (jid != null && jid.length() > 0) {
 						name = jid.split("@")[0]; // TODO avoid regex
-					} else {
+					}
+					else {
 						name = "Jabber";
 						jid = "@xmpp";
 					}
 				}
-				double latitude = extra.getDouble(Constants.LATITUDE, 0);
-				double longitude = extra.getDouble(Constants.LONGITUDE, 0);
+				double latitude = extra.getDouble(LATITUDE, 0);
+				double longitude = extra.getDouble(LONGITUDE, 0);
 				long id = Poi.storePointPosition(this, jid, name + ", on " + new Date(), latitude, longitude, true);
-				Log.w(Constants.TAG, "onCreate.ACTION_CONVERSATIONS_SHOW id=" + id);
-			} else
-				Log.w(Constants.TAG, "onCreate conversations intent recceived with no latitude/longitude");
-		} else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
+				Log.w(TAG, "onCreate.ACTION_CONVERSATIONS_SHOW id=" + id);
+			}
+			else {
+				Log.w(TAG, "onCreate conversations intent recceived with no latitude/longitude");
+			}
+		}
+		else if (Intent.ACTION_VIEW.equalsIgnoreCase(queryAction)) {
 			try {
 				//List<ActivityManager.RecentTaskInfo> recentTasks = ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).getRecentTasks(99, ActivityManager.RECENT_WITH_EXCLUDED);
 				Uri uri = queryIntent.getData();
-				if (uri.getScheme().equalsIgnoreCase(Constants.GEO)) {
+				if (uri.getScheme().equalsIgnoreCase(GEO)) {
 					final String part = uri.getEncodedSchemeSpecificPart().split("\\?")[0];
 					final String[] latlon = part.split(","); // TODO avoid regex
 					Bundle extra = new Bundle();
-					extra.putDouble(Constants.LATITUDE, Double.parseDouble(latlon[0]));
-					extra.putDouble(Constants.LONGITUDE, Double.parseDouble(latlon[1]));
-					extra.putString(Constants.NAME, "poi");
-					extra.putString(Constants.DESCRIPTION, "shared poi");
-					if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onCreate new poi extra=" + extra);
+					extra.putDouble(LATITUDE, Double.parseDouble(latlon[0]));
+					extra.putDouble(LONGITUDE, Double.parseDouble(latlon[1]));
+					extra.putString(NAME, "poi");
+					extra.putString(DESCRIPTION, "shared poi");
+					if (DEBUG) Log.d(TAG, "Tabulae.onCreate new poi extra=" + extra);
 					asyncInform(R.id.event_do_poi_new, extra);
 				}
-				else if (uri.getScheme().equalsIgnoreCase(Constants.HTTP)
-				 || uri.getScheme().equalsIgnoreCase(Constants.HTTPS)) {
-					if (Constants.DEBUG) Log.d(Constants.TAG, "http/https, part=" + uri.getEncodedSchemeSpecificPart());
+				else if (uri.getScheme().equalsIgnoreCase(HTTP)
+				 || uri.getScheme().equalsIgnoreCase(HTTPS)) {
+					if (DEBUG) Log.d(TAG, "http/https, part=" + uri.getEncodedSchemeSpecificPart());
 					// //www.openstreetmap.org/?mlat=52.66272&mlon=10.920636
 					if ("www.openstreetmap.org".equals(uri.getHost())) {
 						Bundle extra = new Bundle();
-						extra.putDouble(Constants.LATITUDE, Double.parseDouble(uri.getQueryParameter("mlat")));
-						extra.putDouble(Constants.LONGITUDE, Double.parseDouble(uri.getQueryParameter("mlon")));
-						extra.putString(Constants.NAME, "poi");
-						extra.putString(Constants.DESCRIPTION, "shared poi");
-						if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onCreate new poi extra=" + extra);
+						extra.putDouble(LATITUDE, Double.parseDouble(uri.getQueryParameter("mlat")));
+						extra.putDouble(LONGITUDE, Double.parseDouble(uri.getQueryParameter("mlon")));
+						extra.putString(NAME, "poi");
+						extra.putString(DESCRIPTION, "shared poi");
+						if (DEBUG) Log.d(TAG, "Tabulae.onCreate new poi extra=" + extra);
 						asyncInform(R.id.event_do_poi_new, extra);
 					}
 					else {
-						if (Constants.DEBUG) Log.e(Constants.TAG, "http/https, unknown host=" + uri.getHost());
+						if (DEBUG) Log.e(TAG, "http/https, unknown host=" + uri.getHost());
 					}
 				}
 			}
 			catch (Exception e) {
-				Log.e(Constants.TAG, "Tabulae.onCreate", e);
+				Log.e(TAG, "Tabulae.onCreate", e);
 				// Toast?
 			}
-		} else
-			Log.e(Constants.TAG, "Tabulae.onCreate no fit action=" + queryAction);
+		}
+		else {
+			Log.e(TAG, "Tabulae.onCreate no fit action=" + queryAction);
+		}
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onStart");
+		if (DEBUG) Log.d(TAG, "Tabulae.onStart");
 	}
 
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onRestart");
+		if (DEBUG) Log.d(TAG, "Tabulae.onRestart");
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onResume");
+		if (DEBUG) Log.d(TAG, "Tabulae.onResume");
 		FragmentManager fragmentManager = getFragmentManager();
 		for (Base b : fragments) {
 			FragmentTransaction tx = fragmentManager.beginTransaction();
@@ -260,8 +271,7 @@ public class Tabulae extends Activity {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-		if (Constants.DEBUG)
-			Log.d(Constants.TAG, "Tabulae.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode);
+		if (DEBUG) Log.d(TAG, "Tabulae.onActivityResult resultCode=" + resultCode + ", requestCode=" + requestCode);
 		for (Base b : fragments) {
 			b.onActivityResult(requestCode, resultCode, resultData);
 		}
@@ -270,7 +280,7 @@ public class Tabulae extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onPause");
+		if (DEBUG) Log.d(TAG, "Tabulae.onPause");
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction tx = fragmentManager.beginTransaction();
 		for (Base b : fragments) {
@@ -282,13 +292,13 @@ public class Tabulae extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onStop");
+		if (DEBUG) Log.d(TAG, "Tabulae.onStop");
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onDestroy");
+		if (DEBUG) Log.d(TAG, "Tabulae.onDestroy");
 		AndroidGraphicFactory.clearResourceMemoryCache();
 	}
 
@@ -303,7 +313,7 @@ public class Tabulae extends Activity {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.main_option_menu, menu);
 		this.menu = menu;
-		if (Constants.DEBUG) {
+		if (DEBUG) {
 			setVisible(R.id.event_do_screencapture, true);
 			setVisible(R.id.event_do_fawlty, true);
 			setVisible(R.id.event_do_traffic, true);
@@ -330,7 +340,7 @@ public class Tabulae extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle bundle) {
 		super.onSaveInstanceState(bundle);
-		if (Constants.DEBUG) Log.d(Constants.TAG, "Tabulae.onSaveInstanceState bundle=" + bundle);
+		if (DEBUG) Log.d(TAG, "Tabulae.onSaveInstanceState bundle=" + bundle);
 		// bundle.putString("..", ..);
 	}
 

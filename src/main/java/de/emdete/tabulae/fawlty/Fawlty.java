@@ -148,13 +148,15 @@ public class Fawlty extends Base {
 		wirelessEnvListener.disable();
 		if (circle != null) {
 			MapView mapView = ((Tabulae) getActivity()).getMapView();
-			mapView.getLayerManager().getLayers().remove(circle);
-			//circle.onDestroy();
-			//circle = null;
-			//bitmap.decrementRefCount();
-			mapView.getLayerManager().getLayers().remove(marker);
-			//marker.onDestroy();
-			//marker = null;
+			if (mapView != null && mapView.getLayerManager() != null) {
+				mapView.getLayerManager().getLayers().remove(circle);
+				//circle.onDestroy();
+				//circle = null;
+				//bitmap.decrementRefCount();
+				mapView.getLayerManager().getLayers().remove(marker);
+				//marker.onDestroy();
+				//marker = null;
+			}
 		}
 	}
 

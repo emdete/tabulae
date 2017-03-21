@@ -39,10 +39,14 @@ public class Track extends Base {
 		super.onPause();
 		if (Constants.DEBUG) Log.d(Constants.TAG, "Track.onPause");
 		MapView mapView = ((Tabulae) getActivity()).getMapView();
-		Layers layers = mapView.getLayerManager().getLayers();
-		for (Layer polyline: polylines) {
-			((AlternatingLine)polyline).getLatLongs().clear();
-			layers.remove(polyline, false);
+		if (mapView != null) {
+				if (mapView.getLayerManager() != null) {
+				Layers layers = mapView.getLayerManager().getLayers();
+				for (Layer polyline: polylines) {
+					((AlternatingLine)polyline).getLatLongs().clear();
+					layers.remove(polyline, false);
+				}
+			}
 		}
 		polylines.clear();
 	}

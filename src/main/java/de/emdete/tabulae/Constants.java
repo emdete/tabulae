@@ -8,8 +8,6 @@ public interface Constants {
 	String TAG = "de.emdete.tabulae";
 	String USER_AGENT = "Tabulae/" + BuildConfig.VERSION_NAME + " (Android " + Build.VERSION.RELEASE + ")";
 	boolean DEBUG = BuildConfig.DEBUG;
-	byte MIN_ZOOM = (byte) 4;
-	byte MAX_ZOOM = (byte) 21;
 	// static { DEBUG = Log.isLoggable("de.emdete.android", Log.DEBUG); }
 	float USER_FONT_FACTOR = 1.3f; // TODO: determine sp/dp factor somehow
 	String ACTION_CONVERSATIONS_REQUEST = "eu.siacs.conversations.location.request";

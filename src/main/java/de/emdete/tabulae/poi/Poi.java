@@ -166,9 +166,7 @@ public class Poi extends Base {
 		}
 		try {
 			byte zoom = LatLongUtils.zoomForBounds(mapView.getModel().mapViewDimension.getDimension(), bb, mapView.getModel().displayModel.getTileSize());
-			if (zoom > MAX_ZOOM) {
-				zoom = MAX_ZOOM;
-			}
+			// TODO adjust min/max zoom
 			mapView.getModel().mapViewPosition.setMapPosition(new MapPosition(bb.getCenterPoint(), zoom));
 		}
 		catch (Exception e) {
