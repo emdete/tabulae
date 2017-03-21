@@ -14,7 +14,7 @@ import org.json.simple.JSONValue;
 import static de.emdete.tabulae.fawlty.Constants.*;
 
 public class CellAPI2 {
-	private static final String user = "de.emdete";
+	private static final String user = "pyneo";
 	private static final String url = "https://cellsit.vfnet.de/cellapi/v2/_/" + user;
 	private static final Random random = new Random();
 
@@ -54,7 +54,9 @@ public class CellAPI2 {
 				//if (DEBUG) Log.d(TAG, "retrieveLocation: response obj=" + obj);
 				ret = new TheList((JSONArray) obj);
 			}
-			//if (DEBUG) Log.d(TAG, "retrieveLocation: ret=" + ret);
+			if (ret != 2000) {
+				if (DEBUG) Log.d(TAG, "retrieveLocation: ret=" + ret);
+			}
 		}
 		finally {
 			try {
