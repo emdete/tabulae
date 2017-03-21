@@ -57,6 +57,9 @@ public class WirelessEnvListener extends PhoneStateListener implements Runnable 
 					location.setExtras(extra);
 					break;
 				}
+				else {
+					if (DEBUG) Log.d(TAG, "retrieveLocation: ret=" + cellapi2_response);
+				}
 			}
 		}
 		return location;

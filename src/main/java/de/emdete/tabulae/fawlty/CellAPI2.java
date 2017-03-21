@@ -54,9 +54,7 @@ public class CellAPI2 {
 				//if (DEBUG) Log.d(TAG, "retrieveLocation: response obj=" + obj);
 				ret = new TheList((JSONArray) obj);
 			}
-			if (ret != 2000) {
-				if (DEBUG) Log.d(TAG, "retrieveLocation: ret=" + ret);
-			}
+			//if (DEBUG) Log.d(TAG, "retrieveLocation: ret=" + ret);
 		}
 		finally {
 			try {
