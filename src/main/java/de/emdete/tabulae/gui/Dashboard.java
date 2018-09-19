@@ -11,6 +11,7 @@ import de.emdete.tabulae.Constants;
 import de.emdete.tabulae.Base;
 import de.emdete.tabulae.R;
 import de.emdete.tabulae.Tabulae;
+import static de.emdete.tabulae.Constants.*;
 
 public class Dashboard extends Base {
 	protected DashboardItem[] dashboardItems;
@@ -36,8 +37,8 @@ public class Dashboard extends Base {
 				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_pace), "pace", getString(R.string.unit_minkm)),
 				new DashboardItem(a, viewGroup, R.id.event_notify_zoom, getString(R.string.title_zoom), "zoom_level", getString(R.string.unit_zoom)),
 				new DashboardItem(a, viewGroup, R.id.event_notify_cell, "Cell Identifier", "cell_ident", ""),
-				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_latitude), "latitude", getString(R.string.unit_degree)),
-				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_longitude), "longitude", getString(R.string.unit_degree)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_latitude), LATITUDE, getString(R.string.unit_degree)),
+				new DashboardItem(a, viewGroup, R.id.event_notify_location, getString(R.string.title_longitude), LONGITUDE, getString(R.string.unit_degree)),
 				new DashboardItem(a, viewGroup, R.id.event_notify_map, getString(R.string.title_current_map), "current_map", getString(R.string.unit_empty)),
 				new DashboardItem(a, viewGroup, R.id.event_notify_time, getString(R.string.title_current_time), "current_time", getString(R.string.unit_empty)),
 		};

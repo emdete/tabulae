@@ -181,8 +181,8 @@ public class Poi extends Base {
 				storePointPosition((Tabulae) getActivity(),
 					extra.getString("name"),
 					extra.getString("description"),
-					extra.getDouble("latitude"),
-					extra.getDouble("longitude"),
+					extra.getDouble(LATITUDE),
+					extra.getDouble(LONGITUDE),
 					true);
 				center();
 			}

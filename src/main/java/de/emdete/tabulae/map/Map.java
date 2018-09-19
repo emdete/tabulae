@@ -65,7 +65,7 @@ public class Map extends Base {
 			if (id != -1) {
 				Editor editor = getPreferences().edit();
 				editor.putInt("currentMap", currentMap);
-				editor.commit();
+				editor.apply();
 			}
 		}
 		if (layer != null) {
@@ -154,7 +154,7 @@ public class Map extends Base {
 			notice(R.id.event_notify_autofollow, "autofollow", snapToLocationEnabled);
 			Editor editor = getPreferences().edit();
 			editor.putBoolean("autoFollow", snapToLocationEnabled);
-			editor.commit();
+			editor.apply();
 			if (snapToLocationEnabled) {
 				centerIfFollow();
 			}
@@ -169,7 +169,7 @@ public class Map extends Base {
 	}
 
 	private LatLong toLatLong(Bundle extra) {
-		return new LatLong(extra.getDouble("latitude"), extra.getDouble("longitude"));
+		return new LatLong(extra.getDouble(LATITUDE), extra.getDouble(LONGITUDE));
 	}
 
 	public void inform(int event, Bundle extra) {
@@ -185,7 +185,7 @@ public class Map extends Base {
 			}
 			break;
 			case R.id.event_notify_location: {
-				if (extra.containsKey("latitude") && extra.containsKey("longitude")) {
+				if (extra.containsKey(LATITUDE) && extra.containsKey(LONGITUDE)) {
 					//if (DEBUG) Log.d(TAG, "Map.inform event=location, extra=" + extra);
 					lastLocation = toLatLong(extra);
 					//if (DEBUG) Log.d(TAG, "Map.inform lastLocation=" + lastLocation);

@@ -26,6 +26,7 @@ import de.emdete.tabulae.Constants;
 import java.util.ArrayList;
 import de.emdete.tabulae.R;
 import de.emdete.tabulae.Tabulae;
+import static de.emdete.tabulae.locus.Constants.*;
 
 public class LocusService extends Service implements LocationListener {
 	final Messenger mMessenger = new Messenger(new IncomingHandler());
@@ -49,7 +50,7 @@ public class LocusService extends Service implements LocationListener {
 				.setSmallIcon(R.drawable.ic_service)
 				.setLargeIcon(Icon.createWithResource(this, R.drawable.ic_service))
 				.setTicker(text)
-				.setColor(getResources().getColor(R.color.primary))
+				.setColor(getResources().getColor(R.color.primary, null))
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(getText(R.string.app_label))
 				.setContentText(text)
@@ -195,8 +196,8 @@ public class LocusService extends Service implements LocationListener {
 			}
 			ret.putString("provider", location.getProvider());
 			ret.putLong("elapsed", location.getElapsedRealtimeNanos());
-			ret.putDouble("latitude", location.getLatitude());
-			ret.putDouble("longitude", location.getLongitude());
+			ret.putDouble(LATITUDE, location.getLatitude());
+			ret.putDouble(LONGITUDE, location.getLongitude());
 			ret.putLong("time", location.getTime());
 			if (location.hasSpeed()) {
 				double speed = location.getSpeed() * 3.6;

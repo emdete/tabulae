@@ -38,8 +38,8 @@ public class WirelessEnvListener extends PhoneStateListener implements Runnable 
 			if (!ident_location.getString("type").equals("m")) {
 				long rcd = ident_location.getLong("rcd");
 				if (rcd / 1000 == 2) {
-					double latitude = ident_location.getDouble("latitude");
-					double longitude = ident_location.getDouble("longitude");
+					double latitude = ident_location.getDouble(LATITUDE);
+					double longitude = ident_location.getDouble(LONGITUDE);
 					float accuracy = (float)5000.0;
 					if (rcd == 2000 && ident_location.containsKey("radius")) { // radius given
 						accuracy = (float)ident_location.getLong("radius");
@@ -86,12 +86,11 @@ public class WirelessEnvListener extends PhoneStateListener implements Runnable 
 	public void onCellInfoChanged(List<CellInfo> cellInfos) {
 		//if (DEBUG) Log.d(TAG, "WirelessEnvListener.onCellInfoChanged: cellInfos=" + cellInfos);
 		try {
-			Iterable<TheDictionary> cell_ids = null;
 			if (cellInfos == null) {
 				cellInfos = telephonyManager.getAllCellInfo();
 				//if (DEBUG) Log.e(TAG, "WirelessEnvListener.onCellInfoChanged: from parameter cellInfos=" + cellInfos);
 			}
-			cell_ids = new CellId(cellInfos);
+			Iterable<TheDictionary> cell_ids = new CellId(cellInfos);
 			if (cellInfos == null) {
 				//if (DEBUG) Log.e(TAG, "WirelessEnvListener.onCellInfoChanged: fallback to Pre17, cellInfos=" + cellInfos);
 				//noinspection deprecation

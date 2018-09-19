@@ -43,8 +43,7 @@ public class Locus extends Base {
 	};
 	private ThreeStateLocationOverlay myLocationOverlay;
 	final Messenger mMessenger = new Messenger(new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
+		@Override public void handleMessage(Message msg) {
 			switch (msg.what) {
 				case R.id.message_locus_set_value:
 					//if (DEBUG) Log.d(TAG, "Locus.handleMessage event=" + msg.arg1 + ", extra=" + msg.obj);
@@ -63,8 +62,8 @@ public class Locus extends Base {
 		if (location != null) {
 			ret = new Location(location.getString("provider"));
 			ret.setElapsedRealtimeNanos(location.getLong("elapsed"));
-			ret.setLatitude(location.getDouble("latitude"));
-			ret.setLongitude(location.getDouble("longitude"));
+			ret.setLatitude(location.getDouble(LATITUDE));
+			ret.setLongitude(location.getDouble(LONGITUDE));
 			ret.setTime(location.getLong("time"));
 			if (location.containsKey("speed")) {
 				ret.setSpeed((float) (location.getDouble("speed") / 3.6));

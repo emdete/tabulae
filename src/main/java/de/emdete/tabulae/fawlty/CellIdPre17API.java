@@ -169,8 +169,8 @@ public class CellIdPre17API implements Iterator<TheDictionary>, Iterable<TheDict
 			map.put("mcc", mcc);
 			map.put("mnc", mnc);
 			map.put("base_station_id", value.getBaseStationId());
-			map.put("latitude", value.getBaseStationLatitude() / 14400.0);
-			map.put("longitude", value.getBaseStationLongitude() / 14400.0);
+			map.put(LATITUDE, value.getBaseStationLatitude() / 14400.0);
+			map.put(LONGITUDE, value.getBaseStationLongitude() / 14400.0);
 			map.put("network_id", value.getNetworkId());
 			map.put("systen_id", value.getSystemId());
 			map.put("registered", true);

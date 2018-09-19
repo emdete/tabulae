@@ -59,9 +59,9 @@ public class CellId implements Iterator<TheDictionary>, Iterable<TheDictionary> 
 			i = value.getBasestationId();
 			if (i != Integer.MAX_VALUE) map.put("basestation_id", i);
 			i = value.getLatitude();
-			if (i != Integer.MAX_VALUE) map.put("latitude", i);
+			if (i != Integer.MAX_VALUE) map.put(LATITUDE, i);
 			i = value.getLongitude();
-			if (i != Integer.MAX_VALUE) map.put("longitude", i);
+			if (i != Integer.MAX_VALUE) map.put(LONGITUDE, i);
 			i = value.getNetworkId();
 			if (i != Integer.MAX_VALUE) map.put("network_id", i);
 			i = value.getSystemId();

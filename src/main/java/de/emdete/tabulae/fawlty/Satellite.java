@@ -23,8 +23,8 @@ public class Satellite implements Iterator<TheDictionary>, Iterable<TheDictionar
 	public static void fill(TheDictionary map, Location value) throws Exception {
 		if (value != null) {
 			map.put("type", "g");
-			map.put("latitude", value.getLatitude());
-			map.put("longitude", value.getLongitude());
+			map.put(LATITUDE, value.getLatitude());
+			map.put(LONGITUDE, value.getLongitude());
 			if (value.hasAccuracy()) {
 				map.put("accuracy", (double) value.getAccuracy());
 			}

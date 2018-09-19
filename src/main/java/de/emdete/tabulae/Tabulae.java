@@ -80,7 +80,7 @@ public class Tabulae extends Activity {
 				finish();
 			}
 		});
-        dbHelper = new SQLiteOpenHelper(getApplicationContext(), "tabulae.db", null, 3){
+		dbHelper = new SQLiteOpenHelper(getApplicationContext(), "tabulae.db", null, 3){
 			@Override public void onCreate(SQLiteDatabase db) {
 				if (DEBUG) Log.d(TAG, "Tabulae.onCreate.SQLiteOpenHelper.onCreate");
 				//Log.d(TAG, "create=" +
