@@ -4,6 +4,8 @@ import android.util.Log;
 import de.emdete.tabulae.BuildConfig;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,15 +33,16 @@ public class CellAPI2 {
 		if (DEBUG) Log.d(TAG, "retrieveLocation: request list=" + list);
 		HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
 		try {
+			connection.setRequestMethod("POST");
 			connection.setUseCaches(false);
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			connection.setReadTimeout(5000);
 			connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
 			connection.setRequestProperty("User-Agent", "Tabulae " + BuildConfig.VERSION_NAME);
-			connection.setRequestProperty("X-Correlation-Id", correlation_id);
 			connection.setRequestProperty("Authorization", "Basic cHluZW86YU4zUGVpdjY=");
-			connection.setRequestMethod("POST");
+			connection.setRequestProperty("X-Authorization", "Basic cHluZW86YU4zUGVpdjY=");
+			connection.setRequestProperty("X-Correlation-Id", correlation_id);
 			try (final java.io.Writer out = new java.io.OutputStreamWriter(connection.getOutputStream())) {
 				list.writeJSONString(out);
 				out.flush();
