@@ -8,10 +8,10 @@ run: src/main/res/values/strings_news.xml
 	./gradlew --quiet assembleDebug
 
 dbg: run
-	chmod 0644 art/ic_launcher.png build/outputs/apk/*-debug.apk
-	#rsync --verbose --archive build/outputs/apk/*-debug.apk littlelun.emdete.de:/var/www/pyneo.org/c/Tabulae-debug.apk
-	#rsync --verbose --archive art/ic_launcher.png littlelun.emdete.de:/var/www/pyneo.org/c/Tabulae-logo.png
-	adb install -r build/outputs/apk/*-debug.apk
+	chmod 0644 art/ic_launcher.png build/outputs/apk/debug/*-debug.apk
+	#rsync --verbose --archive build/outputs/apk/debug/*-debug.apk littlun.emdete.de:/var/www/emdete.de/y/.
+	#rsync --verbose --archive art/ic_launcher.png littlelun.emdete.de:/var/www/emdete.de/y/Tabulae-logo.png
+	adb install -r build/outputs/apk/debug/*-debug.apk
 	adb shell am start de.emdete.tabulae/.Tabulae
 
 clean:
